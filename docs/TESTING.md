@@ -19,6 +19,8 @@ The calculation engine is covered by unit tests. The points below need a real ga
 - [ ] Playing a card in the turn after an AFK turn makes the clock run normally again.
 - [ ] A turn without any played card but ended by clicking "End Turn" counts normally (no jump, no pause).
 - [ ] **Rewind:** when either player uses a Rewind card, the XP time keeps running without a reset.
+- [ ] **HDT started during a game:** the overlay shows the full XP time since the first turn, not only the time since HDT started.
+- [ ] HDT stays responsive; no stutter in Hearthstone while the plugin is enabled.
 - [ ] Live text reads "XP time m:ss", "If win: +N XP", "If loss: +N XP".
 
 ## End of game

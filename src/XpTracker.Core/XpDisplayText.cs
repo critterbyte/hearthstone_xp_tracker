@@ -9,11 +9,10 @@ namespace XpTracker.Core;
 /// </summary>
 public static class XpDisplayText
 {
-    public static IReadOnlyList<string> For(GameObserver observer, DateTime now)
+    public static IReadOnlyList<string> For(XpClock? clock, GameMode mode, DateTime now)
     {
-        var clock = observer.Clock;
-        var winRate = XpRates.RateFor(observer.Mode, GameResult.Win);
-        var lossRate = XpRates.RateFor(observer.Mode, GameResult.Loss);
+        var winRate = XpRates.RateFor(mode, GameResult.Win);
+        var lossRate = XpRates.RateFor(mode, GameResult.Loss);
         if (clock is null || !clock.HasStarted || winRate is null || lossRate is null)
         {
             return Array.Empty<string>();
@@ -32,7 +31,7 @@ public static class XpDisplayText
             };
         }
 
-        var rate = XpRates.RateFor(observer.Mode, clock.Result);
+        var rate = XpRates.RateFor(mode, clock.Result);
         return new[]
         {
             clock.Result is GameResult.Unknown ? "Last game" : "Last game: " + clock.Result,
