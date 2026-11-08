@@ -28,7 +28,7 @@ public class XpTrackerPlugin : IPlugin
     private static readonly TimeSpan RecentGame = TimeSpan.FromMinutes(2);
 
     // Kept outside the plugin folder so that installing a new plugin version does not touch it.
-    private static readonly string HistoryPath = Path.Combine(Config.AppDataPath, "XpTracker", "games.csv");
+    private static readonly string HistoryPath = Path.Combine(Config.AppDataPath, "XpTracker", "hs_games.csv");
 
     private readonly GameHistory _history = new(HistoryPath);
     private XpOverlay? _overlay;
