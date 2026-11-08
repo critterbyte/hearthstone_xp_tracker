@@ -1,37 +1,34 @@
 # Hearthstone XP Tracker
 
-A plugin for [Hearthstone Deck Tracker](https://hsreplay.net/downloads/) (HDT) that shows how much reward track XP the current game is worth.
+A plugin for [Hearthstone Deck Tracker](https://hsreplay.net/downloads/) (HDT) that shows how much reward track XP your current game is worth.
 
-> **Status:** early development. Nothing is released yet.
+[![build](https://github.com/critterbyte/hearthstone_xp_tracker/actions/workflows/build.yml/badge.svg)](https://github.com/critterbyte/hearthstone_xp_tracker/actions/workflows/build.yml)
 
-## Planned features
+> **Status:** beta. XP is calculated for Ranked, Casual and Tavern Brawl. Other modes are not measured yet.
 
-- **Live display** during a game, placed above the Hearthstone settings button:
-  - XP time (the play time the game counts towards XP)
-  - expected XP if you win
-  - expected XP if you lose
-- **End-of-game summary:** XP time, total play time including the mulligan, and the XP earned for the actual result.
-- Correct handling of AFK turns: a turn without any action and without ending the turn manually does not count, and neither does the following opponent turn.
+## Features
 
-## How it works
+- **Live overlay** above the Hearthstone settings button:
+  - XP time: the part of the game that counts for XP
+  - the XP you get if you win, and if you lose
+- **Summary after each game:** XP time, total time including the mulligan, and the XP earned.
+- **AFK rule:** a turn that runs out without any action does not count, and neither does the opponent turn after it. The overlay shows this live.
+- **Dashboard:** XP, XP per hour, win rate, decks, lost XP and charts for today, this week, this season or all time.
+- **Game history:** every game is saved to a local CSV file that you can open in a spreadsheet.
+- **Update hint:** the plugin tells you when a new version is available.
 
-The plugin reads Hearthstone's `Power.log` (the same log HDT reads) on a background thread and uses its timestamps for the mulligan, every turn change, the AFK marker and the end of the game. If HDT is started in the middle of a game, the plugin reads the current game from its start. The log folder is taken from HDT's Hearthstone folder setting, with the running game as a fallback.
+## Installation
 
-Reading costs about 40 ms once when the plugin starts and well under a millisecond per update afterwards.
+1. Download the ZIP file from the [Releases page](https://github.com/critterbyte/hearthstone_xp_tracker/releases).
+2. Close HDT.
+3. Copy both DLL files into `%APPDATA%\HearthstoneDeckTracker\Plugins\HearthstoneXpTracker`.
+4. Start HDT and enable the plugin under *Options → Tracker → Plugins*.
 
-Every finished game is added to a local history file, `%APPDATA%\HearthstoneDeckTracker\XpTracker\hs_games.csv`, which a planned dashboard will use. The file stays on your computer; nothing is uploaded.
-
-## Update check
-
-When HDT starts, the plugin asks GitHub once whether a newer release exists (`api.github.com/repos/critterbyte/hearthstone_xp_tracker/releases`). The request sends only a User-Agent with the plugin name and version, for example `HearthstoneXpTracker/0.1.0`; as with any web request, GitHub sees your IP address. No game data is sent.
-
-If a newer version exists, the overlay shows "Update available:" with the version number while no game is running, and the dashboard shows a link to the download page. Nothing is downloaded or installed automatically.
-
-To turn the check off, clear "Check for updates when HDT starts" in the dashboard. The setting is stored in `%APPDATA%\HearthstoneDeckTracker\XpTracker\settings.ini`.
+See [docs/INSTALL.md](docs/INSTALL.md) for details, updates and troubleshooting.
 
 ## How XP is calculated
 
-Hearthstone does not log reward track XP, so the formula was measured game by game. In short:
+Hearthstone does not log reward track XP, so the formula was measured game by game:
 
 ```
 XP = round(xpSeconds × rate)
@@ -39,44 +36,46 @@ XP = round(xpSeconds × rate)
 
 | Mode | Win | Loss |
 |---|---:|---:|
-| Ranked (Wild and Standard) | 0.1308 XP/s | 0.0932 XP/s |
-| Casual and Tavern Brawl | 0.0932 XP/s | 0.0666 XP/s |
+| Ranked (Standard and Wild) | 0.1305 XP/s (470 XP/h) | 0.0932 XP/s (336 XP/h) |
+| Casual and Tavern Brawl | 0.0932 XP/s (336 XP/h) | 0.0666 XP/s (240 XP/h) |
 
-See [docs/FORMULA.md](docs/FORMULA.md) for the full rules and the measurements behind them.
+Games with less than 60 seconds of XP time give no XP. See [docs/FORMULA.md](docs/FORMULA.md) for all rules, the measurements and the sources.
+
+## Documentation
+
+| Page | Content |
+|---|---|
+| [INSTALL.md](docs/INSTALL.md) | Installation, update, uninstall, troubleshooting |
+| [USAGE.md](docs/USAGE.md) | Overlay, dashboard, history file, privacy |
+| [FORMULA.md](docs/FORMULA.md) | The XP formula: what was measured and what comes from sources |
+| [FARMING.md](docs/FARMING.md) | Fair tips for more XP per hour |
+| [CONTRIBUTING.md](CONTRIBUTING.md) | Building, code, measurements, pull requests |
+| [CHANGELOG.md](CHANGELOG.md) | Changes per version |
+
+## Privacy
+
+- Your game history and settings stay on your computer in `%APPDATA%\HearthstoneDeckTracker\XpTracker`. Nothing is uploaded.
+- When HDT starts, the plugin asks GitHub once whether a newer release exists (`api.github.com/repos/critterbyte/hearthstone_xp_tracker/releases`). The request sends only the plugin name and version, for example `HearthstoneXpTracker/0.1.0`. As with any web request, GitHub sees your IP address. No game data is sent.
+- If a newer version exists, the overlay shows "Update available:" while no game is running, and the dashboard shows a link to the download page. Nothing is downloaded or installed automatically.
+- To turn the check off, clear "Check for updates when HDT starts" in the dashboard.
+
+## How it works
+
+The plugin reads Hearthstone's `Power.log` (the same log HDT reads) on a background thread. It uses the log's timestamps for the mulligan, every turn change, the AFK marker and the end of the game. If HDT is started in the middle of a game, the plugin reads the current game from its start. The log folder comes from HDT's Hearthstone folder setting, with the running game as a fallback.
+
+Reading costs about 40 ms once when the plugin starts and well under a millisecond per update afterwards.
 
 ## Building
-
-Requirements:
-
-- Windows
-- [.NET SDK 10](https://dotnet.microsoft.com/download) (pinned in `global.json`)
-- Hearthstone Deck Tracker installed (the plugin is compiled against your local copy)
 
 ```powershell
 .\build.ps1
 ```
 
-The script finds the newest HDT installation under `%LOCALAPPDATA%\HearthstoneDeckTracker`, builds the solution and runs the tests. Use `-HdtDir <path>` to point it to another HDT folder.
-
-The calculation engine and its tests also build without HDT:
-
-```powershell
-dotnet test tests\XpTracker.Core.Tests
-```
-
-## Project layout
-
-| Path | Content |
-|---|---|
-| `src/XpTracker.Core` | Calculation engine: XP time, rates, AFK rule. No HDT dependency. |
-| `src/XpTracker.Plugin` | HDT plugin: overlay and end-of-game summary. |
-| `tests/XpTracker.Core.Tests` | Unit tests for the calculation engine. |
-| `tools/XpTracker.LogCheck` | Replays `Power.log` files and prints the times per game. |
-| `docs/` | Documentation. |
+You need Windows, the .NET SDK 10 and a local HDT installation. See [CONTRIBUTING.md](CONTRIBUTING.md#building).
 
 ## Versioning
 
-The project follows [Semantic Versioning](https://semver.org/). The version is set in `Directory.Build.props` only. Releases are tagged `vX.Y.Z` and listed in [CHANGELOG.md](CHANGELOG.md).
+The project follows [Semantic Versioning](https://semver.org/). Releases are tagged `vX.Y.Z` and listed in [CHANGELOG.md](CHANGELOG.md).
 
 ## Disclaimer
 

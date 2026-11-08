@@ -11,7 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Project skeleton: solution, calculation engine (`XpTracker.Core`), plugin entry point (`XpTracker.Plugin`), unit tests.
 - XP rates for Ranked, Casual and Tavern Brawl with tests against measured games.
-- Documentation of the XP formula (`docs/FORMULA.md`).
+- Documentation of the XP formula (`docs/FORMULA.md`), with every statement marked as measured or taken from a listed source.
+- Documentation for users and contributors: `docs/INSTALL.md`, `docs/USAGE.md`, `docs/FARMING.md` (fair tips for more XP per hour), `CONTRIBUTING.md`, and issue templates for bugs, feature requests and XP measurements.
 - Local build script (`build.ps1`) and CI workflow for the calculation engine.
 - `XpClock`: tracks XP time, play time and time including the mulligan from turn events, live and after the game. AFK turns and the opponent turn that follows them are excluded.
 - `XpRates.RateFor`: rate lookup by game mode and result.
