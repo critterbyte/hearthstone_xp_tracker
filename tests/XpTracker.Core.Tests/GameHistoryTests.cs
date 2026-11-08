@@ -58,6 +58,21 @@ public sealed class GameHistoryTests : IDisposable
     }
 
     [Fact]
+    public void ReplaceAll_RewritesTheFileAndKeepsDuplicateProtection()
+    {
+        var history = new GameHistory(File);
+        history.Add(Sample("10:18:45"));
+        var games = history.Load().ToList();
+        games[0].Deck = "Filled later";
+
+        history.ReplaceAll(games);
+
+        Assert.Equal("Filled later", Assert.Single(new GameHistory(File).Load()).Deck);
+        Assert.False(history.Add(Sample("10:18:45")));
+        Assert.False(System.IO.File.Exists(File + ".tmp"));
+    }
+
+    [Fact]
     public void MissingFile_LoadsEmpty()
     {
         Assert.Empty(new GameHistory(File).Load());

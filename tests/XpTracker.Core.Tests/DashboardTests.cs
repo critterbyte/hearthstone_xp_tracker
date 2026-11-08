@@ -82,7 +82,7 @@ public class DashboardTests
         Assert.Equal("Pirate Rogue", decks[0].Deck);
         Assert.Equal(1, decks[0].WinRate);
         Assert.Equal(470, decks[0].XpPerHour, 0);
-        Assert.Contains(decks, d => d.Deck == "(unknown)");
+        Assert.Contains(decks, d => d.Deck == Dashboard.NoDeck);
     }
 
     [Fact]

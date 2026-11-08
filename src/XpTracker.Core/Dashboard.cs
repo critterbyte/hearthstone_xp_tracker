@@ -93,6 +93,9 @@ public sealed class DayStats
 /// </summary>
 public static class Dashboard
 {
+    /// <summary>Shown for games without a deck name (HDT did not record the game).</summary>
+    public const string NoDeck = "No deck recorded";
+
     public static DateTime PeriodStart(DashboardPeriod period, DateTime now) => period switch
     {
         DashboardPeriod.Today => now.Date,
@@ -123,7 +126,7 @@ public static class Dashboard
     }
 
     public static IReadOnlyList<DeckStats> Decks(IEnumerable<GameRecord> games) =>
-        games.GroupBy(g => g.Deck.Length > 0 ? g.Deck : "(unknown)")
+        games.GroupBy(g => g.Deck.Length > 0 ? g.Deck : NoDeck)
             .Select(group => new DeckStats
             {
                 Deck = group.Key,

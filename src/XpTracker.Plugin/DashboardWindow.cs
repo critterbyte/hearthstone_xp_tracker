@@ -38,11 +38,12 @@ internal sealed class DashboardWindow : Window
     private readonly CartesianChart _rateChart = CreateChart("XP per hour");
     private DashboardPeriod _period = DashboardPeriod.Today;
 
-    public DashboardWindow(GameHistory history, string historyPath, Func<string?> currentSession)
+    public DashboardWindow(GameHistory history, string historyPath, Func<string?> currentSession, Func<IReadOnlyList<DeckInfo>>? hdtDecks = null)
     {
         _history = history;
         _historyPath = historyPath;
         _currentSession = currentSession;
+        FillMissingDecks(hdtDecks);
 
         Title = "Hearthstone XP Tracker";
         Width = 960;
@@ -112,6 +113,28 @@ internal sealed class DashboardWindow : Window
         _xpChart.AxisX[0].Labels = labels;
         _rateChart.Series = new SeriesCollection { new LineSeries { Title = "XP per hour", Values = new ChartValues<double>(days.Select(d => Math.Round(d.XpPerHour))), Stroke = Accent, Fill = Brushes.Transparent } };
         _rateChart.AxisX[0].Labels = labels;
+    }
+
+    // Games stored without a deck (for example imported from logs) get deck and classes from HDT's statistics.
+    private void FillMissingDecks(Func<IReadOnlyList<DeckInfo>>? hdtDecks)
+    {
+        if (hdtDecks is null)
+        {
+            return;
+        }
+
+        try
+        {
+            var games = _history.Load().ToList();
+            if (games.Any(g => g.Deck.Length == 0) && DeckMatcher.FillMissing(games, hdtDecks()) > 0)
+            {
+                _history.ReplaceAll(games);
+            }
+        }
+        catch (IOException)
+        {
+            // The history stays as it is; the next opening tries again.
+        }
     }
 
     private FrameworkElement Toolbar()

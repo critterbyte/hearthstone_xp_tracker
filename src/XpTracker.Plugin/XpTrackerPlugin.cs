@@ -125,7 +125,7 @@ public class XpTrackerPlugin : IPlugin
     {
         if (_dashboard is null)
         {
-            _dashboard = new DashboardWindow(_history, HistoryPath, () => _tail?.CurrentSession);
+            _dashboard = new DashboardWindow(_history, HistoryPath, () => _tail?.CurrentSession, HdtDecks.All);
             _dashboard.Closed += (_, _) => _dashboard = null;
             _dashboard.Show();
         }
@@ -147,10 +147,16 @@ public class XpTrackerPlugin : IPlugin
         var record = GameRecord.From(game);
         if (DateTime.Now - game.End < RecentGame)
         {
-            record.Deck = DeckList.Instance.ActiveDeck?.Name ?? string.Empty;
+            record.Deck = HdtDecks.Current();
             // OriginalClass: hero class at the start of the game (CurrentClass changes with hero cards).
             record.PlayerClass = HdtCore.Game.Player?.OriginalClass ?? string.Empty;
             record.OpponentClass = HdtCore.Game.Opponent?.OriginalClass ?? string.Empty;
+        }
+
+        if (record.Deck.Length == 0)
+        {
+            // Older game read again from the log, or no deck selected: look it up in HDT's statistics.
+            DeckMatcher.FillMissing(new[] { record }, HdtDecks.All());
         }
 
         try
