@@ -39,9 +39,9 @@ Ranges that fit every measured game:
 |---|---|
 | Own turn with at least one played option (card, attack, hero power), even if the turn timer runs out | yes |
 | Own turn without any option, ended by clicking "End Turn" | yes |
-| Own turn without any option and without clicking "End Turn" (timer runs out) | **no**, and the following opponent turn does not count either |
+| Own turn without any option and without clicking "End Turn" (timer runs out); other clicks such as touching a card do not make the turn active | **no**, and the following opponent turn does not count either |
 | Own turn without any option in which the game ends (for example the opponent concedes) | yes |
-| Opponent turns, including turns the opponent lets run out | yes |
+| Opponent turns, including turns the opponent lets run out with or without actions | yes |
 | Mulligan | no |
 
 When a turn ends by timeout without any action, the server sets that player's next turn limit to 10 seconds (`TAG_CHANGE ... tag=TIMEOUT value=10`). This marker identifies the excluded turns without having to know about clicks.
@@ -51,6 +51,8 @@ When a turn ends by timeout without any action, the server sets that player's ne
 - Conceding (own turn or opponent turn)
 - Dying during your own turn
 - The opponent conceding or disconnecting
+- The opponent idling: a 48-second opponent turn without any action (marked AFK by the server) still counted fully; the game matched 15 XP only with that time included
+- A Rewind card resetting the game
 
 ## Log markers used
 
@@ -68,7 +70,6 @@ Timestamps in the log have seven decimal places (100-nanosecond ticks). Truncati
 ## Open questions
 
 - Is XP time really capped at 30 minutes, and does the cap include the mulligan?
-- Does a turn the opponent lets run out without any action reduce your XP time? The expectation is that it does not.
-- Is there a minimum game length for XP? A game that ended after 23 seconds without an own turn showed no XP.
+- Is there a minimum game length for XP? A game that ended after 23 seconds without an own turn showed no XP, a game of 1:55 with one own turn did.
 - Does the Tavern Pass XP boost multiply the rates?
 - Arena and Battlegrounds have not been measured.
