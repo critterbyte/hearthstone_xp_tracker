@@ -23,6 +23,25 @@ public class XpRatesTests
         Assert.Equal(XpRates.ExpectedXp(XpRates.MaxXpSeconds, XpRates.RankedWin), XpRates.ExpectedXp(2400, XpRates.RankedWin));
     }
 
+    [Theory]
+    [InlineData(GameMode.Ranked, GameResult.Win, XpRates.RankedWin)]
+    [InlineData(GameMode.Ranked, GameResult.Loss, XpRates.RankedLoss)]
+    [InlineData(GameMode.Casual, GameResult.Win, XpRates.CasualWin)]
+    [InlineData(GameMode.TavernBrawl, GameResult.Loss, XpRates.CasualLoss)]
+    public void RateFor_ReturnsMeasuredRates(GameMode mode, GameResult result, double expected)
+    {
+        Assert.Equal(expected, XpRates.RateFor(mode, result));
+    }
+
+    [Theory]
+    [InlineData(GameMode.Other, GameResult.Win)]
+    [InlineData(GameMode.Ranked, GameResult.Tie)]
+    [InlineData(GameMode.Ranked, GameResult.Unknown)]
+    public void RateFor_ReturnsNullWhenNotMeasured(GameMode mode, GameResult result)
+    {
+        Assert.Null(XpRates.RateFor(mode, result));
+    }
+
     [Fact]
     public void ExpectedXp_IsZeroForNegativeTime()
     {
