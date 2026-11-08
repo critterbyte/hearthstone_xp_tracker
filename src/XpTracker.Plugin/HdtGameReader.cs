@@ -23,7 +23,8 @@ internal static class HdtGameReader
         var player = game.PlayerEntity;
         if (gameEntity is null || player is null)
         {
-            return GameSample.NoGame;
+            // A Rewind (GAME_RESET) recreates the player entities; do not mistake that for the end of the game.
+            return GameSample.Unavailable;
         }
 
         var phase = PhaseOf((Step)gameEntity.GetTag(GameTag.STEP), (State)gameEntity.GetTag(GameTag.STATE));

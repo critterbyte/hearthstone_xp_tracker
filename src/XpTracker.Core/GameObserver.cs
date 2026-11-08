@@ -22,6 +22,9 @@ public sealed class GameObserver
     {
         switch (sample.Phase)
         {
+            case GamePhase.Unavailable:
+                return;
+
             case GamePhase.None:
                 // Back in the menu before the end was seen: close the game with what is known.
                 if (Clock is { HasStarted: true, IsOver: false })

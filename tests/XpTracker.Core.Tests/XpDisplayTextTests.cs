@@ -12,7 +12,7 @@ public class XpDisplayTextTests
 
         var lines = XpDisplayText.For(observer, At("10:06:12"));
 
-        Assert.Equal(new[] { "XP time 6:12", "Win 49 XP", "Loss 35 XP" }, lines);
+        Assert.Equal(new[] { "XP time 6:12", "If win: +49 XP", "If loss: +35 XP" }, lines);
     }
 
     [Fact]
@@ -36,7 +36,7 @@ public class XpDisplayTextTests
 
         var lines = XpDisplayText.For(observer, At("10:20:00"));
 
-        Assert.Equal(new[] { "XP time 17:17", "Game 17:57 incl. mulligan", "Earned 97 XP" }, lines);
+        Assert.Equal(new[] { "Last game: Win", "XP time 17:17", "Total time 17:57", "+97 XP" }, lines);
     }
 
     [Fact]
@@ -46,7 +46,7 @@ public class XpDisplayTextTests
 
         var lines = XpDisplayText.For(observer, At("10:35:00"));
 
-        Assert.Equal(new[] { "XP time 30:00 (max)", "Win 235 XP", "Loss 168 XP" }, lines);
+        Assert.Equal(new[] { "XP time 30:00 (max)", "If win: +235 XP", "If loss: +168 XP" }, lines);
     }
 
     [Fact]

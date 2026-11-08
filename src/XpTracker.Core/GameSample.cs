@@ -2,8 +2,13 @@ namespace XpTracker.Core;
 
 public enum GamePhase
 {
-    /// <summary>No game, or the game is still being set up.</summary>
+    /// <summary>No game (menu), or the game is still being set up.</summary>
     None,
+
+    /// <summary>
+    /// In a game, but the state cannot be read right now, for example while a Rewind recreates the player entities.
+    /// </summary>
+    Unavailable,
     Mulligan,
     Turns,
     Over,
@@ -36,4 +41,6 @@ public sealed class GameSample
     public GameMode Mode { get; }
 
     public static GameSample NoGame { get; } = new(GamePhase.None, null, 0, GameResult.Unknown, GameMode.Other);
+
+    public static GameSample Unavailable { get; } = new(GamePhase.Unavailable, null, 0, GameResult.Unknown, GameMode.Other);
 }

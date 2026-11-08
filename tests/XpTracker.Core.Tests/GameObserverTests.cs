@@ -68,6 +68,31 @@ public class GameObserverTests
     }
 
     [Fact]
+    public void Rewind_WithBrieflyMissingPlayerEntities_KeepsTheSameGame()
+    {
+        // Measured game: the opponent used a Rewind card during turn 10; the XP time ran on.
+        var observer = new GameObserver();
+        Feed(observer, GameMode.Ranked,
+            ("11:41:54", GamePhase.Mulligan, P, 45),
+            ("11:42:22", GamePhase.Turns, P, 45),
+            ("11:43:10", GamePhase.Turns, O, 45),
+            ("11:49:36", GamePhase.Turns, O, 75));
+        var clock = observer.Clock;
+
+        observer.Update(GameSample.Unavailable, At("11:50:00"));
+        Feed(observer, GameMode.Ranked,
+            ("11:50:01", GamePhase.Turns, O, 75),
+            ("11:50:26", GamePhase.Turns, P, 75));
+        observer.Update(Sample(GamePhase.Over, P, 75, GameResult.Win, GameMode.Ranked), At("11:50:30"));
+
+        Assert.Same(clock, observer.Clock);
+        var snapshot = observer.Clock!.GetSnapshot(At("11:55:00"));
+        Assert.Equal(488, snapshot.XpSeconds, 3);
+        Assert.Equal(516, snapshot.WithMulliganSeconds, 3);
+        Assert.Equal(64, snapshot.ExpectedXp(XpRates.RankedWin));
+    }
+
+    [Fact]
     public void CurrentPlayerDuringMulligan_DoesNotStartTheClock()
     {
         var observer = new GameObserver();

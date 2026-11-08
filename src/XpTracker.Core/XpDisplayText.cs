@@ -5,7 +5,7 @@ using System.Globalization;
 namespace XpTracker.Core;
 
 /// <summary>
-/// The lines shown on the overlay: live during a game, a summary after it.
+/// The lines shown on the overlay: live during a game, a summary of the last game after it.
 /// </summary>
 public static class XpDisplayText
 {
@@ -27,17 +27,18 @@ public static class XpDisplayText
             return new[]
             {
                 xpTime,
-                Format("Win {0} XP", snapshot.ExpectedXp(winRate.Value)),
-                Format("Loss {0} XP", snapshot.ExpectedXp(lossRate.Value)),
+                Format("If win: +{0} XP", snapshot.ExpectedXp(winRate.Value)),
+                Format("If loss: +{0} XP", snapshot.ExpectedXp(lossRate.Value)),
             };
         }
 
         var rate = XpRates.RateFor(observer.Mode, clock.Result);
         return new[]
         {
+            clock.Result is GameResult.Unknown ? "Last game" : "Last game: " + clock.Result,
             xpTime,
-            "Game " + TimeFormat.MinutesSeconds(snapshot.WithMulliganSeconds) + " incl. mulligan",
-            rate is null ? "XP unknown" : Format("Earned {0} XP", snapshot.ExpectedXp(rate.Value)),
+            "Total time " + TimeFormat.MinutesSeconds(snapshot.WithMulliganSeconds),
+            rate is null ? "XP unknown" : Format("+{0} XP", snapshot.ExpectedXp(rate.Value)),
         };
     }
 
