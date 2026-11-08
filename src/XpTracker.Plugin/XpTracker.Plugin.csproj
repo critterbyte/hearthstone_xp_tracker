@@ -24,6 +24,10 @@
       <HintPath>$(HdtDir)\HearthstoneDeckTracker.exe</HintPath>
       <Private>false</Private>
     </Reference>
+    <Reference Include="HearthDb">
+      <HintPath>$(HdtDir)\HearthDb.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>
