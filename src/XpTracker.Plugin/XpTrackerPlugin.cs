@@ -27,7 +27,7 @@ public class XpTrackerPlugin : IPlugin
     private XpOverlay? _overlay;
     private PowerLogTail? _tail;
     private CancellationTokenSource? _stop;
-    private IReadOnlyList<string> _shownLines = Array.Empty<string>();
+    private string _shownKey = string.Empty;
     private bool _enabled;
 
     public string Name => "Hearthstone XP Tracker";
@@ -82,9 +82,11 @@ public class XpTrackerPlugin : IPlugin
 
         var now = DateTime.Now;
         var lines = _tail.Read(t => XpDisplayText.For(t?.Clock, t?.Mode ?? GameMode.Other, now));
-        if (!lines.SequenceEqual(_shownLines))
+        // The text changes at most once per second; only touch the visual tree when it does.
+        var key = string.Join("\n", lines.Select(l => l + (l.IsXp ? " xp" : string.Empty)));
+        if (key != _shownKey)
         {
-            _shownLines = lines;
+            _shownKey = key;
             _overlay.Show(lines);
         }
 

@@ -21,7 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Overlay lines are drawn as blue tubes with white bold text, in the style of the reward track XP bar.
+- Overlay layout: plain white labels on a dark box, values in blue tubes in the style of the reward track XP bar, XP values with a drawn scroll icon. The summary row for the earned XP is labeled "Earned:".
 
 ### Fixed
 

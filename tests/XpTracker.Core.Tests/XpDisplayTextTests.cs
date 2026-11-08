@@ -12,7 +12,7 @@ public class XpDisplayTextTests
 
         var lines = XpDisplayText.For(clock, GameMode.Ranked, At("10:06:12"));
 
-        Assert.Equal(new[] { "XP time: 6:12", "If win: +49 XP", "If loss: +35 XP" }, lines);
+        Assert.Equal(new[] { "XP time:|6:12|", "If win:|+49|xp", "If loss:|+35|xp" }, Rows(lines));
     }
 
     [Fact]
@@ -24,7 +24,7 @@ public class XpDisplayTextTests
 
         var lines = XpDisplayText.For(clock, GameMode.Ranked, At("10:01:00"));
 
-        Assert.Equal("XP time: 0:00 (paused)", lines[0]);
+        Assert.Equal("XP time:|0:00 (paused)|", Rows(lines)[0]);
     }
 
     [Fact]
@@ -37,7 +37,16 @@ public class XpDisplayTextTests
 
         var lines = XpDisplayText.For(clock, GameMode.TavernBrawl, At("10:20:00"));
 
-        Assert.Equal(new[] { "Last game: Win", "XP time: 17:17", "Total time: 17:57", "+97 XP" }, lines);
+        Assert.Equal(new[] { "Last game:|Win|", "XP time:|17:17|", "Total time:|17:57|", "Earned:|+97|xp" }, Rows(lines));
+    }
+
+    [Fact]
+    public void FinishedGame_WithUnmeasuredResult_ShowsUnknownXp()
+    {
+        var clock = Started("10:00:00");
+        clock.EndGame(At("10:05:00"), GameResult.Tie);
+
+        Assert.Equal("Earned:|unknown|", Rows(XpDisplayText.For(clock, GameMode.Ranked, At("10:06:00")))[3]);
     }
 
     [Fact]
@@ -47,7 +56,7 @@ public class XpDisplayTextTests
 
         var lines = XpDisplayText.For(clock, GameMode.Ranked, At("10:35:00"));
 
-        Assert.Equal(new[] { "XP time: 30:00 (max)", "If win: +235 XP", "If loss: +168 XP" }, lines);
+        Assert.Equal(new[] { "XP time:|30:00 (max)|", "If win:|+235|xp", "If loss:|+168|xp" }, Rows(lines));
     }
 
     [Fact]
@@ -65,6 +74,9 @@ public class XpDisplayTextTests
         Assert.Empty(XpDisplayText.For(clock, GameMode.Ranked, At("10:00:30")));
         Assert.Empty(XpDisplayText.For(null, GameMode.Ranked, At("10:00:30")));
     }
+
+    private static string[] Rows(IReadOnlyList<XpLine> lines) =>
+        lines.Select(l => l.Label + "|" + l.Value + "|" + (l.IsXp ? "xp" : string.Empty)).ToArray();
 
     private static XpClock Started(string time)
     {
