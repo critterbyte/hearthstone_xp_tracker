@@ -36,7 +36,7 @@ public static class XpDisplayText
         {
             clock.Result is GameResult.Unknown ? "Last game" : "Last game: " + clock.Result,
             xpTime,
-            "Total time " + TimeFormat.MinutesSeconds(snapshot.WithMulliganSeconds),
+            "Total time: " + TimeFormat.MinutesSeconds(snapshot.WithMulliganSeconds),
             rate is null ? "XP unknown" : Format("+{0} XP", snapshot.ExpectedXp(rate.Value)),
         };
     }

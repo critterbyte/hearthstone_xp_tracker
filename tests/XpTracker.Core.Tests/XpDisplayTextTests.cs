@@ -37,7 +37,7 @@ public class XpDisplayTextTests
 
         var lines = XpDisplayText.For(clock, GameMode.TavernBrawl, At("10:20:00"));
 
-        Assert.Equal(new[] { "Last game: Win", "XP time: 17:17", "Total time 17:57", "+97 XP" }, lines);
+        Assert.Equal(new[] { "Last game: Win", "XP time: 17:17", "Total time: 17:57", "+97 XP" }, lines);
     }
 
     [Fact]

@@ -25,7 +25,7 @@ The calculation engine is covered by unit tests. The points below need a real ga
 
 ## End of game
 
-- [ ] After the game the summary reads "Last game: Win/Loss", "XP time: m:ss", "Total time m:ss" (including the mulligan) and "+N XP". It is hidden on the victory/defeat screen by HDT and appears in the menu.
+- [ ] After the game the summary reads "Last game: Win/Loss", "XP time: m:ss", "Total time: m:ss" (including the mulligan) and "+N XP". It is hidden on the victory/defeat screen by HDT and appears in the menu.
 - [ ] The earned XP matches the XP shown by the game (win, loss, concede, opponent concedes).
 - [ ] The summary stays visible in the menu and disappears when the next mulligan starts.
 
