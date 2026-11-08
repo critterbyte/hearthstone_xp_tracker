@@ -8,16 +8,27 @@ namespace XpTracker.Core;
 /// </summary>
 public sealed class FinishedGame
 {
-    public FinishedGame(DateTime firstTurn, GameMode mode, XpClock clock)
+    public FinishedGame(string session, DateTime firstTurn, DateTime end, GameMode mode, string format, XpClock clock)
     {
+        Session = session;
         FirstTurn = firstTurn;
+        End = end;
         Mode = mode;
+        Format = format;
         Clock = clock;
     }
 
+    /// <summary>Log session the game was read from (the Hearthstone_yyyy_MM_dd_HH_mm_ss folder name), or empty.</summary>
+    public string Session { get; }
+
     public DateTime FirstTurn { get; }
 
+    public DateTime End { get; }
+
     public GameMode Mode { get; }
+
+    /// <summary>"Wild", "Standard" and so on; empty if the log did not say.</summary>
+    public string Format { get; }
 
     public XpClock Clock { get; }
 }
@@ -37,14 +48,17 @@ public sealed class PowerLogTracker
     private const string UnknownPlayerName = "UNKNOWN HUMAN PLAYER";
 
     private readonly DateTime _sessionDate;
+    private readonly string _session;
     private int _dayOffset;
     private TimeSpan? _lastTimeOfDay;
     private Game? _game;
 
     /// <param name="sessionDate">Date the log file was started; log lines only carry the time of day.</param>
-    public PowerLogTracker(DateTime sessionDate)
+    /// <param name="session">Name of the log session, passed on to finished games.</param>
+    public PowerLogTracker(DateTime sessionDate, string session = "")
     {
         _sessionDate = sessionDate.Date;
+        _session = session;
     }
 
     public event Action<FinishedGame>? GameFinished;
@@ -157,7 +171,7 @@ public sealed class PowerLogTracker
             else if (tag == "STATE" && value == "COMPLETE" && game.Clock.HasStarted && !game.Clock.IsOver)
             {
                 game.Clock.EndGame(time, game.Result);
-                GameFinished?.Invoke(new FinishedGame(game.FirstTurn ?? time, game.Mode, game.Clock));
+                GameFinished?.Invoke(new FinishedGame(_session, game.FirstTurn ?? time, time, game.Mode, game.Format, game.Clock));
             }
 
             return;
@@ -245,6 +259,12 @@ public sealed class PowerLogTracker
                 "GT_TAVERNBRAWL" => GameMode.TavernBrawl,
                 _ => GameMode.Other,
             };
+        }
+        else if (body.StartsWith("FormatType=FT_", StringComparison.Ordinal))
+        {
+            // FT_WILD -> Wild, FT_STANDARD -> Standard
+            var format = body.Substring(14).Trim();
+            _game.Format = format.Length == 0 ? string.Empty : format.Substring(0, 1) + format.Substring(1).ToLowerInvariant();
         }
         else if (body.StartsWith("PlayerID=", StringComparison.Ordinal))
         {
@@ -388,6 +408,8 @@ public sealed class PowerLogTracker
         public XpClock Clock { get; } = new();
 
         public GameMode Mode { get; set; } = GameMode.Other;
+
+        public string Format { get; set; } = string.Empty;
 
         public GameResult Result { get; set; }
 

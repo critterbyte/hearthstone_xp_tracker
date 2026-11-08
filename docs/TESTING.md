@@ -29,6 +29,12 @@ The calculation engine is covered by unit tests. The points below need a real ga
 - [ ] The earned XP matches the XP shown by the game (win, loss, concede, opponent concedes).
 - [ ] The summary stays visible in the menu and disappears when the next mulligan starts.
 
+## Game history
+
+- [ ] After each game a row is added to `%APPDATA%\HearthstoneDeckTracker\XpTracker\hs_games.csv` with the right mode, format, result, times, XP, deck and classes.
+- [ ] Restarting HDT right after a game does not add the same game twice.
+- [ ] Installing a new plugin version keeps the history file.
+
 ## Modes
 
 - [ ] Ranked (Wild and Standard), Casual and Tavern Brawl show values with the matching rates.

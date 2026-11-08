@@ -34,6 +34,9 @@ public sealed class PowerLogTail
         _logsRoot = logsRoot;
     }
 
+    /// <summary>Raised on the polling thread when a game ends in the log.</summary>
+    public event Action<FinishedGame>? GameFinished;
+
     /// <summary>Time the last <see cref="Poll"/> took, for performance checks.</summary>
     public TimeSpan LastPollDuration { get; private set; }
 
@@ -119,7 +122,8 @@ public sealed class PowerLogTail
         {
             _path = path;
             _position = position;
-            _tracker = new PowerLogTracker(SessionDate(path));
+            _tracker = new PowerLogTracker(SessionDate(path), Path.GetFileName(Path.GetDirectoryName(path)) ?? string.Empty);
+            _tracker.GameFinished += game => GameFinished?.Invoke(game);
         }
     }
 

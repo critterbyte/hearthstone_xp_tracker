@@ -11,7 +11,7 @@ public class PowerLogTrackerTests
     public void RankedWin_WithAfkFirstTurn_MatchesTheMeasuredGame()
     {
         var finished = new List<FinishedGame>();
-        var tracker = new PowerLogTracker(Day);
+        var tracker = new PowerLogTracker(Day, "Hearthstone_2026_11_08_09_10_51");
         tracker.GameFinished += finished.Add;
 
         Feed(tracker, GameStart("10:17:40", "GT_RANKED", localStarts: true));
@@ -41,8 +41,12 @@ public class PowerLogTrackerTests
         var game = Assert.Single(finished);
         var snapshot = game.Clock.GetSnapshot(At("10:30:00"));
         Assert.Equal(GameMode.Ranked, game.Mode);
+        Assert.Equal("Wild", game.Format);
+        Assert.Equal("Hearthstone_2026_11_08_09_10_51", game.Session);
         Assert.Equal(GameResult.Win, game.Clock.Result);
         Assert.Equal(At("10:18:45"), game.FirstTurn);
+        Assert.Equal(At("10:25:37"), game.End);
+        Assert.Equal(46, GameRecord.From(game).Xp);
         Assert.Equal(1, game.Clock.AfkTurns);
         Assert.Equal(350, snapshot.XpSeconds, 3);
         Assert.Equal(412, snapshot.PlaySeconds, 3);
