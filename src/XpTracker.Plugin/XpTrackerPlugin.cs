@@ -24,6 +24,13 @@ public class XpTrackerPlugin : IPlugin
 {
     private static readonly TimeSpan PollInterval = TimeSpan.FromMilliseconds(250);
 
+    // Deck and classes are taken from HDT only for games that just ended; replays of older games leave them empty.
+    private static readonly TimeSpan RecentGame = TimeSpan.FromMinutes(2);
+
+    // Kept outside the plugin folder so that installing a new plugin version does not touch it.
+    private static readonly string HistoryPath = Path.Combine(Config.AppDataPath, "XpTracker", "games.csv");
+
+    private readonly GameHistory _history = new(HistoryPath);
     private XpOverlay? _overlay;
     private PowerLogTail? _tail;
     private CancellationTokenSource? _stop;
@@ -48,6 +55,7 @@ public class XpTrackerPlugin : IPlugin
         _overlay = new XpOverlay();
         HdtCore.OverlayCanvas.Children.Add(_overlay);
         _tail = new PowerLogTail(FindLogsFolder);
+        _tail.GameFinished += OnGameFinished;
         _stop = new CancellationTokenSource();
         var token = _stop.Token;
         var tail = _tail;
@@ -60,7 +68,11 @@ public class XpTrackerPlugin : IPlugin
         _enabled = false;
         _stop?.Cancel();
         _stop = null;
-        _tail = null;
+        if (_tail is not null)
+        {
+            _tail.GameFinished -= OnGameFinished;
+            _tail = null;
+        }
         if (_overlay is not null)
         {
             HdtCore.OverlayCanvas.Children.Remove(_overlay);
@@ -92,6 +104,36 @@ public class XpTrackerPlugin : IPlugin
 
         var canvas = HdtCore.OverlayCanvas;
         _overlay.Place(canvas.ActualWidth, canvas.ActualHeight);
+    }
+
+    // Raised on the polling thread; HDT's game state is read on the UI thread.
+    private void OnGameFinished(FinishedGame game)
+    {
+        System.Windows.Application.Current?.Dispatcher.BeginInvoke(new Action(() => SaveGame(game)));
+    }
+
+    private void SaveGame(FinishedGame game)
+    {
+        var record = GameRecord.From(game);
+        if (DateTime.Now - game.End < RecentGame)
+        {
+            record.Deck = DeckList.Instance.ActiveDeck?.Name ?? string.Empty;
+            // OriginalClass: hero class at the start of the game (CurrentClass changes with hero cards).
+            record.PlayerClass = HdtCore.Game.Player?.OriginalClass ?? string.Empty;
+            record.OpponentClass = HdtCore.Game.Opponent?.OriginalClass ?? string.Empty;
+        }
+
+        try
+        {
+            _history.Add(record);
+        }
+        catch (IOException)
+        {
+            // The file may be open in another program; the game is missing from the history then.
+        }
+        catch (UnauthorizedAccessException)
+        {
+        }
     }
 
     private static async Task PollLoop(PowerLogTail tail, CancellationToken token)
