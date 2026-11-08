@@ -21,6 +21,14 @@ Reading costs about 40 ms once when the plugin starts and well under a milliseco
 
 Every finished game is added to a local history file, `%APPDATA%\HearthstoneDeckTracker\XpTracker\hs_games.csv`, which a planned dashboard will use. The file stays on your computer; nothing is uploaded.
 
+## Update check
+
+When HDT starts, the plugin asks GitHub once whether a newer release exists (`api.github.com/repos/critterbyte/hearthstone_xp_tracker/releases`). The request sends only a User-Agent with the plugin name and version, for example `HearthstoneXpTracker/0.1.0`; as with any web request, GitHub sees your IP address. No game data is sent.
+
+If a newer version exists, the overlay shows "Update available:" with the version number while no game is running, and the dashboard shows a link to the download page. Nothing is downloaded or installed automatically.
+
+To turn the check off, clear "Check for updates when HDT starts" in the dashboard. The setting is stored in `%APPDATA%\HearthstoneDeckTracker\XpTracker\settings.ini`.
+
 ## How XP is calculated
 
 Hearthstone does not log reward track XP, so the formula was measured game by game. In short:

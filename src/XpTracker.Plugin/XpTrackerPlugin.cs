@@ -29,8 +29,11 @@ public class XpTrackerPlugin : IPlugin
 
     // Kept outside the plugin folder so that installing a new plugin version does not touch it.
     private static readonly string HistoryPath = Path.Combine(Config.AppDataPath, "XpTracker", "hs_games.csv");
+    private static readonly string SettingsPath = Path.Combine(Config.AppDataPath, "XpTracker", "settings.ini");
 
     private readonly GameHistory _history = new(HistoryPath);
+    private XpTrackerSettings _settings = new();
+    private ReleaseInfo? _update;
     private MenuItem? _menuItem;
     private DashboardWindow? _dashboard;
     private XpOverlay? _overlay;
@@ -75,11 +78,18 @@ public class XpTrackerPlugin : IPlugin
         var tail = _tail;
         Task.Run(() => PollLoop(tail, token), token);
         _enabled = true;
+
+        _settings = XpTrackerSettings.Load(SettingsPath);
+        if (_settings.CheckForUpdates)
+        {
+            StartUpdateCheck();
+        }
     }
 
     public void OnUnload()
     {
         _enabled = false;
+        _update = null;
         _stop?.Cancel();
         _stop = null;
         if (_tail is not null)
@@ -108,7 +118,11 @@ public class XpTrackerPlugin : IPlugin
         }
 
         var now = DateTime.Now;
-        var lines = _tail.Read(t => XpDisplayText.For(t?.Clock, t?.Mode ?? GameMode.Other, now));
+        var update = _update?.VersionText;
+        var lines = _tail.Read(t => XpDisplayText.WithUpdate(
+            XpDisplayText.For(t?.Clock, t?.Mode ?? GameMode.Other, now),
+            gameRunning: t?.Clock is { HasStarted: true, IsOver: false },
+            update));
         // The text changes at most once per second; only touch the visual tree when it does.
         var key = string.Join("\n", lines.Select(l => l + (l.IsXp ? " xp" : string.Empty)));
         if (key != _shownKey)
@@ -125,7 +139,8 @@ public class XpTrackerPlugin : IPlugin
     {
         if (_dashboard is null)
         {
-            _dashboard = new DashboardWindow(_history, HistoryPath, () => _tail?.CurrentSession, HdtDecks.All);
+            _dashboard = new DashboardWindow(_history, HistoryPath, () => _tail?.CurrentSession, HdtDecks.All, _settings.CheckForUpdates, SetCheckForUpdates);
+            _dashboard.ShowUpdate(_update);
             _dashboard.Closed += (_, _) => _dashboard = null;
             _dashboard.Show();
         }
@@ -133,6 +148,66 @@ public class XpTrackerPlugin : IPlugin
         {
             _dashboard.Refresh();
             _dashboard.Activate();
+        }
+    }
+
+    // One request per HDT start (or when the check is switched on again); runs in the background.
+    private void StartUpdateCheck()
+    {
+        if (_stop is null)
+        {
+            return;
+        }
+
+        var token = _stop.Token;
+        var installed = Version;
+        Task.Run(
+            async () =>
+            {
+                var update = await UpdateChecker.FindNewerAsync(installed, token).ConfigureAwait(false);
+                if (update is not null && !token.IsCancellationRequested)
+                {
+                    System.Windows.Application.Current?.Dispatcher.BeginInvoke(new Action(() => ShowUpdate(update)));
+                }
+            },
+            token);
+    }
+
+    private void ShowUpdate(ReleaseInfo update)
+    {
+        if (!_enabled || !_settings.CheckForUpdates)
+        {
+            return;
+        }
+
+        _update = update;
+        _dashboard?.ShowUpdate(update);
+    }
+
+    // Called from the dashboard check box.
+    private void SetCheckForUpdates(bool check)
+    {
+        _settings.CheckForUpdates = check;
+        try
+        {
+            _settings.Save(SettingsPath);
+        }
+        catch (IOException)
+        {
+            // The setting applies until HDT is closed; the next start reads the old file.
+        }
+        catch (UnauthorizedAccessException)
+        {
+        }
+
+        if (check)
+        {
+            StartUpdateCheck();
+        }
+        else
+        {
+            _update = null;
+            _dashboard?.ShowUpdate(null);
         }
     }
 
