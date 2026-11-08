@@ -37,6 +37,16 @@ public sealed class PowerLogTail
     /// <summary>Raised on the polling thread when a game ends in the log.</summary>
     public event Action<FinishedGame>? GameFinished;
 
+    /// <summary>Name of the log session being read (Hearthstone_yyyy_MM_dd_HH_mm_ss), or null before the first read.</summary>
+    public string? CurrentSession
+    {
+        get
+        {
+            var path = _path;
+            return path is null ? null : Path.GetFileName(Path.GetDirectoryName(path));
+        }
+    }
+
     /// <summary>Time the last <see cref="Poll"/> took, for performance checks.</summary>
     public TimeSpan LastPollDuration { get; private set; }
 

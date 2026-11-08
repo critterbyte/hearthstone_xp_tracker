@@ -59,6 +59,42 @@ public sealed class GameHistory
         }
     }
 
+    /// <summary>Rewrites the whole file, for example after deck names were filled in.</summary>
+    /// <remarks>Writes a temporary file first and swaps it in, so a failure never leaves a half-written history.</remarks>
+    public void ReplaceAll(IEnumerable<GameRecord> records)
+    {
+        lock (_sync)
+        {
+            var list = records.ToList();
+            var directory = Path.GetDirectoryName(_path);
+            if (!string.IsNullOrEmpty(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+
+            var temp = _path + ".tmp";
+            using (var writer = new StreamWriter(temp, append: false, new UTF8Encoding(false)))
+            {
+                writer.WriteLine(string.Join(",", Columns));
+                foreach (var record in list)
+                {
+                    writer.WriteLine(ToCsv(record));
+                }
+            }
+
+            if (File.Exists(_path))
+            {
+                File.Replace(temp, _path, null);
+            }
+            else
+            {
+                File.Move(temp, _path);
+            }
+
+            _keys = new HashSet<string>(list.Select(r => r.Key));
+        }
+    }
+
     public IReadOnlyList<GameRecord> Load()
     {
         if (!File.Exists(_path))

@@ -24,6 +24,15 @@
       <HintPath>$(HdtDir)\HearthstoneDeckTracker.exe</HintPath>
       <Private>false</Private>
     </Reference>
+    <!-- Charts for the dashboard; shipped with HDT, so not copied either. -->
+    <Reference Include="LiveCharts">
+      <HintPath>$(HdtDir)\LiveCharts.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="LiveCharts.Wpf">
+      <HintPath>$(HdtDir)\LiveCharts.Wpf.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>
