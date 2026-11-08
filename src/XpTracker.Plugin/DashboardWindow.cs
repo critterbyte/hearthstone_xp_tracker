@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Media;
 using LiveCharts;
 using LiveCharts.Wpf;
@@ -36,13 +37,27 @@ internal sealed class DashboardWindow : Window
     private readonly DataGrid _games = CreateGrid();
     private readonly CartesianChart _xpChart = CreateChart("XP");
     private readonly CartesianChart _rateChart = CreateChart("XP per hour");
+    private readonly bool _checkForUpdates;
+    private readonly Action<bool>? _setCheckForUpdates;
+    private readonly TextBlock _updateText = new() { Foreground = Brushes.White, VerticalAlignment = VerticalAlignment.Center, TextWrapping = TextWrapping.Wrap };
+    private readonly Border _updateBar;
+    private string _updateUrl = UpdateCheck.ReleasesPage;
     private DashboardPeriod _period = DashboardPeriod.Today;
 
-    public DashboardWindow(GameHistory history, string historyPath, Func<string?> currentSession, Func<IReadOnlyList<DeckInfo>>? hdtDecks = null)
+    public DashboardWindow(
+        GameHistory history,
+        string historyPath,
+        Func<string?> currentSession,
+        Func<IReadOnlyList<DeckInfo>>? hdtDecks = null,
+        bool checkForUpdates = true,
+        Action<bool>? setCheckForUpdates = null)
     {
         _history = history;
         _historyPath = historyPath;
         _currentSession = currentSession;
+        _checkForUpdates = checkForUpdates;
+        _setCheckForUpdates = setCheckForUpdates;
+        _updateBar = UpdateBar();
         FillMissingDecks(hdtDecks);
 
         Title = "Hearthstone XP Tracker";
@@ -63,6 +78,8 @@ internal sealed class DashboardWindow : Window
         tabs.Items.Add(Tab("Charts", Charts()));
 
         var root = new DockPanel();
+        DockPanel.SetDock(_updateBar, Dock.Top);
+        root.Children.Add(_updateBar);
         var toolbar = Toolbar();
         DockPanel.SetDock(toolbar, Dock.Top);
         root.Children.Add(toolbar);
@@ -70,6 +87,45 @@ internal sealed class DashboardWindow : Window
         Content = root;
 
         Refresh();
+    }
+
+    /// <summary>Shows the hint for a newer release, or hides it when <paramref name="update"/> is null.</summary>
+    public void ShowUpdate(ReleaseInfo? update)
+    {
+        if (update is null)
+        {
+            _updateBar.Visibility = Visibility.Collapsed;
+            return;
+        }
+
+        var installed = typeof(DashboardWindow).Assembly.GetName().Version;
+        _updateText.Text = $"Version {update.VersionText} is available" + (installed is null ? "." : $" (installed: {UpdateCheck.Display(installed)}).");
+        _updateUrl = UpdateCheck.SafeLink(update.Url);
+        _updateBar.Visibility = Visibility.Visible;
+    }
+
+    private Border UpdateBar()
+    {
+        var link = new Hyperlink(new Run("Open the download page")) { Foreground = new SolidColorBrush(Color.FromRgb(0x9C, 0xC8, 0xFF)) };
+        link.Click += (_, _) => Process.Start(new ProcessStartInfo(_updateUrl) { UseShellExecute = true });
+        var linkText = new TextBlock(link) { VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(12, 0, 0, 0) };
+
+        var panel = new DockPanel();
+        DockPanel.SetDock(linkText, Dock.Right);
+        panel.Children.Add(linkText);
+        panel.Children.Add(_updateText);
+
+        return new Border
+        {
+            Background = Frozen(new SolidColorBrush(Color.FromRgb(0x1F, 0x3B, 0x5C))),
+            BorderBrush = Accent,
+            BorderThickness = new Thickness(1),
+            CornerRadius = new CornerRadius(4),
+            Padding = new Thickness(12, 6, 12, 6),
+            Margin = new Thickness(10, 10, 10, 0),
+            Child = panel,
+            Visibility = Visibility.Collapsed,
+        };
     }
 
     public void Refresh()
@@ -152,7 +208,25 @@ internal sealed class DashboardWindow : Window
         bar.Children.Add(Action("Refresh", Refresh));
         bar.Children.Add(Action("Export CSV", Export));
         bar.Children.Add(Action("Open data folder", OpenFolder));
-        return bar;
+
+        var toolbar = new DockPanel();
+        if (_setCheckForUpdates is not null)
+        {
+            var check = new CheckBox
+            {
+                Content = "Check for updates when HDT starts",
+                IsChecked = _checkForUpdates,
+                Foreground = Brushes.White,
+                VerticalAlignment = VerticalAlignment.Center,
+                Margin = new Thickness(0, 10, 10, 10),
+            };
+            check.Click += (_, _) => _setCheckForUpdates(check.IsChecked == true);
+            DockPanel.SetDock(check, Dock.Right);
+            toolbar.Children.Add(check);
+        }
+
+        toolbar.Children.Add(bar);
+        return toolbar;
     }
 
     private void SelectPeriod(DashboardPeriod period)

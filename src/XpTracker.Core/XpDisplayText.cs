@@ -62,6 +62,20 @@ public static class XpDisplayText
         };
     }
 
+    /// <summary>
+    /// Adds an "Update available:" row when a newer version exists and no game is running
+    /// (in the menu or under the last game summary); never during a game.
+    /// </summary>
+    public static IReadOnlyList<XpLine> WithUpdate(IReadOnlyList<XpLine> lines, bool gameRunning, string? newVersion)
+    {
+        if (gameRunning || string.IsNullOrEmpty(newVersion))
+        {
+            return lines;
+        }
+
+        return new List<XpLine>(lines) { new XpLine("Update available:", newVersion!) };
+    }
+
     private static string Suffix(XpSnapshot snapshot, bool isOver)
     {
         if (snapshot.XpSeconds >= XpRates.MaxXpSeconds)

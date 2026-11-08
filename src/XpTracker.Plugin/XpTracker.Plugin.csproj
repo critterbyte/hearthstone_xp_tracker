@@ -33,6 +33,12 @@
       <HintPath>$(HdtDir)\LiveCharts.Wpf.dll</HintPath>
       <Private>false</Private>
     </Reference>
+    <!-- JSON reader for the update check; shipped with HDT, so not copied either. -->
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>$(HdtDir)\Newtonsoft.Json.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="System.Net.Http" />
   </ItemGroup>
 
   <ItemGroup>
