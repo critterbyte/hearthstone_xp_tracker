@@ -58,7 +58,7 @@ The dashboard shows a link to the download page. See [INSTALL.md](INSTALL.md#upd
 
 ## Dashboard
 
-Open the dashboard in HDT in one of two ways:
+The dashboard window is called "HS XP Tracker". Open it in HDT in one of two ways:
 
 - the *Plugins* menu → "XP dashboard"
 - *Options → Tracker → Plugins* → the plugin's "XP dashboard" button
@@ -70,6 +70,7 @@ Open the dashboard in HDT in one of two ways:
 | "Today" | Games since midnight |
 | "This week" | Games since Monday, 00:00 |
 | "This season" | Games since the 1st of the month. Ranked seasons in Hearthstone run for a calendar month. |
+| "Last 30 days" | Games of the last 30 days up to now |
 | "All time" | All games in the history |
 | "Refresh" | Read the history again |
 | "Export CSV" | Save a copy of the history file |
@@ -115,7 +116,12 @@ All games of the period, newest first: date, start, mode, result, XP time, total
 
 **Charts**
 
-XP per day and XP per hour per day.
+Two charts for the selected period:
+
+| Chart | Meaning |
+|---|---|
+| "XP per hour" | Running average of XP per hour of XP time, from the start of the period up to each point. "Today" has one point per game; longer periods have one point per day. |
+| "XP over play time" | XP earned so far over the time spent in games, including the mulligan. One point per game. The steeper the line, the faster you earn XP. |
 
 ## Game history file
 

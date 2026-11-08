@@ -27,6 +27,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Dashboard redesigned in Hearthstone-like colors (dark wood, gold, parchment, mana blue) with the title "HS XP Tracker". New period "Last 30 days". Values in mana blue; the selected period is highlighted in blue with a soft glow on hover. The two old charts are replaced by the running XP per hour (per game for today, per day for longer periods) and the XP earned over play time.
+
 - Overlay layout: plain white labels on a dark box, values in blue tubes in the style of the reward track XP bar, XP values with a drawn scroll icon. The summary row for the earned XP is labeled "Earned:".
 
 ### Fixed
