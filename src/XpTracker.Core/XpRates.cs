@@ -17,6 +17,9 @@ public static class XpRates
     // XP time is capped at 30 minutes per game (reported by the community, not yet verified).
     public const double MaxXpSeconds = 1800;
 
+    // Games with less XP time give no XP at all (measured for own concedes: 59.89 s gave 0, 60.78 s gave 6).
+    public const double MinXpSeconds = 60;
+
     /// <summary>
     /// Returns the rate for a mode and result, or null if it has not been measured (other modes, ties).
     /// </summary>
@@ -38,7 +41,12 @@ public static class XpRates
 
     public static int ExpectedXp(double xpSeconds, double rate)
     {
-        var seconds = Math.Min(Math.Max(xpSeconds, 0), MaxXpSeconds);
+        if (xpSeconds < MinXpSeconds)
+        {
+            return 0;
+        }
+
+        var seconds = Math.Min(xpSeconds, MaxXpSeconds);
         return (int)Math.Round(seconds * rate, MidpointRounding.AwayFromZero);
     }
 }

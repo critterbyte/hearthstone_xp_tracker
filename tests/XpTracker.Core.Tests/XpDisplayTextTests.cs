@@ -16,6 +16,16 @@ public class XpDisplayTextTests
     }
 
     [Fact]
+    public void LiveGame_BelowTheMinimumXpTime_ShowsZero()
+    {
+        var clock = Started("10:00:00");
+
+        var lines = XpDisplayText.For(clock, GameMode.Ranked, At("10:00:59"));
+
+        Assert.Equal(new[] { "XP time:|0:59|", "If win:|+0|xp", "If loss:|+0|xp" }, Rows(lines));
+    }
+
+    [Fact]
     public void LiveGame_AfterAnAfkTurn_ShowsPaused()
     {
         var clock = Started("10:00:00");
