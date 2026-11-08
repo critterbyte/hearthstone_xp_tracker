@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/XpTracker.Core/XpTracker.Core.csproj" />
+    <Project Path="src/XpTracker.Plugin/XpTracker.Plugin.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/XpTracker.Core.Tests/XpTracker.Core.Tests.csproj" />
+  </Folder>
+</Solution>

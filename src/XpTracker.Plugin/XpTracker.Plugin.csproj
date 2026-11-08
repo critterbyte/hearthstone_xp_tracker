@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <AssemblyName>HearthstoneXpTracker</AssemblyName>
+    <RootNamespace>XpTracker.Plugin</RootNamespace>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+
+  <!--
+    HdtDir: the Hearthstone Deck Tracker folder that contains HearthstoneDeckTracker.exe
+    (for example %LOCALAPPDATA%\HearthstoneDeckTracker\app-1.59.8).
+    build.ps1 finds the newest one; otherwise pass -p:HdtDir=<path>.
+    HDT files are referenced only, never copied or distributed.
+  -->
+  <Target Name="CheckHdtDir" BeforeTargets="ResolveAssemblyReferences">
+    <Error Condition="'$(HdtDir)' == '' Or !Exists('$(HdtDir)\HearthstoneDeckTracker.exe')"
+           Text="HearthstoneDeckTracker.exe not found. Run build.ps1 or pass -p:HdtDir=&lt;HDT app folder&gt;." />
+  </Target>
+
+  <ItemGroup>
+    <Reference Include="HearthstoneDeckTracker">
+      <HintPath>$(HdtDir)\HearthstoneDeckTracker.exe</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\XpTracker.Core\XpTracker.Core.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,19 @@
+name: build
+
+# Builds and tests the calculation engine. The plugin itself needs a local
+# Hearthstone Deck Tracker installation and is built with build.ps1.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  core:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+      - name: Test
+        run: dotnet test tests/XpTracker.Core.Tests -c Release

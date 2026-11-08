@@ -1,0 +1,15 @@
+<Project>
+
+  <!-- Single source of truth for the version. Bump here, then tag vX.Y.Z. -->
+  <PropertyGroup>
+    <Version>0.1.0</Version>
+    <Product>Hearthstone XP Tracker</Product>
+    <Authors>critterbyte</Authors>
+    <Copyright>Copyright (c) 2026 critterbyte</Copyright>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+
+</Project>
