@@ -15,3 +15,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Local build script (`build.ps1`) and CI workflow for the calculation engine.
 - `XpClock`: tracks XP time, play time and time including the mulligan from turn events, live and after the game. AFK turns and the opponent turn that follows them are excluded.
 - `XpRates.RateFor`: rate lookup by game mode and result.
+- `GameObserver`: turns periodic game state samples into clock events; detects AFK turns from the player's turn limit (10 seconds).
+- Live overlay above the Hearthstone settings button: XP time and expected XP for a win and a loss; after the game a summary with XP time, game time including the mulligan and the XP earned.
