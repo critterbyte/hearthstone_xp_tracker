@@ -11,7 +11,33 @@ public enum DashboardPeriod
 
     /// <summary>The ranked season, which runs for a calendar month.</summary>
     Season,
+
+    /// <summary>The last 30 days up to now.</summary>
+    Last30Days,
     All,
+}
+
+/// <summary>
+/// One point of the XP speed curve: the running XP per hour from the start of the period up to <see cref="Time"/>.
+/// </summary>
+public sealed class SpeedPoint
+{
+    /// <summary>End of the game (per-game curve) or the day (per-day curve).</summary>
+    public DateTime Time { get; set; }
+
+    /// <summary>XP per hour of XP time.</summary>
+    public double XpPerHour { get; set; }
+}
+
+/// <summary>
+/// One point of the XP progress curve: XP earned so far after <see cref="PlaySeconds"/> of play time.
+/// </summary>
+public sealed class ProgressPoint
+{
+    /// <summary>Play time including the mulligan, summed over the games so far.</summary>
+    public double PlaySeconds { get; set; }
+
+    public int Xp { get; set; }
 }
 
 public sealed class SummaryStats
@@ -101,8 +127,68 @@ public static class Dashboard
         DashboardPeriod.Today => now.Date,
         DashboardPeriod.Week => now.Date.AddDays(-(((int)now.DayOfWeek + 6) % 7)),
         DashboardPeriod.Season => new DateTime(now.Year, now.Month, 1),
+        DashboardPeriod.Last30Days => now.AddDays(-30),
         _ => DateTime.MinValue,
     };
+
+    /// <summary>
+    /// The XP speed curve: running XP per hour from the start of the period, one point per game for today
+    /// and one point per day for longer periods.
+    /// </summary>
+    /// <param name="games">Games of the period, ordered by start.</param>
+    public static IReadOnlyList<SpeedPoint> SpeedCurve(IReadOnlyList<GameRecord> games, DashboardPeriod period)
+    {
+        var points = new List<SpeedPoint>();
+        if (period == DashboardPeriod.Today)
+        {
+            for (var i = 0; i < games.Count; i++)
+            {
+                points.Add(Speed(games.Take(i + 1), games[i].End));
+            }
+
+            return points;
+        }
+
+        foreach (var day in games.Select(g => g.Start.Date).Distinct().OrderBy(d => d))
+        {
+            points.Add(Speed(games.Where(g => g.Start.Date <= day), day));
+        }
+
+        return points;
+    }
+
+    /// <summary>
+    /// The XP progress curve: XP earned so far over the play time so far, starting at zero, one point per game.
+    /// </summary>
+    /// <param name="games">Games of the period, ordered by start.</param>
+    public static IReadOnlyList<ProgressPoint> ProgressCurve(IReadOnlyList<GameRecord> games)
+    {
+        var points = new List<ProgressPoint>();
+        if (games.Count == 0)
+        {
+            return points;
+        }
+
+        points.Add(new ProgressPoint());
+        double seconds = 0;
+        var xp = 0;
+        foreach (var game in games)
+        {
+            seconds += game.WithMulliganSeconds;
+            xp += game.Xp ?? 0;
+            points.Add(new ProgressPoint { PlaySeconds = seconds, Xp = xp });
+        }
+
+        return points;
+    }
+
+    private static SpeedPoint Speed(IEnumerable<GameRecord> games, DateTime time)
+    {
+        var list = games.ToList();
+        var xp = list.Sum(g => g.Xp ?? 0);
+        var xpSeconds = list.Sum(g => g.XpSeconds);
+        return new SpeedPoint { Time = time, XpPerHour = xpSeconds > 0 ? xp / (xpSeconds / 3600) : 0 };
+    }
 
     public static IReadOnlyList<GameRecord> InPeriod(IEnumerable<GameRecord> games, DashboardPeriod period, DateTime now)
     {

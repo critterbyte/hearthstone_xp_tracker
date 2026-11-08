@@ -9,23 +9,36 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Markup;
 using System.Windows.Media;
+using System.Windows.Media.Effects;
 using LiveCharts;
+using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 using XpTracker.Core;
 
 namespace XpTracker.Plugin;
 
 /// <summary>
-/// XP dashboard opened from the HDT plugins menu: overview, decks, lost XP, game list and charts for a period.
+/// XP dashboard opened from the HDT plugins menu: overview, decks, lost XP, game list and the XP speed curve for a period.
 /// </summary>
+/// <remarks>
+/// Colors in the style of the Hearthstone client (dark wood, gold, parchment, mana blue); no game artwork or fonts are used.
+/// </remarks>
 internal sealed class DashboardWindow : Window
 {
-    private static readonly Brush Back = Frozen(new SolidColorBrush(Color.FromRgb(0x1E, 0x1F, 0x26)));
-    private static readonly Brush Panel = Frozen(new SolidColorBrush(Color.FromRgb(0x2A, 0x2C, 0x36)));
-    private static readonly Brush PanelAlt = Frozen(new SolidColorBrush(Color.FromRgb(0x32, 0x34, 0x40)));
-    private static readonly Brush Accent = Frozen(new SolidColorBrush(Color.FromRgb(0x5A, 0x9C, 0xE8)));
-    private static readonly Brush Muted = Frozen(new SolidColorBrush(Color.FromRgb(0xA8, 0xAD, 0xBD)));
+    private static readonly Brush Back = Solid(0x22, 0x17, 0x0F);
+    private static readonly Brush Panel = Solid(0x3A, 0x27, 0x16);
+    private static readonly Brush PanelAlt = Solid(0x4A, 0x32, 0x1D);
+    private static readonly Brush Gold = Solid(0xC8, 0xA0, 0x50);
+    private static readonly Brush GoldBright = Solid(0xF0, 0xC7, 0x5E);
+    private static readonly Brush Parchment = Solid(0xF4, 0xE4, 0xC1);
+    private static readonly Brush Muted = Solid(0xC2, 0xA5, 0x7E);
+    private static readonly Brush Mana = Solid(0x4A, 0x9B, 0xE8);
+
+    // Slightly lighter mana blue for large numbers, so they stay easy to read on the dark wood.
+    private static readonly Brush ManaBright = Solid(0x5D, 0xAD, 0xF2);
+    private static readonly FontFamily TitleFont = new("Georgia");
 
     private readonly GameHistory _history;
     private readonly string _historyPath;
@@ -35,11 +48,11 @@ internal sealed class DashboardWindow : Window
     private readonly UniformGrid _lost = new() { Columns = 3, VerticalAlignment = VerticalAlignment.Top };
     private readonly DataGrid _decks = CreateGrid();
     private readonly DataGrid _games = CreateGrid();
-    private readonly CartesianChart _xpChart = CreateChart("XP");
-    private readonly CartesianChart _rateChart = CreateChart("XP per hour");
+    private readonly CartesianChart _speedChart = CreateChart("XP per hour");
+    private readonly CartesianChart _progressChart = CreateProgressChart();
     private readonly bool _checkForUpdates;
     private readonly Action<bool>? _setCheckForUpdates;
-    private readonly TextBlock _updateText = new() { Foreground = Brushes.White, VerticalAlignment = VerticalAlignment.Center, TextWrapping = TextWrapping.Wrap };
+    private readonly TextBlock _updateText = new() { Foreground = Parchment, VerticalAlignment = VerticalAlignment.Center, TextWrapping = TextWrapping.Wrap };
     private readonly Border _updateBar;
     private string _updateUrl = UpdateCheck.ReleasesPage;
     private DashboardPeriod _period = DashboardPeriod.Today;
@@ -60,17 +73,18 @@ internal sealed class DashboardWindow : Window
         _updateBar = UpdateBar();
         UpdateStoredGames(hdtDecks);
 
-        Title = "Hearthstone XP Tracker";
-        Width = 960;
-        Height = 620;
+        Title = "HS XP Tracker";
+        Width = 1000;
+        Height = 680;
         Background = Back;
-        Foreground = Brushes.White;
+        Foreground = Parchment;
+        Resources = Theme();
         WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
         SetupDeckColumns();
         SetupGameColumns();
 
-        var tabs = new TabControl { Background = Back, BorderBrush = Panel, Margin = new Thickness(10, 0, 10, 10) };
+        var tabs = new TabControl { Background = Back, BorderBrush = Gold, BorderThickness = new Thickness(1), Padding = new Thickness(0), Margin = new Thickness(10, 0, 10, 10) };
         tabs.Items.Add(Tab("Overview", Padded(_overview)));
         tabs.Items.Add(Tab("Decks", _decks));
         tabs.Items.Add(Tab("Lost XP", Padded(_lost)));
@@ -78,6 +92,9 @@ internal sealed class DashboardWindow : Window
         tabs.Items.Add(Tab("Charts", Charts()));
 
         var root = new DockPanel();
+        var header = Header();
+        DockPanel.SetDock(header, Dock.Top);
+        root.Children.Add(header);
         DockPanel.SetDock(_updateBar, Dock.Top);
         root.Children.Add(_updateBar);
         var toolbar = Toolbar();
@@ -106,7 +123,7 @@ internal sealed class DashboardWindow : Window
 
     private Border UpdateBar()
     {
-        var link = new Hyperlink(new Run("Open the download page")) { Foreground = new SolidColorBrush(Color.FromRgb(0x9C, 0xC8, 0xFF)) };
+        var link = new Hyperlink(new Run("Open the download page")) { Foreground = GoldBright };
         link.Click += (_, _) => Process.Start(new ProcessStartInfo(_updateUrl) { UseShellExecute = true });
         var linkText = new TextBlock(link) { VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(12, 0, 0, 0) };
 
@@ -117,8 +134,8 @@ internal sealed class DashboardWindow : Window
 
         return new Border
         {
-            Background = Frozen(new SolidColorBrush(Color.FromRgb(0x1F, 0x3B, 0x5C))),
-            BorderBrush = Accent,
+            Background = Solid(0x1F, 0x3B, 0x5C),
+            BorderBrush = Mana,
             BorderThickness = new Thickness(1),
             CornerRadius = new CornerRadius(4),
             Padding = new Thickness(12, 6, 12, 6),
@@ -163,12 +180,47 @@ internal sealed class DashboardWindow : Window
         _decks.ItemsSource = Dashboard.Decks(games).Select(d => new DeckRow(d)).ToList();
         _games.ItemsSource = games.Reverse().Select(g => new GameRow(g)).ToList();
 
-        var days = Dashboard.Days(games);
-        var labels = days.Select(d => d.Date.ToString("MM-dd", CultureInfo.InvariantCulture)).ToArray();
-        _xpChart.Series = new SeriesCollection { new ColumnSeries { Title = "XP", Values = new ChartValues<int>(days.Select(d => d.Xp)), Fill = Accent } };
-        _xpChart.AxisX[0].Labels = labels;
-        _rateChart.Series = new SeriesCollection { new LineSeries { Title = "XP per hour", Values = new ChartValues<double>(days.Select(d => Math.Round(d.XpPerHour))), Stroke = Accent, Fill = Brushes.Transparent } };
-        _rateChart.AxisX[0].Labels = labels;
+        var curve = Dashboard.SpeedCurve(games, _period);
+        var labelFormat = _period == DashboardPeriod.Today ? "HH:mm" : "MM-dd";
+        _speedChart.Series = new SeriesCollection
+        {
+            new LineSeries
+            {
+                Title = "XP per hour of game time",
+                Values = new ChartValues<double>(curve.Select(p => Math.Round(p.XpPerHour))),
+                Stroke = Mana,
+                StrokeThickness = 2.5,
+                Fill = Brushes.Transparent,
+                PointGeometrySize = 7,
+                PointForeground = Mana,
+                LineSmoothness = 0.3,
+            },
+        };
+        _speedChart.AxisX[0].Labels = curve.Select(p => p.Time.ToString(labelFormat, CultureInfo.InvariantCulture)).ToArray();
+
+        var progress = Dashboard.ProgressCurve(games);
+        _progressChart.Series = new SeriesCollection
+        {
+            new LineSeries
+            {
+                Title = "XP",
+                Values = new ChartValues<ObservablePoint>(progress.Select(p => new ObservablePoint(p.PlaySeconds / 3600, p.Xp))),
+                Stroke = GoldBright,
+                StrokeThickness = 2.5,
+                Fill = Solid(0x4A, 0x32, 0x1D),
+                PointGeometrySize = 6,
+                PointForeground = GoldBright,
+                LineSmoothness = 0,
+                LabelPoint = p => $"{p.Y:0} XP after {HoursMinutes(p.X)} of play",
+            },
+        };
+    }
+
+    // Hours as h:mm, for the progress chart's time axis.
+    private static string HoursMinutes(double hours)
+    {
+        var minutes = (int)Math.Round(hours * 60);
+        return (minutes / 60).ToString(CultureInfo.InvariantCulture) + ":" + (minutes % 60).ToString("00", CultureInfo.InvariantCulture);
     }
 
     // Brings stored games up to date: XP is calculated again with the current rates (a rate may have been corrected),
@@ -203,7 +255,14 @@ internal sealed class DashboardWindow : Window
     private FrameworkElement Toolbar()
     {
         var bar = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(10) };
-        foreach (var (period, text) in new[] { (DashboardPeriod.Today, "Today"), (DashboardPeriod.Week, "This week"), (DashboardPeriod.Season, "This season"), (DashboardPeriod.All, "All time") })
+        foreach (var (period, text) in new[]
+        {
+            (DashboardPeriod.Today, "Today"),
+            (DashboardPeriod.Week, "This week"),
+            (DashboardPeriod.Season, "This season"),
+            (DashboardPeriod.Last30Days, "Last 30 days"),
+            (DashboardPeriod.All, "All time"),
+        })
         {
             var button = new ToggleButton { Content = text, Padding = new Thickness(12, 4, 12, 4), Margin = new Thickness(0, 0, 6, 0), IsChecked = period == _period };
             button.Click += (_, _) => SelectPeriod(period);
@@ -223,7 +282,6 @@ internal sealed class DashboardWindow : Window
             {
                 Content = "Check for updates when HDT starts",
                 IsChecked = _checkForUpdates,
-                Foreground = Brushes.White,
                 VerticalAlignment = VerticalAlignment.Center,
                 Margin = new Thickness(0, 10, 10, 10),
             };
@@ -266,16 +324,179 @@ internal sealed class DashboardWindow : Window
         }
     }
 
+    // Two charts above each other: the running XP per hour, and the XP earned over the play time.
     private FrameworkElement Charts()
     {
-        var grid = new Grid { Margin = new Thickness(10) };
+        var grid = new Grid { Margin = new Thickness(14, 8, 14, 10) };
         grid.RowDefinitions.Add(new RowDefinition());
         grid.RowDefinitions.Add(new RowDefinition());
-        Grid.SetRow(_rateChart, 1);
-        grid.Children.Add(_xpChart);
-        grid.Children.Add(_rateChart);
+        var speed = ChartBlock(
+            "XP per hour",
+            "Running average of XP per hour of game time from the start of the period: one point per game today, one point per day for longer periods.",
+            _speedChart);
+        var progress = ChartBlock(
+            "XP over play time",
+            "XP earned so far over the time spent in games (including the mulligan). The steeper the line, the faster you earn XP.",
+            _progressChart);
+        Grid.SetRow(progress, 1);
+        grid.Children.Add(speed);
+        grid.Children.Add(progress);
         return grid;
     }
+
+    private static FrameworkElement ChartBlock(string title, string note, UIElement chart)
+    {
+        var heading = new StackPanel { Margin = new Thickness(0, 6, 0, 4) };
+        heading.Children.Add(new TextBlock { Text = title, Foreground = GoldBright, FontFamily = TitleFont, FontSize = 16, FontWeight = FontWeights.Bold });
+        heading.Children.Add(new TextBlock { Text = note, Foreground = Muted, FontSize = 12, TextWrapping = TextWrapping.Wrap });
+        var block = new DockPanel();
+        DockPanel.SetDock(heading, Dock.Top);
+        block.Children.Add(heading);
+        block.Children.Add(chart);
+        return block;
+    }
+
+    // Large gold title with the scroll icon from the overlay.
+    private static FrameworkElement Header()
+    {
+        var icon = XpOverlay.ScrollIcon.Create();
+        icon.Height = 30;
+        icon.Margin = new Thickness(0, 0, 10, 0);
+        var title = new TextBlock
+        {
+            Text = "HS XP Tracker",
+            FontFamily = TitleFont,
+            FontSize = 28,
+            FontWeight = FontWeights.Bold,
+            Foreground = GoldBright,
+            VerticalAlignment = VerticalAlignment.Center,
+            Effect = new DropShadowEffect { Color = Colors.Black, ShadowDepth = 2, BlurRadius = 4, Opacity = 0.8 },
+        };
+        var row = new StackPanel { Orientation = Orientation.Horizontal };
+        row.Children.Add(icon);
+        row.Children.Add(title);
+        return new Border
+        {
+            Child = row,
+            Padding = new Thickness(14, 10, 14, 8),
+            BorderBrush = Gold,
+            BorderThickness = new Thickness(0, 0, 0, 1),
+            Background = Panel,
+        };
+    }
+
+    // Styles for buttons, period buttons, tabs, the check box and selected rows. Own templates, so the look
+    // does not depend on the Windows theme or on the styles HDT loads.
+    private static ResourceDictionary Theme() => (ResourceDictionary)XamlReader.Parse(@"
+<ResourceDictionary xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation'
+                    xmlns:x='http://schemas.microsoft.com/winfx/2006/xaml'>
+  <SolidColorBrush x:Key='{x:Static SystemColors.HighlightBrushKey}' Color='#6B4A2A'/>
+  <SolidColorBrush x:Key='{x:Static SystemColors.InactiveSelectionHighlightBrushKey}' Color='#5A3E24'/>
+  <SolidColorBrush x:Key='{x:Static SystemColors.HighlightTextBrushKey}' Color='#F4E4C1'/>
+  <SolidColorBrush x:Key='{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}' Color='#F4E4C1'/>
+
+  <Style x:Key='HsButtonBase' TargetType='ButtonBase'>
+    <Setter Property='Foreground' Value='#F4E4C1'/>
+    <Setter Property='Background' Value='#3A2716'/>
+    <Setter Property='BorderBrush' Value='#C8A050'/>
+    <Setter Property='BorderThickness' Value='1'/>
+    <Setter Property='Cursor' Value='Hand'/>
+    <Setter Property='Template'>
+      <Setter.Value>
+        <ControlTemplate TargetType='ButtonBase'>
+          <Border x:Name='Box' Background='{TemplateBinding Background}' BorderBrush='{TemplateBinding BorderBrush}'
+                  BorderThickness='{TemplateBinding BorderThickness}' CornerRadius='4' Padding='{TemplateBinding Padding}'>
+            <ContentPresenter HorizontalAlignment='Center' VerticalAlignment='Center'/>
+          </Border>
+          <ControlTemplate.Triggers>
+            <Trigger Property='IsPressed' Value='True'>
+              <Setter TargetName='Box' Property='Background' Value='#5A3E24'/>
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+    <Style.Triggers>
+      <Trigger Property='IsMouseOver' Value='True'>
+        <Setter Property='BorderBrush' Value='#F0C75E'/>
+      </Trigger>
+    </Style.Triggers>
+  </Style>
+  <Style TargetType='Button' BasedOn='{StaticResource HsButtonBase}'/>
+
+  <!-- Period buttons: the selected one in dark mana blue with light text; a soft blue glow on hover. -->
+  <Style TargetType='ToggleButton' BasedOn='{StaticResource HsButtonBase}'>
+    <Style.Triggers>
+      <Trigger Property='IsChecked' Value='True'>
+        <Setter Property='Background' Value='#1F3B5C'/>
+        <Setter Property='BorderBrush' Value='#4A9BE8'/>
+        <Setter Property='Foreground' Value='#FFFFFF'/>
+        <Setter Property='FontWeight' Value='SemiBold'/>
+        <Setter Property='Effect'>
+          <Setter.Value>
+            <DropShadowEffect Color='#4A9BE8' ShadowDepth='0' BlurRadius='8' Opacity='0.5'/>
+          </Setter.Value>
+        </Setter>
+      </Trigger>
+      <Trigger Property='IsMouseOver' Value='True'>
+        <Setter Property='BorderBrush' Value='#7CC0FF'/>
+        <Setter Property='Effect'>
+          <Setter.Value>
+            <DropShadowEffect Color='#4A9BE8' ShadowDepth='0' BlurRadius='14' Opacity='0.9'/>
+          </Setter.Value>
+        </Setter>
+      </Trigger>
+    </Style.Triggers>
+  </Style>
+
+  <Style TargetType='TabItem'>
+    <Setter Property='Foreground' Value='#C2A57E'/>
+    <Setter Property='FontWeight' Value='SemiBold'/>
+    <Setter Property='Cursor' Value='Hand'/>
+    <Setter Property='Template'>
+      <Setter.Value>
+        <ControlTemplate TargetType='TabItem'>
+          <Border x:Name='Tab' Background='#2C1E12' BorderBrush='#C8A050' BorderThickness='1,1,1,0'
+                  CornerRadius='6,6,0,0' Margin='0,0,4,0' Padding='14,6'>
+            <ContentPresenter ContentSource='Header' HorizontalAlignment='Center'/>
+          </Border>
+          <ControlTemplate.Triggers>
+            <Trigger Property='IsMouseOver' Value='True'>
+              <Setter Property='Foreground' Value='#F4E4C1'/>
+            </Trigger>
+            <Trigger Property='IsSelected' Value='True'>
+              <Setter TargetName='Tab' Property='Background' Value='#4A321D'/>
+              <Setter Property='Foreground' Value='#F0C75E'/>
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <Style TargetType='CheckBox'>
+    <Setter Property='Foreground' Value='#F4E4C1'/>
+    <Setter Property='Cursor' Value='Hand'/>
+    <Setter Property='Template'>
+      <Setter.Value>
+        <ControlTemplate TargetType='CheckBox'>
+          <StackPanel Orientation='Horizontal' Background='Transparent'>
+            <Border Width='16' Height='16' Background='#3A2716' BorderBrush='#C8A050' BorderThickness='1'
+                    CornerRadius='3' VerticalAlignment='Center'>
+              <Path x:Name='Mark' Data='M 3,8 L 6.5,11.5 L 13,4' Stroke='#F0C75E' StrokeThickness='2' Visibility='Collapsed'/>
+            </Border>
+            <ContentPresenter Margin='6,0,0,0' VerticalAlignment='Center'/>
+          </StackPanel>
+          <ControlTemplate.Triggers>
+            <Trigger Property='IsChecked' Value='True'>
+              <Setter TargetName='Mark' Property='Visibility' Value='Visible'/>
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+</ResourceDictionary>");
 
     private void SetupDeckColumns()
     {
@@ -313,8 +534,10 @@ internal sealed class DashboardWindow : Window
     {
         var headerStyle = new Style(typeof(DataGridColumnHeader));
         headerStyle.Setters.Add(new Setter(Control.BackgroundProperty, PanelAlt));
-        headerStyle.Setters.Add(new Setter(Control.ForegroundProperty, Brushes.White));
-        headerStyle.Setters.Add(new Setter(Control.PaddingProperty, new Thickness(6, 4, 6, 4)));
+        headerStyle.Setters.Add(new Setter(Control.ForegroundProperty, GoldBright));
+        headerStyle.Setters.Add(new Setter(Control.BorderBrushProperty, Gold));
+        headerStyle.Setters.Add(new Setter(Control.BorderThicknessProperty, new Thickness(0, 0, 0, 1)));
+        headerStyle.Setters.Add(new Setter(Control.PaddingProperty, new Thickness(6, 5, 6, 5)));
         headerStyle.Setters.Add(new Setter(Control.FontWeightProperty, FontWeights.SemiBold));
 
         return new DataGrid
@@ -327,8 +550,9 @@ internal sealed class DashboardWindow : Window
             Background = Panel,
             RowBackground = Panel,
             AlternatingRowBackground = PanelAlt,
-            Foreground = Brushes.White,
-            BorderThickness = new Thickness(0),
+            Foreground = Parchment,
+            BorderBrush = Gold,
+            BorderThickness = new Thickness(1),
             ColumnHeaderStyle = headerStyle,
             Margin = new Thickness(10),
         };
@@ -336,11 +560,38 @@ internal sealed class DashboardWindow : Window
 
     private static CartesianChart CreateChart(string title)
     {
-        var chart = new CartesianChart { Foreground = Brushes.White, LegendLocation = LegendLocation.Top, DisableAnimations = true };
-        chart.AxisX.Add(new Axis { Foreground = Muted, Separator = new LiveCharts.Wpf.Separator { Step = 1, StrokeThickness = 0 } });
-        chart.AxisY.Add(new Axis { Title = title, Foreground = Muted, MinValue = 0 });
+        var grid = Solid(0x4A, 0x32, 0x1D);
+        var chart = new CartesianChart { Foreground = Parchment, LegendLocation = LegendLocation.None, DisableAnimations = true };
+
+        // Dark tooltip with light text; LiveCharts' default light grey box is hard to read here.
+        chart.DataTooltip = new DefaultTooltip
+        {
+            Background = Frozen(new SolidColorBrush(Color.FromArgb(0xF0, 0x22, 0x17, 0x0F))),
+            Foreground = Parchment,
+            BorderBrush = Gold,
+            BorderThickness = new Thickness(1),
+        };
+        chart.AxisX.Add(new Axis { Foreground = Muted, Separator = new LiveCharts.Wpf.Separator { StrokeThickness = 0 } });
+        chart.AxisY.Add(new Axis { Title = title, Foreground = Muted, MinValue = 0, Separator = new LiveCharts.Wpf.Separator { Stroke = grid, StrokeThickness = 1 } });
         return chart;
     }
+
+    // XP over play time: a numeric time axis in h:mm instead of one label per point.
+    private static CartesianChart CreateProgressChart()
+    {
+        var chart = CreateChart("XP");
+        chart.AxisX[0] = new Axis
+        {
+            Title = "Play time (h:mm)",
+            Foreground = Muted,
+            MinValue = 0,
+            LabelFormatter = HoursMinutes,
+            Separator = new LiveCharts.Wpf.Separator { StrokeThickness = 0 },
+        };
+        return chart;
+    }
+
+    private static Brush Solid(byte r, byte g, byte b) => Frozen(new SolidColorBrush(Color.FromRgb(r, g, b)));
 
     private static TabItem Tab(string header, UIElement content) => new() { Header = header, Content = content, Padding = new Thickness(12, 4, 12, 4) };
 
@@ -357,14 +608,14 @@ internal sealed class DashboardWindow : Window
     private static Border Tile(string title, string value, string? note = null)
     {
         var panel = new StackPanel();
-        panel.Children.Add(new TextBlock { Text = title, Foreground = Muted, FontSize = 13 });
-        panel.Children.Add(new TextBlock { Text = value, Foreground = Brushes.White, FontSize = 26, FontWeight = FontWeights.Bold, Margin = new Thickness(0, 4, 0, 2) });
+        panel.Children.Add(new TextBlock { Text = title, Foreground = Muted, FontSize = 13, FontWeight = FontWeights.SemiBold });
+        panel.Children.Add(new TextBlock { Text = value, Foreground = ManaBright, FontFamily = TitleFont, FontSize = 28, FontWeight = FontWeights.Bold, Margin = new Thickness(0, 4, 0, 2) });
         if (note is not null)
         {
             panel.Children.Add(new TextBlock { Text = note, Foreground = Muted, FontSize = 11, TextWrapping = TextWrapping.Wrap });
         }
 
-        return new Border { Background = Panel, CornerRadius = new CornerRadius(6), Padding = new Thickness(14), Margin = new Thickness(6), Child = panel };
+        return new Border { Background = Panel, BorderBrush = Gold, BorderThickness = new Thickness(1), CornerRadius = new CornerRadius(6), Padding = new Thickness(14), Margin = new Thickness(6), Child = panel };
     }
 
     private static Brush Frozen(Brush brush)

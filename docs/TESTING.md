@@ -38,7 +38,9 @@ The calculation engine is covered by unit tests. The points below need a real ga
 ## Dashboard
 
 - [ ] "Plugins → XP dashboard" and the plugin button open the window; opening it again brings the open window to the front.
-- [ ] Today / This week / This season / All time change all tabs.
+- [ ] The window is titled "HS XP Tracker" and shows the gold title with the scroll icon; colors are dark wood, gold and parchment, also for buttons, tabs, the check box and selected rows.
+- [ ] Today / This week / This season / Last 30 days / All time change all tabs; the selected period is highlighted in gold.
+- [ ] Charts: "XP per hour" (blue, one point per game for Today, one point per day otherwise) and below it "XP over play time" (gold, starts at 0, always rising, time axis in h:mm); both tooltips are dark with light text.
 - [ ] Overview values match the game list (XP, XP time, play time, games, wins, losses); online time counts up while Hearthstone runs.
 - [ ] Decks, Lost XP, Games and Charts show data; the game list sorts by every column.
 - [ ] A finished game appears in an open dashboard without pressing Refresh.

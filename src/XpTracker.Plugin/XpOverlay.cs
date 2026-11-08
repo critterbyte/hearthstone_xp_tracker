@@ -200,8 +200,9 @@ internal sealed class XpOverlay : Border
 
     /// <summary>
     /// Small rolled parchment drawn as vector shapes, used as the XP symbol (no game artwork).
+    /// Also used in the dashboard title.
     /// </summary>
-    private static class ScrollIcon
+    internal static class ScrollIcon
     {
         private static readonly Brush Paper = Frozen(Vertical((Color.FromRgb(0xF6, 0xE7, 0xBE), 0.0), (Color.FromRgb(0xD8, 0xBA, 0x7C), 1.0)));
         private static readonly Brush Roll = Frozen(Vertical((Color.FromRgb(0xD9, 0xB0, 0x6A), 0.0), (Color.FromRgb(0x8C, 0x62, 0x2C), 1.0)));
