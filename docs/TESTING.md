@@ -31,7 +31,7 @@ The calculation engine is covered by unit tests. The points below need a real ga
 
 ## Game history
 
-- [ ] After each game a row is added to `%APPDATA%\HearthstoneDeckTracker\XpTracker\games.csv` with the right mode, format, result, times, XP, deck and classes.
+- [ ] After each game a row is added to `%APPDATA%\HearthstoneDeckTracker\XpTracker\hs_games.csv` with the right mode, format, result, times, XP, deck and classes.
 - [ ] Restarting HDT right after a game does not add the same game twice.
 - [ ] Installing a new plugin version keeps the history file.
 

@@ -19,7 +19,7 @@ The plugin reads Hearthstone's `Power.log` (the same log HDT reads) on a backgro
 
 Reading costs about 40 ms once when the plugin starts and well under a millisecond per update afterwards.
 
-Every finished game is added to a local history file, `%APPDATA%\HearthstoneDeckTracker\XpTracker\games.csv`, which a planned dashboard will use. The file stays on your computer; nothing is uploaded.
+Every finished game is added to a local history file, `%APPDATA%\HearthstoneDeckTracker\XpTracker\hs_games.csv`, which a planned dashboard will use. The file stays on your computer; nothing is uploaded.
 
 ## How XP is calculated
 

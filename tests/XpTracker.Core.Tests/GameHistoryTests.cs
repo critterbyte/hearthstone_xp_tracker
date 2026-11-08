@@ -6,7 +6,7 @@ public sealed class GameHistoryTests : IDisposable
 {
     private readonly string _folder = Path.Combine(Path.GetTempPath(), "xp-tracker-history-" + Guid.NewGuid().ToString("N"));
 
-    private string File => Path.Combine(_folder, "games.csv");
+    private string File => Path.Combine(_folder, "hs_games.csv");
 
     [Fact]
     public void AddedGames_AreLoadedBackUnchanged()
