@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Documentation of the XP formula (`docs/FORMULA.md`), with every statement marked as measured or taken from a listed source.
 - Documentation for users and contributors: `docs/INSTALL.md`, `docs/USAGE.md`, `docs/FARMING.md` (fair tips for more XP per hour), `CONTRIBUTING.md`, and issue templates for bugs, feature requests and XP measurements.
 - Local build script (`build.ps1`) and CI workflow for the calculation engine.
+- Release script (`release.ps1`): builds and tests, checks the version, and creates the release ZIP with the two DLLs, `INSTALL.txt` and `LICENSE.txt` in a folder named `HearthstoneXpTracker`, plus a SHA-256 checksum. It refuses uncommitted changes and any unexpected file in the package.
 - `XpClock`: tracks XP time, play time and time including the mulligan from turn events, live and after the game. AFK turns and the opponent turn that follows them are excluded.
 - `XpRates.RateFor`: rate lookup by game mode and result.
 - Game history: every finished game is appended to `%APPDATA%\HearthstoneDeckTracker\XpTracker\hs_games.csv` (session, start, end, mode, format, result, XP time, play time, time including the mulligan, AFK turns, calculated XP, deck, player and opponent class). Games read twice from the same log are stored once. Basis for the planned dashboard.

@@ -21,8 +21,8 @@ A plugin for [Hearthstone Deck Tracker](https://hsreplay.net/downloads/) (HDT) t
 
 1. Download the ZIP file from the [Releases page](https://github.com/critterbyte/hearthstone_xp_tracker/releases).
 2. Close HDT.
-3. Copy both DLL files into `%APPDATA%\HearthstoneDeckTracker\Plugins\HearthstoneXpTracker`.
-4. Start HDT and enable the plugin under *Options → Tracker → Plugins*.
+3. Extract the ZIP into `%APPDATA%\HearthstoneDeckTracker\Plugins`. This creates the folder `HearthstoneXpTracker`.
+4. Start HDT and enable the plugin under *Settings* (the gear icon on the right of the top bar) *→ Tracker → Plugins*.
 
 See [docs/INSTALL.md](docs/INSTALL.md) for details, updates and troubleshooting.
 
