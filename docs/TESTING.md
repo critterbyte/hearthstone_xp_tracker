@@ -35,6 +35,15 @@ The calculation engine is covered by unit tests. The points below need a real ga
 - [ ] Restarting HDT right after a game does not add the same game twice.
 - [ ] Installing a new plugin version keeps the history file.
 
+## Dashboard
+
+- [ ] "Plugins → XP dashboard" and the plugin button open the window; opening it again brings the open window to the front.
+- [ ] Today / This week / This season / All time change all tabs.
+- [ ] Overview values match the game list (XP, XP time, play time, games, wins, losses); online time counts up while Hearthstone runs.
+- [ ] Decks, Lost XP, Games and Charts show data; the game list sorts by every column.
+- [ ] A finished game appears in an open dashboard without pressing Refresh.
+- [ ] Export CSV saves the history; Open data folder opens it in Explorer.
+
 ## Modes
 
 - [ ] Ranked (Wild and Standard), Casual and Tavern Brawl show values with the matching rates.

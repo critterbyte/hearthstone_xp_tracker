@@ -39,6 +39,10 @@ public static class XpRates
         };
     }
 
+    /// <summary>XP by the formula alone, without the minimum and the cap; used to show what was lost.</summary>
+    public static int FormulaXp(double xpSeconds, double rate) =>
+        (int)Math.Round(Math.Max(xpSeconds, 0) * rate, MidpointRounding.AwayFromZero);
+
     public static int ExpectedXp(double xpSeconds, double rate)
     {
         if (xpSeconds < MinXpSeconds)

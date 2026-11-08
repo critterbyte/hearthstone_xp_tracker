@@ -31,6 +31,8 @@ public class XpTrackerPlugin : IPlugin
     private static readonly string HistoryPath = Path.Combine(Config.AppDataPath, "XpTracker", "games.csv");
 
     private readonly GameHistory _history = new(HistoryPath);
+    private MenuItem? _menuItem;
+    private DashboardWindow? _dashboard;
     private XpOverlay? _overlay;
     private PowerLogTail? _tail;
     private CancellationTokenSource? _stop;
@@ -41,14 +43,26 @@ public class XpTrackerPlugin : IPlugin
 
     public string Description => "Shows the reward track XP of the current game and the XP time it is based on.";
 
-    public string ButtonText => "Settings";
+    public string ButtonText => "XP dashboard";
 
     public string Author => "critterbyte";
 
     public Version Version => typeof(XpTrackerPlugin).Assembly.GetName().Version;
 
-    // HDT documents null as "no menu entry", but declares the property as non-nullable.
-    public MenuItem MenuItem => null!;
+    // Entry in HDT's Plugins menu; created on first access, which happens on the UI thread.
+    public MenuItem MenuItem
+    {
+        get
+        {
+            if (_menuItem is null)
+            {
+                _menuItem = new MenuItem { Header = "XP dashboard" };
+                _menuItem.Click += (_, _) => OpenDashboard();
+            }
+
+            return _menuItem;
+        }
+    }
 
     public void OnLoad()
     {
@@ -78,11 +92,12 @@ public class XpTrackerPlugin : IPlugin
             HdtCore.OverlayCanvas.Children.Remove(_overlay);
             _overlay = null;
         }
+
+        _dashboard?.Close();
+        _dashboard = null;
     }
 
-    public void OnButtonPress()
-    {
-    }
+    public void OnButtonPress() => OpenDashboard();
 
     // Called by HDT about every 100 ms on the UI thread; only reads the state prepared by the background thread.
     public void OnUpdate()
@@ -106,6 +121,21 @@ public class XpTrackerPlugin : IPlugin
         _overlay.Place(canvas.ActualWidth, canvas.ActualHeight);
     }
 
+    private void OpenDashboard()
+    {
+        if (_dashboard is null)
+        {
+            _dashboard = new DashboardWindow(_history, HistoryPath, () => _tail?.CurrentSession);
+            _dashboard.Closed += (_, _) => _dashboard = null;
+            _dashboard.Show();
+        }
+        else
+        {
+            _dashboard.Refresh();
+            _dashboard.Activate();
+        }
+    }
+
     // Raised on the polling thread; HDT's game state is read on the UI thread.
     private void OnGameFinished(FinishedGame game)
     {
@@ -125,7 +155,10 @@ public class XpTrackerPlugin : IPlugin
 
         try
         {
-            _history.Add(record);
+            if (_history.Add(record))
+            {
+                _dashboard?.Refresh();
+            }
         }
         catch (IOException)
         {
