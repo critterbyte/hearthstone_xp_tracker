@@ -58,7 +58,7 @@ internal sealed class DashboardWindow : Window
         _checkForUpdates = checkForUpdates;
         _setCheckForUpdates = setCheckForUpdates;
         _updateBar = UpdateBar();
-        FillMissingDecks(hdtDecks);
+        UpdateStoredGames(hdtDecks);
 
         Title = "Hearthstone XP Tracker";
         Width = 960;
@@ -171,18 +171,25 @@ internal sealed class DashboardWindow : Window
         _rateChart.AxisX[0].Labels = labels;
     }
 
-    // Games stored without a deck (for example imported from logs) get deck and classes from HDT's statistics.
-    private void FillMissingDecks(Func<IReadOnlyList<DeckInfo>>? hdtDecks)
+    // Brings stored games up to date: XP is calculated again with the current rates (a rate may have been corrected),
+    // and games stored without a deck (for example imported from logs) get deck and classes from HDT's statistics.
+    private void UpdateStoredGames(Func<IReadOnlyList<DeckInfo>>? hdtDecks)
     {
-        if (hdtDecks is null)
-        {
-            return;
-        }
-
         try
         {
             var games = _history.Load().ToList();
-            if (games.Any(g => g.Deck.Length == 0) && DeckMatcher.FillMissing(games, hdtDecks()) > 0)
+            var changed = false;
+            foreach (var game in games)
+            {
+                changed |= game.RecalculateXp();
+            }
+
+            if (hdtDecks is not null && games.Any(g => g.Deck.Length == 0) && DeckMatcher.FillMissing(games, hdtDecks()) > 0)
+            {
+                changed = true;
+            }
+
+            if (changed)
             {
                 _history.ReplaceAll(games);
             }

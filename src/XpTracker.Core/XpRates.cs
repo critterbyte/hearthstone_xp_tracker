@@ -7,14 +7,15 @@ namespace XpTracker.Core;
 /// </summary>
 public static class XpRates
 {
-    public const double RankedWin = 0.1308;
+    // Measured range 0.13047 to 0.13058; 0.1308 was used until a 417.37 s win gave 54 XP instead of 55.
+    public const double RankedWin = 0.1305;
     public const double RankedLoss = 0.0932;
 
     // Casual and Tavern Brawl pay the same rates.
     public const double CasualWin = 0.0932;
     public const double CasualLoss = 0.0666;
 
-    // XP time is capped at 30 minutes per game (reported by the community, not yet verified).
+    // XP time is capped at about 30 minutes per game (stated by a Blizzard developer in 2020, not measured yet).
     public const double MaxXpSeconds = 1800;
 
     // Games with less XP time give no XP at all (measured for own concedes: 59.89 s gave 0, 60.78 s gave 6).

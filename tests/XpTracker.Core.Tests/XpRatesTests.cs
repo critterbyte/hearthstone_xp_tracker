@@ -8,6 +8,8 @@ public class XpRatesTests
     [Theory]
     [InlineData(488.30, XpRates.RankedWin, 64)]
     [InlineData(762.64, XpRates.RankedWin, 100)]
+    [InlineData(417.37, XpRates.RankedWin, 54)]
+    [InlineData(431.44, XpRates.RankedWin, 56)]
     [InlineData(412.58, XpRates.RankedLoss, 38)]
     [InlineData(933.37, XpRates.RankedLoss, 87)]
     [InlineData(1037.00, XpRates.CasualWin, 97)]

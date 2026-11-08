@@ -144,7 +144,7 @@ The file uses commas between fields and a dot as the decimal sign. Times are loc
 | `PlayerClass` | Your class |
 | `OpponentClass` | The opponent's class |
 
-The `Xp` column is calculated by the plugin from the XP time. The game itself does not log XP.
+The `Xp` column is calculated by the plugin from the XP time. The game itself does not log XP. When the dashboard opens, the plugin calculates the XP of all stored games again with the current rates, so a corrected rate also fixes older games.
 
 A game read twice from the same log is stored only once. Installing a new plugin version keeps the file.
 

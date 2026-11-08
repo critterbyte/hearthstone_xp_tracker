@@ -31,5 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Ranked win rate lowered from 0.1308 to 0.1305 XP/s. A 417.37-second win gave 54 XP, but the old rate calculated 55. The measured range is now 0.13047 to 0.13058 XP/s. When the dashboard opens, the XP of games already in the history is calculated again with the current rates.
+
 - A Rewind card (game reset) no longer restarts the XP time on the overlay.
 - Starting HDT during a game no longer loses the time before the start.

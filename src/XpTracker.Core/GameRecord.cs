@@ -61,6 +61,29 @@ public sealed class GameRecord
         };
     }
 
+    /// <summary>
+    /// Calculates <see cref="Xp"/> again from the XP time with the current rates, for example after a rate was corrected.
+    /// Games without a measured rate keep their value.
+    /// </summary>
+    /// <returns>True if the XP changed.</returns>
+    public bool RecalculateXp()
+    {
+        var rate = XpRates.RateFor(Mode, Result);
+        if (rate is null)
+        {
+            return false;
+        }
+
+        var xp = XpRates.ExpectedXp(XpSeconds, rate.Value);
+        if (Xp == xp)
+        {
+            return false;
+        }
+
+        Xp = xp;
+        return true;
+    }
+
     /// <summary>Start time of the Hearthstone session, read from a folder name like Hearthstone_2026_11_08_09_10_51.</summary>
     public static DateTime? SessionStart(string session) =>
         session.Length >= 31 && DateTime.TryParseExact(session.Substring(12, 19), "yyyy_MM_dd_HH_mm_ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out var start)
