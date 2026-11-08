@@ -15,9 +15,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Local build script (`build.ps1`) and CI workflow for the calculation engine.
 - `XpClock`: tracks XP time, play time and time including the mulligan from turn events, live and after the game. AFK turns and the opponent turn that follows them are excluded.
 - `XpRates.RateFor`: rate lookup by game mode and result.
-- `GameObserver`: turns periodic game state samples into clock events; detects AFK turns from the player's turn limit (10 seconds).
-- Live overlay above the Hearthstone settings button: "XP time", "If win: +N XP", "If loss: +N XP"; after the game a "Last game" summary with XP time, total time including the mulligan and the XP earned, shown until the next mulligan.
+- Minimum XP time of 60 seconds: shorter games give no XP, so the overlay shows "+0" until the XP time reaches one minute.
+- `PowerLogTracker` and `PowerLogTail`: read game times directly from Hearthstone's `Power.log` with the log timestamps, on a background thread. When HDT is started in the middle of a game, the current game is read from its start. AFK turns are detected from the player's turn limit (10 seconds).
+- `tools/XpTracker.LogCheck`: replays `Power.log` files or archives and prints the times per game; `--tail` measures the plugin's read times.
+- Live overlay above the Hearthstone settings button: "XP time: m:ss", "If win: +N XP", "If loss: +N XP"; after the game a "Last game" summary with XP time, total time including the mulligan and the XP earned, shown until the next mulligan.
+
+### Changed
+
+- Overlay layout: plain white labels on a dark box, values in blue tubes in the style of the reward track XP bar, XP values with a drawn scroll icon. The summary row for the earned XP is labeled "Earned:".
 
 ### Fixed
 
 - A Rewind card (game reset) no longer restarts the XP time on the overlay.
+- Starting HDT during a game no longer loses the time before the start.

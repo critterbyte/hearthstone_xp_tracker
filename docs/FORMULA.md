@@ -11,6 +11,7 @@ XP = round(xpSeconds × rate)
 - Rounding is half away from zero.
 - `xpSeconds` starts with the first turn (end of the mulligan) and ends when the game ends, minus excluded turns (see below).
 - XP grows linearly per second. There is no base amount, no rounding to blocks of time, and no slowdown: a Ranked loss of 15:33 and a Tavern Brawl win of 17:17 still matched the same rates.
+- **Minimum:** a game with less than 60 seconds of XP time gives no XP at all; from 60 seconds on it gives the full amount. Measured with concedes: 59.89 s gave 0 XP, 60.78 s gave 6 XP. The limit applies to the XP time after excluded AFK turns (2:34 of play with 59.23 s of XP time gave nothing, 2:38 with 62.27 s gave 6 XP). The number of turns and whether the own turn was finished do not matter.
 - XP time is reported to be capped at 30 minutes per game. This has not been verified yet. With the cap, a Ranked win is worth at most about 235 XP.
 
 ## Rates
@@ -39,9 +40,9 @@ Ranges that fit every measured game:
 |---|---|
 | Own turn with at least one played option (card, attack, hero power), even if the turn timer runs out | yes |
 | Own turn without any option, ended by clicking "End Turn" | yes |
-| Own turn without any option and without clicking "End Turn" (timer runs out) | **no**, and the following opponent turn does not count either |
+| Own turn without any option and without clicking "End Turn" (timer runs out); other clicks such as touching a card do not make the turn active | **no**, and the following opponent turn does not count either |
 | Own turn without any option in which the game ends (for example the opponent concedes) | yes |
-| Opponent turns, including turns the opponent lets run out | yes |
+| Opponent turns, including turns the opponent lets run out with or without actions | yes |
 | Mulligan | no |
 
 When a turn ends by timeout without any action, the server sets that player's next turn limit to 10 seconds (`TAG_CHANGE ... tag=TIMEOUT value=10`). This marker identifies the excluded turns without having to know about clicks.
@@ -51,6 +52,9 @@ When a turn ends by timeout without any action, the server sets that player's ne
 - Conceding (own turn or opponent turn)
 - Dying during your own turn
 - The opponent conceding or disconnecting
+- The opponent idling: opponent turns without any action (marked AFK by the server) still count fully, even several in a row; two games matched the shown XP only with that time included
+- Playing again after an AFK turn: the next own turn counts fully once an action is played, even though the server lowered its limit to 10 seconds
+- A Rewind card resetting the game
 
 ## Log markers used
 
@@ -68,7 +72,6 @@ Timestamps in the log have seven decimal places (100-nanosecond ticks). Truncati
 ## Open questions
 
 - Is XP time really capped at 30 minutes, and does the cap include the mulligan?
-- Does a turn the opponent lets run out without any action reduce your XP time? The expectation is that it does not.
-- Is there a minimum game length for XP? A game that ended after 23 seconds without an own turn showed no XP.
+- Does the 60-second minimum also apply when the opponent concedes or disconnects early? So far: 23 s gave no XP, 1:55 gave the full amount.
 - Does the Tavern Pass XP boost multiply the rates?
 - Arena and Battlegrounds have not been measured.

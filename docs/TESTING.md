@@ -19,11 +19,13 @@ The calculation engine is covered by unit tests. The points below need a real ga
 - [ ] Playing a card in the turn after an AFK turn makes the clock run normally again.
 - [ ] A turn without any played card but ended by clicking "End Turn" counts normally (no jump, no pause).
 - [ ] **Rewind:** when either player uses a Rewind card, the XP time keeps running without a reset.
-- [ ] Live text reads "XP time m:ss", "If win: +N XP", "If loss: +N XP".
+- [ ] **HDT started during a game:** the overlay shows the full XP time since the first turn, not only the time since HDT started.
+- [ ] HDT stays responsive; no stutter in Hearthstone while the plugin is enabled.
+- [ ] Live rows: labels "XP time:", "If win:", "If loss:" in plain white text; values in blue tubes ("m:ss", "+N", "+N"); the XP values show the scroll icon.
 
 ## End of game
 
-- [ ] After the game the summary reads "Last game: Win/Loss", "XP time m:ss", "Total time m:ss" (including the mulligan) and "+N XP". It is hidden on the victory/defeat screen by HDT and appears in the menu.
+- [ ] After the game the summary shows "Last game:" (Win/Loss), "XP time:", "Total time:" (including the mulligan) and "Earned:" (+N with the scroll icon). It is hidden on the victory/defeat screen by HDT and appears in the menu.
 - [ ] The earned XP matches the XP shown by the game (win, loss, concede, opponent concedes).
 - [ ] The summary stays visible in the menu and disappears when the next mulligan starts.
 

@@ -42,6 +42,18 @@ public class XpRatesTests
         Assert.Null(XpRates.RateFor(mode, result));
     }
 
+    // Measured concedes around the minimum XP time.
+    [Theory]
+    [InlineData(55.01, 0)]
+    [InlineData(59.23, 0)]
+    [InlineData(59.89, 0)]
+    [InlineData(60.78, 6)]
+    [InlineData(61.13, 6)]
+    public void ExpectedXp_IsZeroBelowTheMinimumXpTime(double xpSeconds, int expectedXp)
+    {
+        Assert.Equal(expectedXp, XpRates.ExpectedXp(xpSeconds, XpRates.RankedLoss));
+    }
+
     [Fact]
     public void ExpectedXp_IsZeroForNegativeTime()
     {

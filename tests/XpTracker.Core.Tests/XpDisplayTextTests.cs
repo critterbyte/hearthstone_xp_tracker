@@ -8,69 +8,91 @@ public class XpDisplayTextTests
     [Fact]
     public void LiveGame_ShowsXpTimeAndBothOutcomes()
     {
-        var observer = Start(GameMode.Ranked, "10:00:00");
+        var clock = Started("10:00:00");
 
-        var lines = XpDisplayText.For(observer, At("10:06:12"));
+        var lines = XpDisplayText.For(clock, GameMode.Ranked, At("10:06:12"));
 
-        Assert.Equal(new[] { "XP time 6:12", "If win: +49 XP", "If loss: +35 XP" }, lines);
+        Assert.Equal(new[] { "XP time:|6:12|", "If win:|+49|xp", "If loss:|+35|xp" }, Rows(lines));
+    }
+
+    [Fact]
+    public void LiveGame_BelowTheMinimumXpTime_ShowsZero()
+    {
+        var clock = Started("10:00:00");
+
+        var lines = XpDisplayText.For(clock, GameMode.Ranked, At("10:00:59"));
+
+        Assert.Equal(new[] { "XP time:|0:59|", "If win:|+0|xp", "If loss:|+0|xp" }, Rows(lines));
     }
 
     [Fact]
     public void LiveGame_AfterAnAfkTurn_ShowsPaused()
     {
-        var observer = Start(GameMode.Ranked, "10:00:00");
-        observer.Update(new GameSample(GamePhase.Turns, Side.Opponent, 10, GameResult.Unknown, GameMode.Ranked), At("10:00:55"));
+        var clock = Started("10:00:00");
+        clock.MarkCurrentTurnAfk();
+        clock.StartTurn(Side.Opponent, At("10:00:55"));
 
-        var lines = XpDisplayText.For(observer, At("10:01:00"));
+        var lines = XpDisplayText.For(clock, GameMode.Ranked, At("10:01:00"));
 
-        Assert.Equal("XP time 0:00 (paused)", lines[0]);
+        Assert.Equal("XP time:|0:00 (paused)|", Rows(lines)[0]);
     }
 
     [Fact]
     public void FinishedGame_ShowsSummaryWithMulliganAndEarnedXp()
     {
-        var observer = new GameObserver();
-        observer.Update(new GameSample(GamePhase.Mulligan, Side.Player, 45, GameResult.Unknown, GameMode.TavernBrawl), At("09:59:20"));
-        observer.Update(new GameSample(GamePhase.Turns, Side.Player, 45, GameResult.Unknown, GameMode.TavernBrawl), At("10:00:00"));
-        observer.Update(new GameSample(GamePhase.Over, Side.Player, 45, GameResult.Win, GameMode.TavernBrawl), At("10:17:17"));
+        var clock = new XpClock();
+        clock.StartMulligan(At("09:59:20"));
+        clock.StartTurn(Side.Player, At("10:00:00"));
+        clock.EndGame(At("10:17:17"), GameResult.Win);
 
-        var lines = XpDisplayText.For(observer, At("10:20:00"));
+        var lines = XpDisplayText.For(clock, GameMode.TavernBrawl, At("10:20:00"));
 
-        Assert.Equal(new[] { "Last game: Win", "XP time 17:17", "Total time 17:57", "+97 XP" }, lines);
+        Assert.Equal(new[] { "Last game:|Win|", "XP time:|17:17|", "Total time:|17:57|", "Earned:|+97|xp" }, Rows(lines));
+    }
+
+    [Fact]
+    public void FinishedGame_WithUnmeasuredResult_ShowsUnknownXp()
+    {
+        var clock = Started("10:00:00");
+        clock.EndGame(At("10:05:00"), GameResult.Tie);
+
+        Assert.Equal("Earned:|unknown|", Rows(XpDisplayText.For(clock, GameMode.Ranked, At("10:06:00")))[3]);
     }
 
     [Fact]
     public void LongGame_ShowsTheCap()
     {
-        var observer = Start(GameMode.Ranked, "10:00:00");
+        var clock = Started("10:00:00");
 
-        var lines = XpDisplayText.For(observer, At("10:35:00"));
+        var lines = XpDisplayText.For(clock, GameMode.Ranked, At("10:35:00"));
 
-        Assert.Equal(new[] { "XP time 30:00 (max)", "If win: +235 XP", "If loss: +168 XP" }, lines);
+        Assert.Equal(new[] { "XP time:|30:00 (max)|", "If win:|+235|xp", "If loss:|+168|xp" }, Rows(lines));
     }
 
     [Fact]
     public void UnmeasuredMode_ShowsNothing()
     {
-        var observer = Start(GameMode.Other, "10:00:00");
-
-        Assert.Empty(XpDisplayText.For(observer, At("10:05:00")));
+        Assert.Empty(XpDisplayText.For(Started("10:00:00"), GameMode.Other, At("10:05:00")));
     }
 
     [Fact]
     public void BeforeTheFirstTurn_ShowsNothing()
     {
-        var observer = new GameObserver();
-        observer.Update(new GameSample(GamePhase.Mulligan, Side.Player, 45, GameResult.Unknown, GameMode.Ranked), At("10:00:00"));
+        var clock = new XpClock();
+        clock.StartMulligan(At("10:00:00"));
 
-        Assert.Empty(XpDisplayText.For(observer, At("10:00:30")));
+        Assert.Empty(XpDisplayText.For(clock, GameMode.Ranked, At("10:00:30")));
+        Assert.Empty(XpDisplayText.For(null, GameMode.Ranked, At("10:00:30")));
     }
 
-    private static GameObserver Start(GameMode mode, string time)
+    private static string[] Rows(IReadOnlyList<XpLine> lines) =>
+        lines.Select(l => l.Label + "|" + l.Value + "|" + (l.IsXp ? "xp" : string.Empty)).ToArray();
+
+    private static XpClock Started(string time)
     {
-        var observer = new GameObserver();
-        observer.Update(new GameSample(GamePhase.Turns, Side.Player, 45, GameResult.Unknown, mode), At(time));
-        return observer;
+        var clock = new XpClock();
+        clock.StartTurn(Side.Player, At(time));
+        return clock;
     }
 
     private static DateTime At(string time) =>

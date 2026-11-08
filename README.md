@@ -13,6 +13,12 @@ A plugin for [Hearthstone Deck Tracker](https://hsreplay.net/downloads/) (HDT) t
 - **End-of-game summary:** XP time, total play time including the mulligan, and the XP earned for the actual result.
 - Correct handling of AFK turns: a turn without any action and without ending the turn manually does not count, and neither does the following opponent turn.
 
+## How it works
+
+The plugin reads Hearthstone's `Power.log` (the same log HDT reads) on a background thread and uses its timestamps for the mulligan, every turn change, the AFK marker and the end of the game. If HDT is started in the middle of a game, the plugin reads the current game from its start. The log folder is taken from HDT's Hearthstone folder setting, with the running game as a fallback.
+
+Reading costs about 40 ms once when the plugin starts and well under a millisecond per update afterwards.
+
 ## How XP is calculated
 
 Hearthstone does not log reward track XP, so the formula was measured game by game. In short:
@@ -55,6 +61,7 @@ dotnet test tests\XpTracker.Core.Tests
 | `src/XpTracker.Core` | Calculation engine: XP time, rates, AFK rule. No HDT dependency. |
 | `src/XpTracker.Plugin` | HDT plugin: overlay and end-of-game summary. |
 | `tests/XpTracker.Core.Tests` | Unit tests for the calculation engine. |
+| `tools/XpTracker.LogCheck` | Replays `Power.log` files and prints the times per game. |
 | `docs/` | Documentation. |
 
 ## Versioning
