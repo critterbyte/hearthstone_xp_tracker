@@ -21,11 +21,11 @@ The calculation engine is covered by unit tests. The points below need a real ga
 - [ ] **Rewind:** when either player uses a Rewind card, the XP time keeps running without a reset.
 - [ ] **HDT started during a game:** the overlay shows the full XP time since the first turn, not only the time since HDT started.
 - [ ] HDT stays responsive; no stutter in Hearthstone while the plugin is enabled.
-- [ ] Live text reads "XP time m:ss", "If win: +N XP", "If loss: +N XP".
+- [ ] Live text reads "XP time: m:ss", "If win: +N XP", "If loss: +N XP".
 
 ## End of game
 
-- [ ] After the game the summary reads "Last game: Win/Loss", "XP time m:ss", "Total time m:ss" (including the mulligan) and "+N XP". It is hidden on the victory/defeat screen by HDT and appears in the menu.
+- [ ] After the game the summary reads "Last game: Win/Loss", "XP time: m:ss", "Total time m:ss" (including the mulligan) and "+N XP". It is hidden on the victory/defeat screen by HDT and appears in the menu.
 - [ ] The earned XP matches the XP shown by the game (win, loss, concede, opponent concedes).
 - [ ] The summary stays visible in the menu and disappears when the next mulligan starts.
 

@@ -19,7 +19,7 @@ public static class XpDisplayText
         }
 
         var snapshot = clock.GetSnapshot(now);
-        var xpTime = "XP time " + TimeFormat.MinutesSeconds(Math.Min(snapshot.XpSeconds, XpRates.MaxXpSeconds)) + Suffix(snapshot, clock.IsOver);
+        var xpTime = "XP time: " + TimeFormat.MinutesSeconds(Math.Min(snapshot.XpSeconds, XpRates.MaxXpSeconds)) + Suffix(snapshot, clock.IsOver);
 
         if (!clock.IsOver)
         {

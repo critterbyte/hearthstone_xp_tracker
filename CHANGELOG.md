@@ -17,7 +17,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `XpRates.RateFor`: rate lookup by game mode and result.
 - `PowerLogTracker` and `PowerLogTail`: read game times directly from Hearthstone's `Power.log` with the log timestamps, on a background thread. When HDT is started in the middle of a game, the current game is read from its start. AFK turns are detected from the player's turn limit (10 seconds).
 - `tools/XpTracker.LogCheck`: replays `Power.log` files or archives and prints the times per game; `--tail` measures the plugin's read times.
-- Live overlay above the Hearthstone settings button: "XP time", "If win: +N XP", "If loss: +N XP"; after the game a "Last game" summary with XP time, total time including the mulligan and the XP earned, shown until the next mulligan.
+- Live overlay above the Hearthstone settings button: "XP time: m:ss", "If win: +N XP", "If loss: +N XP"; after the game a "Last game" summary with XP time, total time including the mulligan and the XP earned, shown until the next mulligan.
+
+### Changed
+
+- Overlay lines are drawn as blue tubes with white bold text, in the style of the reward track XP bar.
 
 ### Fixed
 
