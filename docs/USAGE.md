@@ -61,7 +61,7 @@ The dashboard shows a link to the download page. See [INSTALL.md](INSTALL.md#upd
 The dashboard window is called "HS XP Tracker". Open it in HDT in one of two ways:
 
 - the *Plugins* menu → "XP dashboard"
-- *Options → Tracker → Plugins* → the plugin's "XP dashboard" button
+- *Settings* (the gear icon on the right of the top bar) *→ Tracker → Plugins* → the plugin's "XP dashboard" button
 
 ### Toolbar
 

@@ -98,7 +98,20 @@ It prints one tab-separated line per game: date, first turn, mode, result, XP se
 
 - The version is set in `Directory.Build.props` only.
 - Releases are tagged `vX.Y.Z`. The update check only recognizes tags in exactly this form.
-- Move the *Unreleased* entries in `CHANGELOG.md` under the new version.
+- Until 1.0, every release is published as a pre-release.
+
+Steps:
+
+1. Set the version in `Directory.Build.props` and move the *Unreleased* entries in `CHANGELOG.md` under the new version with the date. Merge this into `main`.
+2. Run the manual checks in [docs/TESTING.md](docs/TESTING.md).
+3. On an up-to-date `main` without uncommitted changes, run:
+
+   ```powershell
+   .\release.ps1
+   ```
+
+   The script builds and tests, checks that the DLLs carry the version, and creates `artifacts\HearthstoneXpTracker-X.Y.Z.zip` with a `.sha256` checksum file. The ZIP contains only the folder `HearthstoneXpTracker` with the two DLLs, `INSTALL.txt` and `LICENSE.txt`. It stops if any other file would be included, so no HDT files can end up in a release.
+4. Tag the release and publish it on GitHub with the ZIP. Put the changelog entry and the SHA-256 checksum in the release notes. The script prints the commands.
 
 ## License
 

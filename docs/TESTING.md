@@ -4,7 +4,7 @@ The calculation engine is covered by unit tests. The points below need a real ga
 
 ## Installation
 
-- [ ] The plugin appears under *Options → Tracker → Plugins* and can be enabled.
+- [ ] The plugin appears under *Settings → Tracker → Plugins* and can be enabled.
 - [ ] Disabling the plugin removes the overlay immediately; enabling it shows it again.
 
 ## Live overlay
