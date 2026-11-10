@@ -5,15 +5,16 @@ using System.Globalization;
 namespace XpTracker.Core;
 
 /// <summary>
-/// One overlay row: a label and a value; XP values are shown with an XP icon.
+/// One overlay row: a label and a value; XP values are shown with an XP icon, event XP with a crystal.
 /// </summary>
 public sealed class XpLine
 {
-    public XpLine(string label, string value, bool isXp = false)
+    public XpLine(string label, string value, bool isXp = false, bool isEvent = false)
     {
         Label = label;
         Value = value;
         IsXp = isXp;
+        IsEvent = isEvent;
     }
 
     public string Label { get; }
@@ -21,6 +22,8 @@ public sealed class XpLine
     public string Value { get; }
 
     public bool IsXp { get; }
+
+    public bool IsEvent { get; }
 
     public override string ToString() => Label + " " + Value;
 }
@@ -30,7 +33,8 @@ public sealed class XpLine
 /// </summary>
 public static class XpDisplayText
 {
-    public static IReadOnlyList<XpLine> For(XpClock? clock, GameMode mode, DateTime now)
+    /// <param name="eventActive">A Hearthstone event is running: adds an "Event XP:" row with the event XP.</param>
+    public static IReadOnlyList<XpLine> For(XpClock? clock, GameMode mode, DateTime now, bool eventActive = false)
     {
         var winRate = XpRates.RateFor(mode, GameResult.Win);
         var lossRate = XpRates.RateFor(mode, GameResult.Loss);
@@ -42,24 +46,35 @@ public static class XpDisplayText
         var snapshot = clock.GetSnapshot(now);
         var xpTime = new XpLine("XP time:", TimeFormat.MinutesSeconds(Math.Min(snapshot.XpSeconds, XpRates.MaxXpSeconds)) + Suffix(snapshot, clock.IsOver));
 
+        List<XpLine> lines;
         if (!clock.IsOver)
         {
-            return new[]
+            lines = new List<XpLine>
             {
                 xpTime,
                 new XpLine("If win:", Plus(snapshot.ExpectedXp(winRate.Value)), isXp: true),
                 new XpLine("If loss:", Plus(snapshot.ExpectedXp(lossRate.Value)), isXp: true),
             };
         }
-
-        var rate = XpRates.RateFor(mode, clock.Result);
-        return new[]
+        else
         {
-            new XpLine("Last game:", clock.Result is GameResult.Unknown ? "?" : clock.Result.ToString()),
-            xpTime,
-            new XpLine("Total time:", TimeFormat.MinutesSeconds(snapshot.WithMulliganSeconds)),
-            rate is null ? new XpLine("Earned:", "unknown") : new XpLine("Earned:", Plus(snapshot.ExpectedXp(rate.Value)), isXp: true),
-        };
+            var rate = XpRates.RateFor(mode, clock.Result);
+            lines = new List<XpLine>
+            {
+                new XpLine("Last game:", clock.Result is GameResult.Unknown ? "?" : clock.Result.ToString()),
+                xpTime,
+                new XpLine("Total time:", TimeFormat.MinutesSeconds(snapshot.WithMulliganSeconds)),
+                rate is null ? new XpLine("Earned:", "unknown") : new XpLine("Earned:", Plus(snapshot.ExpectedXp(rate.Value)), isXp: true),
+            };
+        }
+
+        // Event XP does not depend on the result, so one row is enough, live and after the game.
+        if (eventActive)
+        {
+            lines.Add(new XpLine("Event XP:", Plus(XpRates.EventXp(snapshot.XpSeconds)), isEvent: true));
+        }
+
+        return lines;
     }
 
     /// <summary>

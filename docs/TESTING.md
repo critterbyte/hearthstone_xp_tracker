@@ -29,6 +29,11 @@ The calculation engine is covered by unit tests. The points below need a real ga
 - [ ] The earned XP matches the XP shown by the game (win, loss, concede, opponent concedes).
 - [ ] The summary stays visible in the menu and disappears when the next mulligan starts.
 
+## Event XP
+
+- [ ] With "Event running" switched on, the overlay shows "Event XP:" with the red crystal under "If loss:", live and in the summary; the value matches the event XP shown by the game.
+- [ ] With the switch off, the row disappears at once and new games have no event XP.
+
 ## Game history
 
 - [ ] After each game a row is added to `%APPDATA%\HearthstoneDeckTracker\XpTracker\hs_games.csv` with the right mode, format, result, times, XP, deck and classes.

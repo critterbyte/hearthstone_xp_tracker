@@ -32,6 +32,9 @@ public sealed class GameRecord
     /// <summary>Calculated XP; null for modes or results without a measured rate.</summary>
     public int? Xp { get; set; }
 
+    /// <summary>Calculated event XP; null when no event was marked as running.</summary>
+    public int? EventXp { get; set; }
+
     public string Deck { get; set; } = string.Empty;
 
     public string PlayerClass { get; set; } = string.Empty;
@@ -41,7 +44,8 @@ public sealed class GameRecord
     /// <summary>Identifies a game across repeated reads of the same log.</summary>
     public string Key => Session + "|" + Start.ToString("yyyy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture);
 
-    public static GameRecord From(FinishedGame game)
+    /// <param name="eventActive">A Hearthstone event is running, so the game also earns event XP.</param>
+    public static GameRecord From(FinishedGame game, bool eventActive = false)
     {
         var snapshot = game.Clock.GetSnapshot(game.End);
         var rate = XpRates.RateFor(game.Mode, game.Clock.Result);
@@ -58,6 +62,7 @@ public sealed class GameRecord
             WithMulliganSeconds = snapshot.WithMulliganSeconds,
             AfkTurns = game.Clock.AfkTurns,
             Xp = rate is null ? null : snapshot.ExpectedXp(rate.Value),
+            EventXp = eventActive ? XpRates.EventXp(snapshot.XpSeconds) : null,
         };
     }
 
@@ -68,16 +73,25 @@ public sealed class GameRecord
     /// <returns>True if the XP changed.</returns>
     public bool RecalculateXp()
     {
+        var changed = false;
+
+        // Event XP only for games that were stored during an event.
+        if (EventXp is not null && EventXp != XpRates.EventXp(XpSeconds))
+        {
+            EventXp = XpRates.EventXp(XpSeconds);
+            changed = true;
+        }
+
         var rate = XpRates.RateFor(Mode, Result);
         if (rate is null)
         {
-            return false;
+            return changed;
         }
 
         var xp = XpRates.ExpectedXp(XpSeconds, rate.Value);
         if (Xp == xp)
         {
-            return false;
+            return changed;
         }
 
         Xp = xp;

@@ -57,6 +57,12 @@ public sealed class SummaryStats
 
     public int Xp { get; set; }
 
+    /// <summary>Event XP of the games played during an event.</summary>
+    public int EventXp { get; set; }
+
+    /// <summary>At least one game of the period was played during an event.</summary>
+    public bool HasEventXp { get; set; }
+
     public double XpSeconds { get; set; }
 
     /// <summary>Game time including the mulligan.</summary>
@@ -251,6 +257,8 @@ public static class Dashboard
             Wins = games.Count(g => g.Result == GameResult.Win),
             Losses = games.Count(g => g.Result == GameResult.Loss),
             Xp = games.Sum(g => g.Xp ?? 0),
+            EventXp = games.Sum(g => g.EventXp ?? 0),
+            HasEventXp = games.Any(g => g.EventXp is not null),
             XpSeconds = games.Sum(g => g.XpSeconds),
             PlaySeconds = games.Sum(g => g.WithMulliganSeconds),
             OnlineSeconds = OnlineSeconds(games, periodStart, now, currentSession),

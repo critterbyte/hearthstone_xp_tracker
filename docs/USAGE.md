@@ -31,6 +31,14 @@ The XP time can have a note:
 | "(paused)" | You let your turn run out without any action. That turn and the opponent's next turn do not count, so the XP time jumped back and waits. It runs again in your next turn. |
 | "(max)" | The XP time reached 30 minutes. More time gives no more XP. |
 
+During a Hearthstone event, switch on "Event running (show event XP)" in the dashboard. The overlay then shows one more row, live and in the summary after the game:
+
+| Row | Meaning |
+|---|---|
+| "Event XP:" | The event XP so far, with a red crystal: one per minute of XP time (see [FORMULA.md](FORMULA.md#event-xp)). It does not depend on the result. |
+
+Switch it off when the event ends.
+
 While the XP time is below 60 seconds, both XP values show "+0". Games under one minute give no XP. See [FORMULA.md](FORMULA.md) for the rules.
 
 If you start HDT in the middle of a game, the plugin still reads the game from its start.
@@ -76,6 +84,7 @@ The dashboard window is called "HS XP Tracker". Open it in HDT in one of two way
 | "Refresh" | Read the history again |
 | "Export CSV" | Save a copy of the history file |
 | "Open data folder" | Open the folder with the history file in Windows Explorer |
+| "Event running (show event XP)" | Switch on during a Hearthstone event: the overlay shows the event XP, and new games store it. |
 | "Check for updates when HDT starts" | Turn the update check on or off. See [Privacy](#privacy). |
 
 A finished game appears in an open dashboard on its own. You do not need to click "Refresh".
@@ -96,6 +105,7 @@ For "Session", a line below the toolbar names the session, for example "Session 
 | "XP per hour" | XP per hour of XP time |
 | "XP per online hour" | XP per hour of online time, so including menus and the queue |
 | "Win rate" | Share of games won |
+| "Event XP" | Event XP of the period; only shown when games were played during an event |
 
 Online time is counted per Hearthstone session: from the start of Hearthstone to the end of the last game. While Hearthstone is running, it counts up to now. Only sessions with at least one game in the period count.
 
@@ -115,7 +125,7 @@ Deck names come from HDT's own statistics. A game that HDT did not record shows 
 
 **Games**
 
-All games of the period, newest first: date, start, mode, result, XP time, total time, XP, AFK turns, deck and opponent class. Click a column header to sort.
+All games of the period, newest first: date, start, mode, result, XP time, total time, XP, event XP, AFK turns, deck and opponent class. Click a column header to sort.
 
 **Charts**
 
@@ -163,6 +173,7 @@ The file uses commas between fields and a dot as the decimal sign. Times are loc
 | `Deck` | Deck name from HDT |
 | `PlayerClass` | Your class |
 | `OpponentClass` | The opponent's class |
+| `EventXp` | Event XP calculated by the plugin; empty for games outside events. Files from older versions without this column are still read, and the column is added with the next game. |
 
 The `Xp` column is calculated by the plugin from the XP time. The game itself does not log XP. When the dashboard opens, the plugin calculates the XP of all stored games again with the current rates, so a corrected rate also fixes older games.
 

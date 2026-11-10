@@ -38,6 +38,9 @@ internal sealed class DashboardWindow : Window
 
     // Slightly lighter mana blue for large numbers, so they stay easy to read on the dark wood.
     private static readonly Brush ManaBright = Solid(0x5D, 0xAD, 0xF2);
+
+    // Warm red of the event crystal, for event XP values.
+    private static readonly Brush EventRed = Solid(0xF2, 0x6A, 0x4F);
     private static readonly FontFamily TitleFont = new("Georgia");
 
     private readonly GameHistory _history;
@@ -54,6 +57,8 @@ internal sealed class DashboardWindow : Window
     private readonly CartesianChart _rateChart = CreateChart("XP per hour");
     private readonly bool _checkForUpdates;
     private readonly Action<bool>? _setCheckForUpdates;
+    private readonly Action<bool>? _setEventActive;
+    private bool _eventActive;
     private readonly TextBlock _updateText = new() { Foreground = Parchment, VerticalAlignment = VerticalAlignment.Center, TextWrapping = TextWrapping.Wrap };
     private readonly Border _updateBar;
     private string _updateUrl = UpdateCheck.ReleasesPage;
@@ -68,7 +73,9 @@ internal sealed class DashboardWindow : Window
         Func<bool> hearthstoneRunning,
         Func<IReadOnlyList<DeckInfo>>? hdtDecks = null,
         bool checkForUpdates = true,
-        Action<bool>? setCheckForUpdates = null)
+        Action<bool>? setCheckForUpdates = null,
+        bool eventActive = false,
+        Action<bool>? setEventActive = null)
     {
         _history = history;
         _historyPath = historyPath;
@@ -76,6 +83,8 @@ internal sealed class DashboardWindow : Window
         _hearthstoneRunning = hearthstoneRunning;
         _checkForUpdates = checkForUpdates;
         _setCheckForUpdates = setCheckForUpdates;
+        _eventActive = eventActive;
+        _setEventActive = setEventActive;
         _updateBar = UpdateBar();
         UpdateStoredGames(hdtDecks);
 
@@ -206,6 +215,10 @@ internal sealed class DashboardWindow : Window
         _overview.Children.Add(Tile("XP per hour", summary.XpPerHour.ToString("0", CultureInfo.InvariantCulture), "of XP time"));
         _overview.Children.Add(Tile("XP per online hour", summary.XpPerOnlineHour.ToString("0", CultureInfo.InvariantCulture), "including menus and queue"));
         _overview.Children.Add(Tile("Win rate", summary.Games > 0 ? ((double)summary.Wins / summary.Games).ToString("0%", CultureInfo.InvariantCulture) : "-"));
+        if (summary.HasEventXp)
+        {
+            _overview.Children.Add(Tile("Event XP", summary.EventXp.ToString(CultureInfo.InvariantCulture), "1 per minute of XP time", EventRed));
+        }
 
         _lost.Children.Clear();
         _lost.Children.Add(Tile("AFK turns", lost.AfkXp.ToString(CultureInfo.InvariantCulture) + " XP", $"{lost.AfkTurns} turns without action or End Turn"));
@@ -397,20 +410,38 @@ internal sealed class DashboardWindow : Window
         bar.Children.Add(Action("Open data folder", OpenFolder));
 
         var toolbar = new DockPanel();
+        var options = new StackPanel { VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(0, 4, 10, 4) };
+        if (_setEventActive is not null)
+        {
+            var eventCheck = new CheckBox
+            {
+                Content = "Event running (show event XP)",
+                IsChecked = _eventActive,
+                Margin = new Thickness(0, 2, 0, 2),
+                ToolTip = "Switch on while a Hearthstone event runs: the overlay shows the event XP, and new games store it.",
+            };
+            eventCheck.Click += (_, _) =>
+            {
+                _eventActive = eventCheck.IsChecked == true;
+                _setEventActive(_eventActive);
+            };
+            options.Children.Add(eventCheck);
+        }
+
         if (_setCheckForUpdates is not null)
         {
             var check = new CheckBox
             {
                 Content = "Check for updates when HDT starts",
                 IsChecked = _checkForUpdates,
-                VerticalAlignment = VerticalAlignment.Center,
-                Margin = new Thickness(0, 10, 10, 10),
+                Margin = new Thickness(0, 2, 0, 2),
             };
             check.Click += (_, _) => _setCheckForUpdates(check.IsChecked == true);
-            DockPanel.SetDock(check, Dock.Right);
-            toolbar.Children.Add(check);
+            options.Children.Add(check);
         }
 
+        DockPanel.SetDock(options, Dock.Right);
+        toolbar.Children.Add(options);
         toolbar.Children.Add(bar);
         return toolbar;
     }
@@ -638,6 +669,7 @@ internal sealed class DashboardWindow : Window
         _games.Columns.Add(Column("XP time", nameof(GameRow.XpTime), nameof(GameRow.XpSeconds)));
         _games.Columns.Add(Column("Total time", nameof(GameRow.TotalTime), nameof(GameRow.TotalSeconds)));
         _games.Columns.Add(Column("XP", nameof(GameRow.Xp), nameof(GameRow.XpValue)));
+        _games.Columns.Add(Column("Event", nameof(GameRow.EventXp), nameof(GameRow.EventXpValue)));
         _games.Columns.Add(Column("AFK", nameof(GameRow.AfkTurns), nameof(GameRow.AfkTurns)));
         _games.Columns.Add(Column("Deck", nameof(GameRow.Deck), nameof(GameRow.Deck), width: 2));
         _games.Columns.Add(Column("Opponent", nameof(GameRow.Opponent), nameof(GameRow.Opponent)));
@@ -714,11 +746,11 @@ internal sealed class DashboardWindow : Window
         return button;
     }
 
-    private static Border Tile(string title, string value, string? note = null)
+    private static Border Tile(string title, string value, string? note = null, Brush? valueColor = null)
     {
         var panel = new StackPanel();
         panel.Children.Add(new TextBlock { Text = title, Foreground = Muted, FontSize = 13, FontWeight = FontWeights.SemiBold });
-        panel.Children.Add(new TextBlock { Text = value, Foreground = ManaBright, FontFamily = TitleFont, FontSize = 28, FontWeight = FontWeights.Bold, Margin = new Thickness(0, 4, 0, 2) });
+        panel.Children.Add(new TextBlock { Text = value, Foreground = valueColor ?? ManaBright, FontFamily = TitleFont, FontSize = 28, FontWeight = FontWeights.Bold, Margin = new Thickness(0, 4, 0, 2) });
         if (note is not null)
         {
             panel.Children.Add(new TextBlock { Text = note, Foreground = Muted, FontSize = 11, TextWrapping = TextWrapping.Wrap });
@@ -775,6 +807,8 @@ internal sealed class DashboardWindow : Window
             TotalSeconds = g.WithMulliganSeconds;
             XpValue = g.Xp ?? -1;
             Xp = g.Xp?.ToString(CultureInfo.InvariantCulture) ?? "-";
+            EventXpValue = g.EventXp ?? -1;
+            EventXp = g.EventXp?.ToString(CultureInfo.InvariantCulture) ?? "-";
             AfkTurns = g.AfkTurns;
             Deck = g.Deck;
             Opponent = g.OpponentClass.Length > 0 ? char.ToUpperInvariant(g.OpponentClass[0]) + g.OpponentClass.Substring(1).ToLowerInvariant() : string.Empty;
@@ -801,6 +835,10 @@ internal sealed class DashboardWindow : Window
         public int XpValue { get; }
 
         public string Xp { get; }
+
+        public int EventXpValue { get; }
+
+        public string EventXp { get; }
 
         public int AfkTurns { get; }
 

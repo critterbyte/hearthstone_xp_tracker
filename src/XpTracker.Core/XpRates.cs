@@ -44,6 +44,14 @@ public static class XpRates
     public static int FormulaXp(double xpSeconds, double rate) =>
         (int)Math.Round(Math.Max(xpSeconds, 0) * rate, MidpointRounding.AwayFromZero);
 
+    /// <summary>
+    /// Event XP during a Hearthstone event: one per minute of XP time, rounded half up (30 s and more count as a minute).
+    /// Measured in November 2026 in Ranked and Casual: no 60-second minimum, no win bonus, same in both modes.
+    /// Whether event XP is capped at 30 minutes is not known yet, so no cap is applied.
+    /// </summary>
+    public static int EventXp(double xpSeconds) =>
+        (int)Math.Round(Math.Max(xpSeconds, 0) / 60, MidpointRounding.AwayFromZero);
+
     public static int ExpectedXp(double xpSeconds, double rate)
     {
         if (xpSeconds < MinXpSeconds)
