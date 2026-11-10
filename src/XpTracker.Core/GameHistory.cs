@@ -15,8 +15,11 @@ public sealed class GameHistory
     private static readonly string[] Columns =
     {
         "Session", "Start", "End", "Mode", "Format", "Result", "XpSeconds", "PlaySeconds",
-        "WithMulliganSeconds", "AfkTurns", "Xp", "Deck", "PlayerClass", "OpponentClass",
+        "WithMulliganSeconds", "AfkTurns", "Xp", "Deck", "PlayerClass", "OpponentClass", "EventXp",
     };
+
+    // Files written before EventXp was added have one column less; they are still read.
+    private const int OldColumnCount = 14;
 
     private const string DateFormat = "yyyy-MM-ddTHH:mm:ss.fff";
 
@@ -48,6 +51,15 @@ public sealed class GameHistory
             }
 
             var newFile = !File.Exists(_path) || new FileInfo(_path).Length == 0;
+            if (!newFile && File.ReadLines(_path, Encoding.UTF8).FirstOrDefault() != string.Join(",", Columns))
+            {
+                // Older file without the newest columns: rewrite it once with the current header.
+                var all = Load().ToList();
+                all.Add(record);
+                ReplaceAll(all);
+                return true;
+            }
+
             using var writer = new StreamWriter(_path, append: true, new UTF8Encoding(false));
             if (newFile)
             {
@@ -106,7 +118,7 @@ public sealed class GameHistory
         foreach (var line in File.ReadLines(_path, Encoding.UTF8).Skip(1))
         {
             var fields = SplitCsv(line);
-            if (fields.Count >= Columns.Length)
+            if (fields.Count >= OldColumnCount)
             {
                 records.Add(FromCsv(fields));
             }
@@ -131,6 +143,7 @@ public sealed class GameHistory
         Quote(r.Deck),
         Quote(r.PlayerClass),
         Quote(r.OpponentClass),
+        r.EventXp?.ToString(CultureInfo.InvariantCulture) ?? string.Empty,
     });
 
     private static GameRecord FromCsv(IReadOnlyList<string> f) => new()
@@ -149,6 +162,7 @@ public sealed class GameHistory
         Deck = f[11],
         PlayerClass = f[12],
         OpponentClass = f[13],
+        EventXp = f.Count > OldColumnCount && f[OldColumnCount].Length > 0 ? int.Parse(f[OldColumnCount], CultureInfo.InvariantCulture) : null,
     };
 
     private static string Quote(string value) =>

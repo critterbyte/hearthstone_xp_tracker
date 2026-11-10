@@ -120,11 +120,11 @@ public class XpTrackerPlugin : IPlugin
         var now = DateTime.Now;
         var update = _update?.VersionText;
         var lines = _tail.Read(t => XpDisplayText.WithUpdate(
-            XpDisplayText.For(t?.Clock, t?.Mode ?? GameMode.Other, now),
+            XpDisplayText.For(t?.Clock, t?.Mode ?? GameMode.Other, now, _settings.EventActive),
             gameRunning: t?.Clock is { HasStarted: true, IsOver: false },
             update));
         // The text changes at most once per second; only touch the visual tree when it does.
-        var key = string.Join("\n", lines.Select(l => l + (l.IsXp ? " xp" : string.Empty)));
+        var key = string.Join("\n", lines.Select(l => l + (l.IsXp ? " xp" : l.IsEvent ? " event" : string.Empty)));
         if (key != _shownKey)
         {
             _shownKey = key;
@@ -139,7 +139,7 @@ public class XpTrackerPlugin : IPlugin
     {
         if (_dashboard is null)
         {
-            _dashboard = new DashboardWindow(_history, HistoryPath, () => _tail?.CurrentSession, IsHearthstoneRunning, HdtDecks.All, _settings.CheckForUpdates, SetCheckForUpdates);
+            _dashboard = new DashboardWindow(_history, HistoryPath, () => _tail?.CurrentSession, IsHearthstoneRunning, HdtDecks.All, _settings.CheckForUpdates, SetCheckForUpdates, _settings.EventActive, SetEventActive);
             _dashboard.ShowUpdate(_update);
             _dashboard.Closed += (_, _) => _dashboard = null;
             _dashboard.Show();
@@ -185,6 +185,29 @@ public class XpTrackerPlugin : IPlugin
     }
 
     // Called from the dashboard check box.
+    // Called from the dashboard check box "Event running": shows the event XP row and stores event XP with new games.
+    private void SetEventActive(bool active)
+    {
+        _settings.EventActive = active;
+        SaveSettings();
+        _shownKey = string.Empty;
+    }
+
+    private void SaveSettings()
+    {
+        try
+        {
+            _settings.Save(SettingsPath);
+        }
+        catch (IOException)
+        {
+            // The setting applies until HDT is closed; the next start reads the old file.
+        }
+        catch (UnauthorizedAccessException)
+        {
+        }
+    }
+
     private void SetCheckForUpdates(bool check)
     {
         _settings.CheckForUpdates = check;
@@ -219,7 +242,7 @@ public class XpTrackerPlugin : IPlugin
 
     private void SaveGame(FinishedGame game)
     {
-        var record = GameRecord.From(game);
+        var record = GameRecord.From(game, _settings.EventActive);
         if (DateTime.Now - game.End < RecentGame)
         {
             record.Deck = HdtDecks.Current();

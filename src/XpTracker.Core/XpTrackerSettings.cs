@@ -12,6 +12,9 @@ public sealed class XpTrackerSettings
     /// <summary>Ask GitHub for a newer release when HDT starts.</summary>
     public bool CheckForUpdates { get; set; } = true;
 
+    /// <summary>A Hearthstone event is running: show and store event XP. Switched on and off by the user.</summary>
+    public bool EventActive { get; set; }
+
     /// <summary>Reads the settings; unknown keys and invalid values are ignored and keep their defaults.</summary>
     public static XpTrackerSettings Parse(IEnumerable<string> lines)
     {
@@ -29,6 +32,10 @@ public sealed class XpTrackerSettings
             if (key.Equals(nameof(CheckForUpdates), StringComparison.OrdinalIgnoreCase) && bool.TryParse(value, out var check))
             {
                 settings.CheckForUpdates = check;
+            }
+            else if (key.Equals(nameof(EventActive), StringComparison.OrdinalIgnoreCase) && bool.TryParse(value, out var eventActive))
+            {
+                settings.EventActive = eventActive;
             }
         }
 
@@ -55,6 +62,7 @@ public sealed class XpTrackerSettings
     public IEnumerable<string> ToLines()
     {
         yield return nameof(CheckForUpdates) + "=" + (CheckForUpdates ? "true" : "false");
+        yield return nameof(EventActive) + "=" + (EventActive ? "true" : "false");
     }
 
     public void Save(string path)

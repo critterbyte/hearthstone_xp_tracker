@@ -120,6 +120,7 @@ internal sealed class XpOverlay : Border
         private readonly Border _gloss;
         private readonly TextBlock _value;
         private readonly FrameworkElement _icon;
+        private readonly FrameworkElement _crystal;
 
         public Row(int index, Grid grid)
         {
@@ -145,9 +146,11 @@ internal sealed class XpOverlay : Border
                 Effect = new DropShadowEffect { Color = Colors.Black, ShadowDepth = 1, BlurRadius = 3, Opacity = 0.9 },
             };
             _icon = ScrollIcon.Create();
+            _crystal = CrystalIcon.Create();
 
             var content = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Center };
             content.Children.Add(_icon);
+            content.Children.Add(_crystal);
             content.Children.Add(_value);
 
             _gloss = new Border { Background = TubeGloss, VerticalAlignment = VerticalAlignment.Top };
@@ -176,6 +179,7 @@ internal sealed class XpOverlay : Border
             _label.Text = line.Label;
             _value.Text = line.Value;
             _icon.Visibility = line.IsXp ? Visibility.Visible : Visibility.Collapsed;
+            _crystal.Visibility = line.IsEvent ? Visibility.Visible : Visibility.Collapsed;
         }
 
         public void Resize(double fontSize)
@@ -184,8 +188,13 @@ internal sealed class XpOverlay : Border
             _label.FontSize = fontSize;
             _label.Margin = new Thickness(0, 0, fontSize * 0.6, fontSize * 0.25);
             _value.FontSize = fontSize;
+
+            // Georgia sits low in its line box; lift the numbers a little so they look centered in the tube.
+            _value.RenderTransform = new TranslateTransform(0, -fontSize * 0.09);
             _icon.Height = fontSize * 1.1;
             _icon.Margin = new Thickness(0, 0, fontSize * 0.25, 0);
+            _crystal.Height = fontSize * 1.2;
+            _crystal.Margin = new Thickness(0, 0, fontSize * 0.3, 0);
             _tube.Height = height;
             _tube.MinWidth = fontSize * 5.5;
             _tube.CornerRadius = new CornerRadius(height / 2);
@@ -227,6 +236,55 @@ internal sealed class XpOverlay : Border
             Canvas.SetLeft(shape, left);
             Canvas.SetTop(shape, top);
             canvas.Children.Add(shape);
+        }
+    }
+
+    /// <summary>
+    /// Glowing red crystal drawn as vector shapes, used as the event XP symbol (own drawing, no game artwork).
+    /// </summary>
+    private static class CrystalIcon
+    {
+        private static readonly Brush Body = Frozen(Vertical(
+            (Color.FromRgb(0xFF, 0x9A, 0x7A), 0.0),
+            (Color.FromRgb(0xE8, 0x3A, 0x22), 0.45),
+            (Color.FromRgb(0x8A, 0x10, 0x08), 1.0)));
+        private static readonly Brush Core = Frozen(Vertical(
+            (Color.FromArgb(0xC0, 0xFF, 0xC0, 0x90), 0.0),
+            (Color.FromArgb(0x30, 0xFF, 0x60, 0x30), 1.0)));
+        private static readonly Brush Edge = Frozen(new SolidColorBrush(Color.FromRgb(0x4A, 0x08, 0x04)));
+        private static readonly Brush Facet = Frozen(new SolidColorBrush(Color.FromArgb(0xB0, 0x5A, 0x0C, 0x06)));
+
+        public static FrameworkElement Create()
+        {
+            // Drawn on a 16 x 22 grid and scaled to the font size: an elongated gem with a lighter inner facet.
+            var canvas = new Canvas { Width = 16, Height = 22 };
+            canvas.Children.Add(new Polygon
+            {
+                Points = new PointCollection { new(8, 0.5), new(15, 6), new(13.5, 17), new(8, 21.5), new(2.5, 17), new(1, 6) },
+                Fill = Body,
+                Stroke = Edge,
+                StrokeThickness = 1,
+                StrokeLineJoin = PenLineJoin.Round,
+            });
+            canvas.Children.Add(new Polygon
+            {
+                Points = new PointCollection { new(8, 4), new(11.5, 8), new(10.5, 15), new(8, 17.5), new(5.5, 15), new(4.5, 8) },
+                Fill = Core,
+                Stroke = Facet,
+                StrokeThickness = 0.7,
+            });
+            foreach (var (x1, y1, x2, y2) in new[] { (8.0, 0.5, 8.0, 4.0), (1.0, 6.0, 4.5, 8.0), (15.0, 6.0, 11.5, 8.0), (2.5, 17.0, 5.5, 15.0), (13.5, 17.0, 10.5, 15.0), (8.0, 21.5, 8.0, 17.5) })
+            {
+                canvas.Children.Add(new Line { X1 = x1, Y1 = y1, X2 = x2, Y2 = y2, Stroke = Facet, StrokeThickness = 0.7 });
+            }
+
+            return new Viewbox
+            {
+                Child = canvas,
+                VerticalAlignment = VerticalAlignment.Center,
+                Stretch = Stretch.Uniform,
+                Effect = new DropShadowEffect { Color = Color.FromRgb(0xFF, 0x40, 0x20), ShadowDepth = 0, BlurRadius = 6, Opacity = 0.8 },
+            };
         }
     }
 }

@@ -85,6 +85,22 @@ All **measured**:
 - The opponent being AFK: their idle turns still count fully for you, even several in a row
 - A Rewind card resetting the game
 
+## Event XP
+
+During a Hearthstone event, games also give event XP for the event's own reward track. All statements are **measured** in the event *30 Years of Terror* (November 2026), in 9 games in Ranked and Casual:
+
+```
+eventXp = round(xpSeconds / 60)
+```
+
+- One event XP per minute of XP time. 30 seconds and more count as a full minute: 12:29.71 gave 12, 33.21 s gave 1, 27.14 s gave 0.
+- The XP time is the same as for reward track XP: from the first turn, without the mulligan, without AFK turns and the opponent turns after them. In three games the time including the mulligan or the AFK turns would have given one more.
+- There is no 60-second minimum: a concede after 36.52 s gave 0 reward track XP but 1 event XP.
+- A win gives the same as a loss, and Casual gives the same as Ranked.
+- Not measured yet: whether event XP is capped at 30 minutes, and other modes.
+
+**According to [8]**, event XP "can also be earned by just playing regularly", and event quests are the fastest way to complete the event track.
+
 ## Log markers used
 
 | Moment | `Power.log` entry |
@@ -104,7 +120,6 @@ Timestamps in the log have seven decimal places (100-nanosecond ticks). Whole se
   - **According to [5]:** Friendly Challenges do not give XP.
 - **Tavern Pass:** **according to [6]**, the Tavern Pass gives an XP boost of 10%, rising to 15% and 20% on the track. **According to [7]**, the boost applies to XP from any source. It is not measured whether the boost multiplies these rates. All measurements were made without it.
 - **30-minute cap:** not measured, see above.
-- **Event XP:** event reward tracks have their own XP. Not measured.
 
 ## Sources
 
@@ -115,5 +130,6 @@ Timestamps in the log have seven decimal places (100-nanosecond ticks). Whole se
 5. Blizzard, *19.0 Patch Notes*, 11 November 2020. <https://hearthstone.blizzard.com/en-us/news/23557139>
 6. Blizzard, *Reign of the Black Empire Rewards Track Refresh*, 2026. <https://news.blizzard.com/en-us/article/24309582/>
 7. Hearthstone Wiki, *Rewards Track*. <https://hearthstone.wiki.gg/wiki/Rewards_Track>
+8. Blizzard, *24.6 Patch Notes*, 1 November 2022: "Event XP can also be earned by just playing regularly". <https://hearthstone.blizzard.com/en-us/news/23852694/24-6-patch-notes>
 
 Sources 1 to 3 and 5 are from the launch of the reward track in 2020. No newer source restates or changes these numbers. Source 4 is the only later official change to game XP that was found.
