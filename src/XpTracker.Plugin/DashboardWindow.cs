@@ -42,32 +42,38 @@ internal sealed class DashboardWindow : Window
 
     private readonly GameHistory _history;
     private readonly string _historyPath;
-    private readonly Func<string?> _currentSession;
+    private readonly Func<string?> _logSession;
+    private readonly Func<bool> _hearthstoneRunning;
     private readonly Dictionary<DashboardPeriod, ToggleButton> _periodButtons = new();
+    private readonly TextBlock _sessionInfo = new() { Foreground = Muted, FontSize = 12, Margin = new Thickness(14, 0, 14, 6) };
     private readonly UniformGrid _overview = new() { Columns = 4, VerticalAlignment = VerticalAlignment.Top };
     private readonly UniformGrid _lost = new() { Columns = 3, VerticalAlignment = VerticalAlignment.Top };
     private readonly DataGrid _decks = CreateGrid();
     private readonly DataGrid _games = CreateGrid();
-    private readonly CartesianChart _speedChart = CreateChart("XP per hour");
-    private readonly CartesianChart _progressChart = CreateProgressChart();
+    private readonly CartesianChart _xpChart = CreateChart("XP");
+    private readonly CartesianChart _rateChart = CreateChart("XP per hour");
     private readonly bool _checkForUpdates;
     private readonly Action<bool>? _setCheckForUpdates;
     private readonly TextBlock _updateText = new() { Foreground = Parchment, VerticalAlignment = VerticalAlignment.Center, TextWrapping = TextWrapping.Wrap };
     private readonly Border _updateBar;
     private string _updateUrl = UpdateCheck.ReleasesPage;
-    private DashboardPeriod _period = DashboardPeriod.Today;
+    private DashboardPeriod _period = DashboardPeriod.Session;
 
+    /// <param name="logSession">Session the log reader is reading; it stays the same after Hearthstone was closed.</param>
+    /// <param name="hearthstoneRunning">Whether the game client is running, so the online time of its session counts up to now.</param>
     public DashboardWindow(
         GameHistory history,
         string historyPath,
-        Func<string?> currentSession,
+        Func<string?> logSession,
+        Func<bool> hearthstoneRunning,
         Func<IReadOnlyList<DeckInfo>>? hdtDecks = null,
         bool checkForUpdates = true,
         Action<bool>? setCheckForUpdates = null)
     {
         _history = history;
         _historyPath = historyPath;
-        _currentSession = currentSession;
+        _logSession = logSession;
+        _hearthstoneRunning = hearthstoneRunning;
         _checkForUpdates = checkForUpdates;
         _setCheckForUpdates = setCheckForUpdates;
         _updateBar = UpdateBar();
@@ -100,6 +106,8 @@ internal sealed class DashboardWindow : Window
         var toolbar = Toolbar();
         DockPanel.SetDock(toolbar, Dock.Top);
         root.Children.Add(toolbar);
+        DockPanel.SetDock(_sessionInfo, Dock.Top);
+        root.Children.Add(_sessionInfo);
         root.Children.Add(tabs);
         Content = root;
 
@@ -158,8 +166,35 @@ internal sealed class DashboardWindow : Window
             all = Array.Empty<GameRecord>();
         }
 
-        var games = Dashboard.InPeriod(all, _period, now);
-        var summary = Dashboard.Summary(games, Dashboard.PeriodStart(_period, now), now, _currentSession());
+        // The log reader keeps naming the last session after Hearthstone was closed; it only counts as running while the game runs.
+        var logSession = _logSession();
+        var runningSession = _hearthstoneRunning() ? logSession : null;
+        var session = Dashboard.SelectSession(all, logSession);
+
+        IReadOnlyList<GameRecord> games;
+        DateTime periodStart;
+        IReadOnlyList<TimeBucket> buckets;
+        if (_period == DashboardPeriod.Session)
+        {
+            games = Dashboard.InSession(all, session);
+            periodStart = (session is null ? null : GameRecord.SessionStart(session)) ?? (games.Count > 0 ? games[0].Start : now);
+            var running = session is not null && session == runningSession;
+            var end = running ? now : games.Count > 0 ? games.Max(g => g.End) : periodStart;
+            buckets = Dashboard.SessionBuckets(games, periodStart, end);
+            _sessionInfo.Text = session is null
+                ? "No session yet."
+                : "Session since " + periodStart.ToString("ddd yyyy-MM-dd, HH:mm", CultureInfo.InvariantCulture) + (running ? " (running)" : " (ended)");
+            _sessionInfo.Visibility = Visibility.Visible;
+        }
+        else
+        {
+            games = Dashboard.InPeriod(all, _period, now);
+            periodStart = Dashboard.PeriodStart(_period, now);
+            buckets = Dashboard.Buckets(games, _period, now);
+            _sessionInfo.Visibility = Visibility.Collapsed;
+        }
+
+        var summary = Dashboard.Summary(games, periodStart, now, runningSession);
         var lost = Dashboard.Lost(games, summary);
 
         _overview.Children.Clear();
@@ -180,48 +215,133 @@ internal sealed class DashboardWindow : Window
         _decks.ItemsSource = Dashboard.Decks(games).Select(d => new DeckRow(d)).ToList();
         _games.ItemsSource = games.Reverse().Select(g => new GameRow(g)).ToList();
 
-        var curve = Dashboard.SpeedCurve(games, _period);
-        var labelFormat = _period == DashboardPeriod.Today ? "HH:mm" : "MM-dd";
-        _speedChart.Series = new SeriesCollection
-        {
-            new LineSeries
-            {
-                Title = "XP per hour of game time",
-                Values = new ChartValues<double>(curve.Select(p => Math.Round(p.XpPerHour))),
-                Stroke = Mana,
-                StrokeThickness = 2.5,
-                Fill = Brushes.Transparent,
-                PointGeometrySize = 7,
-                PointForeground = Mana,
-                LineSmoothness = 0.3,
-            },
-        };
-        _speedChart.AxisX[0].Labels = curve.Select(p => p.Time.ToString(labelFormat, CultureInfo.InvariantCulture)).ToArray();
-
-        var progress = Dashboard.ProgressCurve(games);
-        _progressChart.Series = new SeriesCollection
-        {
-            new LineSeries
-            {
-                Title = "XP",
-                Values = new ChartValues<ObservablePoint>(progress.Select(p => new ObservablePoint(p.PlaySeconds / 3600, p.Xp))),
-                Stroke = GoldBright,
-                StrokeThickness = 2.5,
-                Fill = Solid(0x4A, 0x32, 0x1D),
-                PointGeometrySize = 6,
-                PointForeground = GoldBright,
-                LineSmoothness = 0,
-                LabelPoint = p => $"{p.Y:0} XP after {HoursMinutes(p.X)} of play",
-            },
-        };
+        var labels = buckets.Select(b => b.Label).ToArray();
+        ShowXpCurve(buckets, labels);
+        ShowRateCurve(buckets, labels, summary.XpPerHour);
     }
 
-    // Hours as h:mm, for the progress chart's time axis.
-    private static string HoursMinutes(double hours)
+    // XP earned per hour (today) or per day: a smooth gold curve over a gold gradient; steps without games are at 0.
+    private void ShowXpCurve(IReadOnlyList<TimeBucket> buckets, string[] labels)
     {
-        var minutes = (int)Math.Round(hours * 60);
-        return (minutes / 60).ToString(CultureInfo.InvariantCulture) + ":" + (minutes % 60).ToString("00", CultureInfo.InvariantCulture);
+        _xpChart.Series = new SeriesCollection
+        {
+            new LineSeries
+            {
+                Title = "XP earned",
+                Values = new ChartValues<double>(buckets.Select(b => (double)b.Xp)),
+                Stroke = GoldBright,
+                StrokeThickness = 3,
+                Fill = Fade(0xF0, 0xC7, 0x5E, 0x90),
+                LineSmoothness = 0.6,
+                PointGeometry = DefaultGeometries.Circle,
+                PointGeometrySize = 9,
+                PointForeground = Back,
+                LabelPoint = p => $"{buckets[p.Key].Title} · {buckets[p.Key].Xp} XP · {Games(buckets[p.Key].Games)}",
+            },
+        };
+        SetTimeAxis(_xpChart, labels);
     }
+
+    // XP per hour in each step: a glowing mana-blue curve through the steps with games, and the period average as a dashed line.
+    private void ShowRateCurve(IReadOnlyList<TimeBucket> buckets, string[] labels, double average)
+    {
+        ChartValues<ObservablePoint> Rates()
+        {
+            var values = new ChartValues<ObservablePoint>();
+            for (var i = 0; i < buckets.Count; i++)
+            {
+                if (buckets[i].XpPerHour is { } rate)
+                {
+                    values.Add(new ObservablePoint(i, Math.Round(rate)));
+                }
+            }
+
+            return values;
+        }
+
+        var series = new SeriesCollection
+        {
+            // A wide, faint copy below the line gives it a soft glow.
+            new LineSeries
+            {
+                Title = "Glow",
+                Values = Rates(),
+                Stroke = Frozen(new SolidColorBrush(Color.FromArgb(0x40, 0x4A, 0x9B, 0xE8))),
+                StrokeThickness = 11,
+                Fill = Brushes.Transparent,
+                LineSmoothness = 0.6,
+                PointGeometry = null,
+                LabelPoint = _ => string.Empty,
+            },
+            new LineSeries
+            {
+                Title = "XP per hour",
+                Values = Rates(),
+                Stroke = ManaBright,
+                StrokeThickness = 3,
+                Fill = Fade(0x4A, 0x9B, 0xE8, 0x60),
+                LineSmoothness = 0.6,
+                PointGeometry = DefaultGeometries.Circle,
+                PointGeometrySize = 9,
+                PointForeground = Back,
+                LabelPoint = p => $"{buckets[(int)p.X].Title} · {p.Y:0} XP/h · {Games(buckets[(int)p.X].Games)}",
+            },
+        };
+
+        if (buckets.Count > 1 && buckets.Any(b => b.XpPerHour is not null))
+        {
+            var level = Math.Round(average);
+            series.Add(new LineSeries
+            {
+                Title = "Average",
+                Values = new ChartValues<ObservablePoint> { new(0, level), new(buckets.Count - 1, level) },
+                Stroke = Muted,
+                StrokeThickness = 1.5,
+                StrokeDashArray = new DoubleCollection { 5, 4 },
+                Fill = Brushes.Transparent,
+                LineSmoothness = 0,
+                PointGeometry = null,
+                LabelPoint = p => $"Average of the period: {p.Y:0} XP/h",
+            });
+        }
+
+        _rateChart.Series = series;
+        SetTimeAxis(_rateChart, labels);
+        SetRateAxis(buckets.Select(b => b.XpPerHour).OfType<double>().Append(average));
+    }
+
+    // 320 to 480 XP/h covers a Ranked loss (336) and win (470), so differences in speed stand out.
+    // The range only widens when a value lies outside, for example Casual losses (240).
+    private void SetRateAxis(IEnumerable<double> values)
+    {
+        var list = values.Where(v => v > 0).ToList();
+        var axis = _rateChart.AxisY[0];
+        axis.MinValue = Math.Min(320, list.Count > 0 ? Math.Floor(list.Min() / 40) * 40 : 320);
+        axis.MaxValue = Math.Max(480, list.Count > 0 ? Math.Ceiling(list.Max() / 40) * 40 : 480);
+        axis.Separator.Step = 40;
+    }
+
+    private static string Games(int count) => count == 1 ? "1 game" : count.ToString(CultureInfo.InvariantCulture) + " games";
+
+    // The same complete time axis for both charts, so they line up; labels are thinned out for long periods.
+    private static void SetTimeAxis(CartesianChart chart, string[] labels)
+    {
+        var axis = chart.AxisX[0];
+        axis.Labels = labels;
+        axis.MinValue = -0.4;
+        axis.MaxValue = Math.Max(labels.Length, 1) - 0.6;
+        axis.Separator.Step = labels.Length switch
+        {
+            <= 12 => 1,
+            <= 24 => 2,
+            <= 31 => 3,
+            _ => Math.Ceiling(labels.Length / 12.0),
+        };
+    }
+
+    // Vertical gradient from the given color at the top to almost transparent at the bottom.
+    private static Brush Fade(byte r, byte g, byte b, byte topAlpha) =>
+        Frozen(new LinearGradientBrush(Color.FromArgb(topAlpha, r, g, b), Color.FromArgb(0x08, r, g, b), 90));
 
     // Brings stored games up to date: XP is calculated again with the current rates (a rate may have been corrected),
     // and games stored without a deck (for example imported from logs) get deck and classes from HDT's statistics.
@@ -257,6 +377,7 @@ internal sealed class DashboardWindow : Window
         var bar = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(10) };
         foreach (var (period, text) in new[]
         {
+            (DashboardPeriod.Session, "Session"),
             (DashboardPeriod.Today, "Today"),
             (DashboardPeriod.Week, "This week"),
             (DashboardPeriod.Season, "This season"),
@@ -324,23 +445,23 @@ internal sealed class DashboardWindow : Window
         }
     }
 
-    // Two charts above each other: the running XP per hour, and the XP earned over the play time.
+    // Two charts above each other on the same time axis: XP earned, and the speed in XP per hour.
     private FrameworkElement Charts()
     {
         var grid = new Grid { Margin = new Thickness(14, 8, 14, 10) };
         grid.RowDefinitions.Add(new RowDefinition());
         grid.RowDefinitions.Add(new RowDefinition());
+        var earned = ChartBlock(
+            "XP earned",
+            "XP of the games that started in each hour (Today) or on each day. Hours or days without games are at 0.",
+            _xpChart);
         var speed = ChartBlock(
             "XP per hour",
-            "Running average of XP per hour of game time from the start of the period: one point per game today, one point per day for longer periods.",
-            _speedChart);
-        var progress = ChartBlock(
-            "XP over play time",
-            "XP earned so far over the time spent in games (including the mulligan). The steeper the line, the faster you earn XP.",
-            _progressChart);
-        Grid.SetRow(progress, 1);
+            "Speed in each hour or on each day: XP divided by XP time. The dashed line is the average of the whole period.",
+            _rateChart);
+        Grid.SetRow(speed, 1);
+        grid.Children.Add(earned);
         grid.Children.Add(speed);
-        grid.Children.Add(progress);
         return grid;
     }
 
@@ -570,24 +691,12 @@ internal sealed class DashboardWindow : Window
             Foreground = Parchment,
             BorderBrush = Gold,
             BorderThickness = new Thickness(1),
+
+            // Only the hovered curve; the glow and the average line do not clutter the tooltip.
+            SelectionMode = TooltipSelectionMode.OnlySender,
         };
         chart.AxisX.Add(new Axis { Foreground = Muted, Separator = new LiveCharts.Wpf.Separator { StrokeThickness = 0 } });
         chart.AxisY.Add(new Axis { Title = title, Foreground = Muted, MinValue = 0, Separator = new LiveCharts.Wpf.Separator { Stroke = grid, StrokeThickness = 1 } });
-        return chart;
-    }
-
-    // XP over play time: a numeric time axis in h:mm instead of one label per point.
-    private static CartesianChart CreateProgressChart()
-    {
-        var chart = CreateChart("XP");
-        chart.AxisX[0] = new Axis
-        {
-            Title = "Play time (h:mm)",
-            Foreground = Muted,
-            MinValue = 0,
-            LabelFormatter = HoursMinutes,
-            Separator = new LiveCharts.Wpf.Separator { StrokeThickness = 0 },
-        };
         return chart;
     }
 

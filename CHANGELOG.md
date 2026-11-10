@@ -28,11 +28,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Dashboard redesigned in Hearthstone-like colors (dark wood, gold, parchment, mana blue) with the title "HS XP Tracker". New period "Last 30 days". Values in mana blue; the selected period is highlighted in blue with a soft glow on hover. The two old charts are replaced by the running XP per hour (per game for today, per day for longer periods) and the XP earned over play time.
+- Dashboard redesigned in Hearthstone-like colors (dark wood, gold, parchment, mana blue) with the title "HS XP Tracker". New period "Last 30 days". Values in mana blue; the selected period is highlighted in blue with a soft glow on hover. The charts show two curves on a complete time axis (24 hours for today, Monday to Sunday, every day of the month, the last 30 days, every day since the first game): the XP earned in each step and the XP per hour, with the period average as a dashed line. "Last 30 days" now means the last 30 calendar days including today. New period "Session" (the current or last Hearthstone session, hourly chart axis across midnight), selected when the dashboard opens.
 
 - Overlay layout: plain white labels on a dark box, values in blue tubes in the style of the reward track XP bar, XP values with a drawn scroll icon. The summary row for the earned XP is labeled "Earned:".
 
 ### Fixed
+
+- The dashboard's online time no longer keeps counting after Hearthstone was closed.
 
 - Ranked win rate lowered from 0.1308 to 0.1305 XP/s. A 417.37-second win gave 54 XP, but the old rate calculated 55. The measured range is now 0.13047 to 0.13058 XP/s. When the dashboard opens, the XP of games already in the history is calculated again with the current rates.
 

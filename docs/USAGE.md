@@ -67,10 +67,11 @@ The dashboard window is called "HS XP Tracker". Open it in HDT in one of two way
 
 | Control | Meaning |
 |---|---|
+| "Session" | Games of the current Hearthstone session, from the start of the game until it is closed. After closing Hearthstone, the last session stays visible until the next start. This is the period shown when the dashboard opens. |
 | "Today" | Games since midnight |
 | "This week" | Games since Monday, 00:00 |
 | "This season" | Games since the 1st of the month. Ranked seasons in Hearthstone run for a calendar month. |
-| "Last 30 days" | Games of the last 30 days up to now |
+| "Last 30 days" | Games of the last 30 days, including today |
 | "All time" | All games in the history |
 | "Refresh" | Read the history again |
 | "Export CSV" | Save a copy of the history file |
@@ -78,6 +79,8 @@ The dashboard window is called "HS XP Tracker". Open it in HDT in one of two way
 | "Check for updates when HDT starts" | Turn the update check on or off. See [Privacy](#privacy). |
 
 A finished game appears in an open dashboard on its own. You do not need to click "Refresh".
+
+For "Session", a line below the toolbar names the session, for example "Session since Tue 2026-11-10, 19:56 (running)" or "(ended)". A session can run past midnight.
 
 ### Tabs
 
@@ -116,12 +119,23 @@ All games of the period, newest first: date, start, mode, result, XP time, total
 
 **Charts**
 
-Two charts for the selected period:
+Two curves on the same time axis. The axis always covers the whole period, so hours or days without games stay visible:
 
-| Chart | Meaning |
+| Period | Time axis |
 |---|---|
-| "XP per hour" | Running average of XP per hour of XP time, from the start of the period up to each point. "Today" has one point per game; longer periods have one point per day. |
-| "XP over play time" | XP earned so far over the time spent in games, including the mulligan. One point per game. The steeper the line, the faster you earn XP. |
+| "Session" | every hour from the start of the session to its end, or to now while it runs |
+| "Today" | the 24 hours of the day |
+| "This week" | Monday to Sunday |
+| "This season" | every day of the month |
+| "Last 30 days" | the last 30 days, including today |
+| "All time" | every day since the first game in the history |
+
+| Curve | Meaning |
+|---|---|
+| "XP earned" (gold) | XP of the games that started in each hour or on each day. Steps without games are at 0. |
+| "XP per hour" (blue) | Speed in each hour or on each day: XP divided by XP time. Only steps with games have a point. The dashed line is the average of the whole period. |
+
+A game counts in the hour or on the day in which it started.
 
 ## Game history file
 
