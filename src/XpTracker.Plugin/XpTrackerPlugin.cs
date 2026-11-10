@@ -139,7 +139,7 @@ public class XpTrackerPlugin : IPlugin
     {
         if (_dashboard is null)
         {
-            _dashboard = new DashboardWindow(_history, HistoryPath, () => _tail?.CurrentSession, HdtDecks.All, _settings.CheckForUpdates, SetCheckForUpdates);
+            _dashboard = new DashboardWindow(_history, HistoryPath, () => _tail?.CurrentSession, IsHearthstoneRunning, HdtDecks.All, _settings.CheckForUpdates, SetCheckForUpdates);
             _dashboard.ShowUpdate(_update);
             _dashboard.Closed += (_, _) => _dashboard = null;
             _dashboard.Show();
@@ -275,6 +275,17 @@ public class XpTrackerPlugin : IPlugin
                 return;
             }
         }
+    }
+
+    private static bool IsHearthstoneRunning()
+    {
+        var processes = Process.GetProcessesByName("Hearthstone");
+        foreach (var process in processes)
+        {
+            process.Dispose();
+        }
+
+        return processes.Length > 0;
     }
 
     // HDT knows the Hearthstone folder (detected or set in its options); fall back to the running game.

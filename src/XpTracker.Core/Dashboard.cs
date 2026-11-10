@@ -1,43 +1,50 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace XpTracker.Core;
 
 public enum DashboardPeriod
 {
+    /// <summary>One Hearthstone session: from the start of the game client until it was closed (or until now).</summary>
+    Session,
     Today,
     Week,
 
     /// <summary>The ranked season, which runs for a calendar month.</summary>
     Season,
 
-    /// <summary>The last 30 days up to now.</summary>
+    /// <summary>The last 30 calendar days, including today.</summary>
     Last30Days,
     All,
 }
 
 /// <summary>
-/// One point of the XP speed curve: the running XP per hour from the start of the period up to <see cref="Time"/>.
+/// One step of the chart time axis: an hour of today, or a day of a longer period, with the games that started in it.
 /// </summary>
-public sealed class SpeedPoint
+public sealed class TimeBucket
 {
-    /// <summary>End of the game (per-game curve) or the day (per-day curve).</summary>
-    public DateTime Time { get; set; }
+    public DateTime Start { get; set; }
 
-    /// <summary>XP per hour of XP time.</summary>
-    public double XpPerHour { get; set; }
-}
+    public DateTime End { get; set; }
 
-/// <summary>
-/// One point of the XP progress curve: XP earned so far after <see cref="PlaySeconds"/> of play time.
-/// </summary>
-public sealed class ProgressPoint
-{
-    /// <summary>Play time including the mulligan, summed over the games so far.</summary>
-    public double PlaySeconds { get; set; }
+    /// <summary>Axis label, for example "20" (hour), "Mon 11-09" (weekday), "9" (day of the month) or "11-09".</summary>
+    public string Label { get; set; } = string.Empty;
+
+    /// <summary>Full name of the step for tooltips, for example "Mon 2026-11-09, 20:00–21:00" or "Mon 2026-11-09".</summary>
+    public string Title => End - Start < TimeSpan.FromDays(1)
+        ? Start.ToString("ddd yyyy-MM-dd, HH:mm", CultureInfo.InvariantCulture) + "–" + End.ToString("HH:mm", CultureInfo.InvariantCulture)
+        : Start.ToString("ddd yyyy-MM-dd", CultureInfo.InvariantCulture);
+
+    public int Games { get; set; }
 
     public int Xp { get; set; }
+
+    public double XpSeconds { get; set; }
+
+    /// <summary>XP per hour of XP time, or null when no game started in this step.</summary>
+    public double? XpPerHour => XpSeconds > 0 ? Xp / (XpSeconds / 3600) : null;
 }
 
 public sealed class SummaryStats
@@ -127,67 +134,106 @@ public static class Dashboard
         DashboardPeriod.Today => now.Date,
         DashboardPeriod.Week => now.Date.AddDays(-(((int)now.DayOfWeek + 6) % 7)),
         DashboardPeriod.Season => new DateTime(now.Year, now.Month, 1),
-        DashboardPeriod.Last30Days => now.AddDays(-30),
+        DashboardPeriod.Last30Days => now.Date.AddDays(-29),
         _ => DateTime.MinValue,
     };
 
     /// <summary>
-    /// The XP speed curve: running XP per hour from the start of the period, one point per game for today
-    /// and one point per day for longer periods.
+    /// The time axis of the charts, always complete so gaps stay visible: the 24 hours of today, the 7 days of the week
+    /// from Monday, every day of the month (season), the last 30 days, or every day since the first game (all time).
+    /// Each game counts in the step in which it started.
     /// </summary>
-    /// <param name="games">Games of the period, ordered by start.</param>
-    public static IReadOnlyList<SpeedPoint> SpeedCurve(IReadOnlyList<GameRecord> games, DashboardPeriod period)
+    public static IReadOnlyList<TimeBucket> Buckets(IReadOnlyList<GameRecord> games, DashboardPeriod period, DateTime now)
     {
-        var points = new List<SpeedPoint>();
-        if (period == DashboardPeriod.Today)
+        var buckets = new List<TimeBucket>();
+        var today = now.Date;
+        switch (period)
         {
-            for (var i = 0; i < games.Count; i++)
-            {
-                points.Add(Speed(games.Take(i + 1), games[i].End));
-            }
+            case DashboardPeriod.Today:
+                for (var hour = 0; hour < 24; hour++)
+                {
+                    buckets.Add(new TimeBucket { Start = today.AddHours(hour), End = today.AddHours(hour + 1), Label = hour.ToString("00", CultureInfo.InvariantCulture) });
+                }
 
-            return points;
+                break;
+            case DashboardPeriod.Week:
+                AddDays(buckets, PeriodStart(period, now), 7, "ddd MM-dd");
+                break;
+            case DashboardPeriod.Season:
+                AddDays(buckets, PeriodStart(period, now), DateTime.DaysInMonth(now.Year, now.Month), "%d");
+                break;
+            case DashboardPeriod.Last30Days:
+                AddDays(buckets, PeriodStart(period, now), 30, "MM-dd");
+                break;
+            default:
+                if (games.Count == 0)
+                {
+                    return buckets;
+                }
+
+                var first = games.Min(g => g.Start).Date;
+                AddDays(buckets, first, Math.Max(1, (int)(today - first).TotalDays + 1), "MM-dd");
+                break;
         }
 
-        foreach (var day in games.Select(g => g.Start.Date).Distinct().OrderBy(d => d))
-        {
-            points.Add(Speed(games.Where(g => g.Start.Date <= day), day));
-        }
-
-        return points;
+        Fill(buckets, games);
+        return buckets;
     }
+
+    /// <summary>Games of one Hearthstone session (log folder name), ordered by start.</summary>
+    public static IReadOnlyList<GameRecord> InSession(IEnumerable<GameRecord> games, string? session) =>
+        session is null
+            ? Array.Empty<GameRecord>()
+            : games.Where(g => g.Session == session).OrderBy(g => g.Start).ToList();
 
     /// <summary>
-    /// The XP progress curve: XP earned so far over the play time so far, starting at zero, one point per game.
+    /// The session to show: the one the log reader is reading (also after Hearthstone was closed, until it starts again),
+    /// otherwise the newest session in the history.
     /// </summary>
-    /// <param name="games">Games of the period, ordered by start.</param>
-    public static IReadOnlyList<ProgressPoint> ProgressCurve(IReadOnlyList<GameRecord> games)
+    public static string? SelectSession(IEnumerable<GameRecord> games, string? logSession) =>
+        logSession ?? games.OrderBy(g => g.Start).LastOrDefault()?.Session;
+
+    /// <summary>
+    /// Hourly time axis of a session, from the hour it started to the hour it ended (or now while it runs);
+    /// it may run past midnight. Each game counts in the hour in which it started.
+    /// </summary>
+    public static IReadOnlyList<TimeBucket> SessionBuckets(IReadOnlyList<GameRecord> games, DateTime sessionStart, DateTime sessionEnd)
     {
-        var points = new List<ProgressPoint>();
-        if (games.Count == 0)
+        var buckets = new List<TimeBucket>();
+        var first = new DateTime(sessionStart.Year, sessionStart.Month, sessionStart.Day, sessionStart.Hour, 0, 0);
+        var last = sessionEnd > sessionStart ? sessionEnd : sessionStart;
+        for (var hour = first; hour <= last; hour = hour.AddHours(1))
         {
-            return points;
+            buckets.Add(new TimeBucket { Start = hour, End = hour.AddHours(1), Label = hour.ToString("HH", CultureInfo.InvariantCulture) });
         }
 
-        points.Add(new ProgressPoint());
-        double seconds = 0;
-        var xp = 0;
-        foreach (var game in games)
-        {
-            seconds += game.WithMulliganSeconds;
-            xp += game.Xp ?? 0;
-            points.Add(new ProgressPoint { PlaySeconds = seconds, Xp = xp });
-        }
-
-        return points;
+        Fill(buckets, games);
+        return buckets;
     }
 
-    private static SpeedPoint Speed(IEnumerable<GameRecord> games, DateTime time)
+    private static void Fill(List<TimeBucket> buckets, IEnumerable<GameRecord> games)
     {
-        var list = games.ToList();
-        var xp = list.Sum(g => g.Xp ?? 0);
-        var xpSeconds = list.Sum(g => g.XpSeconds);
-        return new SpeedPoint { Time = time, XpPerHour = xpSeconds > 0 ? xp / (xpSeconds / 3600) : 0 };
+        foreach (var game in games)
+        {
+            var bucket = buckets.FirstOrDefault(b => game.Start >= b.Start && game.Start < b.End);
+            if (bucket is null)
+            {
+                continue;
+            }
+
+            bucket.Games++;
+            bucket.Xp += game.Xp ?? 0;
+            bucket.XpSeconds += game.XpSeconds;
+        }
+    }
+
+    private static void AddDays(List<TimeBucket> buckets, DateTime first, int days, string labelFormat)
+    {
+        for (var day = 0; day < days; day++)
+        {
+            var start = first.AddDays(day);
+            buckets.Add(new TimeBucket { Start = start, End = start.AddDays(1), Label = start.ToString(labelFormat, CultureInfo.InvariantCulture) });
+        }
     }
 
     public static IReadOnlyList<GameRecord> InPeriod(IEnumerable<GameRecord> games, DashboardPeriod period, DateTime now)
