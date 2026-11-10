@@ -35,6 +35,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Tavern Brawls against the computer (PvE) no longer show and store XP: they give none. The plugin recognizes them by the opponent without an account and names them "Tavern Brawl (PvE)".
+
 - The dashboard's online time no longer keeps counting after Hearthstone was closed.
 
 - Ranked win rate lowered from 0.1308 to 0.1305 XP/s. A 417.37-second win gave 54 XP, but the old rate calculated 55. The measured range is now 0.13047 to 0.13058 XP/s. When the dashboard opens, the XP of games already in the history is calculated again with the current rates.

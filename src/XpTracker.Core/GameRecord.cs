@@ -62,7 +62,7 @@ public sealed class GameRecord
             WithMulliganSeconds = snapshot.WithMulliganSeconds,
             AfkTurns = game.Clock.AfkTurns,
             Xp = rate is null ? null : snapshot.ExpectedXp(rate.Value),
-            EventXp = eventActive ? XpRates.EventXp(snapshot.XpSeconds) : null,
+            EventXp = eventActive ? XpRates.EventXpFor(game.Mode, snapshot.XpSeconds) : null,
         };
     }
 
@@ -76,9 +76,9 @@ public sealed class GameRecord
         var changed = false;
 
         // Event XP only for games that were stored during an event.
-        if (EventXp is not null && EventXp != XpRates.EventXp(XpSeconds))
+        if (EventXp is not null && XpRates.EventXpFor(Mode, XpSeconds) is { } eventXp && EventXp != eventXp)
         {
-            EventXp = XpRates.EventXp(XpSeconds);
+            EventXp = eventXp;
             changed = true;
         }
 
