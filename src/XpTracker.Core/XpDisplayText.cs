@@ -71,7 +71,7 @@ public static class XpDisplayText
         // Event XP does not depend on the result, so one row is enough, live and after the game.
         if (eventActive)
         {
-            lines.Add(new XpLine("Event XP:", Plus(XpRates.EventXp(snapshot.XpSeconds)), isEvent: true));
+            lines.Add(new XpLine("Event XP:", Plus(XpRates.EventXpFor(mode, snapshot.XpSeconds) ?? 0), isEvent: true));
         }
 
         return lines;

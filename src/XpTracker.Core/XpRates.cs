@@ -36,9 +36,20 @@ public static class XpRates
         {
             GameMode.Ranked => win ? RankedWin : RankedLoss,
             GameMode.Casual or GameMode.TavernBrawl => win ? CasualWin : CasualLoss,
+
+            // Measured: losses against the computer in a Tavern Brawl give nothing. Wins are assumed to give nothing too.
+            GameMode.TavernBrawlPvE => 0,
             _ => null,
         };
     }
+
+    /// <summary>Event XP of a game in this mode, or null if not known for the mode (for example Arena or Battlegrounds).</summary>
+    public static int? EventXpFor(GameMode mode, double xpSeconds) => mode switch
+    {
+        GameMode.Ranked or GameMode.Casual or GameMode.TavernBrawl => EventXp(xpSeconds),
+        GameMode.TavernBrawlPvE => 0,
+        _ => null,
+    };
 
     /// <summary>XP by the formula alone, without the minimum and the cap; used to show what was lost.</summary>
     public static int FormulaXp(double xpSeconds, double rate) =>

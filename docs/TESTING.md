@@ -55,4 +55,5 @@ The calculation engine is covered by unit tests. The points below need a real ga
 ## Modes
 
 - [ ] Ranked (Wild and Standard), Casual and Tavern Brawl show values with the matching rates.
+- [ ] A Tavern Brawl against the computer shows "+0" for win, loss and event XP, and the game list names it "Tavern Brawl (PvE)".
 - [ ] Arena, Battlegrounds and other modes show nothing.

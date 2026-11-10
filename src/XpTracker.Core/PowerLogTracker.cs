@@ -132,6 +132,12 @@ public sealed class PowerLogTracker
                 _game.EntityToPlayer[entityId] = playerId;
             }
 
+            // Only the computer plays without an account (the Innkeeper in PvE Tavern Brawls, practice, adventures).
+            if (body.Contains("GameAccountId=[hi=0 lo=0]"))
+            {
+                _game.AgainstComputer = true;
+            }
+
             return;
         }
 
@@ -252,7 +258,7 @@ public sealed class PowerLogTracker
 
         if (body.StartsWith("GameType=", StringComparison.Ordinal))
         {
-            _game.Mode = body.Substring(9).Trim() switch
+            _game.Type = body.Substring(9).Trim() switch
             {
                 "GT_RANKED" => GameMode.Ranked,
                 "GT_CASUAL" => GameMode.Casual,
@@ -407,7 +413,14 @@ public sealed class PowerLogTracker
     {
         public XpClock Clock { get; } = new();
 
-        public GameMode Mode { get; set; } = GameMode.Other;
+        /// <summary>Mode from the log's GameType line.</summary>
+        public GameMode Type { get; set; } = GameMode.Other;
+
+        /// <summary>The opponent has no account, so it is the computer.</summary>
+        public bool AgainstComputer { get; set; }
+
+        /// <summary>A Tavern Brawl against the computer pays differently from one against a player.</summary>
+        public GameMode Mode => Type == GameMode.TavernBrawl && AgainstComputer ? GameMode.TavernBrawlPvE : Type;
 
         public string Format { get; set; } = string.Empty;
 

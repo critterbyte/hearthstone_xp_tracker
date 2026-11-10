@@ -42,6 +42,7 @@ All values in this table are **measured**.
 
 - A win pays 1.40 times a loss.
 - Casual and Tavern Brawl pay 0.71 times Ranked.
+- **Measured:** a Tavern Brawl against the computer (PvE) gives nothing. Two losses of 1:39 and 4:29 against the Innkeeper gave 0 XP and 0 event XP. Wins against the computer are not measured yet. The plugin recognizes such games by the opponent's missing account in the log (`GameAccountId=[hi=0 lo=0]`).
 - Standard and Wild pay the same.
 
 These rates are the middle of ranges that fit every measured game:

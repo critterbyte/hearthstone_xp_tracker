@@ -801,7 +801,13 @@ internal sealed class DashboardWindow : Window
         public GameRow(GameRecord g)
         {
             StartValue = g.Start;
-            Mode = g.Format.Length > 0 ? g.Mode + " " + g.Format : g.Mode.ToString();
+            var mode = g.Mode switch
+            {
+                GameMode.TavernBrawl => "Tavern Brawl",
+                GameMode.TavernBrawlPvE => "Tavern Brawl (PvE)",
+                _ => g.Mode.ToString(),
+            };
+            Mode = g.Format.Length > 0 ? mode + " " + g.Format : mode;
             Result = g.Result.ToString();
             XpSeconds = g.XpSeconds;
             TotalSeconds = g.WithMulliganSeconds;
