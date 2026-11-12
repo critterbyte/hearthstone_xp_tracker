@@ -36,7 +36,7 @@ XP = round(xpSeconds × rate)
 
 | Mode | Win | Loss |
 |---|---:|---:|
-| Ranked (Standard and Wild) | 0.1305 XP/s (470 XP/h) | 0.0932 XP/s (336 XP/h) |
+| Ranked (Standard and Wild) | 0.13054 XP/s (470 XP/h) | 0.0932 XP/s (336 XP/h) |
 | Casual and Tavern Brawl | 0.0932 XP/s (336 XP/h) | 0.0666 XP/s (240 XP/h) |
 
 Games with less than 60 seconds of XP time give no XP. See [docs/FORMULA.md](docs/FORMULA.md) for all rules, the measurements and the sources.

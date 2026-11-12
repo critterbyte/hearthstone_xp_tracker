@@ -15,6 +15,7 @@ Each statement is marked:
 - 75 games have the XP noted: 67 Ranked, 3 Casual, 5 Tavern Brawl.
   - 64 of them determine the rates.
   - 11 short games with 0 XP determine the minimum game length.
+- Ranked games until 12 November 2026 narrowed the Ranked ranges further: 55 wins and 51 losses with exact log times fit the ranges below.
 
 ## Formula
 
@@ -35,7 +36,7 @@ XP = round(xpSeconds × rate)
 
 | Mode | Win | Loss |
 |---|---:|---:|
-| Ranked (Standard and Wild) | 0.1305 XP/s (470 XP/h) | 0.0932 XP/s (336 XP/h) |
+| Ranked (Standard and Wild) | 0.13054 XP/s (470 XP/h) | 0.0932 XP/s (336 XP/h) |
 | Casual and Tavern Brawl | 0.0932 XP/s (336 XP/h) | 0.0666 XP/s (240 XP/h) |
 
 All values in this table are **measured**.
@@ -49,10 +50,13 @@ These rates are the middle of ranges that fit every measured game:
 
 | Case | Range (XP/s) | Games |
 |---|---|---:|
-| Ranked win | 0.13047 to 0.13058 | 27 |
-| Ranked loss | 0.09312 to 0.09332 | 29 |
+| Ranked win | 0.130505 to 0.13058 | 55 |
+| Ranked loss | 0.09317 to 0.09322 | 51 |
 | Casual or Tavern Brawl win | 0.09306 to 0.09351 | 5 |
 | Casual or Tavern Brawl loss | 0.06649 to 0.06837 | 3 |
+
+- **Measured:** the lower limit of the Ranked win rate comes from a win of 425.27 s that gave 56 XP. With 0.1305 it would have been 55.498, so 55. The game was only 0.02 seconds short of the rounding limit. If the server counts a game a few hundredths of a second longer than the log timestamps show, a slightly lower rate would fit too.
+- With these ranges, a win pays 1.40 times a loss only if the loss rate is at least 0.093218.
 
 The sources agree in general:
 

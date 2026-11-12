@@ -7,8 +7,12 @@ namespace XpTracker.Core;
 /// </summary>
 public static class XpRates
 {
-    // Measured range 0.13047 to 0.13058; 0.1308 was used until a 417.37 s win gave 54 XP instead of 55.
-    public const double RankedWin = 0.1305;
+    // Measured range 0.130505 to 0.13058, this value is the middle.
+    // 0.1308 was used until a 417.37 s win gave 54 XP instead of 55,
+    // 0.1305 until a 425.27 s win gave 56 XP instead of 55.
+    public const double RankedWin = 0.13054;
+
+    // Measured range 0.09317 to 0.09322.
     public const double RankedLoss = 0.0932;
 
     // Casual and Tavern Brawl pay the same rates.
