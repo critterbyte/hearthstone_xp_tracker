@@ -120,7 +120,7 @@ public class XpTrackerPlugin : IPlugin
         var now = DateTime.Now;
         var update = _update?.VersionText;
         var lines = _tail.Read(t => XpDisplayText.WithUpdate(
-            XpDisplayText.For(t?.Clock, t?.Mode ?? GameMode.Other, now, _settings.EventActive),
+            XpDisplayText.For(t?.Clock, t?.Mode ?? GameMode.Other, now, _settings.EventActive, t?.DamageDealt),
             gameRunning: t?.Clock is { HasStarted: true, IsOver: false },
             update));
         // The text changes at most once per second; only touch the visual tree when it does.
