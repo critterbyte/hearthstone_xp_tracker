@@ -110,7 +110,8 @@ eventXp = round(xpSeconds / 60)
 
 All rates above were measured **without** a Tavern Pass. They are the base rates.
 
-- **According to [7] and [9]:** the Tavern Pass gives an XP boost that grows with the rewards track level. In *Reign of the Black Empire* and the three expansions before it:
+- **According to [6]:** the Tavern Pass gives an XP boost of 10%, rising to 15% and 20% on the track. This official source does not name the levels.
+- **According to [7] and [9]:** the boost grows with the rewards track level. In *Reign of the Black Empire* and the three expansions before it:
 
   | Rewards track level | XP boost |
   |---|---:|

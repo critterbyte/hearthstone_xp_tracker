@@ -396,7 +396,8 @@ internal sealed class DashboardWindow : Window
 
     private FrameworkElement Toolbar()
     {
-        var bar = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(10) };
+        // Centered, so the buttons keep their size when the options column on the right is taller than one row.
+        var bar = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(10), VerticalAlignment = VerticalAlignment.Center };
         foreach (var (period, text) in new[]
         {
             (DashboardPeriod.Session, "Session"),
