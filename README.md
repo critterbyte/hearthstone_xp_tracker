@@ -8,6 +8,8 @@ A plugin for [Hearthstone Deck Tracker](https://hsreplay.net/downloads/) (HDT) t
 
 > **Status:** beta. XP is calculated for Ranked, Casual, Tavern Brawl and Arena. Other modes, such as Battlegrounds, are not measured yet.
 
+![The XP Tracker overlay at the bottom right of a Ranked game](docs/images/overlay-in-game.jpg)
+
 ## Features
 
 - **Live overlay** at the bottom left above your portrait, or above the Hearthstone settings button:
@@ -22,12 +24,22 @@ A plugin for [Hearthstone Deck Tracker](https://hsreplay.net/downloads/) (HDT) t
 - **Update hint:** the plugin tells you when a new version is available.
 - **Languages:** overlay and dashboard in all 14 languages of the Hearthstone client, selectable in the dashboard: Deutsch, English (default), Español (AL), Español (EU), Français, Italiano, 日本語, Polski, Português, Русский, ภาษาไทย, 한국어, 繁體中文, 简体中文. Game terms follow each client. German and Polish are checked by a native speaker; the other translations are machine-assisted, and [corrections are welcome](CONTRIBUTING.md#translations).
 
+## Screenshots
+
+| Live overlay | Dashboard |
+|---|---|
+| <img src="docs/images/overlay.png" alt="Overlay with XP time, XP for a win and a loss, event XP and damage" width="260"> | <img src="docs/images/dashboard.png" alt="Dashboard overview with XP, XP time, games, win rate and event XP for today" width="560"> |
+| XP time, XP for a win and a loss, event XP and damage, updated live. | XP, XP per hour, win rate and more for the session, today, this week, this season or all time. |
+
 ## Installation
 
 1. Download the ZIP file from the [Releases page](https://github.com/critterbyte/hearthstone_xp_tracker/releases).
 2. Close HDT.
 3. Extract the ZIP into `%APPDATA%\HearthstoneDeckTracker\Plugins`. This creates the folder `HearthstoneXpTracker`.
 4. Start HDT and enable the plugin under *Settings* (the gear icon on the right of the top bar) *→ Tracker → Plugins*.
+5. Open the dashboard under *Plugins → XP dashboard*:
+
+   ![The XP dashboard entry in HDT's Plugins menu](docs/images/hdt-plugins-menu.png)
 
 See [docs/INSTALL.md](docs/INSTALL.md) for details, updates and troubleshooting.
 
