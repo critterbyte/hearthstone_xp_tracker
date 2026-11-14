@@ -19,6 +19,9 @@ public sealed class XpTrackerSettings
     /// <summary>Show the rows "Total Damage:" and "Hero Damage:" on the overlay.</summary>
     public bool ShowDamage { get; set; } = true;
 
+    /// <summary>Where the overlay sits: left above the player's portrait (default) or right above the settings button.</summary>
+    public OverlayPosition OverlayPosition { get; set; } = OverlayPosition.Left;
+
     /// <summary>Language of the overlay and the dashboard, for example "en" or "de"; English by default.</summary>
     public string Language { get; set; } = Localizer.DefaultLanguage;
 
@@ -56,6 +59,12 @@ public sealed class XpTrackerSettings
             else if (key.Equals(nameof(ShowDamage), StringComparison.OrdinalIgnoreCase) && bool.TryParse(value, out var showDamage))
             {
                 settings.ShowDamage = showDamage;
+            }
+            else if (key.Equals(nameof(OverlayPosition), StringComparison.OrdinalIgnoreCase)
+                && Enum.TryParse<OverlayPosition>(value, ignoreCase: true, out var position)
+                && Enum.IsDefined(typeof(OverlayPosition), position))
+            {
+                settings.OverlayPosition = position;
             }
             else if (key.Equals(nameof(Language), StringComparison.OrdinalIgnoreCase))
             {
@@ -97,6 +106,7 @@ public sealed class XpTrackerSettings
         yield return nameof(CheckForUpdates) + "=" + (CheckForUpdates ? "true" : "false");
         yield return nameof(EventActive) + "=" + (EventActive ? "true" : "false");
         yield return nameof(ShowDamage) + "=" + (ShowDamage ? "true" : "false");
+        yield return nameof(OverlayPosition) + "=" + OverlayPosition;
         yield return nameof(Language) + "=" + Language;
         yield return nameof(TavernPass) + "=" + (TavernPass ? "true" : "false");
         yield return nameof(TavernPassLevel) + "=" + TavernPassLevel.ToString(CultureInfo.InvariantCulture);

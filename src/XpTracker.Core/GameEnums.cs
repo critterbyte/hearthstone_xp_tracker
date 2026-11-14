@@ -27,3 +27,13 @@ public enum Side
     Player,
     Opponent,
 }
+
+/// <summary>Corner of the screen the overlay is placed in.</summary>
+public enum OverlayPosition
+{
+    /// <summary>Bottom left, above the player's portrait.</summary>
+    Left,
+
+    /// <summary>Bottom right, above the Hearthstone settings button.</summary>
+    Right,
+}

@@ -80,6 +80,7 @@ public class XpTrackerPlugin : IPlugin
         _enabled = true;
 
         _settings = XpTrackerSettings.Load(SettingsPath);
+        _overlay.Position = _settings.OverlayPosition;
         ApplyLanguage();
         if (_settings.CheckForUpdates)
         {
@@ -148,7 +149,7 @@ public class XpTrackerPlugin : IPlugin
     {
         if (_dashboard is null)
         {
-            _dashboard = new DashboardWindow(_history, HistoryPath, () => _tail?.CurrentSession, IsHearthstoneRunning, HdtDecks.All, _settings.CheckForUpdates, SetCheckForUpdates, _settings.EventActive, SetEventActive, _settings.TavernPass, _settings.TavernPassLevel, SetTavernPass, _settings.ShowDamage, SetShowDamage, _settings.Language, SetLanguage);
+            _dashboard = new DashboardWindow(_history, HistoryPath, () => _tail?.CurrentSession, IsHearthstoneRunning, HdtDecks.All, _settings.CheckForUpdates, SetCheckForUpdates, _settings.EventActive, SetEventActive, _settings.TavernPass, _settings.TavernPassLevel, SetTavernPass, _settings.ShowDamage, SetShowDamage, _settings.Language, SetLanguage, _settings.OverlayPosition, SetOverlayPosition);
             _dashboard.ShowUpdate(_update);
             _dashboard.Closed += (_, _) => _dashboard = null;
             _dashboard.Show();
@@ -224,6 +225,17 @@ public class XpTrackerPlugin : IPlugin
                     fresh.WindowState = bounds.WindowState;
                 }
             }));
+        }
+    }
+
+    // Called from the dashboard's overlay position selection; the overlay moves with the next update.
+    private void SetOverlayPosition(OverlayPosition position)
+    {
+        _settings.OverlayPosition = position;
+        SaveSettings();
+        if (_overlay is not null)
+        {
+            _overlay.Position = position;
         }
     }
 

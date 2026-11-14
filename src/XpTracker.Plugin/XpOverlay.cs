@@ -15,10 +15,15 @@ namespace XpTracker.Plugin;
 /// </summary>
 internal sealed class XpOverlay : Border
 {
-    // Position relative to the overlay size, measured from the bottom right corner.
-    // First guess for "above the settings button"; to be tuned on a real screen.
+    // Positions relative to the overlay size.
+    // Right: above the Hearthstone settings button, measured from the bottom right corner.
     private const double RightOffset = 0.012;
-    private const double BottomOffset = 0.085;
+    private const double RightBottomOffset = 0.085;
+
+    // Left: above the player's name plate ("You" with the rank), measured from the bottom left corner,
+    // below the card lists HDT shows on the left; the box grows to the right.
+    private const double LeftOffset = 0.006;
+    private const double LeftBottomOffset = 0.2;
     private const double FontSizeFactor = 0.016;
 
     private static readonly Brush BoxFill = Frozen(new SolidColorBrush(Color.FromArgb(0xC8, 0x14, 0x14, 0x14)));
@@ -74,6 +79,9 @@ internal sealed class XpOverlay : Border
         Visibility = Visibility.Visible;
     }
 
+    /// <summary>Corner the overlay is placed in; applied with the next <see cref="Place"/>.</summary>
+    public OverlayPosition Position { get; set; } = OverlayPosition.Left;
+
     public void Place(double canvasWidth, double canvasHeight)
     {
         if (canvasWidth <= 0 || canvasHeight <= 0)
@@ -92,8 +100,18 @@ internal sealed class XpOverlay : Border
             }
         }
 
-        Canvas.SetRight(this, canvasWidth * RightOffset);
-        Canvas.SetBottom(this, canvasHeight * BottomOffset);
+        if (Position == OverlayPosition.Left)
+        {
+            Canvas.SetRight(this, double.NaN);
+            Canvas.SetLeft(this, canvasWidth * LeftOffset);
+            Canvas.SetBottom(this, canvasHeight * LeftBottomOffset);
+        }
+        else
+        {
+            Canvas.SetLeft(this, double.NaN);
+            Canvas.SetRight(this, canvasWidth * RightOffset);
+            Canvas.SetBottom(this, canvasHeight * RightBottomOffset);
+        }
     }
 
     private static LinearGradientBrush Vertical(params (Color Color, double Offset)[] stops)
