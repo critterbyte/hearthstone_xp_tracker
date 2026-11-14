@@ -1,5 +1,7 @@
 # Hearthstone XP Tracker
 
+**Install guide in your language:** [Deutsch](docs/de/INSTALL.md) · [Español (AL)](docs/es-MX/INSTALL.md) · [Español (EU)](docs/es-ES/INSTALL.md) · [Français](docs/fr/INSTALL.md) · [Italiano](docs/it/INSTALL.md) · [日本語](docs/ja/INSTALL.md) · [Polski](docs/pl/INSTALL.md) · [Português](docs/pt-BR/INSTALL.md) · [Русский](docs/ru/INSTALL.md) · [ภาษาไทย](docs/th/INSTALL.md) · [한국어](docs/ko/INSTALL.md) · [繁體中文](docs/zh-TW/INSTALL.md) · [简体中文](docs/zh-CN/INSTALL.md)
+
 A plugin for [Hearthstone Deck Tracker](https://hsreplay.net/downloads/) (HDT) that shows how much reward track XP your current game is worth.
 
 [![build](https://github.com/critterbyte/hearthstone_xp_tracker/actions/workflows/build.yml/badge.svg)](https://github.com/critterbyte/hearthstone_xp_tracker/actions/workflows/build.yml)
