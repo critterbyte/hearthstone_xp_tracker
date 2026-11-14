@@ -25,5 +25,6 @@ public sealed class XpSnapshot
     /// <summary>True while the current turn does not count (own AFK turn or the opponent turn after it).</summary>
     public bool IsPaused { get; }
 
-    public int ExpectedXp(double rate) => XpRates.ExpectedXp(XpSeconds, rate);
+    /// <param name="bonusPercent">Tavern Pass XP boost in percent.</param>
+    public int ExpectedXp(double rate, int bonusPercent = 0) => XpRates.ExpectedXp(XpSeconds, rate, bonusPercent);
 }

@@ -293,13 +293,13 @@ public static class Dashboard
 
             if (game.AfkTurns > 0)
             {
-                lost.AfkXp += Math.Max(0, XpRates.ExpectedXp(game.PlaySeconds, rate.Value) - (game.Xp ?? 0));
+                lost.AfkXp += Math.Max(0, XpRates.ExpectedXp(game.PlaySeconds, rate.Value, game.XpBonus) - (game.Xp ?? 0));
             }
 
             if (game.XpSeconds < XpRates.MinXpSeconds)
             {
                 lost.ShortGames++;
-                lost.ShortGamesXp += XpRates.FormulaXp(game.XpSeconds, rate.Value);
+                lost.ShortGamesXp += XpRates.FormulaXp(game.XpSeconds, rate.Value, game.XpBonus);
             }
         }
 

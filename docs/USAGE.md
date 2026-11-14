@@ -39,6 +39,8 @@ During a Hearthstone event, switch on "Event running (show event XP)" in the das
 
 Switch it off when the event ends.
 
+With "Tavern Pass (XP boost)" switched on in the dashboard, "If win:", "If loss:" and "Earned:" include the pass boost for your rewards track level. Event XP get no boost.
+
 The last row is always shown, live and in the summary after the game:
 
 | Row | Meaning |
@@ -91,6 +93,8 @@ The dashboard window is called "HS XP Tracker". Open it in HDT in one of two way
 | "Export CSV" | Save a copy of the history file |
 | "Open data folder" | Open the folder with the history file in Windows Explorer |
 | "Event running (show event XP)" | Switch on during a Hearthstone event: the overlay shows the event XP, and new games store it. |
+| "Tavern Pass (XP boost)" | Switch on if you own the Tavern Pass of the current expansion. |
+| "Level" with "−", a number and "+" | Your rewards track level. Click "−" or "+", or type the number. The line below shows the boost and the next step, for example "10% XP boost, 2 levels to 15%". The boost is 10%, from level 20 on 15% and from level 70 on 20% (see [FORMULA.md](FORMULA.md#tavern-pass)). Update the level when you pass level 20 or 70. |
 | "Check for updates when HDT starts" | Turn the update check on or off. See [Privacy](#privacy). |
 
 A finished game appears in an open dashboard on its own. You do not need to click "Refresh".
@@ -180,8 +184,9 @@ The file uses commas between fields and a dot as the decimal sign. Times are loc
 | `PlayerClass` | Your class |
 | `OpponentClass` | The opponent's class |
 | `EventXp` | Event XP calculated by the plugin; empty for games outside events. Files from older versions without this column are still read, and the column is added with the next game. |
+| `XpBonus` | Tavern Pass XP boost in percent that applied when the game was played, for example `15`; `0` without the pass. Older files without this column are read as `0`. |
 
-The `Xp` column is calculated by the plugin from the XP time. The game itself does not log XP. When the dashboard opens, the plugin calculates the XP of all stored games again with the current rates, so a corrected rate also fixes older games.
+The `Xp` column is calculated by the plugin from the XP time. The game itself does not log XP. When the dashboard opens, the plugin calculates the XP of all stored games again with the current rates, so a corrected rate also fixes older games. Each game keeps its own `XpBonus`, so changing the pass or the level later does not change older games.
 
 A game read twice from the same log is stored only once. Installing a new plugin version keeps the file.
 

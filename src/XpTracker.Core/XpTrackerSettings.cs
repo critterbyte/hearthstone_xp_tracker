@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 
 namespace XpTracker.Core;
@@ -14,6 +15,15 @@ public sealed class XpTrackerSettings
 
     /// <summary>A Hearthstone event is running: show and store event XP. Switched on and off by the user.</summary>
     public bool EventActive { get; set; }
+
+    /// <summary>The player owns the Tavern Pass of the current expansion: XP get the pass boost.</summary>
+    public bool TavernPass { get; set; }
+
+    /// <summary>Rewards track level, entered by the user; sets the size of the Tavern Pass boost.</summary>
+    public int TavernPassLevel { get; set; } = TavernPassBonus.MinLevel;
+
+    /// <summary>The Tavern Pass boost in percent that applies now; 0 without the pass.</summary>
+    public int XpBonusPercent => TavernPassBonus.Percent(TavernPass, TavernPassLevel);
 
     /// <summary>Reads the settings; unknown keys and invalid values are ignored and keep their defaults.</summary>
     public static XpTrackerSettings Parse(IEnumerable<string> lines)
@@ -36,6 +46,15 @@ public sealed class XpTrackerSettings
             else if (key.Equals(nameof(EventActive), StringComparison.OrdinalIgnoreCase) && bool.TryParse(value, out var eventActive))
             {
                 settings.EventActive = eventActive;
+            }
+            else if (key.Equals(nameof(TavernPass), StringComparison.OrdinalIgnoreCase) && bool.TryParse(value, out var tavernPass))
+            {
+                settings.TavernPass = tavernPass;
+            }
+            else if (key.Equals(nameof(TavernPassLevel), StringComparison.OrdinalIgnoreCase)
+                && int.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out var level))
+            {
+                settings.TavernPassLevel = TavernPassBonus.ClampLevel(level);
             }
         }
 
@@ -63,6 +82,8 @@ public sealed class XpTrackerSettings
     {
         yield return nameof(CheckForUpdates) + "=" + (CheckForUpdates ? "true" : "false");
         yield return nameof(EventActive) + "=" + (EventActive ? "true" : "false");
+        yield return nameof(TavernPass) + "=" + (TavernPass ? "true" : "false");
+        yield return nameof(TavernPassLevel) + "=" + TavernPassLevel.ToString(CultureInfo.InvariantCulture);
     }
 
     public void Save(string path)

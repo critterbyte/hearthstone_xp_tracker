@@ -59,6 +59,9 @@ internal sealed class DashboardWindow : Window
     private readonly Action<bool>? _setCheckForUpdates;
     private readonly Action<bool>? _setEventActive;
     private bool _eventActive;
+    private readonly Action<bool, int>? _setTavernPass;
+    private bool _tavernPass;
+    private int _tavernPassLevel;
     private readonly TextBlock _updateText = new() { Foreground = Parchment, VerticalAlignment = VerticalAlignment.Center, TextWrapping = TextWrapping.Wrap };
     private readonly Border _updateBar;
     private string _updateUrl = UpdateCheck.ReleasesPage;
@@ -75,8 +78,14 @@ internal sealed class DashboardWindow : Window
         bool checkForUpdates = true,
         Action<bool>? setCheckForUpdates = null,
         bool eventActive = false,
-        Action<bool>? setEventActive = null)
+        Action<bool>? setEventActive = null,
+        bool tavernPass = false,
+        int tavernPassLevel = TavernPassBonus.MinLevel,
+        Action<bool, int>? setTavernPass = null)
     {
+        _tavernPass = tavernPass;
+        _tavernPassLevel = TavernPassBonus.ClampLevel(tavernPassLevel);
+        _setTavernPass = setTavernPass;
         _history = history;
         _historyPath = historyPath;
         _logSession = logSession;
@@ -428,6 +437,11 @@ internal sealed class DashboardWindow : Window
             options.Children.Add(eventCheck);
         }
 
+        if (_setTavernPass is not null)
+        {
+            options.Children.Add(TavernPassControls());
+        }
+
         if (_setCheckForUpdates is not null)
         {
             var check = new CheckBox
@@ -445,6 +459,108 @@ internal sealed class DashboardWindow : Window
         toolbar.Children.Add(bar);
         return toolbar;
     }
+
+    // "Tavern Pass" check box, the rewards track level as [-] [number] [+], and the boost that follows from it.
+    // The boost applies to the overlay and to new games; stored games keep the boost they were played with.
+    private FrameworkElement TavernPassControls()
+    {
+        var panel = new StackPanel { Margin = new Thickness(0, 2, 0, 2) };
+        var passCheck = new CheckBox
+        {
+            Content = "Tavern Pass (XP boost)",
+            IsChecked = _tavernPass,
+            ToolTip = "Switch on if you own the Tavern Pass of the current expansion. Enter your rewards track level below: "
+                + "the boost is 10%, from level 20 on 15%, from level 70 on 20% (according to the Hearthstone Wiki, not measured yet).",
+        };
+
+        var levelBox = new TextBox
+        {
+            Text = _tavernPassLevel.ToString(CultureInfo.InvariantCulture),
+            Width = 44,
+            TextAlignment = TextAlignment.Center,
+            VerticalContentAlignment = VerticalAlignment.Center,
+            Background = Panel,
+            Foreground = Parchment,
+            BorderBrush = Gold,
+            CaretBrush = Parchment,
+            Margin = new Thickness(4, 0, 4, 0),
+            ToolTip = "Rewards track level",
+        };
+        var minus = StepButton("−");
+        var plus = StepButton("+");
+        // Own line below the level, so the options column does not get wider than the check box texts.
+        var boostText = new TextBlock { FontSize = 11, Margin = new Thickness(22, 3, 0, 0) };
+
+        // Shows the current state; disabled controls are dimmed, because the button template has no disabled look.
+        void ShowState()
+        {
+            Enable(levelBox, _tavernPass);
+            Enable(minus, _tavernPass && _tavernPassLevel > TavernPassBonus.MinLevel);
+            Enable(plus, _tavernPass && _tavernPassLevel < TavernPassBonus.MaxLevel);
+            boostText.Text = TavernPassBonus.Describe(_tavernPass, _tavernPassLevel);
+            boostText.Foreground = _tavernPass ? ManaBright : Muted;
+        }
+
+        void Apply(int level, bool updateBox)
+        {
+            _tavernPassLevel = TavernPassBonus.ClampLevel(level);
+            if (updateBox)
+            {
+                levelBox.Text = _tavernPassLevel.ToString(CultureInfo.InvariantCulture);
+            }
+
+            ShowState();
+            _setTavernPass?.Invoke(_tavernPass, _tavernPassLevel);
+        }
+
+        passCheck.Click += (_, _) =>
+        {
+            _tavernPass = passCheck.IsChecked == true;
+            Apply(_tavernPassLevel, updateBox: false);
+        };
+        minus.Click += (_, _) => Apply(_tavernPassLevel - 1, updateBox: true);
+        plus.Click += (_, _) => Apply(_tavernPassLevel + 1, updateBox: true);
+
+        // Typed numbers apply as soon as they are valid; leaving the box puts a cleaned-up value back (empty or 0 gives 1).
+        levelBox.TextChanged += (_, _) =>
+        {
+            if (int.TryParse(levelBox.Text, NumberStyles.None, CultureInfo.InvariantCulture, out var typed) && typed != _tavernPassLevel)
+            {
+                Apply(typed, updateBox: false);
+            }
+        };
+        levelBox.PreviewTextInput += (_, e) => e.Handled = !e.Text.All(char.IsDigit);
+        levelBox.LostFocus += (_, _) => levelBox.Text = _tavernPassLevel.ToString(CultureInfo.InvariantCulture);
+
+        var levelRow = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(22, 4, 0, 0) };
+        levelRow.Children.Add(new TextBlock { Text = "Level", Foreground = Parchment, VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(0, 0, 6, 0) });
+        levelRow.Children.Add(minus);
+        levelRow.Children.Add(levelBox);
+        levelRow.Children.Add(plus);
+
+        panel.Children.Add(passCheck);
+        panel.Children.Add(levelRow);
+        panel.Children.Add(boostText);
+
+        // Show the stored state without saving it again.
+        ShowState();
+        return panel;
+    }
+
+    private static void Enable(UIElement control, bool enabled)
+    {
+        control.IsEnabled = enabled;
+        control.Opacity = enabled ? 1 : 0.4;
+    }
+
+    private static Button StepButton(string text) => new()
+    {
+        Content = text,
+        Width = 24,
+        Height = 22,
+        Padding = new Thickness(0),
+        FontWeight = FontWeights.Bold,
+    };
 
     private void SelectPeriod(DashboardPeriod period)
     {

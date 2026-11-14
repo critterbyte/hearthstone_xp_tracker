@@ -15,11 +15,13 @@ public sealed class GameHistory
     private static readonly string[] Columns =
     {
         "Session", "Start", "End", "Mode", "Format", "Result", "XpSeconds", "PlaySeconds",
-        "WithMulliganSeconds", "AfkTurns", "Xp", "Deck", "PlayerClass", "OpponentClass", "EventXp",
+        "WithMulliganSeconds", "AfkTurns", "Xp", "Deck", "PlayerClass", "OpponentClass", "EventXp", "XpBonus",
     };
 
-    // Files written before EventXp was added have one column less; they are still read.
+    // Files written before EventXp and XpBonus were added have fewer columns; they are still read.
     private const int OldColumnCount = 14;
+    private const int EventXpColumn = 14;
+    private const int XpBonusColumn = 15;
 
     private const string DateFormat = "yyyy-MM-ddTHH:mm:ss.fff";
 
@@ -144,6 +146,7 @@ public sealed class GameHistory
         Quote(r.PlayerClass),
         Quote(r.OpponentClass),
         r.EventXp?.ToString(CultureInfo.InvariantCulture) ?? string.Empty,
+        r.XpBonus.ToString(CultureInfo.InvariantCulture),
     });
 
     private static GameRecord FromCsv(IReadOnlyList<string> f) => new()
@@ -162,7 +165,8 @@ public sealed class GameHistory
         Deck = f[11],
         PlayerClass = f[12],
         OpponentClass = f[13],
-        EventXp = f.Count > OldColumnCount && f[OldColumnCount].Length > 0 ? int.Parse(f[OldColumnCount], CultureInfo.InvariantCulture) : null,
+        EventXp = f.Count > EventXpColumn && f[EventXpColumn].Length > 0 ? int.Parse(f[EventXpColumn], CultureInfo.InvariantCulture) : null,
+        XpBonus = f.Count > XpBonusColumn && f[XpBonusColumn].Length > 0 ? int.Parse(f[XpBonusColumn], CultureInfo.InvariantCulture) : 0,
     };
 
     private static string Quote(string value) =>

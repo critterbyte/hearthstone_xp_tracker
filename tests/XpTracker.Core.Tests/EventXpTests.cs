@@ -88,7 +88,7 @@ public sealed class EventXpTests : IDisposable
         game.EventXp = 12;
         Assert.True(new GameHistory(File).Add(game));
 
-        Assert.EndsWith(",EventXp", System.IO.File.ReadLines(File).First());
+        Assert.EndsWith(",EventXp,XpBonus", System.IO.File.ReadLines(File).First());
         var loaded = new GameHistory(File).Load();
         Assert.Equal(2, loaded.Count);
         Assert.Null(loaded[0].EventXp);

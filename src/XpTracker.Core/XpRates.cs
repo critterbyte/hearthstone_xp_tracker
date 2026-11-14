@@ -56,8 +56,9 @@ public static class XpRates
     };
 
     /// <summary>XP by the formula alone, without the minimum and the cap; used to show what was lost.</summary>
-    public static int FormulaXp(double xpSeconds, double rate) =>
-        (int)Math.Round(Math.Max(xpSeconds, 0) * rate, MidpointRounding.AwayFromZero);
+    /// <param name="bonusPercent">Tavern Pass XP boost in percent, applied before rounding (see <see cref="TavernPassBonus"/>).</param>
+    public static int FormulaXp(double xpSeconds, double rate, int bonusPercent = 0) =>
+        Round(Math.Max(xpSeconds, 0) * rate, bonusPercent);
 
     /// <summary>
     /// Event XP during a Hearthstone event: one per minute of XP time, rounded half up (30 s and more count as a minute).
@@ -67,7 +68,8 @@ public static class XpRates
     public static int EventXp(double xpSeconds) =>
         (int)Math.Round(Math.Max(xpSeconds, 0) / 60, MidpointRounding.AwayFromZero);
 
-    public static int ExpectedXp(double xpSeconds, double rate)
+    /// <param name="bonusPercent">Tavern Pass XP boost in percent, applied before rounding (see <see cref="TavernPassBonus"/>).</param>
+    public static int ExpectedXp(double xpSeconds, double rate, int bonusPercent = 0)
     {
         if (xpSeconds < MinXpSeconds)
         {
@@ -75,6 +77,14 @@ public static class XpRates
         }
 
         var seconds = Math.Min(xpSeconds, MaxXpSeconds);
-        return (int)Math.Round(seconds * rate, MidpointRounding.AwayFromZero);
+        return Round(seconds * rate, bonusPercent);
+    }
+
+    // The boost is applied before rounding: round(seconds × rate × (1 + boost)). Not measured yet, see docs/FORMULA.md.
+    // Without a boost the XP is exactly round(seconds × rate) as before.
+    private static int Round(double baseXp, int bonusPercent)
+    {
+        var xp = bonusPercent == 0 ? baseXp : baseXp * (100 + bonusPercent) / 100;
+        return (int)Math.Round(xp, MidpointRounding.AwayFromZero);
     }
 }
