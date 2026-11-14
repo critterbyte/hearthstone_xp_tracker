@@ -18,6 +18,7 @@ A plugin for [Hearthstone Deck Tracker](https://hsreplay.net/downloads/) (HDT) t
 - **Tavern Pass:** enter your rewards track level, and the XP include the pass boost of 10%, 15% or 20%. The boost is calculated from public sources, not measured.
 - **Game history:** every game is saved to a local CSV file that you can open in a spreadsheet.
 - **Update hint:** the plugin tells you when a new version is available.
+- **Languages:** overlay and dashboard in English (default) and German, selectable in the dashboard.
 
 ## Installation
 

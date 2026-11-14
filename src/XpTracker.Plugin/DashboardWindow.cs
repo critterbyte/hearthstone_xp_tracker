@@ -61,6 +61,8 @@ internal sealed class DashboardWindow : Window
     private bool _eventActive;
     private readonly Action<bool, int>? _setTavernPass;
     private readonly Action<bool>? _setShowDamage;
+    private readonly Action<string>? _setLanguage;
+    private readonly string _language;
     private bool _showDamage;
     private bool _tavernPass;
     private int _tavernPassLevel;
@@ -85,8 +87,12 @@ internal sealed class DashboardWindow : Window
         int tavernPassLevel = TavernPassBonus.MinLevel,
         Action<bool, int>? setTavernPass = null,
         bool showDamage = true,
-        Action<bool>? setShowDamage = null)
+        Action<bool>? setShowDamage = null,
+        string language = Localizer.DefaultLanguage,
+        Action<string>? setLanguage = null)
     {
+        _language = language;
+        _setLanguage = setLanguage;
         _showDamage = showDamage;
         _setShowDamage = setShowDamage;
         _tavernPass = tavernPass;
@@ -104,7 +110,8 @@ internal sealed class DashboardWindow : Window
         UpdateStoredGames(hdtDecks);
 
         Title = "HS XP Tracker";
-        Width = 1000;
+        // Wide enough for the toolbar in longer languages such as German; never wider than the screen.
+        Width = Math.Min(1180, SystemParameters.WorkArea.Width - 40);
         Height = 680;
         Background = Back;
         Foreground = Parchment;
@@ -411,7 +418,8 @@ internal sealed class DashboardWindow : Window
     private FrameworkElement Toolbar()
     {
         // Centered, so the buttons keep their size when the options column on the right is taller than one row.
-        var bar = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(10), VerticalAlignment = VerticalAlignment.Center };
+        // Wraps into a second row instead of cutting buttons off when the window is narrow or the texts are long.
+        var bar = new WrapPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(10, 7, 10, 7), VerticalAlignment = VerticalAlignment.Center };
         foreach (var (period, text) in new[]
         {
             (DashboardPeriod.Session, T("period.session")),
@@ -422,7 +430,7 @@ internal sealed class DashboardWindow : Window
             (DashboardPeriod.All, T("period.all")),
         })
         {
-            var button = new ToggleButton { Content = text, Padding = new Thickness(12, 4, 12, 4), Margin = new Thickness(0, 0, 6, 0), IsChecked = period == _period };
+            var button = new ToggleButton { Content = text, Padding = new Thickness(12, 4, 12, 4), Margin = new Thickness(0, 3, 6, 3), IsChecked = period == _period };
             button.Click += (_, _) => SelectPeriod(period);
             _periodButtons[period] = button;
             bar.Children.Add(button);
@@ -434,6 +442,11 @@ internal sealed class DashboardWindow : Window
 
         var toolbar = new DockPanel();
         var options = new StackPanel { VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(0, 4, 10, 4) };
+        if (_setLanguage is not null)
+        {
+            options.Children.Add(LanguageSelection());
+        }
+
         if (_setEventActive is not null)
         {
             var eventCheck = new CheckBox
@@ -489,6 +502,35 @@ internal sealed class DashboardWindow : Window
         toolbar.Children.Add(options);
         toolbar.Children.Add(bar);
         return toolbar;
+    }
+
+    // "Language" with a drop-down of the client languages, each named in its own language.
+    // The label keeps the English word in every language, so a wrong choice is easy to undo.
+    private FrameworkElement LanguageSelection()
+    {
+        var box = new ComboBox { MinWidth = 130, Margin = new Thickness(6, 0, 0, 0) };
+        foreach (var language in Localizer.SelectableLanguages())
+        {
+            var item = new ComboBoxItem { Content = language.Value, Tag = language.Key };
+            box.Items.Add(item);
+            if (language.Key == _language)
+            {
+                box.SelectedItem = item;
+            }
+        }
+
+        box.SelectionChanged += (_, _) =>
+        {
+            if (box.SelectedItem is ComboBoxItem { Tag: string code } && code != _language)
+            {
+                _setLanguage?.Invoke(code);
+            }
+        };
+
+        var row = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 2, 0, 4) };
+        row.Children.Add(new TextBlock { Text = T("option.language"), Foreground = Parchment, VerticalAlignment = VerticalAlignment.Center });
+        row.Children.Add(box);
+        return row;
     }
 
     // "Tavern Pass" check box, the rewards track level as [-] [number] [+], and the boost that follows from it.
@@ -757,6 +799,67 @@ internal sealed class DashboardWindow : Window
     </Setter>
   </Style>
 
+  <!-- Language drop-down: dark box with a gold arrow, list in dark wood with the hovered row in mana blue. -->
+  <Style TargetType='ComboBox'>
+    <Setter Property='Foreground' Value='#F4E4C1'/>
+    <Setter Property='Cursor' Value='Hand'/>
+    <Setter Property='Template'>
+      <Setter.Value>
+        <ControlTemplate TargetType='ComboBox'>
+          <Grid>
+            <ToggleButton Focusable='False' ClickMode='Press'
+                          IsChecked='{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}'>
+              <ToggleButton.Template>
+                <ControlTemplate TargetType='ToggleButton'>
+                  <Border x:Name='Box' Background='#3A2716' BorderBrush='#C8A050' BorderThickness='1' CornerRadius='4'>
+                    <Path HorizontalAlignment='Right' VerticalAlignment='Center' Margin='0,0,8,0'
+                          Data='M 0,0 L 4,4 L 8,0' Stroke='#F0C75E' StrokeThickness='1.5'/>
+                  </Border>
+                  <ControlTemplate.Triggers>
+                    <Trigger Property='IsMouseOver' Value='True'>
+                      <Setter TargetName='Box' Property='BorderBrush' Value='#F0C75E'/>
+                    </Trigger>
+                  </ControlTemplate.Triggers>
+                </ControlTemplate>
+              </ToggleButton.Template>
+            </ToggleButton>
+            <ContentPresenter IsHitTestVisible='False' Margin='8,3,26,3' VerticalAlignment='Center'
+                              Content='{TemplateBinding SelectionBoxItem}'/>
+            <Popup IsOpen='{TemplateBinding IsDropDownOpen}' Placement='Bottom' AllowsTransparency='True' Focusable='False'>
+              <Border Background='#2C1E12' BorderBrush='#C8A050' BorderThickness='1' CornerRadius='4'
+                      MinWidth='{TemplateBinding ActualWidth}' MaxHeight='360'>
+                <ScrollViewer VerticalScrollBarVisibility='Auto'>
+                  <ItemsPresenter/>
+                </ScrollViewer>
+              </Border>
+            </Popup>
+          </Grid>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+  <Style TargetType='ComboBoxItem'>
+    <Setter Property='Foreground' Value='#F4E4C1'/>
+    <Setter Property='Cursor' Value='Hand'/>
+    <Setter Property='Template'>
+      <Setter.Value>
+        <ControlTemplate TargetType='ComboBoxItem'>
+          <Border x:Name='Row' Background='Transparent' Padding='10,4'>
+            <ContentPresenter/>
+          </Border>
+          <ControlTemplate.Triggers>
+            <Trigger Property='IsHighlighted' Value='True'>
+              <Setter TargetName='Row' Property='Background' Value='#1F3B5C'/>
+            </Trigger>
+            <Trigger Property='IsSelected' Value='True'>
+              <Setter Property='Foreground' Value='#F0C75E'/>
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
   <Style TargetType='CheckBox'>
     <Setter Property='Foreground' Value='#F4E4C1'/>
     <Setter Property='Cursor' Value='Hand'/>
@@ -872,7 +975,7 @@ internal sealed class DashboardWindow : Window
 
     private static Button Action(string text, Action action)
     {
-        var button = new Button { Content = text, Padding = new Thickness(12, 4, 12, 4), Margin = new Thickness(0, 0, 6, 0) };
+        var button = new Button { Content = text, Padding = new Thickness(12, 4, 12, 4), Margin = new Thickness(0, 3, 6, 3) };
         button.Click += (_, _) => action();
         return button;
     }

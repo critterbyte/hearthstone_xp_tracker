@@ -100,7 +100,20 @@ The project follows a strict free-to-play policy and spends no money on the game
 dotnet run --project tools\XpTracker.LogCheck -c Release -- "<path to Power.log, a .zip with a Power.log, or a folder>"
 ```
 
-It prints one tab-separated line per game: date, first turn, mode, result, XP seconds, play seconds, seconds including the mulligan and AFK turns.
+It prints one tab-separated line per game: date, first turn, mode, result, XP seconds, play seconds, seconds including the mulligan, AFK turns, damage and hero damage.
+
+## Translations
+
+The overlay and the dashboard come in the languages of the Hearthstone client. Each language is one text file in `src/XpTracker.Core/Localization/`, named after its code (`de.txt`, `es-MX.txt`, `pt-BR.txt`, …). The files are embedded in `XpTracker.Core.dll`.
+
+To fix or improve a translation:
+
+1. Edit the line in the language file. Each line is `key=value`; lines starting with `#` are comments.
+2. Keep placeholders such as `{0}` and `{1}`; they are filled in with numbers or names.
+3. Use the game's own terms of that language, as the Hearthstone client shows them: game modes, the rewards track, the Tavern Pass, class names.
+4. Run `.\build.ps1`. The tests check that every language has exactly the keys of `en.txt`, the same placeholders and no empty texts.
+
+`en.txt` is the source. A new text is added to `en.txt` first and then to every other language file. A text missing in a language falls back to English.
 
 ## Releases
 

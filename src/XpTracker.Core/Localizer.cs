@@ -35,6 +35,43 @@ public static class Localizer
     /// <summary>Codes of all embedded languages, English first.</summary>
     public static IReadOnlyList<string> Languages { get; } = FindLanguages();
 
+    /// <summary>
+    /// The languages of the Hearthstone client in its own order, each with its name in that language.
+    /// English and the two Spanish versions follow the client; Portuguese is Brazilian Portuguese as in the client.
+    /// </summary>
+    public static IReadOnlyList<KeyValuePair<string, string>> ClientLanguages { get; } = new[]
+    {
+        new KeyValuePair<string, string>("de", "Deutsch"),
+        new KeyValuePair<string, string>("en", "English"),
+        new KeyValuePair<string, string>("es-MX", "Español (AL)"),
+        new KeyValuePair<string, string>("es-ES", "Español (EU)"),
+        new KeyValuePair<string, string>("fr", "Français"),
+        new KeyValuePair<string, string>("it", "Italiano"),
+        new KeyValuePair<string, string>("ja", "日本語"),
+        new KeyValuePair<string, string>("pl", "Polski"),
+        new KeyValuePair<string, string>("pt-BR", "Português"),
+        new KeyValuePair<string, string>("ru", "Русский"),
+        new KeyValuePair<string, string>("th", "ภาษาไทย"),
+        new KeyValuePair<string, string>("ko", "한국어"),
+        new KeyValuePair<string, string>("zh-TW", "繁體中文"),
+        new KeyValuePair<string, string>("zh-CN", "简体中文"),
+    };
+
+    /// <summary>The client languages that are embedded, for the language selection.</summary>
+    public static IReadOnlyList<KeyValuePair<string, string>> SelectableLanguages()
+    {
+        var selectable = new List<KeyValuePair<string, string>>();
+        foreach (var language in ClientLanguages)
+        {
+            if (Normalize(language.Key) == language.Key)
+            {
+                selectable.Add(language);
+            }
+        }
+
+        return selectable;
+    }
+
     /// <summary>Switches the language; an unknown code switches to English.</summary>
     public static void SetLanguage(string? code)
     {

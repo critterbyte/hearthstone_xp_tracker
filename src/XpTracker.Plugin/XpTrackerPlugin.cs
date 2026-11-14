@@ -80,6 +80,7 @@ public class XpTrackerPlugin : IPlugin
         _enabled = true;
 
         _settings = XpTrackerSettings.Load(SettingsPath);
+        ApplyLanguage();
         if (_settings.CheckForUpdates)
         {
             StartUpdateCheck();
@@ -147,7 +148,7 @@ public class XpTrackerPlugin : IPlugin
     {
         if (_dashboard is null)
         {
-            _dashboard = new DashboardWindow(_history, HistoryPath, () => _tail?.CurrentSession, IsHearthstoneRunning, HdtDecks.All, _settings.CheckForUpdates, SetCheckForUpdates, _settings.EventActive, SetEventActive, _settings.TavernPass, _settings.TavernPassLevel, SetTavernPass, _settings.ShowDamage, SetShowDamage);
+            _dashboard = new DashboardWindow(_history, HistoryPath, () => _tail?.CurrentSession, IsHearthstoneRunning, HdtDecks.All, _settings.CheckForUpdates, SetCheckForUpdates, _settings.EventActive, SetEventActive, _settings.TavernPass, _settings.TavernPassLevel, SetTavernPass, _settings.ShowDamage, SetShowDamage, _settings.Language, SetLanguage);
             _dashboard.ShowUpdate(_update);
             _dashboard.Closed += (_, _) => _dashboard = null;
             _dashboard.Show();
@@ -198,6 +199,42 @@ public class XpTrackerPlugin : IPlugin
     {
         _settings.EventActive = active;
         SaveSettings();
+        _shownKey = string.Empty;
+    }
+
+    // Called from the dashboard's language selection. The overlay and the menu entry change at once; the dashboard
+    // is built again in the new language at the same place, after the selection handler has returned.
+    private void SetLanguage(string language)
+    {
+        _settings.Language = Localizer.Normalize(language);
+        SaveSettings();
+        ApplyLanguage();
+
+        if (_dashboard is { } old)
+        {
+            System.Windows.Application.Current?.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                var bounds = (old.Left, old.Top, old.Width, old.Height, old.WindowState);
+                old.Close();
+                OpenDashboard();
+                if (_dashboard is { } fresh)
+                {
+                    fresh.WindowStartupLocation = System.Windows.WindowStartupLocation.Manual;
+                    (fresh.Left, fresh.Top, fresh.Width, fresh.Height) = (bounds.Left, bounds.Top, bounds.Width, bounds.Height);
+                    fresh.WindowState = bounds.WindowState;
+                }
+            }));
+        }
+    }
+
+    private void ApplyLanguage()
+    {
+        Localizer.SetLanguage(_settings.Language);
+        if (_menuItem is not null)
+        {
+            _menuItem.Header = Localizer.Text("plugin.dashboard");
+        }
+
         _shownKey = string.Empty;
     }
 
