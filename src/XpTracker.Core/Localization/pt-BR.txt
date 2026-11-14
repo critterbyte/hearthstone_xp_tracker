@@ -30,6 +30,7 @@ mode.Ranked=Ranqueado
 mode.Casual=Casual
 mode.TavernBrawl=Contenda de Taverna
 mode.TavernBrawlPvE=Contenda de Taverna (JxA)
+mode.Arena=Arena
 mode.Other=Outro
 format.Wild=Livre
 format.Standard=Padrão

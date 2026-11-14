@@ -15,7 +15,7 @@ public static class XpRates
     // Measured range 0.09317 to 0.09322.
     public const double RankedLoss = 0.0932;
 
-    // Casual and Tavern Brawl pay the same rates.
+    // Casual, Tavern Brawl and Arena pay the same rates (Arena measured in 4 games in November 2026).
     public const double CasualWin = 0.0932;
     public const double CasualLoss = 0.0666;
 
@@ -39,7 +39,7 @@ public static class XpRates
         return mode switch
         {
             GameMode.Ranked => win ? RankedWin : RankedLoss,
-            GameMode.Casual or GameMode.TavernBrawl => win ? CasualWin : CasualLoss,
+            GameMode.Casual or GameMode.TavernBrawl or GameMode.Arena => win ? CasualWin : CasualLoss,
 
             // Measured: losses against the computer in a Tavern Brawl give nothing. Wins are assumed to give nothing too.
             GameMode.TavernBrawlPvE => 0,
@@ -47,10 +47,10 @@ public static class XpRates
         };
     }
 
-    /// <summary>Event XP of a game in this mode, or null if not known for the mode (for example Arena or Battlegrounds).</summary>
+    /// <summary>Event XP of a game in this mode, or null if not known for the mode (for example Battlegrounds).</summary>
     public static int? EventXpFor(GameMode mode, double xpSeconds) => mode switch
     {
-        GameMode.Ranked or GameMode.Casual or GameMode.TavernBrawl => EventXp(xpSeconds),
+        GameMode.Ranked or GameMode.Casual or GameMode.TavernBrawl or GameMode.Arena => EventXp(xpSeconds),
         GameMode.TavernBrawlPvE => 0,
         _ => null,
     };

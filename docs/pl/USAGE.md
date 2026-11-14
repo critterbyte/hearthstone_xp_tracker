@@ -15,7 +15,7 @@ Teksty w cudzysłowie, na przykład „Czas PD:”, to teksty, które pokazuje w
 
 Nakładka to małe pole w lewym dolnym rogu, nad twoim portretem („You” z twoją rangą). W panelu możesz zamiast tego przenieść ją nad przycisk ustawień Hearthstone (koło zębate w prawym dolnym rogu). Etykiety są po lewej. Wartości są po prawej, na niebieskich paskach.
 
-Nakładka jest widoczna tylko w trybach **Ranking, Rozrywka i Karczemna bójka**. Inne tryby nie są jeszcze mierzone, więc wtyczka nic tam nie pokazuje. Karczemna bójka przeciwko komputerowi (PvE, na przykład przeciwko Karczmarzowi) nie daje PD, więc nakładka pokazuje tam „+0”.
+Nakładka jest widoczna tylko w trybach **Ranking, Rozrywka, Karczemna bójka i Arena**. Inne tryby nie są jeszcze mierzone, więc wtyczka nic tam nie pokazuje. Karczemna bójka przeciwko komputerowi (PvE, na przykład przeciwko Karczmarzowi) nie daje PD, więc nakładka pokazuje tam „+0”.
 
 <a id="during-a-game"></a>
 ### W trakcie gry

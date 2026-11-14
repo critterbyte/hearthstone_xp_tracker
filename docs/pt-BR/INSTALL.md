@@ -71,7 +71,7 @@ Exclua também essa pasta se não quiser manter os dados.
 
 **O overlay não aparece.**
 
-- O overlay só é mostrado em Ranqueado, Casual e Contenda de Taverna. Os outros modos ainda não são medidos.
+- O overlay só é mostrado em Ranqueado, Casual, Contenda de Taverna e Arena. Os outros modos ainda não são medidos.
 - Durante a escolha da mão inicial, o overlay fica oculto. Ele aparece no primeiro turno.
 - Verifique se o overlay do próprio HDT funciona. O plugin desenha sobre o overlay do HDT.
 

@@ -16,6 +16,7 @@ Each statement is marked:
   - 64 of them determine the rates.
   - 11 short games with 0 XP determine the minimum game length.
 - Ranked games until 12 November 2026 narrowed the Ranked ranges further: 55 wins and 51 losses with exact log times fit the ranges below.
+- Arena was measured on 14 November 2026 in one run: 3 wins and 1 loss, without a Tavern Pass and paid with in-game gold.
 
 ## Formula
 
@@ -37,12 +38,13 @@ XP = round(xpSeconds × rate)
 | Mode | Win | Loss |
 |---|---:|---:|
 | Ranked (Standard and Wild) | 0.13054 XP/s (470 XP/h) | 0.0932 XP/s (336 XP/h) |
-| Casual and Tavern Brawl | 0.0932 XP/s (336 XP/h) | 0.0666 XP/s (240 XP/h) |
+| Casual, Tavern Brawl and Arena | 0.0932 XP/s (336 XP/h) | 0.0666 XP/s (240 XP/h) |
 
 All values in this table are **measured**.
 
 - A win pays 1.40 times a loss.
-- Casual and Tavern Brawl pay 0.71 times Ranked.
+- Casual, Tavern Brawl and Arena pay 0.71 times Ranked.
+- **Measured:** Arena pays exactly like Casual. Wins of 771.81 s, 1101.72 s and 712.97 s gave 72, 103 and 66 XP (0.0932 gives 71.93, 102.68 and 66.45), a loss of 1163.04 s gave 77 XP (0.0666 gives 77.46). With the Ranked rates it would have been 101, 144, 93 and 108 XP. Event XP follow the same formula as in the other modes.
 - **Measured:** a Tavern Brawl against the computer (PvE) gives nothing. Two losses of 1:39 and 4:29 against the Innkeeper gave 0 XP and 0 event XP. Wins against the computer are not measured yet. The plugin recognizes such games by the opponent's missing account in the log (`GameAccountId=[hi=0 lo=0]`).
 - Standard and Wild pay the same.
 
@@ -52,8 +54,10 @@ These rates are the middle of ranges that fit every measured game:
 |---|---|---:|
 | Ranked win | 0.130505 to 0.13058 | 55 |
 | Ranked loss | 0.09317 to 0.09322 | 51 |
-| Casual or Tavern Brawl win | 0.09306 to 0.09351 | 5 |
-| Casual or Tavern Brawl loss | 0.06649 to 0.06837 | 3 |
+| Casual, Tavern Brawl or Arena win | 0.09306 to 0.093272 | 8 |
+| Casual, Tavern Brawl or Arena loss | 0.06649 to 0.066636 | 4 |
+
+- **Measured:** the Arena games narrowed the shared ranges: a win of 66 XP / 712.97 s allows at most 0.093272 (before: 0.09351), only 0.05 XP from the rounding step; a loss of 77 XP / 1163.04 s allows at most 0.066636 (before: 0.06837). The win range overlaps the Ranked loss range (0.09317 to 0.09322), as expected if both rates are the same.
 
 - **Measured:** the lower limit of the Ranked win rate comes from a win of 425.27 s that gave 56 XP. With 0.1305 it would have been 55.498, so 55. The game was only 0.02 seconds short of the rounding limit. If the server counts a game a few hundredths of a second longer than the log timestamps show, a slightly lower rate would fit too.
 - With these ranges, a win pays 1.40 times a loss only if the loss rate is at least 0.093218.
@@ -155,7 +159,7 @@ Timestamps in the log have seven decimal places (100-nanosecond ticks). Whole se
 
 ## Not covered yet
 
-- **Arena, Battlegrounds, Twist and solo adventures** are not measured. The plugin shows nothing in these modes.
+- **Battlegrounds, Twist and solo adventures** are not measured. The plugin shows nothing in these modes.
   - **According to [5]:** Casual, Ranked, Arena, Battlegrounds, Tavern Brawls and Adventures give XP.
   - **According to [5]:** Friendly Challenges do not give XP.
 - **Tavern Pass:** not measured, because of the project's free-to-play policy. The plugin calculates the boost as described in [Tavern Pass](#tavern-pass); the rounding with the boost is assumed.

@@ -20,9 +20,9 @@ Cette page parle de jouer normalement et efficacement. Les bots, le win trading,
 | Mode | Victoire | Défaite |
 |---|---:|---:|
 | Classé (Standard et Libre) | 470 EXP/h | 336 EXP/h |
-| Non classé et Bras de fer | 336 EXP/h | 240 EXP/h |
+| Non classé, Bras de fer et Arène | 336 EXP/h | 240 EXP/h |
 
-- **Mesuré :** le mode Classé rapporte 1,40 fois plus que le Non classé et le Bras de fer. Une victoire en Non classé rapporte autant qu'une défaite en Classé.
+- **Mesuré :** le mode Classé rapporte 1,40 fois plus que le Non classé, le Bras de fer et l'Arène. Une victoire en Non classé rapporte autant qu'une défaite en Classé.
 - **Mesuré :** Standard et Libre rapportent autant. Jouez le format qui vous plaît le plus ou dans lequel vous gagnez le plus.
 - **Mesuré :** une victoire rapporte 1,40 fois plus qu'une défaite. Votre taux de victoire compte, alors jouez un deck avec lequel vous gagnez.
 - **Selon [1] :** les Champs de bataille rapportent environ 300 EXP par heure. Non mesuré par ce projet.

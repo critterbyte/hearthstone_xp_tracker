@@ -30,6 +30,7 @@ mode.Ranked=Ranked
 mode.Casual=Casual
 mode.TavernBrawl=Tavern Brawl
 mode.TavernBrawlPvE=Tavern Brawl (PvE)
+mode.Arena=Arena
 mode.Other=Other
 format.Wild=Wild
 format.Standard=Standard

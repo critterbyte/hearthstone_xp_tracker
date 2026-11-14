@@ -30,6 +30,7 @@ mode.Ranked=ランク戦
 mode.Casual=カジュアル
 mode.TavernBrawl=酒場の喧嘩
 mode.TavernBrawlPvE=酒場の喧嘩 (PvE)
+mode.Arena=闘技場
 mode.Other=その他
 format.Wild=ワイルド
 format.Standard=スタンダード

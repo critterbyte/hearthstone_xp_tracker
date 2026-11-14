@@ -71,7 +71,7 @@ Elimina anche questa cartella se non vuoi tenere i dati.
 
 **L'overlay non compare.**
 
-- L'overlay compare solo in Classificata, Amichevole e Rissa. Le altre modalità non sono ancora misurate.
+- L'overlay compare solo in Classificata, Amichevole, Rissa e Arena. Le altre modalità non sono ancora misurate.
 - Durante la scelta della mano iniziale l'overlay è nascosto. Compare con il primo turno.
 - Controlla che l'overlay di HDT funzioni. Il plugin disegna sull'overlay di HDT.
 

@@ -30,6 +30,7 @@ mode.Ranked=Classé
 mode.Casual=Non classé
 mode.TavernBrawl=Bras de fer
 mode.TavernBrawlPvE=Bras de fer (JcE)
+mode.Arena=Arène
 mode.Other=Autre
 format.Wild=Libre
 format.Standard=Standard

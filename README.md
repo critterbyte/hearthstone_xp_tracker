@@ -6,7 +6,7 @@ A plugin for [Hearthstone Deck Tracker](https://hsreplay.net/downloads/) (HDT) t
 
 [![build](https://github.com/critterbyte/hearthstone_xp_tracker/actions/workflows/build.yml/badge.svg)](https://github.com/critterbyte/hearthstone_xp_tracker/actions/workflows/build.yml)
 
-> **Status:** beta. XP is calculated for Ranked, Casual and Tavern Brawl. Other modes are not measured yet.
+> **Status:** beta. XP is calculated for Ranked, Casual, Tavern Brawl and Arena. Other modes, such as Battlegrounds, are not measured yet.
 
 ## Features
 
@@ -42,7 +42,7 @@ XP = round(xpSeconds × rate)
 | Mode | Win | Loss |
 |---|---:|---:|
 | Ranked (Standard and Wild) | 0.13054 XP/s (470 XP/h) | 0.0932 XP/s (336 XP/h) |
-| Casual and Tavern Brawl | 0.0932 XP/s (336 XP/h) | 0.0666 XP/s (240 XP/h) |
+| Casual, Tavern Brawl and Arena | 0.0932 XP/s (336 XP/h) | 0.0666 XP/s (240 XP/h) |
 
 Games with less than 60 seconds of XP time give no XP. The rates were measured without a Tavern Pass. With the pass, the plugin adds its boost before rounding; this is calculated, not measured, because the project follows a strict free-to-play policy and buys no pass. See [docs/FORMULA.md](docs/FORMULA.md) for all rules, the measurements and the sources.
 

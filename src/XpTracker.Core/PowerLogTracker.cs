@@ -286,6 +286,7 @@ public sealed class PowerLogTracker
                 "GT_RANKED" => GameMode.Ranked,
                 "GT_CASUAL" => GameMode.Casual,
                 "GT_TAVERNBRAWL" => GameMode.TavernBrawl,
+                "GT_ARENA" => GameMode.Arena,
                 _ => GameMode.Other,
             };
         }

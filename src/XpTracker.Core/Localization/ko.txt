@@ -30,6 +30,7 @@ mode.Ranked=등급전
 mode.Casual=일반전
 mode.TavernBrawl=선술집 난투
 mode.TavernBrawlPvE=선술집 난투 (PvE)
+mode.Arena=투기장
 mode.Other=기타
 format.Wild=야생
 format.Standard=정규

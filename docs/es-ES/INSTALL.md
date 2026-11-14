@@ -71,7 +71,7 @@ Elimina también esta carpeta si no quieres conservar los datos.
 
 **El overlay no aparece.**
 
-- El overlay solo se muestra en Con rango, Aficionado y Pelea de taberna. Los demás modos aún no se miden.
+- El overlay solo se muestra en Con rango, Aficionado, Pelea de taberna y Arena. Los demás modos aún no se miden.
 - Mientras eliges tu mano inicial, el overlay está oculto. Aparece con el primer turno.
 - Comprueba que el overlay del propio HDT funciona. El plugin dibuja sobre el overlay de HDT.
 

@@ -20,9 +20,9 @@ Diese Seite handelt vom normalen, effizienten Spielen. Bots, Win-Trading, Accoun
 | Modus | Sieg | Niederlage |
 |---|---:|---:|
 | Gewertet (Standard und Wild) | 470 EP/h | 336 EP/h |
-| Ungewertet und Kartenchaos | 336 EP/h | 240 EP/h |
+| Ungewertet, Kartenchaos und Arena | 336 EP/h | 240 EP/h |
 
-- **Gemessen:** Gewertet bringt das 1,40-Fache von Ungewertet und Kartenchaos. Ein Sieg in Ungewertet bringt so viel wie eine Niederlage in Gewertet.
+- **Gemessen:** Gewertet bringt das 1,40-Fache von Ungewertet, Kartenchaos und Arena. Ein Sieg in Ungewertet bringt so viel wie eine Niederlage in Gewertet.
 - **Gemessen:** Standard und Wild bringen gleich viel. Spiel das Format, das dir Spaß macht oder in dem du öfter gewinnst.
 - **Gemessen:** Ein Sieg bringt das 1,40-Fache einer Niederlage. Deine Siegquote zählt, also spiel ein Deck, mit dem du gewinnst.
 - **Laut [1]:** Schlachtfeld bringt etwa 300 EP pro Stunde. Von diesem Projekt nicht gemessen.

@@ -20,9 +20,9 @@ Esta página trata de jogar de forma normal e eficiente. Bots, win trading, comp
 | Modo | Vitória | Derrota |
 |---|---:|---:|
 | Ranqueado (Padrão e Livre) | 470 EXP/h | 336 EXP/h |
-| Casual e Contenda de Taverna | 336 EXP/h | 240 EXP/h |
+| Casual, Contenda de Taverna e Arena | 336 EXP/h | 240 EXP/h |
 
-- **Medido:** o Ranqueado paga 1,40 vez o que pagam o Casual e a Contenda de Taverna. Uma vitória no Casual paga o mesmo que uma derrota no Ranqueado.
+- **Medido:** o Ranqueado paga 1,40 vez o que pagam o Casual, a Contenda de Taverna e a Arena. Uma vitória no Casual paga o mesmo que uma derrota no Ranqueado.
 - **Medido:** Padrão e Livre pagam o mesmo. Jogue o formato de que você mais gosta ou em que mais vence.
 - **Medido:** uma vitória paga 1,40 vez o que paga uma derrota. A sua taxa de vitórias importa, então jogue com um deck com o qual você vence.
 - **Segundo [1]:** os Campos de Batalha dão cerca de 300 de EXP por hora. Não medido por este projeto.

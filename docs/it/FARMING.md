@@ -20,9 +20,9 @@ Questa pagina parla di giocare in modo normale ed efficiente. Bot, compravendita
 | Modalità | Vittoria | Sconfitta |
 |---|---:|---:|
 | Classificata (Standard e Selvaggio) | 470 PE/h | 336 PE/h |
-| Amichevole e Rissa | 336 PE/h | 240 PE/h |
+| Amichevole, Rissa e Arena | 336 PE/h | 240 PE/h |
 
-- **Misurato:** la Classificata paga 1,40 volte tanto quanto Amichevole e Rissa. Una vittoria in Amichevole paga quanto una sconfitta in Classificata.
+- **Misurato:** la Classificata paga 1,40 volte tanto quanto Amichevole, Rissa e Arena. Una vittoria in Amichevole paga quanto una sconfitta in Classificata.
 - **Misurato:** Standard e Selvaggio pagano uguale. Gioca il formato che ti piace o in cui vinci di più.
 - **Misurato:** una vittoria paga 1,40 volte una sconfitta. La tua percentuale di vittorie conta, quindi gioca un mazzo con cui vinci.
 - **Secondo [1]:** Battaglia dà circa 300 PE all'ora. Non misurato da questo progetto.

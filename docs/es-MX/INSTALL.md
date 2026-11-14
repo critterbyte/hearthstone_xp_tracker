@@ -71,7 +71,7 @@ Borra también esta carpeta si no quieres conservar los datos.
 
 **El overlay no aparece.**
 
-- El overlay solo se muestra en Clasificado, Casual y Gresca de la taberna. Los demás modos todavía no se miden.
+- El overlay solo se muestra en Clasificado, Casual, Gresca de la taberna y Arena. Los demás modos todavía no se miden.
 - Mientras eliges tu mano inicial, el overlay está oculto. Aparece con el primer turno.
 - Revisa que el overlay propio de HDT funcione. El plugin dibuja sobre el overlay de HDT.
 
