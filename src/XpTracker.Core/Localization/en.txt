@@ -1,0 +1,141 @@
+# English texts of the Hearthstone XP Tracker: the source for all other languages.
+# Format: key=value, one per line. {0}, {1}, ... are placeholders and must stay in every translation.
+# Use the game's own terms of each language (Ranked, Tavern Brawl, Rewards Track, Tavern Pass, class names).
+
+# Plugin entry in HDT
+plugin.description=Shows the reward track XP of the current game and the XP time it is based on.
+plugin.dashboard=XP dashboard
+
+# Overlay rows
+overlay.xpTime=XP time:
+overlay.ifWin=If win:
+overlay.ifLoss=If loss:
+overlay.lastGame=Last game:
+overlay.totalTime=Total time:
+overlay.earned=Earned:
+overlay.unknown=unknown
+overlay.eventXp=Event XP:
+overlay.totalDamage=Total Damage:
+overlay.heroDamage=Hero Damage:
+overlay.paused=(paused)
+overlay.max=(max)
+overlay.updateAvailable=Update available:
+
+# Game results, modes, formats and classes
+result.Win=Win
+result.Loss=Loss
+result.Tie=Tie
+result.Unknown=Unknown
+mode.Ranked=Ranked
+mode.Casual=Casual
+mode.TavernBrawl=Tavern Brawl
+mode.TavernBrawlPvE=Tavern Brawl (PvE)
+mode.Other=Other
+format.Wild=Wild
+format.Standard=Standard
+class.DEATHKNIGHT=Death Knight
+class.DEMONHUNTER=Demon Hunter
+class.DRUID=Druid
+class.HUNTER=Hunter
+class.MAGE=Mage
+class.PALADIN=Paladin
+class.PRIEST=Priest
+class.ROGUE=Rogue
+class.SHAMAN=Shaman
+class.WARLOCK=Warlock
+class.WARRIOR=Warrior
+deck.none=No deck recorded
+
+# Dashboard: update hint
+update.available=Version {0} is available.
+update.availableInstalled=Version {0} is available (installed: {1}).
+update.openPage=Open the download page
+
+# Dashboard: toolbar and options
+period.session=Session
+period.today=Today
+period.week=This week
+period.season=This season
+period.last30Days=Last 30 days
+period.all=All time
+toolbar.refresh=Refresh
+toolbar.openFolder=Open data folder
+option.event=Event running (show event XP)
+option.eventTip=Switch on while a Hearthstone event runs: the overlay shows the event XP, and new games store it.
+option.damage=Show damage on the overlay
+option.damageTip=Shows the rows "Total Damage:" and "Hero Damage:": the damage your side dealt to the opponent in the current or last game.
+option.updates=Check for updates when HDT starts
+tavern.check=Tavern Pass (XP boost)
+tavern.checkTip=Switch on if you own the Tavern Pass of the current expansion. Enter your rewards track level below: the boost is 10%, from level 20 on 15%, from level 70 on 20% (according to the Hearthstone Wiki, not measured yet).
+tavern.level=Level
+tavern.levelTip=Rewards track level
+tavern.noBoost=No XP boost
+tavern.boostMax={0}% XP boost (maximum)
+tavern.boostNextOne={0}% XP boost, 1 level to {1}%
+tavern.boostNextMany={0}% XP boost, {1} levels to {2}%
+
+# Dashboard: session line
+session.none=No session yet.
+session.running=Session since {0} (running)
+session.ended=Session since {0} (ended)
+
+# Dashboard: tabs
+tab.overview=Overview
+tab.decks=Decks
+tab.lostXp=Lost XP
+tab.games=Games
+tab.charts=Charts
+
+# Dashboard: overview tiles
+overview.xp=XP
+overview.xpTime=XP time
+overview.playTime=Play time incl. mulligan
+overview.onlineTime=Online time
+overview.games=Games
+overview.winsLosses={0} wins, {1} losses
+overview.xpPerHour=XP per hour
+overview.xpPerHourNote=of XP time
+overview.xpPerOnlineHour=XP per online hour
+overview.xpPerOnlineHourNote=including menus and queue
+overview.winRate=Win rate
+overview.eventXp=Event XP
+overview.eventXpNote=1 per minute of XP time
+
+# Dashboard: lost XP tiles
+lost.xpValue={0} XP
+lost.afk=AFK turns
+lost.afkNote={0} turns without action or End Turn
+lost.short=Games under 1 minute
+lost.shortNote={0} games below the 60 s minimum
+lost.outside=Time outside games
+lost.outsideNote={0} online but not in a game (menus, queue, breaks)
+
+# Dashboard: table columns
+column.deck=Deck
+column.games=Games
+column.winRate=Win rate
+column.xp=XP
+column.xpPerHour=XP per hour
+column.avgGame=Avg. game
+column.date=Date
+column.start=Start
+column.mode=Mode
+column.result=Result
+column.xpTime=XP time
+column.totalTime=Total time
+column.event=Event
+column.afk=AFK
+column.opponent=Opponent
+
+# Dashboard: charts
+chart.xpEarned=XP earned
+chart.xpEarnedNote=XP of the games that started in each hour (Today) or on each day. Hours or days without games are at 0.
+chart.xpPerHour=XP per hour
+chart.xpPerHourNote=Speed in each hour or on each day: XP divided by XP time. The dashed line is the average of the whole period.
+chart.xpAxis=XP
+chart.average=Average
+chart.averageTooltip=Average of the period: {0} XP/h
+chart.xpTooltip={0} · {1} XP · {2}
+chart.rateTooltip={0} · {1} XP/h · {2}
+chart.gameOne=1 game
+chart.gameMany={0} games

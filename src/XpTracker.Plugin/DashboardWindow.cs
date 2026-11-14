@@ -53,8 +53,8 @@ internal sealed class DashboardWindow : Window
     private readonly UniformGrid _lost = new() { Columns = 3, VerticalAlignment = VerticalAlignment.Top };
     private readonly DataGrid _decks = CreateGrid();
     private readonly DataGrid _games = CreateGrid();
-    private readonly CartesianChart _xpChart = CreateChart("XP");
-    private readonly CartesianChart _rateChart = CreateChart("XP per hour");
+    private readonly CartesianChart _xpChart = CreateChart(T("chart.xpAxis"));
+    private readonly CartesianChart _rateChart = CreateChart(T("chart.xpPerHour"));
     private readonly bool _checkForUpdates;
     private readonly Action<bool>? _setCheckForUpdates;
     private readonly Action<bool>? _setEventActive;
@@ -115,11 +115,11 @@ internal sealed class DashboardWindow : Window
         SetupGameColumns();
 
         var tabs = new TabControl { Background = Back, BorderBrush = Gold, BorderThickness = new Thickness(1), Padding = new Thickness(0), Margin = new Thickness(10, 0, 10, 10) };
-        tabs.Items.Add(Tab("Overview", Padded(_overview)));
-        tabs.Items.Add(Tab("Decks", _decks));
-        tabs.Items.Add(Tab("Lost XP", Padded(_lost)));
-        tabs.Items.Add(Tab("Games", _games));
-        tabs.Items.Add(Tab("Charts", Charts()));
+        tabs.Items.Add(Tab(T("tab.overview"), Padded(_overview)));
+        tabs.Items.Add(Tab(T("tab.decks"), _decks));
+        tabs.Items.Add(Tab(T("tab.lostXp"), Padded(_lost)));
+        tabs.Items.Add(Tab(T("tab.games"), _games));
+        tabs.Items.Add(Tab(T("tab.charts"), Charts()));
 
         var root = new DockPanel();
         var header = Header();
@@ -148,14 +148,16 @@ internal sealed class DashboardWindow : Window
         }
 
         var installed = typeof(DashboardWindow).Assembly.GetName().Version;
-        _updateText.Text = $"Version {update.VersionText} is available" + (installed is null ? "." : $" (installed: {UpdateCheck.Display(installed)}).");
+        _updateText.Text = installed is null
+            ? F("update.available", update.VersionText)
+            : F("update.availableInstalled", update.VersionText, UpdateCheck.Display(installed));
         _updateUrl = UpdateCheck.SafeLink(update.Url);
         _updateBar.Visibility = Visibility.Visible;
     }
 
     private Border UpdateBar()
     {
-        var link = new Hyperlink(new Run("Open the download page")) { Foreground = GoldBright };
+        var link = new Hyperlink(new Run(T("update.openPage"))) { Foreground = GoldBright };
         link.Click += (_, _) => Process.Start(new ProcessStartInfo(_updateUrl) { UseShellExecute = true });
         var linkText = new TextBlock(link) { VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(12, 0, 0, 0) };
 
@@ -206,8 +208,10 @@ internal sealed class DashboardWindow : Window
             var end = running ? now : games.Count > 0 ? games.Max(g => g.End) : periodStart;
             buckets = Dashboard.SessionBuckets(games, periodStart, end);
             _sessionInfo.Text = session is null
-                ? "No session yet."
-                : "Session since " + periodStart.ToString("ddd yyyy-MM-dd, HH:mm", CultureInfo.InvariantCulture) + (running ? " (running)" : " (ended)");
+                ? T("session.none")
+                : running
+                    ? F("session.running", periodStart.ToString("ddd yyyy-MM-dd, HH:mm", Localizer.Culture))
+                    : F("session.ended", periodStart.ToString("ddd yyyy-MM-dd, HH:mm", Localizer.Culture));
             _sessionInfo.Visibility = Visibility.Visible;
         }
         else
@@ -222,23 +226,23 @@ internal sealed class DashboardWindow : Window
         var lost = Dashboard.Lost(games, summary);
 
         _overview.Children.Clear();
-        _overview.Children.Add(Tile("XP", summary.Xp.ToString(CultureInfo.InvariantCulture)));
-        _overview.Children.Add(Tile("XP time", TimeFormat.HoursMinutesSeconds(summary.XpSeconds)));
-        _overview.Children.Add(Tile("Play time incl. mulligan", TimeFormat.HoursMinutesSeconds(summary.PlaySeconds)));
-        _overview.Children.Add(Tile("Online time", TimeFormat.HoursMinutesSeconds(summary.OnlineSeconds)));
-        _overview.Children.Add(Tile("Games", summary.Games.ToString(CultureInfo.InvariantCulture), $"{summary.Wins} wins, {summary.Losses} losses"));
-        _overview.Children.Add(Tile("XP per hour", summary.XpPerHour.ToString("0", CultureInfo.InvariantCulture), "of XP time"));
-        _overview.Children.Add(Tile("XP per online hour", summary.XpPerOnlineHour.ToString("0", CultureInfo.InvariantCulture), "including menus and queue"));
-        _overview.Children.Add(Tile("Win rate", summary.Games > 0 ? ((double)summary.Wins / summary.Games).ToString("0%", CultureInfo.InvariantCulture) : "-"));
+        _overview.Children.Add(Tile(T("overview.xp"), summary.Xp.ToString(Localizer.Culture)));
+        _overview.Children.Add(Tile(T("overview.xpTime"), TimeFormat.HoursMinutesSeconds(summary.XpSeconds)));
+        _overview.Children.Add(Tile(T("overview.playTime"), TimeFormat.HoursMinutesSeconds(summary.PlaySeconds)));
+        _overview.Children.Add(Tile(T("overview.onlineTime"), TimeFormat.HoursMinutesSeconds(summary.OnlineSeconds)));
+        _overview.Children.Add(Tile(T("overview.games"), summary.Games.ToString(Localizer.Culture), F("overview.winsLosses", summary.Wins, summary.Losses)));
+        _overview.Children.Add(Tile(T("overview.xpPerHour"), summary.XpPerHour.ToString("0", Localizer.Culture), T("overview.xpPerHourNote")));
+        _overview.Children.Add(Tile(T("overview.xpPerOnlineHour"), summary.XpPerOnlineHour.ToString("0", Localizer.Culture), T("overview.xpPerOnlineHourNote")));
+        _overview.Children.Add(Tile(T("overview.winRate"), summary.Games > 0 ? ((double)summary.Wins / summary.Games).ToString("0%", Localizer.Culture) : "-"));
         if (summary.HasEventXp)
         {
-            _overview.Children.Add(Tile("Event XP", summary.EventXp.ToString(CultureInfo.InvariantCulture), "1 per minute of XP time", EventRed));
+            _overview.Children.Add(Tile(T("overview.eventXp"), summary.EventXp.ToString(Localizer.Culture), T("overview.eventXpNote"), EventRed));
         }
 
         _lost.Children.Clear();
-        _lost.Children.Add(Tile("AFK turns", lost.AfkXp.ToString(CultureInfo.InvariantCulture) + " XP", $"{lost.AfkTurns} turns without action or End Turn"));
-        _lost.Children.Add(Tile("Games under 1 minute", lost.ShortGamesXp.ToString(CultureInfo.InvariantCulture) + " XP", $"{lost.ShortGames} games below the 60 s minimum"));
-        _lost.Children.Add(Tile("Time outside games", lost.OutsideGamesXp.ToString(CultureInfo.InvariantCulture) + " XP", TimeFormat.HoursMinutesSeconds(lost.OutsideGamesSeconds) + " online but not in a game (menus, queue, breaks)"));
+        _lost.Children.Add(Tile(T("lost.afk"), F("lost.xpValue", lost.AfkXp), F("lost.afkNote", lost.AfkTurns)));
+        _lost.Children.Add(Tile(T("lost.short"), F("lost.xpValue", lost.ShortGamesXp), F("lost.shortNote", lost.ShortGames)));
+        _lost.Children.Add(Tile(T("lost.outside"), F("lost.xpValue", lost.OutsideGamesXp), F("lost.outsideNote", TimeFormat.HoursMinutesSeconds(lost.OutsideGamesSeconds))));
 
         _decks.ItemsSource = Dashboard.Decks(games).Select(d => new DeckRow(d)).ToList();
         _games.ItemsSource = games.Reverse().Select(g => new GameRow(g)).ToList();
@@ -255,7 +259,7 @@ internal sealed class DashboardWindow : Window
         {
             new LineSeries
             {
-                Title = "XP earned",
+                Title = T("chart.xpEarned"),
                 Values = new ChartValues<double>(buckets.Select(b => (double)b.Xp)),
                 Stroke = GoldBright,
                 StrokeThickness = 3,
@@ -264,7 +268,7 @@ internal sealed class DashboardWindow : Window
                 PointGeometry = DefaultGeometries.Circle,
                 PointGeometrySize = 9,
                 PointForeground = Back,
-                LabelPoint = p => $"{buckets[p.Key].Title} · {buckets[p.Key].Xp} XP · {Games(buckets[p.Key].Games)}",
+                LabelPoint = p => F("chart.xpTooltip", buckets[p.Key].Title, buckets[p.Key].Xp, Games(buckets[p.Key].Games)),
             },
         };
         SetTimeAxis(_xpChart, labels);
@@ -303,7 +307,7 @@ internal sealed class DashboardWindow : Window
             },
             new LineSeries
             {
-                Title = "XP per hour",
+                Title = T("chart.xpPerHour"),
                 Values = Rates(),
                 Stroke = ManaBright,
                 StrokeThickness = 3,
@@ -312,7 +316,7 @@ internal sealed class DashboardWindow : Window
                 PointGeometry = DefaultGeometries.Circle,
                 PointGeometrySize = 9,
                 PointForeground = Back,
-                LabelPoint = p => $"{buckets[(int)p.X].Title} · {p.Y:0} XP/h · {Games(buckets[(int)p.X].Games)}",
+                LabelPoint = p => F("chart.rateTooltip", buckets[(int)p.X].Title, Math.Round(p.Y), Games(buckets[(int)p.X].Games)),
             },
         };
 
@@ -321,7 +325,7 @@ internal sealed class DashboardWindow : Window
             var level = Math.Round(average);
             series.Add(new LineSeries
             {
-                Title = "Average",
+                Title = T("chart.average"),
                 Values = new ChartValues<ObservablePoint> { new(0, level), new(buckets.Count - 1, level) },
                 Stroke = Muted,
                 StrokeThickness = 1.5,
@@ -329,7 +333,7 @@ internal sealed class DashboardWindow : Window
                 Fill = Brushes.Transparent,
                 LineSmoothness = 0,
                 PointGeometry = null,
-                LabelPoint = p => $"Average of the period: {p.Y:0} XP/h",
+                LabelPoint = p => F("chart.averageTooltip", Math.Round(p.Y)),
             });
         }
 
@@ -349,7 +353,11 @@ internal sealed class DashboardWindow : Window
         axis.Separator.Step = 40;
     }
 
-    private static string Games(int count) => count == 1 ? "1 game" : count.ToString(CultureInfo.InvariantCulture) + " games";
+    private static string Games(int count) => count == 1 ? T("chart.gameOne") : F("chart.gameMany", count);
+
+    private static string T(string key) => Localizer.Text(key);
+
+    private static string F(string key, params object[] args) => Localizer.Format(key, args);
 
     // The same complete time axis for both charts, so they line up; labels are thinned out for long periods.
     private static void SetTimeAxis(CartesianChart chart, string[] labels)
@@ -406,12 +414,12 @@ internal sealed class DashboardWindow : Window
         var bar = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(10), VerticalAlignment = VerticalAlignment.Center };
         foreach (var (period, text) in new[]
         {
-            (DashboardPeriod.Session, "Session"),
-            (DashboardPeriod.Today, "Today"),
-            (DashboardPeriod.Week, "This week"),
-            (DashboardPeriod.Season, "This season"),
-            (DashboardPeriod.Last30Days, "Last 30 days"),
-            (DashboardPeriod.All, "All time"),
+            (DashboardPeriod.Session, T("period.session")),
+            (DashboardPeriod.Today, T("period.today")),
+            (DashboardPeriod.Week, T("period.week")),
+            (DashboardPeriod.Season, T("period.season")),
+            (DashboardPeriod.Last30Days, T("period.last30Days")),
+            (DashboardPeriod.All, T("period.all")),
         })
         {
             var button = new ToggleButton { Content = text, Padding = new Thickness(12, 4, 12, 4), Margin = new Thickness(0, 0, 6, 0), IsChecked = period == _period };
@@ -421,8 +429,8 @@ internal sealed class DashboardWindow : Window
         }
 
         bar.Children.Add(new Border { Width = 18 });
-        bar.Children.Add(Action("Refresh", Refresh));
-        bar.Children.Add(Action("Open data folder", OpenFolder));
+        bar.Children.Add(Action(T("toolbar.refresh"), Refresh));
+        bar.Children.Add(Action(T("toolbar.openFolder"), OpenFolder));
 
         var toolbar = new DockPanel();
         var options = new StackPanel { VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(0, 4, 10, 4) };
@@ -430,10 +438,10 @@ internal sealed class DashboardWindow : Window
         {
             var eventCheck = new CheckBox
             {
-                Content = "Event running (show event XP)",
+                Content = T("option.event"),
                 IsChecked = _eventActive,
                 Margin = new Thickness(0, 2, 0, 2),
-                ToolTip = "Switch on while a Hearthstone event runs: the overlay shows the event XP, and new games store it.",
+                ToolTip = T("option.eventTip"),
             };
             eventCheck.Click += (_, _) =>
             {
@@ -447,10 +455,10 @@ internal sealed class DashboardWindow : Window
         {
             var damageCheck = new CheckBox
             {
-                Content = "Show damage on the overlay",
+                Content = T("option.damage"),
                 IsChecked = _showDamage,
                 Margin = new Thickness(0, 2, 0, 2),
-                ToolTip = "Shows the rows \"Total Damage:\" and \"Hero Damage:\": the damage your side dealt to the opponent in the current or last game.",
+                ToolTip = T("option.damageTip"),
             };
             damageCheck.Click += (_, _) =>
             {
@@ -469,7 +477,7 @@ internal sealed class DashboardWindow : Window
         {
             var check = new CheckBox
             {
-                Content = "Check for updates when HDT starts",
+                Content = T("option.updates"),
                 IsChecked = _checkForUpdates,
                 Margin = new Thickness(0, 2, 0, 2),
             };
@@ -490,10 +498,9 @@ internal sealed class DashboardWindow : Window
         var panel = new StackPanel { Margin = new Thickness(0, 2, 0, 2) };
         var passCheck = new CheckBox
         {
-            Content = "Tavern Pass (XP boost)",
+            Content = T("tavern.check"),
             IsChecked = _tavernPass,
-            ToolTip = "Switch on if you own the Tavern Pass of the current expansion. Enter your rewards track level below: "
-                + "the boost is 10%, from level 20 on 15%, from level 70 on 20% (according to the Hearthstone Wiki, not measured yet).",
+            ToolTip = T("tavern.checkTip"),
         };
 
         var levelBox = new TextBox
@@ -507,7 +514,7 @@ internal sealed class DashboardWindow : Window
             BorderBrush = Gold,
             CaretBrush = Parchment,
             Margin = new Thickness(4, 0, 4, 0),
-            ToolTip = "Rewards track level",
+            ToolTip = T("tavern.levelTip"),
         };
         var minus = StepButton("−");
         var plus = StepButton("+");
@@ -556,7 +563,7 @@ internal sealed class DashboardWindow : Window
         levelBox.LostFocus += (_, _) => levelBox.Text = _tavernPassLevel.ToString(CultureInfo.InvariantCulture);
 
         var levelRow = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(22, 4, 0, 0) };
-        levelRow.Children.Add(new TextBlock { Text = "Level", Foreground = Parchment, VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(0, 0, 6, 0) });
+        levelRow.Children.Add(new TextBlock { Text = T("tavern.level"), Foreground = Parchment, VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(0, 0, 6, 0) });
         levelRow.Children.Add(minus);
         levelRow.Children.Add(levelBox);
         levelRow.Children.Add(plus);
@@ -612,14 +619,8 @@ internal sealed class DashboardWindow : Window
         var grid = new Grid { Margin = new Thickness(14, 8, 14, 10) };
         grid.RowDefinitions.Add(new RowDefinition());
         grid.RowDefinitions.Add(new RowDefinition());
-        var earned = ChartBlock(
-            "XP earned",
-            "XP of the games that started in each hour (Today) or on each day. Hours or days without games are at 0.",
-            _xpChart);
-        var speed = ChartBlock(
-            "XP per hour",
-            "Speed in each hour or on each day: XP divided by XP time. The dashed line is the average of the whole period.",
-            _rateChart);
+        var earned = ChartBlock(T("chart.xpEarned"), T("chart.xpEarnedNote"), _xpChart);
+        var speed = ChartBlock(T("chart.xpPerHour"), T("chart.xpPerHourNote"), _rateChart);
         Grid.SetRow(speed, 1);
         grid.Children.Add(earned);
         grid.Children.Add(speed);
@@ -782,27 +783,27 @@ internal sealed class DashboardWindow : Window
 
     private void SetupDeckColumns()
     {
-        _decks.Columns.Add(Column("Deck", nameof(DeckRow.Deck), nameof(DeckRow.Deck), width: 2));
-        _decks.Columns.Add(Column("Games", nameof(DeckRow.Games), nameof(DeckRow.Games)));
-        _decks.Columns.Add(Column("Win rate", nameof(DeckRow.WinRate), nameof(DeckRow.WinRateValue)));
-        _decks.Columns.Add(Column("XP", nameof(DeckRow.Xp), nameof(DeckRow.Xp)));
-        _decks.Columns.Add(Column("XP per hour", nameof(DeckRow.XpPerHour), nameof(DeckRow.XpPerHourValue)));
-        _decks.Columns.Add(Column("Avg. game", nameof(DeckRow.AverageGame), nameof(DeckRow.AverageGameSeconds)));
+        _decks.Columns.Add(Column(T("column.deck"), nameof(DeckRow.Deck), nameof(DeckRow.Deck), width: 2));
+        _decks.Columns.Add(Column(T("column.games"), nameof(DeckRow.Games), nameof(DeckRow.Games)));
+        _decks.Columns.Add(Column(T("column.winRate"), nameof(DeckRow.WinRate), nameof(DeckRow.WinRateValue)));
+        _decks.Columns.Add(Column(T("column.xp"), nameof(DeckRow.Xp), nameof(DeckRow.Xp)));
+        _decks.Columns.Add(Column(T("column.xpPerHour"), nameof(DeckRow.XpPerHour), nameof(DeckRow.XpPerHourValue)));
+        _decks.Columns.Add(Column(T("column.avgGame"), nameof(DeckRow.AverageGame), nameof(DeckRow.AverageGameSeconds)));
     }
 
     private void SetupGameColumns()
     {
-        _games.Columns.Add(Column("Date", nameof(GameRow.Date), nameof(GameRow.StartValue)));
-        _games.Columns.Add(Column("Start", nameof(GameRow.Time), nameof(GameRow.StartValue)));
-        _games.Columns.Add(Column("Mode", nameof(GameRow.Mode), nameof(GameRow.Mode)));
-        _games.Columns.Add(Column("Result", nameof(GameRow.Result), nameof(GameRow.Result)));
-        _games.Columns.Add(Column("XP time", nameof(GameRow.XpTime), nameof(GameRow.XpSeconds)));
-        _games.Columns.Add(Column("Total time", nameof(GameRow.TotalTime), nameof(GameRow.TotalSeconds)));
-        _games.Columns.Add(Column("XP", nameof(GameRow.Xp), nameof(GameRow.XpValue)));
-        _games.Columns.Add(Column("Event", nameof(GameRow.EventXp), nameof(GameRow.EventXpValue)));
-        _games.Columns.Add(Column("AFK", nameof(GameRow.AfkTurns), nameof(GameRow.AfkTurns)));
-        _games.Columns.Add(Column("Deck", nameof(GameRow.Deck), nameof(GameRow.Deck), width: 2));
-        _games.Columns.Add(Column("Opponent", nameof(GameRow.Opponent), nameof(GameRow.Opponent)));
+        _games.Columns.Add(Column(T("column.date"), nameof(GameRow.Date), nameof(GameRow.StartValue)));
+        _games.Columns.Add(Column(T("column.start"), nameof(GameRow.Time), nameof(GameRow.StartValue)));
+        _games.Columns.Add(Column(T("column.mode"), nameof(GameRow.Mode), nameof(GameRow.Mode)));
+        _games.Columns.Add(Column(T("column.result"), nameof(GameRow.Result), nameof(GameRow.Result)));
+        _games.Columns.Add(Column(T("column.xpTime"), nameof(GameRow.XpTime), nameof(GameRow.XpSeconds)));
+        _games.Columns.Add(Column(T("column.totalTime"), nameof(GameRow.TotalTime), nameof(GameRow.TotalSeconds)));
+        _games.Columns.Add(Column(T("column.xp"), nameof(GameRow.Xp), nameof(GameRow.XpValue)));
+        _games.Columns.Add(Column(T("column.event"), nameof(GameRow.EventXp), nameof(GameRow.EventXpValue)));
+        _games.Columns.Add(Column(T("column.afk"), nameof(GameRow.AfkTurns), nameof(GameRow.AfkTurns)));
+        _games.Columns.Add(Column(T("column.deck"), nameof(GameRow.Deck), nameof(GameRow.Deck), width: 2));
+        _games.Columns.Add(Column(T("column.opponent"), nameof(GameRow.Opponent), nameof(GameRow.Opponent)));
     }
 
     private static DataGridTextColumn Column(string header, string display, string sort, double width = 1) => new()
@@ -913,13 +914,13 @@ internal sealed class DashboardWindow : Window
 
         public double WinRateValue { get; }
 
-        public string WinRate => WinRateValue.ToString("0%", CultureInfo.InvariantCulture);
+        public string WinRate => WinRateValue.ToString("0%", Localizer.Culture);
 
         public int Xp { get; }
 
         public double XpPerHourValue { get; }
 
-        public string XpPerHour => XpPerHourValue.ToString("0", CultureInfo.InvariantCulture);
+        public string XpPerHour => XpPerHourValue.ToString("0", Localizer.Culture);
 
         public double AverageGameSeconds { get; }
 
@@ -931,14 +932,9 @@ internal sealed class DashboardWindow : Window
         public GameRow(GameRecord g)
         {
             StartValue = g.Start;
-            var mode = g.Mode switch
-            {
-                GameMode.TavernBrawl => "Tavern Brawl",
-                GameMode.TavernBrawlPvE => "Tavern Brawl (PvE)",
-                _ => g.Mode.ToString(),
-            };
-            Mode = g.Format.Length > 0 ? mode + " " + g.Format : mode;
-            Result = g.Result.ToString();
+            var mode = GameText.Mode(g.Mode);
+            Mode = g.Format.Length > 0 ? mode + " " + GameText.Format(g.Format) : mode;
+            Result = GameText.Result(g.Result);
             XpSeconds = g.XpSeconds;
             TotalSeconds = g.WithMulliganSeconds;
             XpValue = g.Xp ?? -1;
@@ -947,7 +943,7 @@ internal sealed class DashboardWindow : Window
             EventXp = g.EventXp?.ToString(CultureInfo.InvariantCulture) ?? "-";
             AfkTurns = g.AfkTurns;
             Deck = g.Deck;
-            Opponent = g.OpponentClass.Length > 0 ? char.ToUpperInvariant(g.OpponentClass[0]) + g.OpponentClass.Substring(1).ToLowerInvariant() : string.Empty;
+            Opponent = GameText.Class(g.OpponentClass);
         }
 
         public DateTime StartValue { get; }

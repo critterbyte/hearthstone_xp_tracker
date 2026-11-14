@@ -34,8 +34,8 @@ public sealed class TimeBucket
 
     /// <summary>Full name of the step for tooltips, for example "Mon 2026-11-09, 20:00–21:00" or "Mon 2026-11-09".</summary>
     public string Title => End - Start < TimeSpan.FromDays(1)
-        ? Start.ToString("ddd yyyy-MM-dd, HH:mm", CultureInfo.InvariantCulture) + "–" + End.ToString("HH:mm", CultureInfo.InvariantCulture)
-        : Start.ToString("ddd yyyy-MM-dd", CultureInfo.InvariantCulture);
+        ? Start.ToString("ddd yyyy-MM-dd, HH:mm", Localizer.Culture) + "–" + End.ToString("HH:mm", Localizer.Culture)
+        : Start.ToString("ddd yyyy-MM-dd", Localizer.Culture);
 
     public int Games { get; set; }
 
@@ -133,7 +133,7 @@ public sealed class DayStats
 public static class Dashboard
 {
     /// <summary>Shown for games without a deck name (HDT did not record the game).</summary>
-    public const string NoDeck = "No deck recorded";
+    public static string NoDeck => Localizer.Text("deck.none");
 
     public static DateTime PeriodStart(DashboardPeriod period, DateTime now) => period switch
     {
@@ -238,7 +238,7 @@ public static class Dashboard
         for (var day = 0; day < days; day++)
         {
             var start = first.AddDays(day);
-            buckets.Add(new TimeBucket { Start = start, End = start.AddDays(1), Label = start.ToString(labelFormat, CultureInfo.InvariantCulture) });
+            buckets.Add(new TimeBucket { Start = start, End = start.AddDays(1), Label = start.ToString(labelFormat, Localizer.Culture) });
         }
     }
 

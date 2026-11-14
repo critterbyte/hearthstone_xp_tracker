@@ -47,7 +47,7 @@ public static class XpDisplayText
         }
 
         var snapshot = clock.GetSnapshot(now);
-        var xpTime = new XpLine("XP time:", TimeFormat.MinutesSeconds(Math.Min(snapshot.XpSeconds, XpRates.MaxXpSeconds)) + Suffix(snapshot, clock.IsOver));
+        var xpTime = new XpLine(Localizer.Text("overlay.xpTime"), TimeFormat.MinutesSeconds(Math.Min(snapshot.XpSeconds, XpRates.MaxXpSeconds)) + Suffix(snapshot, clock.IsOver));
 
         List<XpLine> lines;
         if (!clock.IsOver)
@@ -55,8 +55,8 @@ public static class XpDisplayText
             lines = new List<XpLine>
             {
                 xpTime,
-                new XpLine("If win:", Plus(snapshot.ExpectedXp(winRate.Value, xpBonus)), isXp: true),
-                new XpLine("If loss:", Plus(snapshot.ExpectedXp(lossRate.Value, xpBonus)), isXp: true),
+                new XpLine(Localizer.Text("overlay.ifWin"), Plus(snapshot.ExpectedXp(winRate.Value, xpBonus)), isXp: true),
+                new XpLine(Localizer.Text("overlay.ifLoss"), Plus(snapshot.ExpectedXp(lossRate.Value, xpBonus)), isXp: true),
             };
         }
         else
@@ -64,25 +64,25 @@ public static class XpDisplayText
             var rate = XpRates.RateFor(mode, clock.Result);
             lines = new List<XpLine>
             {
-                new XpLine("Last game:", clock.Result is GameResult.Unknown ? "?" : clock.Result.ToString()),
+                new XpLine(Localizer.Text("overlay.lastGame"), clock.Result is GameResult.Unknown ? "?" : GameText.Result(clock.Result)),
                 xpTime,
-                new XpLine("Total time:", TimeFormat.MinutesSeconds(snapshot.WithMulliganSeconds)),
-                rate is null ? new XpLine("Earned:", "unknown") : new XpLine("Earned:", Plus(snapshot.ExpectedXp(rate.Value, xpBonus)), isXp: true),
+                new XpLine(Localizer.Text("overlay.totalTime"), TimeFormat.MinutesSeconds(snapshot.WithMulliganSeconds)),
+                rate is null ? new XpLine(Localizer.Text("overlay.earned"), Localizer.Text("overlay.unknown")) : new XpLine(Localizer.Text("overlay.earned"), Plus(snapshot.ExpectedXp(rate.Value, xpBonus)), isXp: true),
             };
         }
 
         // Event XP does not depend on the result, so one row is enough, live and after the game.
         if (eventActive)
         {
-            lines.Add(new XpLine("Event XP:", Plus(XpRates.EventXpFor(mode, snapshot.XpSeconds) ?? 0), isEvent: true));
+            lines.Add(new XpLine(Localizer.Text("overlay.eventXp"), Plus(XpRates.EventXpFor(mode, snapshot.XpSeconds) ?? 0), isEvent: true));
         }
 
         if (damageDealt is { } damage)
         {
-            lines.Add(new XpLine("Total Damage:", damage.ToString(CultureInfo.InvariantCulture)));
+            lines.Add(new XpLine(Localizer.Text("overlay.totalDamage"), damage.ToString(CultureInfo.InvariantCulture)));
             if (heroDamageDealt is { } heroDamage)
             {
-                lines.Add(new XpLine("Hero Damage:", heroDamage.ToString(CultureInfo.InvariantCulture)));
+                lines.Add(new XpLine(Localizer.Text("overlay.heroDamage"), heroDamage.ToString(CultureInfo.InvariantCulture)));
             }
         }
 
@@ -100,17 +100,17 @@ public static class XpDisplayText
             return lines;
         }
 
-        return new List<XpLine>(lines) { new XpLine("Update available:", newVersion!) };
+        return new List<XpLine>(lines) { new XpLine(Localizer.Text("overlay.updateAvailable"), newVersion!) };
     }
 
     private static string Suffix(XpSnapshot snapshot, bool isOver)
     {
         if (snapshot.XpSeconds >= XpRates.MaxXpSeconds)
         {
-            return " (max)";
+            return " " + Localizer.Text("overlay.max");
         }
 
-        return !isOver && snapshot.IsPaused ? " (paused)" : string.Empty;
+        return !isOver && snapshot.IsPaused ? " " + Localizer.Text("overlay.paused") : string.Empty;
     }
 
     private static string Plus(int value) => "+" + value.ToString(CultureInfo.InvariantCulture);

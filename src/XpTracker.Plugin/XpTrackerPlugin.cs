@@ -44,9 +44,9 @@ public class XpTrackerPlugin : IPlugin
 
     public string Name => "Hearthstone XP Tracker";
 
-    public string Description => "Shows the reward track XP of the current game and the XP time it is based on.";
+    public string Description => Localizer.Text("plugin.description");
 
-    public string ButtonText => "XP dashboard";
+    public string ButtonText => Localizer.Text("plugin.dashboard");
 
     public string Author => "critterbyte";
 
@@ -59,7 +59,7 @@ public class XpTrackerPlugin : IPlugin
         {
             if (_menuItem is null)
             {
-                _menuItem = new MenuItem { Header = "XP dashboard" };
+                _menuItem = new MenuItem { Header = Localizer.Text("plugin.dashboard") };
                 _menuItem.Click += (_, _) => OpenDashboard();
             }
 

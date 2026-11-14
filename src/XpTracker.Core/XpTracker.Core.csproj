@@ -6,4 +6,9 @@
     <RootNamespace>XpTracker.Core</RootNamespace>
   </PropertyGroup>
 
+  <!-- One text file per language, embedded in this DLL (no satellite assemblies, so the release keeps two DLLs). -->
+  <ItemGroup>
+    <EmbeddedResource Include="Localization\*.txt" WithCulture="false" LogicalName="XpTracker.Core.Localization.%(Filename)%(Extension)" />
+  </ItemGroup>
+
 </Project>
