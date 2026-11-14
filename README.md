@@ -10,7 +10,7 @@ A plugin for [Hearthstone Deck Tracker](https://hsreplay.net/downloads/) (HDT) t
 
 ## Features
 
-- **Live overlay** above the Hearthstone settings button:
+- **Live overlay** at the bottom left above your portrait, or above the Hearthstone settings button:
   - XP time: the part of the game that counts for XP
   - the XP you get if you win, and if you lose
   - the damage your side dealt to the opponent, in total and to the hero (can be switched off)

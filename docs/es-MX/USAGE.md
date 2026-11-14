@@ -13,7 +13,7 @@ Los textos entre comillas, como "Tiempo de EXP:", son los textos que muestra el 
 <a id="overlay"></a>
 ## Overlay
 
-El overlay es un pequeño recuadro encima del botón de opciones de Hearthstone (el engrane en la esquina inferior derecha). Las etiquetas están a la izquierda. Los valores están a la derecha, en barras azules.
+El overlay es un pequeño recuadro abajo a la izquierda, sobre tu retrato ("You" con tu rango). En el panel puedes moverlo encima del botón de opciones de Hearthstone (el engrane en la esquina inferior derecha). Las etiquetas están a la izquierda. Los valores están a la derecha, en barras azules.
 
 El overlay solo se muestra en **Clasificado, Casual y Gresca de la taberna**. Los demás modos todavía no se miden, así que ahí el plugin no muestra nada. Una Gresca de la taberna contra la computadora (JcE, por ejemplo contra el Tabernero) no da EXP, así que ahí el overlay muestra "+0".
 
@@ -103,6 +103,7 @@ La ventana del panel se llama "HS XP Tracker". Ábrela en HDT de una de estas do
 | "Actualizar" | Vuelve a leer el historial |
 | "Abrir carpeta de datos" | Abre la carpeta del archivo del historial en el Explorador de Windows |
 | "Idioma (Language)" | Idioma del overlay, del panel y de la entrada del plugin en el menú. El inglés es el idioma predeterminado. El cambio se aplica de inmediato; el panel se vuelve a abrir en el nuevo idioma. En los idiomas que no son inglés, la etiqueta conserva la palabra en inglés, como aquí: "Idioma (Language)". |
+| "Posición del overlay" | Dónde está el overlay: "Izquierda, sobre tu retrato" (predeterminado, así la lista de mazo de HDT a la derecha queda libre) o "Derecha, sobre el botón de opciones". El overlay se mueve al instante. |
 | "Evento en curso (mostrar EXP de evento)" | Actívalo durante un evento de Hearthstone: el overlay muestra la EXP de evento y las partidas nuevas la guardan. |
 | "Pase de la taberna (bonificación de EXP)" | Actívalo si tienes el Pase de la taberna de la expansión actual. La bonificación se calcula, no se mide: con el pase, la EXP mostrada puede variar en 1 EXP por partida (consulta [FORMULA.md](../FORMULA.md#tavern-pass)). |
 | "Nivel" con "−", un número y "+" | Tu nivel en la Senda de recompensas. Haz clic en "−" o "+", o escribe el número. La línea de abajo muestra la bonificación y el siguiente paso, por ejemplo "10 % de bonificación de EXP, 2 niveles para 15 %". La bonificación es del 10 %, desde el nivel 20 del 15 % y desde el nivel 70 del 20 % (consulta [FORMULA.md](../FORMULA.md#tavern-pass)). Actualiza el nivel cuando pases el nivel 20 o el 70. |

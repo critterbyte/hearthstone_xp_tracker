@@ -62,6 +62,8 @@ internal sealed class DashboardWindow : Window
     private readonly Action<bool, int>? _setTavernPass;
     private readonly Action<bool>? _setShowDamage;
     private readonly Action<string>? _setLanguage;
+    private readonly Action<OverlayPosition>? _setOverlayPosition;
+    private OverlayPosition _overlayPosition;
     private readonly string _language;
     private bool _showDamage;
     private bool _tavernPass;
@@ -89,8 +91,12 @@ internal sealed class DashboardWindow : Window
         bool showDamage = true,
         Action<bool>? setShowDamage = null,
         string language = Localizer.DefaultLanguage,
-        Action<string>? setLanguage = null)
+        Action<string>? setLanguage = null,
+        OverlayPosition overlayPosition = OverlayPosition.Left,
+        Action<OverlayPosition>? setOverlayPosition = null)
     {
+        _overlayPosition = overlayPosition;
+        _setOverlayPosition = setOverlayPosition;
         _language = language;
         _setLanguage = setLanguage;
         _showDamage = showDamage;
@@ -112,7 +118,8 @@ internal sealed class DashboardWindow : Window
         Title = "HS XP Tracker";
         // Wide enough for the toolbar in longer languages such as German; never wider than the screen.
         Width = Math.Min(1180, SystemParameters.WorkArea.Width - 40);
-        Height = 680;
+        // Tall enough for the options column and the update hint without a scroll bar; never taller than the screen.
+        Height = Math.Min(800, SystemParameters.WorkArea.Height - 40);
         Background = Back;
         Foreground = Parchment;
         Resources = Theme();
@@ -447,6 +454,11 @@ internal sealed class DashboardWindow : Window
             options.Children.Add(LanguageSelection());
         }
 
+        if (_setOverlayPosition is not null)
+        {
+            options.Children.Add(OverlayPositionSelection());
+        }
+
         if (_setEventActive is not null)
         {
             var eventCheck = new CheckBox
@@ -533,6 +545,39 @@ internal sealed class DashboardWindow : Window
         return row;
     }
 
+    // "Overlay position": left above the player's portrait, or right above the Hearthstone settings button.
+    private FrameworkElement OverlayPositionSelection()
+    {
+        var box = new ComboBox { MinWidth = 130, Margin = new Thickness(6, 0, 0, 0) };
+        foreach (var (position, text) in new[]
+        {
+            (OverlayPosition.Left, T("option.overlayLeft")),
+            (OverlayPosition.Right, T("option.overlayRight")),
+        })
+        {
+            var item = new ComboBoxItem { Content = text, Tag = position };
+            box.Items.Add(item);
+            if (position == _overlayPosition)
+            {
+                box.SelectedItem = item;
+            }
+        }
+
+        box.SelectionChanged += (_, _) =>
+        {
+            if (box.SelectedItem is ComboBoxItem { Tag: OverlayPosition position } && position != _overlayPosition)
+            {
+                _overlayPosition = position;
+                _setOverlayPosition?.Invoke(position);
+            }
+        };
+
+        var row = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 0, 0, 4) };
+        row.Children.Add(new TextBlock { Text = T("option.overlayPosition"), Foreground = Parchment, VerticalAlignment = VerticalAlignment.Center });
+        row.Children.Add(box);
+        return row;
+    }
+
     // "Tavern Pass" check box, the rewards track level as [-] [number] [+], and the boost that follows from it.
     // The boost applies to the overlay and to new games; stored games keep the boost they were played with.
     private FrameworkElement TavernPassControls()
@@ -552,9 +597,9 @@ internal sealed class DashboardWindow : Window
             TextAlignment = TextAlignment.Center,
             VerticalContentAlignment = VerticalAlignment.Center,
             Background = Panel,
-            Foreground = Parchment,
+            Foreground = ManaBright,
             BorderBrush = Gold,
-            CaretBrush = Parchment,
+            CaretBrush = ManaBright,
             Margin = new Thickness(4, 0, 4, 0),
             ToolTip = T("tavern.levelTip"),
         };
@@ -801,7 +846,7 @@ internal sealed class DashboardWindow : Window
 
   <!-- Language drop-down: dark box with a gold arrow, list in dark wood with the hovered row in mana blue. -->
   <Style TargetType='ComboBox'>
-    <Setter Property='Foreground' Value='#F4E4C1'/>
+    <Setter Property='Foreground' Value='#5DADF2'/>
     <Setter Property='Cursor' Value='Hand'/>
     <Setter Property='Template'>
       <Setter.Value>
@@ -852,7 +897,7 @@ internal sealed class DashboardWindow : Window
               <Setter TargetName='Row' Property='Background' Value='#1F3B5C'/>
             </Trigger>
             <Trigger Property='IsSelected' Value='True'>
-              <Setter Property='Foreground' Value='#F0C75E'/>
+              <Setter Property='Foreground' Value='#5DADF2'/>
             </Trigger>
           </ControlTemplate.Triggers>
         </ControlTemplate>
@@ -869,7 +914,7 @@ internal sealed class DashboardWindow : Window
           <StackPanel Orientation='Horizontal' Background='Transparent'>
             <Border Width='16' Height='16' Background='#3A2716' BorderBrush='#C8A050' BorderThickness='1'
                     CornerRadius='3' VerticalAlignment='Center'>
-              <Path x:Name='Mark' Data='M 3,8 L 6.5,11.5 L 13,4' Stroke='#F0C75E' StrokeThickness='2' Visibility='Collapsed'/>
+              <Path x:Name='Mark' Data='M 3,8 L 6.5,11.5 L 13,4' Stroke='#5DADF2' StrokeThickness='2' Visibility='Collapsed'/>
             </Border>
             <ContentPresenter Margin='6,0,0,0' VerticalAlignment='Center'/>
           </StackPanel>

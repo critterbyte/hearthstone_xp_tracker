@@ -13,7 +13,7 @@ Die Texte in Anführungszeichen, etwa „EP-Zeit:“, sind die Texte, die das Pl
 <a id="overlay"></a>
 ## Overlay
 
-Das Overlay ist ein kleiner Kasten über dem Einstellungs-Button von Hearthstone (dem Zahnrad unten rechts). Links stehen die Beschriftungen, rechts die Werte in blauen Balken.
+Das Overlay ist ein kleiner Kasten unten links über deinem Spielerbild („You“ mit deinem Rang). Im Dashboard kannst du es stattdessen über den Einstellungs-Button von Hearthstone (das Zahnrad unten rechts) setzen. Links stehen die Beschriftungen, rechts die Werte in blauen Balken.
 
 Das Overlay erscheint nur in **Gewertet, Ungewertet und Kartenchaos**. Andere Modi werden noch nicht gemessen, dort zeigt das Plugin nichts an. Ein Kartenchaos gegen den Computer (PvE, zum Beispiel gegen den Gastwirt) gibt keine EP, darum zeigt das Overlay dort „+0“.
 
@@ -103,6 +103,7 @@ Das Dashboard-Fenster heißt „HS XP Tracker“. Du öffnest es in HDT auf eine
 | „Aktualisieren“ | Den Verlauf neu einlesen |
 | „Datenordner öffnen“ | Den Ordner mit der Verlaufsdatei im Windows Explorer öffnen |
 | „Sprache (Language)“ | Sprache des Overlays, des Dashboards und des Menüeintrags des Plugins. Standard ist Englisch. Die Änderung gilt sofort; das Dashboard öffnet sich in der neuen Sprache neu. In anderen Sprachen behält die Beschriftung das englische Wort, zum Beispiel „Sprache (Language)“. |
+| „Overlay-Position“ | Wo das Overlay sitzt: „Links über deinem Spielerbild“ (Standard, so bleibt die HDT-Deckliste rechts frei) oder „Rechts über dem Einstellungs-Knopf“. Das Overlay wechselt sofort. |
 | „Event läuft (Event-EP anzeigen)“ | Während eines Hearthstone-Events einschalten: Das Overlay zeigt die Event-EP, und neue Partien speichern sie. |
 | „Gasthauspass (EP-Bonus)“ | Einschalten, wenn du den Gasthauspass der aktuellen Erweiterung besitzt. Der Bonus wird berechnet, nicht gemessen: Mit dem Pass können die angezeigten EP pro Partie um 1 EP abweichen (siehe [FORMULA.md](../FORMULA.md#tavern-pass)). |
 | „Stufe“ mit „−“, einer Zahl und „+“ | Deine Stufe im Belohnungsweg. Klicke auf „−“ oder „+“ oder tippe die Zahl ein. Die Zeile darunter zeigt den Bonus und die nächste Schwelle, zum Beispiel „10 % EP-Bonus, noch 2 Stufen bis 15 %“. Der Bonus beträgt 10 %, ab Stufe 20 15 % und ab Stufe 70 20 % (siehe [FORMULA.md](../FORMULA.md#tavern-pass)). Passe die Stufe an, wenn du Stufe 20 oder 70 erreichst. |
