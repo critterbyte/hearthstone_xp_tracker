@@ -35,7 +35,8 @@ public static class XpDisplayText
 {
     /// <param name="eventActive">A Hearthstone event is running: adds an "Event XP:" row with the event XP.</param>
     /// <param name="damageDealt">Damage dealt to the opponent's side so far: adds a "Damage:" row as the last row.</param>
-    public static IReadOnlyList<XpLine> For(XpClock? clock, GameMode mode, DateTime now, bool eventActive = false, int? damageDealt = null)
+    /// <param name="xpBonus">Tavern Pass XP boost in percent for "If win:", "If loss:" and "Earned:"; event XP get no boost.</param>
+    public static IReadOnlyList<XpLine> For(XpClock? clock, GameMode mode, DateTime now, bool eventActive = false, int? damageDealt = null, int xpBonus = 0)
     {
         var winRate = XpRates.RateFor(mode, GameResult.Win);
         var lossRate = XpRates.RateFor(mode, GameResult.Loss);
@@ -53,8 +54,8 @@ public static class XpDisplayText
             lines = new List<XpLine>
             {
                 xpTime,
-                new XpLine("If win:", Plus(snapshot.ExpectedXp(winRate.Value)), isXp: true),
-                new XpLine("If loss:", Plus(snapshot.ExpectedXp(lossRate.Value)), isXp: true),
+                new XpLine("If win:", Plus(snapshot.ExpectedXp(winRate.Value, xpBonus)), isXp: true),
+                new XpLine("If loss:", Plus(snapshot.ExpectedXp(lossRate.Value, xpBonus)), isXp: true),
             };
         }
         else
@@ -65,7 +66,7 @@ public static class XpDisplayText
                 new XpLine("Last game:", clock.Result is GameResult.Unknown ? "?" : clock.Result.ToString()),
                 xpTime,
                 new XpLine("Total time:", TimeFormat.MinutesSeconds(snapshot.WithMulliganSeconds)),
-                rate is null ? new XpLine("Earned:", "unknown") : new XpLine("Earned:", Plus(snapshot.ExpectedXp(rate.Value)), isXp: true),
+                rate is null ? new XpLine("Earned:", "unknown") : new XpLine("Earned:", Plus(snapshot.ExpectedXp(rate.Value, xpBonus)), isXp: true),
             };
         }
 

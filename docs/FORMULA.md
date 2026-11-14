@@ -106,6 +106,41 @@ eventXp = round(xpSeconds / 60)
 
 **According to [8]**, event XP "can also be earned by just playing regularly", and event quests are the fastest way to complete the event track.
 
+## Tavern Pass
+
+All rates above were measured **without** a Tavern Pass. They are the base rates.
+
+> **The Tavern Pass boost is calculated, not measured.** The plugin applies the boost from the sources below by calculation only. No game with a Tavern Pass has been measured. It is therefore not known:
+>
+> - whether the boost applies to the XP from game time at all
+> - whether the game rounds before or after adding the boost
+> - whether the boost changes the 60-second minimum, the 30-minute cap or event XP
+>
+> Measuring this needs a Tavern Pass, which costs real money. This project follows a strict **free-to-play policy**: it spends no money on the game, so it does not buy a pass for measurements. Players who own a pass can help: see [Contributing measurements](../CONTRIBUTING.md#contributing-measurements).
+
+- **According to [6]:** the Tavern Pass gives an XP boost of 10%, rising to 15% and 20% on the track. This official source does not name the levels.
+- **According to [7] and [9]:** the boost grows with the rewards track level. In *Reign of the Black Empire* and the three expansions before it:
+
+  | Rewards track level | XP boost |
+  |---|---:|
+  | 1 to 19 (from the purchase) | 10% |
+  | 20 to 69 | 15% |
+  | 70 and higher | 20% |
+
+  Buying the pass later unlocks all paid rewards up to the current level, so the higher boost applies at once. Older guides list the 20% step at level 35.
+- **According to [7]:** the boost applies to XP from any source, achievements included.
+- **Assumed, not measured:** the boost also applies to the XP from game time, and it is applied before rounding:
+
+  ```
+  XP = round(xpSeconds × rate × (1 + boost))
+  ```
+
+  Example: a 378.43 s Ranked win gives 49.40 XP without the pass, 49.40 × 1.15 = 56.81 → **57** with 15%. Rounding first would give 56.
+- **Assumed:** the boost does not change event XP. Not measured.
+- The 60-second minimum and the 30-minute cap stay the same.
+
+The plugin asks for the pass and the rewards track level in the dashboard and stores the boost with each game. With a pass, the XP the plugin shows can differ by about 1 XP per game from the XP the game gives, if the game rounds in another order. A few measured games with the pass would show whether these assumptions hold.
+
 ## Log markers used
 
 | Moment | `Power.log` entry |
@@ -123,7 +158,7 @@ Timestamps in the log have seven decimal places (100-nanosecond ticks). Whole se
 - **Arena, Battlegrounds, Twist and solo adventures** are not measured. The plugin shows nothing in these modes.
   - **According to [5]:** Casual, Ranked, Arena, Battlegrounds, Tavern Brawls and Adventures give XP.
   - **According to [5]:** Friendly Challenges do not give XP.
-- **Tavern Pass:** **according to [6]**, the Tavern Pass gives an XP boost of 10%, rising to 15% and 20% on the track. **According to [7]**, the boost applies to XP from any source. It is not measured whether the boost multiplies these rates. All measurements were made without it.
+- **Tavern Pass:** not measured, because of the project's free-to-play policy. The plugin calculates the boost as described in [Tavern Pass](#tavern-pass); the rounding with the boost is assumed.
 - **30-minute cap:** not measured, see above.
 
 ## Sources
@@ -136,5 +171,6 @@ Timestamps in the log have seven decimal places (100-nanosecond ticks). Whole se
 6. Blizzard, *Reign of the Black Empire Rewards Track Refresh*, 2026. <https://news.blizzard.com/en-us/article/24309582/>
 7. Hearthstone Wiki, *Rewards Track*. <https://hearthstone.wiki.gg/wiki/Rewards_Track>
 8. Blizzard, *24.6 Patch Notes*, 1 November 2022: "Event XP can also be earned by just playing regularly". <https://hearthstone.blizzard.com/en-us/news/23852694/24-6-patch-notes>
+9. senseos.gg, *Hearthstone Rewards Track: XP per Level, Gold and Reset*, updated 7 November 2026: "The paid row of all four tables also lists a 15% XP Boost at level 20 and a 20% XP Boost at level 70." <https://senseos.gg/guides/hearthstone/how-rewards-track-works/>
 
 Sources 1 to 3 and 5 are from the launch of the reward track in 2020. No newer source restates or changes these numbers. Source 4 is the only later official change to game XP that was found.

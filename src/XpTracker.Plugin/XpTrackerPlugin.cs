@@ -120,7 +120,7 @@ public class XpTrackerPlugin : IPlugin
         var now = DateTime.Now;
         var update = _update?.VersionText;
         var lines = _tail.Read(t => XpDisplayText.WithUpdate(
-            XpDisplayText.For(t?.Clock, t?.Mode ?? GameMode.Other, now, _settings.EventActive, t?.DamageDealt),
+            XpDisplayText.For(t?.Clock, t?.Mode ?? GameMode.Other, now, _settings.EventActive, t?.DamageDealt, _settings.XpBonusPercent),
             gameRunning: t?.Clock is { HasStarted: true, IsOver: false },
             update));
         // The text changes at most once per second; only touch the visual tree when it does.
@@ -139,7 +139,7 @@ public class XpTrackerPlugin : IPlugin
     {
         if (_dashboard is null)
         {
-            _dashboard = new DashboardWindow(_history, HistoryPath, () => _tail?.CurrentSession, IsHearthstoneRunning, HdtDecks.All, _settings.CheckForUpdates, SetCheckForUpdates, _settings.EventActive, SetEventActive);
+            _dashboard = new DashboardWindow(_history, HistoryPath, () => _tail?.CurrentSession, IsHearthstoneRunning, HdtDecks.All, _settings.CheckForUpdates, SetCheckForUpdates, _settings.EventActive, SetEventActive, _settings.TavernPass, _settings.TavernPassLevel, SetTavernPass);
             _dashboard.ShowUpdate(_update);
             _dashboard.Closed += (_, _) => _dashboard = null;
             _dashboard.Show();
@@ -193,6 +193,16 @@ public class XpTrackerPlugin : IPlugin
         _shownKey = string.Empty;
     }
 
+    // Called from the dashboard: "Tavern Pass" check box and the rewards track level. Changes the overlay at once
+    // and the XP stored with new games; games already stored keep the boost they were played with.
+    private void SetTavernPass(bool owned, int level)
+    {
+        _settings.TavernPass = owned;
+        _settings.TavernPassLevel = TavernPassBonus.ClampLevel(level);
+        SaveSettings();
+        _shownKey = string.Empty;
+    }
+
     private void SaveSettings()
     {
         try
@@ -242,7 +252,7 @@ public class XpTrackerPlugin : IPlugin
 
     private void SaveGame(FinishedGame game)
     {
-        var record = GameRecord.From(game, _settings.EventActive);
+        var record = GameRecord.From(game, _settings.EventActive, _settings.XpBonusPercent);
         if (DateTime.Now - game.End < RecentGame)
         {
             record.Deck = HdtDecks.Current();

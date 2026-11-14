@@ -35,6 +35,12 @@ public sealed class GameRecord
     /// <summary>Calculated event XP; null when no event was marked as running.</summary>
     public int? EventXp { get; set; }
 
+    /// <summary>
+    /// Tavern Pass XP boost in percent that applied when the game was played; 0 without the pass.
+    /// Stored with the game, so a later change of the pass or the level does not change older games.
+    /// </summary>
+    public int XpBonus { get; set; }
+
     public string Deck { get; set; } = string.Empty;
 
     public string PlayerClass { get; set; } = string.Empty;
@@ -45,7 +51,8 @@ public sealed class GameRecord
     public string Key => Session + "|" + Start.ToString("yyyy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture);
 
     /// <param name="eventActive">A Hearthstone event is running, so the game also earns event XP.</param>
-    public static GameRecord From(FinishedGame game, bool eventActive = false)
+    /// <param name="xpBonus">Tavern Pass XP boost in percent at the end of the game; it does not apply to event XP.</param>
+    public static GameRecord From(FinishedGame game, bool eventActive = false, int xpBonus = 0)
     {
         var snapshot = game.Clock.GetSnapshot(game.End);
         var rate = XpRates.RateFor(game.Mode, game.Clock.Result);
@@ -61,14 +68,15 @@ public sealed class GameRecord
             PlaySeconds = snapshot.PlaySeconds,
             WithMulliganSeconds = snapshot.WithMulliganSeconds,
             AfkTurns = game.Clock.AfkTurns,
-            Xp = rate is null ? null : snapshot.ExpectedXp(rate.Value),
+            Xp = rate is null ? null : snapshot.ExpectedXp(rate.Value, xpBonus),
             EventXp = eventActive ? XpRates.EventXpFor(game.Mode, snapshot.XpSeconds) : null,
+            XpBonus = xpBonus,
         };
     }
 
     /// <summary>
     /// Calculates <see cref="Xp"/> again from the XP time with the current rates, for example after a rate was corrected.
-    /// Games without a measured rate keep their value.
+    /// The game keeps its own <see cref="XpBonus"/>. Games without a measured rate keep their value.
     /// </summary>
     /// <returns>True if the XP changed.</returns>
     public bool RecalculateXp()
@@ -88,7 +96,7 @@ public sealed class GameRecord
             return changed;
         }
 
-        var xp = XpRates.ExpectedXp(XpSeconds, rate.Value);
+        var xp = XpRates.ExpectedXp(XpSeconds, rate.Value, XpBonus);
         if (Xp == xp)
         {
             return changed;

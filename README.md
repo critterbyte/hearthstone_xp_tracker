@@ -15,6 +15,7 @@ A plugin for [Hearthstone Deck Tracker](https://hsreplay.net/downloads/) (HDT) t
 - **Summary after each game:** XP time, total time including the mulligan, and the XP earned.
 - **AFK rule:** a turn that runs out without any action does not count, and neither does the opponent turn after it. The overlay shows this live.
 - **Dashboard:** XP, XP per hour, win rate, decks, lost XP and charts for today, this week, this season or all time.
+- **Tavern Pass:** enter your rewards track level, and the XP include the pass boost of 10%, 15% or 20%. The boost is calculated from public sources, not measured.
 - **Game history:** every game is saved to a local CSV file that you can open in a spreadsheet.
 - **Update hint:** the plugin tells you when a new version is available.
 
@@ -40,7 +41,7 @@ XP = round(xpSeconds × rate)
 | Ranked (Standard and Wild) | 0.13054 XP/s (470 XP/h) | 0.0932 XP/s (336 XP/h) |
 | Casual and Tavern Brawl | 0.0932 XP/s (336 XP/h) | 0.0666 XP/s (240 XP/h) |
 
-Games with less than 60 seconds of XP time give no XP. See [docs/FORMULA.md](docs/FORMULA.md) for all rules, the measurements and the sources.
+Games with less than 60 seconds of XP time give no XP. The rates were measured without a Tavern Pass. With the pass, the plugin adds its boost before rounding; this is calculated, not measured, because the project follows a strict free-to-play policy and buys no pass. See [docs/FORMULA.md](docs/FORMULA.md) for all rules, the measurements and the sources.
 
 ## Documentation
 
