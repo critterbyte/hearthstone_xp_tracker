@@ -15,7 +15,7 @@ Die Texte in Anführungszeichen, etwa „EP-Zeit:“, sind die Texte, die das Pl
 
 Das Overlay ist ein kleiner Kasten unten links über deinem Spielerbild („You“ mit deinem Rang). Im Dashboard kannst du es stattdessen über den Einstellungs-Button von Hearthstone (das Zahnrad unten rechts) setzen. Links stehen die Beschriftungen, rechts die Werte in blauen Balken.
 
-Das Overlay erscheint nur in **Gewertet, Ungewertet und Kartenchaos**. Andere Modi werden noch nicht gemessen, dort zeigt das Plugin nichts an. Ein Kartenchaos gegen den Computer (PvE, zum Beispiel gegen den Gastwirt) gibt keine EP, darum zeigt das Overlay dort „+0“.
+Das Overlay erscheint nur in **Gewertet, Ungewertet, Kartenchaos und Arena**. Andere Modi werden noch nicht gemessen, dort zeigt das Plugin nichts an. Ein Kartenchaos gegen den Computer (PvE, zum Beispiel gegen den Gastwirt) gibt keine EP, darum zeigt das Overlay dort „+0“.
 
 <a id="during-a-game"></a>
 ### Während einer Partie

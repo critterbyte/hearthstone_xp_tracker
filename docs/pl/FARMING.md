@@ -20,9 +20,9 @@ Ta strona dotyczy normalnej, wydajnej gry. Boty, ustawianie wyników, współdzi
 | Tryb | Zwycięstwo | Porażka |
 |---|---:|---:|
 | Ranking (Standard i Dzicz) | 470 PD/h | 336 PD/h |
-| Rozrywka i Karczemna bójka | 336 PD/h | 240 PD/h |
+| Rozrywka, Karczemna bójka i Arena | 336 PD/h | 240 PD/h |
 
-- **Zmierzone:** Ranking daje 1,40 raza więcej niż Rozrywka i Karczemna bójka. Zwycięstwo w trybie Rozrywka daje tyle samo co porażka w trybie Ranking.
+- **Zmierzone:** Ranking daje 1,40 raza więcej niż Rozrywka, Karczemna bójka i Arena. Zwycięstwo w trybie Rozrywka daje tyle samo co porażka w trybie Ranking.
 - **Zmierzone:** Standard i Dzicz dają tyle samo. Graj w format, który lubisz albo w którym częściej wygrywasz.
 - **Zmierzone:** zwycięstwo daje 1,40 raza więcej niż porażka. Twój odsetek zwycięstw ma znaczenie, więc graj talią, którą wygrywasz.
 - **Według [1]:** Ustawka daje około 300 PD na godzinę. Niezmierzone przez ten projekt.

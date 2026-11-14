@@ -12,6 +12,9 @@ public enum GameMode
     /// losses give no reward track XP and no event XP.
     /// </summary>
     TavernBrawlPvE,
+
+    /// <summary>Arena. Measured in November 2026: pays the Casual rates, event XP as in the other modes.</summary>
+    Arena,
 }
 
 public enum GameResult

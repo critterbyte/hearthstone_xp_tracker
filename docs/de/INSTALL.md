@@ -71,7 +71,7 @@ Lösche auch diesen Ordner, wenn du die Daten nicht behalten willst.
 
 **Das Overlay erscheint nicht.**
 
-- Das Overlay erscheint nur in Gewertet, Ungewertet und Kartenchaos. Andere Modi werden noch nicht gemessen.
+- Das Overlay erscheint nur in Gewertet, Ungewertet, Kartenchaos und Arena. Andere Modi werden noch nicht gemessen.
 - Während des Mulligans ist das Overlay ausgeblendet. Es erscheint mit dem ersten Zug.
 - Prüfe, ob das Overlay von HDT selbst funktioniert. Das Plugin zeichnet auf das HDT-Overlay.
 

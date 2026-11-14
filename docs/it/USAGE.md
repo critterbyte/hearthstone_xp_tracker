@@ -15,7 +15,7 @@ I testi tra virgolette, come "Tempo PE:", sono i testi che mostra il plugin.
 
 L'overlay è un piccolo riquadro in basso a sinistra, sopra il tuo ritratto ("You" con il tuo grado). Nel pannello puoi spostarlo sopra il pulsante delle impostazioni di Hearthstone (l'ingranaggio nell'angolo in basso a destra). Le etichette sono a sinistra. I valori sono a destra, in barre blu.
 
-L'overlay compare solo in **Classificata, Amichevole e Rissa**. Le altre modalità non sono ancora misurate, quindi lì il plugin non mostra nulla. Una Rissa contro il computer (PvE, per esempio contro il Locandiere) non dà PE, quindi lì l'overlay mostra "+0".
+L'overlay compare solo in **Classificata, Amichevole, Rissa e Arena**. Le altre modalità non sono ancora misurate, quindi lì il plugin non mostra nulla. Una Rissa contro il computer (PvE, per esempio contro il Locandiere) non dà PE, quindi lì l'overlay mostra "+0".
 
 <a id="during-a-game"></a>
 ### Durante una partita

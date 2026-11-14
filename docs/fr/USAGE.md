@@ -15,7 +15,7 @@ Les textes entre guillemets, comme « Temps d'EXP : », sont les textes affiché
 
 L'overlay est un petit cadre en bas à gauche, au-dessus de votre portrait (« You » avec votre rang). Dans le tableau de bord, vous pouvez le placer plutôt au-dessus du bouton des options de Hearthstone (la roue dentée en bas à droite). Les libellés sont à gauche. Les valeurs sont à droite, dans des barres bleues.
 
-L'overlay ne s'affiche qu'en **Classé, Non classé et Bras de fer**. Les autres modes ne sont pas encore mesurés, le plugin n'y affiche donc rien. Un Bras de fer contre l'ordinateur (JcE, par exemple contre l'aubergiste) ne rapporte pas d'EXP, l'overlay y affiche donc « +0 ».
+L'overlay ne s'affiche qu'en **Classé, Non classé, Bras de fer et Arène**. Les autres modes ne sont pas encore mesurés, le plugin n'y affiche donc rien. Un Bras de fer contre l'ordinateur (JcE, par exemple contre l'aubergiste) ne rapporte pas d'EXP, l'overlay y affiche donc « +0 ».
 
 <a id="during-a-game"></a>
 ### Pendant une partie

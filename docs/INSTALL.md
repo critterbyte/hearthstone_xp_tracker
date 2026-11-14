@@ -64,7 +64,7 @@ Delete this folder too if you do not want to keep the data.
 
 **The overlay does not appear.**
 
-- The overlay is shown only in Ranked, Casual and Tavern Brawl. Other modes are not measured yet.
+- The overlay is shown only in Ranked, Casual, Tavern Brawl and Arena. Other modes are not measured yet.
 - During the mulligan the overlay is hidden. It appears with the first turn.
 - Check that HDT's own overlay works. The plugin draws on the HDT overlay.
 

@@ -16,9 +16,9 @@ This page is about playing normally and efficiently. Bots, win trading, account 
 | Mode | Win | Loss |
 |---|---:|---:|
 | Ranked (Standard and Wild) | 470 XP/h | 336 XP/h |
-| Casual and Tavern Brawl | 336 XP/h | 240 XP/h |
+| Casual, Tavern Brawl and Arena | 336 XP/h | 240 XP/h |
 
-- **Measured:** Ranked pays 1.40 times as much as Casual and Tavern Brawl. A Casual win pays the same as a Ranked loss.
+- **Measured:** Ranked pays 1.40 times as much as Casual, Tavern Brawl and Arena. A Casual win pays the same as a Ranked loss.
 - **Measured:** Standard and Wild pay the same. Play the format you enjoy or win more in.
 - **Measured:** a win pays 1.40 times a loss. Your win rate matters, so play a deck you win with.
 - **According to [1]:** Battlegrounds gives about 300 XP per hour. Not measured by this project.

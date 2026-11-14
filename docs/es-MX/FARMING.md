@@ -20,9 +20,9 @@ Esta página trata de jugar de forma normal y eficiente. Los bots, el win tradin
 | Modo | Victoria | Derrota |
 |---|---:|---:|
 | Clasificado (Estándar y Salvaje) | 470 EXP/h | 336 EXP/h |
-| Casual y Gresca de la taberna | 336 EXP/h | 240 EXP/h |
+| Casual, Gresca de la taberna y Arena | 336 EXP/h | 240 EXP/h |
 
-- **Medido:** Clasificado paga 1.40 veces lo que pagan Casual y Gresca de la taberna. Una victoria en Casual paga lo mismo que una derrota en Clasificado.
+- **Medido:** Clasificado paga 1.40 veces lo que pagan Casual, Gresca de la taberna y Arena. Una victoria en Casual paga lo mismo que una derrota en Clasificado.
 - **Medido:** Estándar y Salvaje pagan lo mismo. Juega el formato que más disfrutes o en el que ganes más.
 - **Medido:** una victoria paga 1.40 veces lo que una derrota. Tu porcentaje de victorias importa, así que juega un mazo con el que ganes.
 - **Según [1]:** Campos de batalla da unos 300 de EXP por hora. Este proyecto no lo ha medido.

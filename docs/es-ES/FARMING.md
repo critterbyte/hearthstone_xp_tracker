@@ -20,9 +20,9 @@ Esta página trata de jugar de forma normal y eficiente. Los bots, el win tradin
 | Modo | Victoria | Derrota |
 |---|---:|---:|
 | Con rango (Estándar y Salvaje) | 470 PE/h | 336 PE/h |
-| Aficionado y Pelea de taberna | 336 PE/h | 240 PE/h |
+| Aficionado, Pelea de taberna y Arena | 336 PE/h | 240 PE/h |
 
-- **Medido:** Con rango da 1,40 veces lo que dan Aficionado y Pelea de taberna. Una victoria en Aficionado da lo mismo que una derrota en Con rango.
+- **Medido:** Con rango da 1,40 veces lo que dan Aficionado, Pelea de taberna y Arena. Una victoria en Aficionado da lo mismo que una derrota en Con rango.
 - **Medido:** Estándar y Salvaje dan lo mismo. Juega el formato que más te guste o en el que más ganes.
 - **Medido:** una victoria da 1,40 veces lo que una derrota. Tu porcentaje de victorias importa, así que juega un mazo con el que ganes.
 - **Según [1]:** Campos de batalla da unos 300 PE por hora. Este proyecto no lo ha medido.

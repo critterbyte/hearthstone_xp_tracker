@@ -71,7 +71,7 @@ Supprimez aussi ce dossier si vous ne voulez pas garder les données.
 
 **L'overlay n'apparaît pas.**
 
-- L'overlay ne s'affiche qu'en Classé, Non classé et Bras de fer. Les autres modes ne sont pas encore mesurés.
+- L'overlay ne s'affiche qu'en Classé, Non classé, Bras de fer et Arène. Les autres modes ne sont pas encore mesurés.
 - Pendant le choix de la main de départ, l'overlay est masqué. Il apparaît au premier tour.
 - Vérifiez que l'overlay de HDT lui-même fonctionne. Le plugin dessine sur l'overlay de HDT.
 

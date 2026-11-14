@@ -15,7 +15,7 @@ Los textos entre comillas, como "Tiempo de EXP:", son los textos que muestra el 
 
 El overlay es un pequeño recuadro abajo a la izquierda, sobre tu retrato ("You" con tu rango). En el panel puedes moverlo encima del botón de opciones de Hearthstone (el engrane en la esquina inferior derecha). Las etiquetas están a la izquierda. Los valores están a la derecha, en barras azules.
 
-El overlay solo se muestra en **Clasificado, Casual y Gresca de la taberna**. Los demás modos todavía no se miden, así que ahí el plugin no muestra nada. Una Gresca de la taberna contra la computadora (JcE, por ejemplo contra el Tabernero) no da EXP, así que ahí el overlay muestra "+0".
+El overlay solo se muestra en **Clasificado, Casual, Gresca de la taberna y Arena**. Los demás modos todavía no se miden, así que ahí el plugin no muestra nada. Una Gresca de la taberna contra la computadora (JcE, por ejemplo contra el Tabernero) no da EXP, así que ahí el overlay muestra "+0".
 
 <a id="during-a-game"></a>
 ### Durante una partida

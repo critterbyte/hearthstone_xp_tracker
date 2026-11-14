@@ -71,7 +71,7 @@ Usuń też ten folder, jeśli nie chcesz zachować danych.
 
 **Nakładka się nie pojawia.**
 
-- Nakładka jest widoczna tylko w trybach Ranking, Rozrywka i Karczemna bójka. Inne tryby nie są jeszcze mierzone.
+- Nakładka jest widoczna tylko w trybach Ranking, Rozrywka, Karczemna bójka i Arena. Inne tryby nie są jeszcze mierzone.
 - Podczas wyboru ręki startowej nakładka jest ukryta. Pojawia się w pierwszej turze.
 - Sprawdź, czy działa nakładka samego HDT. Wtyczka rysuje na nakładce HDT.
 

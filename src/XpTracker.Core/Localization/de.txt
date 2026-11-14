@@ -30,6 +30,7 @@ mode.Ranked=Gewertet
 mode.Casual=Ungewertet
 mode.TavernBrawl=Kartenchaos
 mode.TavernBrawlPvE=Kartenchaos (PvE)
+mode.Arena=Arena
 mode.Other=Sonstige
 format.Wild=Wild
 format.Standard=Standard

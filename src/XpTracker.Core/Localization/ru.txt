@@ -30,6 +30,7 @@ mode.Ranked=Рейтинг
 mode.Casual=Обычный
 mode.TavernBrawl=Потасовка в таверне
 mode.TavernBrawlPvE=Потасовка в таверне (PvE)
+mode.Arena=Арена
 mode.Other=Другое
 format.Wild=Вольный
 format.Standard=Стандартный

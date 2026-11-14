@@ -30,6 +30,7 @@ mode.Ranked=จัดอันดับ
 mode.Casual=ปกติ
 mode.TavernBrawl=ท้าประลอง
 mode.TavernBrawlPvE=ท้าประลอง (PvE)
+mode.Arena=ลานประลอง
 mode.Other=อื่นๆ
 format.Wild=อิสระ
 format.Standard=มาตรฐาน

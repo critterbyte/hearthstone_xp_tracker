@@ -15,7 +15,7 @@ Los textos entre comillas, como "Tiempo de PE:", son los textos que muestra el p
 
 El overlay es un pequeño recuadro abajo a la izquierda, sobre tu retrato ("You" con tu rango). En el panel puedes moverlo encima del botón de opciones de Hearthstone (el engranaje de la esquina inferior derecha). Las etiquetas están a la izquierda. Los valores están a la derecha, en barras azules.
 
-El overlay solo se muestra en **Con rango, Aficionado y Pelea de taberna**. Los demás modos aún no se miden, así que en ellos el plugin no muestra nada. Una Pelea de taberna contra el ordenador (JcE, por ejemplo contra el tabernero) no da PE, así que en ella el overlay muestra "+0".
+El overlay solo se muestra en **Con rango, Aficionado, Pelea de taberna y Arena**. Los demás modos aún no se miden, así que en ellos el plugin no muestra nada. Una Pelea de taberna contra el ordenador (JcE, por ejemplo contra el tabernero) no da PE, así que en ella el overlay muestra "+0".
 
 <a id="during-a-game"></a>
 ### Durante una partida

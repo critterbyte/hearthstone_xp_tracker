@@ -30,6 +30,7 @@ mode.Ranked=排名模式
 mode.Casual=休闲模式
 mode.TavernBrawl=乱斗模式
 mode.TavernBrawlPvE=乱斗模式（PvE）
+mode.Arena=竞技模式
 mode.Other=其他
 format.Wild=狂野
 format.Standard=标准

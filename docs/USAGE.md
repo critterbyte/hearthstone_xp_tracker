@@ -12,7 +12,7 @@ The texts in quotes, such as "XP time:", are the texts the plugin shows.
 
 The overlay is a small box at the bottom left, above your portrait ("You" with your rank). In the dashboard you can move it above the Hearthstone settings button (the gear in the bottom right corner) instead. Labels are on the left. Values are on the right, in blue bars.
 
-The overlay is shown only in **Ranked, Casual and Tavern Brawl**. Other modes are not measured yet, so the plugin shows nothing there. A Tavern Brawl against the computer (PvE, for example against the Innkeeper) gives no XP, so the overlay shows "+0" there.
+The overlay is shown only in **Ranked, Casual, Tavern Brawl and Arena**. Other modes are not measured yet, so the plugin shows nothing there. A Tavern Brawl against the computer (PvE, for example against the Innkeeper) gives no XP, so the overlay shows "+0" there.
 
 ### During a game
 

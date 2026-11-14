@@ -15,7 +15,7 @@ Os textos entre aspas, como "Tempo de EXP:", são os textos que o plugin mostra.
 
 O overlay é uma pequena caixa no canto inferior esquerdo, acima do seu retrato ("You" com o seu ranque). No painel, você pode movê-lo para cima do botão de configurações do Hearthstone (a engrenagem no canto inferior direito). Os rótulos ficam à esquerda. Os valores ficam à direita, em barras azuis.
 
-O overlay só é mostrado em **Ranqueado, Casual e Contenda de Taverna**. Os outros modos ainda não são medidos, então o plugin não mostra nada neles. Uma Contenda de Taverna contra o computador (JxA, por exemplo contra o Estalajadeiro) não dá EXP, então o overlay mostra "+0" nela.
+O overlay só é mostrado em **Ranqueado, Casual, Contenda de Taverna e Arena**. Os outros modos ainda não são medidos, então o plugin não mostra nada neles. Uma Contenda de Taverna contra o computador (JxA, por exemplo contra o Estalajadeiro) não dá EXP, então o overlay mostra "+0" nela.
 
 <a id="during-a-game"></a>
 ### Durante uma partida

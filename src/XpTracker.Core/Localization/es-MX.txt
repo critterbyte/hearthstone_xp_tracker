@@ -30,6 +30,7 @@ mode.Ranked=Clasificado
 mode.Casual=Casual
 mode.TavernBrawl=Gresca de la taberna
 mode.TavernBrawlPvE=Gresca de la taberna (JcE)
+mode.Arena=Arena
 mode.Other=Otro
 format.Wild=Salvaje
 format.Standard=Estándar
