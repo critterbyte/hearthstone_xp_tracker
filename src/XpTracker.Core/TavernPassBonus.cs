@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Globalization;
 
 namespace XpTracker.Core;
 
@@ -67,18 +66,19 @@ public static class TavernPassBonus
     {
         if (!hasPass)
         {
-            return "No XP boost";
+            return Localizer.Text("tavern.noBoost");
         }
 
-        var text = Percent(true, level).ToString(CultureInfo.InvariantCulture) + "% XP boost";
+        var percent = Percent(true, level);
         if (NextStep(level) is not { } next)
         {
-            return text + " (maximum)";
+            return Localizer.Format("tavern.boostMax", percent);
         }
 
         var levels = next.Level - ClampLevel(level);
-        return text + ", " + levels.ToString(CultureInfo.InvariantCulture) + (levels == 1 ? " level" : " levels")
-            + " to " + next.Percent.ToString(CultureInfo.InvariantCulture) + "%";
+        return levels == 1
+            ? Localizer.Format("tavern.boostNextOne", percent, next.Percent)
+            : Localizer.Format("tavern.boostNextMany", percent, levels, next.Percent);
     }
 }
 
