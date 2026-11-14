@@ -34,7 +34,8 @@ public sealed class XpLine
 public static class XpDisplayText
 {
     /// <param name="eventActive">A Hearthstone event is running: adds an "Event XP:" row with the event XP.</param>
-    public static IReadOnlyList<XpLine> For(XpClock? clock, GameMode mode, DateTime now, bool eventActive = false)
+    /// <param name="damageDealt">Damage dealt to the opponent's side so far: adds a "Damage:" row as the last row.</param>
+    public static IReadOnlyList<XpLine> For(XpClock? clock, GameMode mode, DateTime now, bool eventActive = false, int? damageDealt = null)
     {
         var winRate = XpRates.RateFor(mode, GameResult.Win);
         var lossRate = XpRates.RateFor(mode, GameResult.Loss);
@@ -72,6 +73,11 @@ public static class XpDisplayText
         if (eventActive)
         {
             lines.Add(new XpLine("Event XP:", Plus(XpRates.EventXpFor(mode, snapshot.XpSeconds) ?? 0), isEvent: true));
+        }
+
+        if (damageDealt is { } damage)
+        {
+            lines.Add(new XpLine("Damage:", damage.ToString(CultureInfo.InvariantCulture)));
         }
 
         return lines;

@@ -8,7 +8,7 @@ namespace XpTracker.Core;
 /// </summary>
 public sealed class FinishedGame
 {
-    public FinishedGame(string session, DateTime firstTurn, DateTime end, GameMode mode, string format, XpClock clock)
+    public FinishedGame(string session, DateTime firstTurn, DateTime end, GameMode mode, string format, XpClock clock, int damageDealt = 0)
     {
         Session = session;
         FirstTurn = firstTurn;
@@ -16,7 +16,11 @@ public sealed class FinishedGame
         Mode = mode;
         Format = format;
         Clock = clock;
+        DamageDealt = damageDealt;
     }
+
+    /// <summary>Damage the player's side dealt to the opponent's side, see <see cref="DamageCounter"/>.</summary>
+    public int DamageDealt { get; }
 
     /// <summary>Log session the game was read from (the Hearthstone_yyyy_MM_dd_HH_mm_ss folder name), or empty.</summary>
     public string Session { get; }
@@ -67,6 +71,9 @@ public sealed class PowerLogTracker
 
     public GameMode Mode => _game?.Mode ?? GameMode.Other;
 
+    /// <summary>Damage the player's side dealt to the opponent's side in the current or last game.</summary>
+    public int DamageDealt => _game?.Damage?.Dealt ?? 0;
+
     public long LinesProcessed { get; private set; }
 
     public void ProcessLine(string line)
@@ -116,6 +123,7 @@ public sealed class PowerLogTracker
         if (body == "CREATE_GAME")
         {
             _game = new Game();
+            _game.Damage = new DamageCounter(playerId => SideOf(playerId) == Side.Player);
             return;
         }
 
@@ -124,12 +132,18 @@ public sealed class PowerLogTracker
             return;
         }
 
+        if (!body.StartsWith("TAG_CHANGE Entity=", StringComparison.Ordinal))
+        {
+            _game.Damage!.OnLine(body);
+        }
+
         if (body.StartsWith("Player EntityID=", StringComparison.Ordinal))
         {
             var parts = body.Split(' ');
             if (parts.Length >= 3 && TryValue(parts[1], "EntityID=", out var entityId) && TryValue(parts[2], "PlayerID=", out var playerId))
             {
                 _game.EntityToPlayer[entityId] = playerId;
+                _game.Damage!.SetController(entityId, playerId);
             }
 
             // Only the computer plays without an account (the Innkeeper in PvE Tavern Brawls, practice, adventures).
@@ -162,6 +176,7 @@ public sealed class PowerLogTracker
     private void OnTagChange(string entity, string tag, string value, DateTime time)
     {
         var game = _game!;
+        game.Damage!.OnTagChange(entity, tag, value);
         if (entity == "GameEntity")
         {
             if (tag == "STEP" && value == "BEGIN_MULLIGAN")
@@ -177,7 +192,8 @@ public sealed class PowerLogTracker
             else if (tag == "STATE" && value == "COMPLETE" && game.Clock.HasStarted && !game.Clock.IsOver)
             {
                 game.Clock.EndGame(time, game.Result);
-                GameFinished?.Invoke(new FinishedGame(_session, game.FirstTurn ?? time, time, game.Mode, game.Format, game.Clock));
+                game.Damage!.Flush();
+                GameFinished?.Invoke(new FinishedGame(_session, game.FirstTurn ?? time, time, game.Mode, game.Format, game.Clock, game.Damage.Dealt));
             }
 
             return;
@@ -412,6 +428,9 @@ public sealed class PowerLogTracker
     private sealed class Game
     {
         public XpClock Clock { get; } = new();
+
+        /// <summary>Set right after the game is created; needs the tracker to tell the local player.</summary>
+        public DamageCounter? Damage { get; set; }
 
         /// <summary>Mode from the log's GameType line.</summary>
         public GameMode Type { get; set; } = GameMode.Other;

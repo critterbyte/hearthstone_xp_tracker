@@ -70,6 +70,19 @@ public class XpDisplayTextTests
     }
 
     [Fact]
+    public void Damage_IsTheLastRow_LiveAndAfterTheGame()
+    {
+        var clock = Started("10:00:00");
+
+        Assert.Equal(
+            new[] { "XP time:|6:12|", "If win:|+49|xp", "If loss:|+35|xp", "Event XP:|+6|", "Damage:|47|" },
+            Rows(XpDisplayText.For(clock, GameMode.Ranked, At("10:06:12"), eventActive: true, damageDealt: 47)));
+
+        clock.EndGame(At("10:06:12"), GameResult.Win);
+        Assert.Equal("Damage:|47|", Rows(XpDisplayText.For(clock, GameMode.Ranked, At("10:07:00"), damageDealt: 47)).Last());
+    }
+
+    [Fact]
     public void UnmeasuredMode_ShowsNothing()
     {
         Assert.Empty(XpDisplayText.For(Started("10:00:00"), GameMode.Other, At("10:05:00")));

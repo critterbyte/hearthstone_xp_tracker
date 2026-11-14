@@ -39,6 +39,12 @@ During a Hearthstone event, switch on "Event running (show event XP)" in the das
 
 Switch it off when the event ends.
 
+The last row is always shown, live and in the summary after the game:
+
+| Row | Meaning |
+|---|---|
+| "Damage:" | All damage your side dealt to the opponent's hero and minions so far: your attacks, your minions' attacks, spells, weapons, hero power and other effects. Each hit counts with the amount the game shows, also when it is more than the target's health or hits armor. Damage to your own hero or minions does not count, and neither does damage without a source, such as fatigue. A hit on a Divine Shield is 0. |
+
 While the XP time is below 60 seconds, both XP values show "+0". Games under one minute give no XP. See [FORMULA.md](FORMULA.md) for the rules.
 
 If you start HDT in the middle of a game, the plugin still reads the game from its start.
