@@ -1,0 +1,142 @@
+# Deutsche Texte des Hearthstone XP Tracker. Quelle: en.txt (bei Abweichungen gilt die englische Fassung).
+# Begriffe wie im deutschen Hearthstone-Client: EP (Erfahrungspunkte), Belohnungspfad, Tavernenpass,
+# Gewertet, Ungewertet, Kampf in der Taverne, "Zug beenden". Anrede: du.
+
+# Plugin entry in HDT
+plugin.description=Zeigt die Belohnungspfad-EP der laufenden Partie und die EP-Zeit, auf der sie beruhen.
+plugin.dashboard=EP-Dashboard
+
+# Overlay rows
+overlay.xpTime=EP-Zeit:
+overlay.ifWin=Bei Sieg:
+overlay.ifLoss=Bei Niederlage:
+overlay.lastGame=Letzte Partie:
+overlay.totalTime=Gesamtzeit:
+overlay.earned=Erhalten:
+overlay.unknown=unbekannt
+overlay.eventXp=Event-EP:
+overlay.totalDamage=Gesamtschaden:
+overlay.heroDamage=Heldenschaden:
+overlay.paused=(pausiert)
+overlay.max=(max.)
+overlay.updateAvailable=Update verfügbar:
+
+# Game results, modes, formats and classes
+result.Win=Sieg
+result.Loss=Niederlage
+result.Tie=Unentschieden
+result.Unknown=Unbekannt
+mode.Ranked=Gewertet
+mode.Casual=Ungewertet
+mode.TavernBrawl=Kampf in der Taverne
+mode.TavernBrawlPvE=Kampf in der Taverne (PvE)
+mode.Other=Sonstige
+format.Wild=Wild
+format.Standard=Standard
+class.DEATHKNIGHT=Todesritter
+class.DEMONHUNTER=Dämonenjäger
+class.DRUID=Druide
+class.HUNTER=Jäger
+class.MAGE=Magier
+class.PALADIN=Paladin
+class.PRIEST=Priester
+class.ROGUE=Schurke
+class.SHAMAN=Schamane
+class.WARLOCK=Hexenmeister
+class.WARRIOR=Krieger
+deck.none=Kein Deck erfasst
+
+# Dashboard: update hint
+update.available=Version {0} ist verfügbar.
+update.availableInstalled=Version {0} ist verfügbar (installiert: {1}).
+update.openPage=Downloadseite öffnen
+
+# Dashboard: toolbar and options
+period.session=Sitzung
+period.today=Heute
+period.week=Diese Woche
+period.season=Diese Saison
+period.last30Days=Letzte 30 Tage
+period.all=Gesamt
+toolbar.refresh=Aktualisieren
+toolbar.openFolder=Datenordner öffnen
+option.language=Sprache (Language)
+option.event=Event läuft (Event-EP anzeigen)
+option.eventTip=Einschalten, solange ein Hearthstone-Event läuft: Das Overlay zeigt die Event-EP, und neue Partien speichern sie.
+option.damage=Schaden im Overlay anzeigen
+option.damageTip=Zeigt die Zeilen „Gesamtschaden:“ und „Heldenschaden:“: den Schaden, den deine Seite dem Gegner in der laufenden oder letzten Partie zugefügt hat.
+option.updates=Beim Start von HDT nach Updates suchen
+tavern.check=Tavernenpass (EP-Bonus)
+tavern.checkTip=Einschalten, wenn du den Tavernenpass der aktuellen Erweiterung besitzt. Trage darunter deine Stufe im Belohnungspfad ein: Der Bonus beträgt 10 %, ab Stufe 20 15 %, ab Stufe 70 20 % (laut Hearthstone-Wiki, nicht gemessen).
+tavern.level=Stufe
+tavern.levelTip=Stufe im Belohnungspfad
+tavern.noBoost=Kein EP-Bonus
+tavern.boostMax={0} % EP-Bonus (Maximum)
+tavern.boostNextOne={0} % EP-Bonus, noch 1 Stufe bis {1} %
+tavern.boostNextMany={0} % EP-Bonus, noch {1} Stufen bis {2} %
+
+# Dashboard: session line
+session.none=Noch keine Sitzung.
+session.running=Sitzung seit {0} (läuft)
+session.ended=Sitzung seit {0} (beendet)
+
+# Dashboard: tabs
+tab.overview=Übersicht
+tab.decks=Decks
+tab.lostXp=Verlorene EP
+tab.games=Partien
+tab.charts=Diagramme
+
+# Dashboard: overview tiles
+overview.xp=EP
+overview.xpTime=EP-Zeit
+overview.playTime=Spielzeit inkl. Mulligan
+overview.onlineTime=Online-Zeit
+overview.games=Partien
+overview.winsLosses={0} Siege, {1} Niederlagen
+overview.xpPerHour=EP pro Stunde
+overview.xpPerHourNote=bezogen auf die EP-Zeit
+overview.xpPerOnlineHour=EP pro Online-Stunde
+overview.xpPerOnlineHourNote=inklusive Menüs und Warteschlange
+overview.winRate=Siegquote
+overview.eventXp=Event-EP
+overview.eventXpNote=1 pro Minute EP-Zeit
+
+# Dashboard: lost XP tiles
+lost.xpValue={0} EP
+lost.afk=AFK-Züge
+lost.afkNote={0} Züge ohne Aktion und ohne „Zug beenden“
+lost.short=Partien unter 1 Minute
+lost.shortNote={0} Partien unter der 60-Sekunden-Grenze
+lost.outside=Zeit außerhalb von Partien
+lost.outsideNote={0} online, aber in keiner Partie (Menüs, Warteschlange, Pausen)
+
+# Dashboard: table columns
+column.deck=Deck
+column.games=Partien
+column.winRate=Siegquote
+column.xp=EP
+column.xpPerHour=EP pro Stunde
+column.avgGame=Ø Partie
+column.date=Datum
+column.start=Start
+column.mode=Modus
+column.result=Ergebnis
+column.xpTime=EP-Zeit
+column.totalTime=Gesamtzeit
+column.event=Event
+column.afk=AFK
+column.opponent=Gegner
+
+# Dashboard: charts
+chart.xpEarned=Erhaltene EP
+chart.xpEarnedNote=EP der Partien, die in der jeweiligen Stunde (Heute) bzw. am jeweiligen Tag begonnen haben. Stunden oder Tage ohne Partien stehen bei 0.
+chart.xpPerHour=EP pro Stunde
+chart.xpPerHourNote=Tempo in jeder Stunde bzw. an jedem Tag: EP geteilt durch EP-Zeit. Die gestrichelte Linie ist der Durchschnitt des ganzen Zeitraums.
+chart.xpAxis=EP
+chart.average=Durchschnitt
+chart.averageTooltip=Durchschnitt des Zeitraums: {0} EP/h
+chart.xpTooltip={0} · {1} EP · {2}
+chart.rateTooltip={0} · {1} EP/h · {2}
+chart.gameOne=1 Partie
+chart.gameMany={0} Partien

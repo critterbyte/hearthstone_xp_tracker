@@ -60,6 +60,8 @@ period.last30Days=Last 30 days
 period.all=All time
 toolbar.refresh=Refresh
 toolbar.openFolder=Open data folder
+# In other languages, keep the English word in brackets, for example "Sprache (Language)".
+option.language=Language
 option.event=Event running (show event XP)
 option.eventTip=Switch on while a Hearthstone event runs: the overlay shows the event XP, and new games store it.
 option.damage=Show damage on the overlay
