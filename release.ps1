@@ -1,4 +1,4 @@
-# Builds the release ZIP for GitHub: the two plugin DLLs, the license and a short install note.
+﻿# Builds the release ZIP for GitHub: the two plugin DLLs, the license and a short install note.
 # It builds and tests first, checks the version and the package content, and prints the SHA-256 checksum.
 # It does not tag, push or publish anything.
 #
@@ -59,6 +59,8 @@ foreach ($name in $sources.Keys) {
 }
 Copy-Item (Join-Path $root 'LICENSE') (Join-Path $package 'LICENSE.txt')
 
+# Links to the translated install guides; the language names need this file to be saved as UTF-8 with BOM.
+$docs = 'https://github.com/critterbyte/hearthstone_xp_tracker/blob/main/docs'
 $install = @"
 Hearthstone XP Tracker $version
 A plugin for Hearthstone Deck Tracker (HDT) that shows the reward track XP of the current game.
@@ -78,6 +80,23 @@ Close HDT and extract the new ZIP the same way, replacing the old files.
 Your game history and settings are kept.
 
 Documentation: https://github.com/critterbyte/hearthstone_xp_tracker
+Language of the overlay and the dashboard: open the dashboard and choose "Language".
+
+Install guide in other languages:
+  Deutsch          $docs/de/INSTALL.md
+  Español (AL)     $docs/es-MX/INSTALL.md
+  Español (EU)     $docs/es-ES/INSTALL.md
+  Français         $docs/fr/INSTALL.md
+  Italiano         $docs/it/INSTALL.md
+  日本語           $docs/ja/INSTALL.md
+  Polski           $docs/pl/INSTALL.md
+  Português        $docs/pt-BR/INSTALL.md
+  Русский          $docs/ru/INSTALL.md
+  ภาษาไทย          $docs/th/INSTALL.md
+  한국어           $docs/ko/INSTALL.md
+  繁體中文         $docs/zh-TW/INSTALL.md
+  简体中文         $docs/zh-CN/INSTALL.md
+
 License: MIT, see LICENSE.txt.
 This is an unofficial plugin. It is not affiliated with HearthSim or Blizzard Entertainment.
 "@

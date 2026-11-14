@@ -115,6 +115,8 @@ To fix or improve a translation:
 
 `en.txt` is the source. A new text is added to `en.txt` first and then to every other language file. A text missing in a language falls back to English.
 
+The user guides `INSTALL.md`, `USAGE.md` and `FARMING.md` are translated in `docs/<code>/`, with the same codes as the language files. The English files in `docs/` are the source; `FORMULA.md`, this file and the changelog stay English only. When an English guide changes, update the translations in the same pull request, or say in the pull request which translations are behind. Quoted overlay and dashboard texts must match the language file, and every heading keeps an `<a id="…"></a>` anchor with the English name, so links between the guides work in every language.
+
 ## Releases
 
 - The version is set in `Directory.Build.props` only.

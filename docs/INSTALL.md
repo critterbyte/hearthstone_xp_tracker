@@ -3,7 +3,7 @@
 ## Requirements
 
 - Windows
-- [Hearthstone Deck Tracker](https://hsreplay.net/downloads/) (HDT). Tested with HDT 1.59.10.
+- [Hearthstone Deck Tracker](https://hsreplay.net/downloads/) (HDT). Tested with HDT 1.60.1.
 - Hearthstone
 
 The plugin reads Hearthstone's `Power.log`. HDT turns this log on by itself, so you do not need to change any Hearthstone settings.
