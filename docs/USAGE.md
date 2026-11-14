@@ -93,7 +93,7 @@ The dashboard window is called "HS XP Tracker". Open it in HDT in one of two way
 | "Export CSV" | Save a copy of the history file |
 | "Open data folder" | Open the folder with the history file in Windows Explorer |
 | "Event running (show event XP)" | Switch on during a Hearthstone event: the overlay shows the event XP, and new games store it. |
-| "Tavern Pass (XP boost)" | Switch on if you own the Tavern Pass of the current expansion. |
+| "Tavern Pass (XP boost)" | Switch on if you own the Tavern Pass of the current expansion. The boost is calculated, not measured: with the pass, the shown XP can be 1 XP off per game (see [FORMULA.md](FORMULA.md#tavern-pass)). |
 | "Level" with "−", a number and "+" | Your rewards track level. Click "−" or "+", or type the number. The line below shows the boost and the next step, for example "10% XP boost, 2 levels to 15%". The boost is 10%, from level 20 on 15% and from level 70 on 20% (see [FORMULA.md](FORMULA.md#tavern-pass)). Update the level when you pass level 20 or 70. |
 | "Check for updates when HDT starts" | Turn the update check on or off. See [Privacy](#privacy). |
 

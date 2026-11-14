@@ -86,6 +86,14 @@ Tips:
 - Hearthstone writes the log to `<Hearthstone folder>\Logs\Hearthstone_<date and time>\Power.log`. It **empties this file when you close the game**, so copy it before you quit.
 - Games of different lengths help most. A short game and a long game with the same result pin the rate down much better than two games of the same length.
 
+### Tavern Pass measurements wanted
+
+The project follows a strict free-to-play policy and spends no money on the game, so the Tavern Pass boost has not been measured (see [FORMULA.md](docs/FORMULA.md#tavern-pass)). If you own the pass, your games are especially useful:
+
+- Note your rewards track level with each game. The boost changes at level 20 and level 70.
+- Report the XP the game showed, not the XP the plugin showed.
+- Games close to a rounding step help most: they show whether the game rounds before or after adding the boost.
+
 ### LogCheck
 
 ```powershell
