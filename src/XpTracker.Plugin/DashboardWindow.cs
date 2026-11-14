@@ -60,6 +60,8 @@ internal sealed class DashboardWindow : Window
     private readonly Action<bool>? _setEventActive;
     private bool _eventActive;
     private readonly Action<bool, int>? _setTavernPass;
+    private readonly Action<bool>? _setShowDamage;
+    private bool _showDamage;
     private bool _tavernPass;
     private int _tavernPassLevel;
     private readonly TextBlock _updateText = new() { Foreground = Parchment, VerticalAlignment = VerticalAlignment.Center, TextWrapping = TextWrapping.Wrap };
@@ -81,8 +83,12 @@ internal sealed class DashboardWindow : Window
         Action<bool>? setEventActive = null,
         bool tavernPass = false,
         int tavernPassLevel = TavernPassBonus.MinLevel,
-        Action<bool, int>? setTavernPass = null)
+        Action<bool, int>? setTavernPass = null,
+        bool showDamage = true,
+        Action<bool>? setShowDamage = null)
     {
+        _showDamage = showDamage;
+        _setShowDamage = setShowDamage;
         _tavernPass = tavernPass;
         _tavernPassLevel = TavernPassBonus.ClampLevel(tavernPassLevel);
         _setTavernPass = setTavernPass;
@@ -416,7 +422,6 @@ internal sealed class DashboardWindow : Window
 
         bar.Children.Add(new Border { Width = 18 });
         bar.Children.Add(Action("Refresh", Refresh));
-        bar.Children.Add(Action("Export CSV", Export));
         bar.Children.Add(Action("Open data folder", OpenFolder));
 
         var toolbar = new DockPanel();
@@ -436,6 +441,23 @@ internal sealed class DashboardWindow : Window
                 _setEventActive(_eventActive);
             };
             options.Children.Add(eventCheck);
+        }
+
+        if (_setShowDamage is not null)
+        {
+            var damageCheck = new CheckBox
+            {
+                Content = "Show damage on the overlay",
+                IsChecked = _showDamage,
+                Margin = new Thickness(0, 2, 0, 2),
+                ToolTip = "Shows the rows \"Total Damage:\" and \"Hero Damage:\": the damage your side dealt to the opponent in the current or last game.",
+            };
+            damageCheck.Click += (_, _) =>
+            {
+                _showDamage = damageCheck.IsChecked == true;
+                _setShowDamage(_showDamage);
+            };
+            options.Children.Add(damageCheck);
         }
 
         if (_setTavernPass is not null)
@@ -572,15 +594,6 @@ internal sealed class DashboardWindow : Window
         }
 
         Refresh();
-    }
-
-    private void Export()
-    {
-        var dialog = new Microsoft.Win32.SaveFileDialog { FileName = "xp-history.csv", Filter = "CSV files (*.csv)|*.csv" };
-        if (dialog.ShowDialog(this) == true && File.Exists(_historyPath))
-        {
-            File.Copy(_historyPath, dialog.FileName, overwrite: true);
-        }
     }
 
     private void OpenFolder()

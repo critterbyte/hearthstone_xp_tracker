@@ -8,7 +8,7 @@ namespace XpTracker.Core;
 /// </summary>
 public sealed class FinishedGame
 {
-    public FinishedGame(string session, DateTime firstTurn, DateTime end, GameMode mode, string format, XpClock clock, int damageDealt = 0)
+    public FinishedGame(string session, DateTime firstTurn, DateTime end, GameMode mode, string format, XpClock clock, int damageDealt = 0, int heroDamageDealt = 0)
     {
         Session = session;
         FirstTurn = firstTurn;
@@ -17,10 +17,14 @@ public sealed class FinishedGame
         Format = format;
         Clock = clock;
         DamageDealt = damageDealt;
+        HeroDamageDealt = heroDamageDealt;
     }
 
     /// <summary>Damage the player's side dealt to the opponent's side, see <see cref="DamageCounter"/>.</summary>
     public int DamageDealt { get; }
+
+    /// <summary>The part of <see cref="DamageDealt"/> that hit the opponent's hero.</summary>
+    public int HeroDamageDealt { get; }
 
     /// <summary>Log session the game was read from (the Hearthstone_yyyy_MM_dd_HH_mm_ss folder name), or empty.</summary>
     public string Session { get; }
@@ -73,6 +77,9 @@ public sealed class PowerLogTracker
 
     /// <summary>Damage the player's side dealt to the opponent's side in the current or last game.</summary>
     public int DamageDealt => _game?.Damage?.Dealt ?? 0;
+
+    /// <summary>The part of <see cref="DamageDealt"/> that hit the opponent's hero.</summary>
+    public int HeroDamageDealt => _game?.Damage?.DealtToHero ?? 0;
 
     public long LinesProcessed { get; private set; }
 
@@ -193,7 +200,7 @@ public sealed class PowerLogTracker
             {
                 game.Clock.EndGame(time, game.Result);
                 game.Damage!.Flush();
-                GameFinished?.Invoke(new FinishedGame(_session, game.FirstTurn ?? time, time, game.Mode, game.Format, game.Clock, game.Damage.Dealt));
+                GameFinished?.Invoke(new FinishedGame(_session, game.FirstTurn ?? time, time, game.Mode, game.Format, game.Clock, game.Damage.Dealt, game.Damage.DealtToHero));
             }
 
             return;

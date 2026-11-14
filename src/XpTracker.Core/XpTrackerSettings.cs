@@ -16,6 +16,9 @@ public sealed class XpTrackerSettings
     /// <summary>A Hearthstone event is running: show and store event XP. Switched on and off by the user.</summary>
     public bool EventActive { get; set; }
 
+    /// <summary>Show the rows "Total Damage:" and "Hero Damage:" on the overlay.</summary>
+    public bool ShowDamage { get; set; } = true;
+
     /// <summary>The player owns the Tavern Pass of the current expansion: XP get the pass boost.</summary>
     public bool TavernPass { get; set; }
 
@@ -46,6 +49,10 @@ public sealed class XpTrackerSettings
             else if (key.Equals(nameof(EventActive), StringComparison.OrdinalIgnoreCase) && bool.TryParse(value, out var eventActive))
             {
                 settings.EventActive = eventActive;
+            }
+            else if (key.Equals(nameof(ShowDamage), StringComparison.OrdinalIgnoreCase) && bool.TryParse(value, out var showDamage))
+            {
+                settings.ShowDamage = showDamage;
             }
             else if (key.Equals(nameof(TavernPass), StringComparison.OrdinalIgnoreCase) && bool.TryParse(value, out var tavernPass))
             {
@@ -82,6 +89,7 @@ public sealed class XpTrackerSettings
     {
         yield return nameof(CheckForUpdates) + "=" + (CheckForUpdates ? "true" : "false");
         yield return nameof(EventActive) + "=" + (EventActive ? "true" : "false");
+        yield return nameof(ShowDamage) + "=" + (ShowDamage ? "true" : "false");
         yield return nameof(TavernPass) + "=" + (TavernPass ? "true" : "false");
         yield return nameof(TavernPassLevel) + "=" + TavernPassLevel.ToString(CultureInfo.InvariantCulture);
     }
