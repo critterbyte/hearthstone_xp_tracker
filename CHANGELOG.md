@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-11-14
+
+First public beta: XP for Ranked, Casual, Tavern Brawl and Arena, measured game by game.
+
 ### Added
 
 - Project skeleton: solution, calculation engine (`XpTracker.Core`), plugin entry point (`XpTracker.Plugin`), unit tests.
@@ -51,3 +55,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - A Rewind card (game reset) no longer restarts the XP time on the overlay.
 - Starting HDT during a game no longer loses the time before the start.
+
+[Unreleased]: https://github.com/critterbyte/hearthstone_xp_tracker/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/critterbyte/hearthstone_xp_tracker/releases/tag/v0.1.0
