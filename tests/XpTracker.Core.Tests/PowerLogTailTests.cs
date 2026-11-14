@@ -68,6 +68,46 @@ public sealed class PowerLogTailTests : IDisposable
     }
 
     [Fact]
+    public void NewSessionFolderWithoutLog_StartsAnEmptySessionAtOnce()
+    {
+        // Hearthstone was restarted: the old log was renamed, the new folder has no Power.log until the first game.
+        Append(GameStart("09:30:00", "GT_RANKED", localStarts: true));
+        var tail = new PowerLogTail(() => _root, TimeSpan.Zero);
+        tail.Poll();
+        File.Move(_logFile, Path.Combine(Path.GetDirectoryName(_logFile)!, "Power_old.log"));
+        Directory.CreateDirectory(Path.Combine(_root, "Hearthstone_2026_11_08_12_00_00"));
+
+        tail.Poll();
+
+        Assert.Equal("Hearthstone_2026_11_08_12_00_00", tail.CurrentSession);
+        Assert.Null(tail.Read(t => t!.Clock));
+    }
+
+    [Fact]
+    public void LogAppearingLater_IsReadFromItsStart()
+    {
+        var folder = Path.Combine(_root, "Hearthstone_2026_11_08_12_00_00");
+        Directory.CreateDirectory(folder);
+        var tail = new PowerLogTail(() => _root, TimeSpan.Zero);
+        tail.Poll();
+
+        File.WriteAllText(Path.Combine(folder, "Power.log"), string.Concat(new[]
+        {
+            GameStart("12:05:00", "GT_CASUAL", localStarts: true),
+            new[]
+            {
+                Line("12:05:20", "GameState.SendChoices()", "id=1 ChoiceType=MULLIGAN"),
+                Power("12:06:00", "TAG_CHANGE Entity=GameEntity tag=STEP value=MAIN_READY"),
+            },
+        }.SelectMany(l => l).Select(l => l + "\r\n")), Encoding.UTF8);
+        tail.Poll();
+
+        Assert.Equal("Hearthstone_2026_11_08_12_00_00", tail.CurrentSession);
+        Assert.Equal(GameMode.Casual, tail.Read(t => t!.Mode));
+        Assert.Equal(60, tail.Read(t => t!.Clock!.GetSnapshot(new DateTime(2026, 11, 8, 12, 7, 0)).XpSeconds), 3);
+    }
+
+    [Fact]
     public void MissingLogsFolder_DoesNothing()
     {
         var tail = new PowerLogTail(() => Path.Combine(_root, "missing"));

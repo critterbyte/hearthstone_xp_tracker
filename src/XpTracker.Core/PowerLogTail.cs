@@ -26,12 +26,15 @@ public sealed class PowerLogTail
     private string? _path;
     private long _position;
     private PowerLogTracker? _tracker;
+    private readonly TimeSpan _folderCheckInterval;
     private DateTime _nextFolderCheck;
 
     /// <param name="logsRoot">Returns Hearthstone's Logs folder; called again when the folder may have changed.</param>
-    public PowerLogTail(Func<string?> logsRoot)
+    /// <param name="folderCheckInterval">How often to look for a newer session folder; 5 seconds by default.</param>
+    public PowerLogTail(Func<string?> logsRoot, TimeSpan? folderCheckInterval = null)
     {
         _logsRoot = logsRoot;
+        _folderCheckInterval = folderCheckInterval ?? TimeSpan.FromSeconds(5);
     }
 
     /// <summary>Raised on the polling thread when a game ends in the log.</summary>
@@ -57,11 +60,14 @@ public sealed class PowerLogTail
         var now = DateTime.UtcNow;
         if (_path is null || now >= _nextFolderCheck)
         {
-            _nextFolderCheck = now.AddSeconds(5);
-            var newest = FindNewestPowerLog(_logsRoot());
+            _nextFolderCheck = now + _folderCheckInterval;
+
+            // The newest session folder is the current session, also before its Power.log exists: Hearthstone creates
+            // the folder at start but the log only with the first game. A new folder starts an empty session at once.
+            var newest = FindNewestSessionLog(_logsRoot());
             if (newest is not null && !string.Equals(newest, _path, StringComparison.OrdinalIgnoreCase))
             {
-                Open(newest, FindLastGameStart(newest));
+                Open(newest, File.Exists(newest) ? FindLastGameStart(newest) : 0);
             }
         }
 
@@ -82,6 +88,24 @@ public sealed class PowerLogTail
         }
     }
 
+    /// <summary>
+    /// The Power.log path in the newest session folder, also when Hearthstone has not created the file yet; null without session folders.
+    /// </summary>
+    public static string? FindNewestSessionLog(string? logsRoot)
+    {
+        if (string.IsNullOrEmpty(logsRoot) || !Directory.Exists(logsRoot))
+        {
+            return null;
+        }
+
+        // Folders are named Hearthstone_yyyy_MM_dd_HH_mm_ss, so the name order is the time order.
+        return Directory.GetDirectories(logsRoot!, "Hearthstone_*")
+            .OrderByDescending(d => Path.GetFileName(d), StringComparer.Ordinal)
+            .Select(d => Path.Combine(d, "Power.log"))
+            .FirstOrDefault();
+    }
+
+    /// <summary>The newest existing Power.log, for tools that need a file to read.</summary>
     public static string? FindNewestPowerLog(string? logsRoot)
     {
         if (string.IsNullOrEmpty(logsRoot) || !Directory.Exists(logsRoot))
@@ -139,6 +163,12 @@ public sealed class PowerLogTail
 
     private void ReadNewLines()
     {
+        // A new session has no log until its first game; the file is read from its start once it appears.
+        if (!File.Exists(_path!))
+        {
+            return;
+        }
+
         using var stream = OpenShared(_path!);
         if (stream.Length < _position)
         {
