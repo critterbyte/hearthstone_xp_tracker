@@ -1,0 +1,142 @@
+# Español (España). Fuente: en.txt (en caso de diferencias, prevalece la versión en inglés).
+# Términos del cliente de Hearthstone esES (cadenas del cliente, build 37.0): PE, Mapa de recompensas,
+# Pase de taberna, Nivel, Con rango, Aficionado, Pelea de taberna, botón "LISTO". Traducción asistida por máquina.
+
+# Plugin entry in HDT
+plugin.description=Muestra los PE del Mapa de recompensas de la partida actual y el tiempo de PE en el que se basan.
+plugin.dashboard=Panel de PE
+
+# Overlay rows
+overlay.xpTime=Tiempo de PE:
+overlay.ifWin=Si ganas:
+overlay.ifLoss=Si pierdes:
+overlay.lastGame=Última partida:
+overlay.totalTime=Tiempo total:
+overlay.earned=Obtenidos:
+overlay.unknown=desconocidos
+overlay.eventXp=PE de evento:
+overlay.totalDamage=Daño total:
+overlay.heroDamage=Daño al héroe:
+overlay.paused=(en pausa)
+overlay.max=(máx.)
+overlay.updateAvailable=Actualización disponible:
+
+# Game results, modes, formats and classes
+result.Win=Victoria
+result.Loss=Derrota
+result.Tie=Empate
+result.Unknown=Desconocido
+mode.Ranked=Con rango
+mode.Casual=Aficionado
+mode.TavernBrawl=Pelea de taberna
+mode.TavernBrawlPvE=Pelea de taberna (JcE)
+mode.Other=Otro
+format.Wild=Salvaje
+format.Standard=Estándar
+class.DEATHKNIGHT=Caballero de la Muerte
+class.DEMONHUNTER=Cazador de demonios
+class.DRUID=Druida
+class.HUNTER=Cazador
+class.MAGE=Mago
+class.PALADIN=Paladín
+class.PRIEST=Sacerdote
+class.ROGUE=Pícaro
+class.SHAMAN=Chamán
+class.WARLOCK=Brujo
+class.WARRIOR=Guerrero
+deck.none=Sin mazo registrado
+
+# Dashboard: update hint
+update.available=La versión {0} está disponible.
+update.availableInstalled=La versión {0} está disponible (instalada: {1}).
+update.openPage=Abrir la página de descarga
+
+# Dashboard: toolbar and options
+period.session=Sesión
+period.today=Hoy
+period.week=Esta semana
+period.season=Esta temporada
+period.last30Days=Últimos 30 días
+period.all=Todo
+toolbar.refresh=Actualizar
+toolbar.openFolder=Abrir carpeta de datos
+option.language=Idioma (Language)
+option.event=Evento activo (mostrar PE de evento)
+option.eventTip=Actívalo mientras haya un evento de Hearthstone: el overlay muestra los PE de evento y las partidas nuevas los guardan.
+option.damage=Mostrar el daño en el overlay
+option.damageTip=Muestra las filas "Daño total:" y "Daño al héroe:": el daño que tu bando ha hecho al rival en la partida actual o en la última.
+option.updates=Buscar actualizaciones al iniciar HDT
+tavern.check=Pase de taberna (bonificación de PE)
+tavern.checkTip=Actívalo si tienes el Pase de taberna de la expansión actual. Escribe debajo tu nivel en el Mapa de recompensas: la bonificación es del 10 %, a partir del nivel 20 del 15 % y a partir del nivel 70 del 20 % (según la wiki de Hearthstone, sin medir).
+tavern.level=Nivel
+tavern.levelTip=Nivel en el Mapa de recompensas
+tavern.noBoost=Sin bonificación de PE
+tavern.boostMax={0} % de bonificación de PE (máximo)
+tavern.boostNextOne={0} % de bonificación de PE, 1 nivel para el {1} %
+tavern.boostNextMany={0} % de bonificación de PE, {1} niveles para el {2} %
+
+# Dashboard: session line
+session.none=Aún no hay ninguna sesión.
+session.running=Sesión desde {0} (en curso)
+session.ended=Sesión desde {0} (terminada)
+
+# Dashboard: tabs
+tab.overview=Resumen
+tab.decks=Mazos
+tab.lostXp=PE perdidos
+tab.games=Partidas
+tab.charts=Gráficos
+
+# Dashboard: overview tiles
+overview.xp=PE
+overview.xpTime=Tiempo de PE
+overview.playTime=Tiempo de juego con mano inicial
+overview.onlineTime=Tiempo conectado
+overview.games=Partidas
+overview.winsLosses={0} victorias, {1} derrotas
+overview.xpPerHour=PE por hora
+overview.xpPerHourNote=del tiempo de PE
+overview.xpPerOnlineHour=PE por hora conectado
+overview.xpPerOnlineHourNote=incluye menús y cola
+overview.winRate=Porcentaje de victorias
+overview.eventXp=PE de evento
+overview.eventXpNote=1 por minuto de tiempo de PE
+
+# Dashboard: lost XP tiles
+lost.xpValue={0} PE
+lost.afk=Turnos AFK
+lost.afkNote={0} turnos sin acción ni "LISTO"
+lost.short=Partidas de menos de 1 minuto
+lost.shortNote={0} partidas por debajo del mínimo de 60 s
+lost.outside=Tiempo fuera de partidas
+lost.outsideNote={0} conectado pero sin partida (menús, cola, pausas)
+
+# Dashboard: table columns
+column.deck=Mazo
+column.games=Partidas
+column.winRate=% de victorias
+column.xp=PE
+column.xpPerHour=PE por hora
+column.avgGame=Partida media
+column.date=Fecha
+column.start=Inicio
+column.mode=Modo
+column.result=Resultado
+column.xpTime=Tiempo de PE
+column.totalTime=Tiempo total
+column.event=Evento
+column.afk=AFK
+column.opponent=Rival
+
+# Dashboard: charts
+chart.xpEarned=PE obtenidos
+chart.xpEarnedNote=PE de las partidas que empezaron en cada hora (Hoy) o en cada día. Las horas o días sin partidas quedan en 0.
+chart.xpPerHour=PE por hora
+chart.xpPerHourNote=Ritmo en cada hora o en cada día: PE divididos entre el tiempo de PE. La línea discontinua es la media de todo el periodo.
+chart.xpAxis=PE
+chart.average=Media
+chart.averageTooltip=Media del periodo: {0} PE/h
+chart.xpTooltip={0} · {1} PE · {2}
+chart.rateTooltip={0} · {1} PE/h · {2}
+chart.gameOne=1 partida
+chart.gameMany={0} partidas

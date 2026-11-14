@@ -90,6 +90,26 @@ public class TranslationFileTests
 }
 
 [Collection("Language")]
+public class AllLanguagesTests : IDisposable
+{
+    public void Dispose() => Localizer.SetLanguage(Localizer.DefaultLanguage);
+
+    [Fact]
+    public void EveryLanguage_SwitchesAndKeepsTheGregorianYear()
+    {
+        var date = new DateTime(2026, 11, 14);
+        foreach (var code in Localizer.Languages)
+        {
+            Localizer.SetLanguage(code);
+
+            Assert.Equal(code, Localizer.Language);
+            Assert.Equal("2026", date.ToString("yyyy", Localizer.Culture));
+            Assert.NotEqual("overlay.xpTime", Localizer.Text("overlay.xpTime"));
+        }
+    }
+}
+
+[Collection("Language")]
 public class GermanTextTests : IDisposable
 {
     public GermanTextTests() => Localizer.SetLanguage("de");
@@ -127,7 +147,7 @@ public class GermanTextTests : IDisposable
     {
         Assert.Equal("de", Localizer.Language);
         Assert.Equal("Gewertet", GameText.Mode(GameMode.Ranked));
-        Assert.Equal("Kampf in der Taverne", GameText.Mode(GameMode.TavernBrawl));
+        Assert.Equal("Kartenchaos", GameText.Mode(GameMode.TavernBrawl));
         Assert.Equal("Todesritter", GameText.Class("Deathknight"));
         Assert.Equal("Dämonenjäger", GameText.Class("DemonHunter"));
         Assert.Equal("15 % EP-Bonus, noch 50 Stufen bis 20 %", TavernPassBonus.Describe(true, 20));

@@ -179,7 +179,21 @@ public static class Localizer
     {
         try
         {
-            return CultureInfo.GetCultureInfo(code);
+            // Dates keep the Gregorian calendar, so the year matches the history (Thai would use the Buddhist year).
+            var culture = (CultureInfo)CultureInfo.GetCultureInfo(code).Clone();
+            if (culture.DateTimeFormat.Calendar is not GregorianCalendar)
+            {
+                foreach (var calendar in culture.OptionalCalendars)
+                {
+                    if (calendar is GregorianCalendar gregorian)
+                    {
+                        culture.DateTimeFormat.Calendar = gregorian;
+                        break;
+                    }
+                }
+            }
+
+            return CultureInfo.ReadOnly(culture);
         }
         catch (CultureNotFoundException)
         {

@@ -1,0 +1,142 @@
+# Русский. Источник: en.txt (при расхождениях действует английская версия).
+# Термины клиента Hearthstone ruRU (строки клиента, сборка 37.0): опыт, Лента наград, Пропуск завсегдатая,
+# Уровень, Рейтинг, Обычный, Потасовка в таверне, кнопка «ЗАКОНЧИТЬ». Машинный перевод с правкой.
+
+# Plugin entry in HDT
+plugin.description=Показывает опыт Ленты наград за текущий матч и время опыта, на котором он основан.
+plugin.dashboard=Панель опыта
+
+# Overlay rows
+overlay.xpTime=Время опыта:
+overlay.ifWin=При победе:
+overlay.ifLoss=При поражении:
+overlay.lastGame=Последний матч:
+overlay.totalTime=Общее время:
+overlay.earned=Получено:
+overlay.unknown=неизвестно
+overlay.eventXp=Опыт события:
+overlay.totalDamage=Урон всего:
+overlay.heroDamage=Урон герою:
+overlay.paused=(пауза)
+overlay.max=(макс.)
+overlay.updateAvailable=Доступно обновление:
+
+# Game results, modes, formats and classes
+result.Win=Победа
+result.Loss=Поражение
+result.Tie=Ничья
+result.Unknown=Неизвестно
+mode.Ranked=Рейтинг
+mode.Casual=Обычный
+mode.TavernBrawl=Потасовка в таверне
+mode.TavernBrawlPvE=Потасовка в таверне (PvE)
+mode.Other=Другое
+format.Wild=Вольный
+format.Standard=Стандартный
+class.DEATHKNIGHT=Рыцарь смерти
+class.DEMONHUNTER=Охотник на демонов
+class.DRUID=Друид
+class.HUNTER=Охотник
+class.MAGE=Маг
+class.PALADIN=Паладин
+class.PRIEST=Жрец
+class.ROGUE=Разбойник
+class.SHAMAN=Шаман
+class.WARLOCK=Чернокнижник
+class.WARRIOR=Воин
+deck.none=Колода не записана
+
+# Dashboard: update hint
+update.available=Доступна версия {0}.
+update.availableInstalled=Доступна версия {0} (установлена: {1}).
+update.openPage=Открыть страницу загрузки
+
+# Dashboard: toolbar and options
+period.session=Сеанс
+period.today=Сегодня
+period.week=Эта неделя
+period.season=Этот сезон
+period.last30Days=Последние 30 дней
+period.all=За всё время
+toolbar.refresh=Обновить
+toolbar.openFolder=Открыть папку данных
+option.language=Язык (Language)
+option.event=Идёт событие (показывать опыт события)
+option.eventTip=Включите на время события Hearthstone: оверлей показывает опыт события, а новые матчи сохраняют его.
+option.damage=Показывать урон в оверлее
+option.damageTip=Показывает строки «Урон всего:» и «Урон герою:»: урон, который ваша сторона нанесла противнику в текущем или последнем матче.
+option.updates=Проверять обновления при запуске HDT
+tavern.check=Пропуск завсегдатая (бонус к опыту)
+tavern.checkTip=Включите, если у вас есть Пропуск завсегдатая текущего дополнения. Укажите ниже свой уровень на Ленте наград: бонус составляет 10%, с 20-го уровня 15%, с 70-го уровня 20% (по данным вики Hearthstone, не измерено).
+tavern.level=Уровень
+tavern.levelTip=Уровень на Ленте наград
+tavern.noBoost=Нет бонуса к опыту
+tavern.boostMax=+{0}% к опыту (максимум)
+tavern.boostNextOne=+{0}% к опыту, ещё 1 ур. до {1}%
+tavern.boostNextMany=+{0}% к опыту, ещё {1} ур. до {2}%
+
+# Dashboard: session line
+session.none=Сеансов пока нет.
+session.running=Сеанс с {0} (идёт)
+session.ended=Сеанс с {0} (завершён)
+
+# Dashboard: tabs
+tab.overview=Обзор
+tab.decks=Колоды
+tab.lostXp=Потерянный опыт
+tab.games=Матчи
+tab.charts=Графики
+
+# Dashboard: overview tiles
+overview.xp=Опыт
+overview.xpTime=Время опыта
+overview.playTime=Время игры со стартовой рукой
+overview.onlineTime=Время в сети
+overview.games=Матчи
+overview.winsLosses=Победы: {0}, поражения: {1}
+overview.xpPerHour=Опыт в час
+overview.xpPerHourNote=за время опыта
+overview.xpPerOnlineHour=Опыт за час в сети
+overview.xpPerOnlineHourNote=включая меню и очередь
+overview.winRate=Доля побед
+overview.eventXp=Опыт события
+overview.eventXpNote=1 за минуту времени опыта
+
+# Dashboard: lost XP tiles
+lost.xpValue={0} ед. опыта
+lost.afk=Ходы AFK
+lost.afkNote=Ходы без действий и без «ЗАКОНЧИТЬ»: {0}
+lost.short=Матчи короче 1 минуты
+lost.shortNote=Матчи короче минимума в 60 с: {0}
+lost.outside=Время вне матчей
+lost.outsideNote={0} в сети, но не в матче (меню, очередь, перерывы)
+
+# Dashboard: table columns
+column.deck=Колода
+column.games=Матчи
+column.winRate=Доля побед
+column.xp=Опыт
+column.xpPerHour=Опыт в час
+column.avgGame=Ср. матч
+column.date=Дата
+column.start=Начало
+column.mode=Режим
+column.result=Итог
+column.xpTime=Время опыта
+column.totalTime=Общее время
+column.event=Событие
+column.afk=AFK
+column.opponent=Противник
+
+# Dashboard: charts
+chart.xpEarned=Получено опыта
+chart.xpEarnedNote=Опыт матчей, начатых в каждый час (Сегодня) или в каждый день. Часы и дни без матчей равны 0.
+chart.xpPerHour=Опыт в час
+chart.xpPerHourNote=Темп в каждый час или в каждый день: опыт, делённый на время опыта. Пунктирная линия — среднее за весь период.
+chart.xpAxis=Опыт
+chart.average=Среднее
+chart.averageTooltip=Среднее за период: {0} опыта/ч
+chart.xpTooltip={0} · {1} ед. опыта · {2}
+chart.rateTooltip={0} · {1} опыта/ч · {2}
+chart.gameOne=1 матч
+chart.gameMany=Матчей: {0}

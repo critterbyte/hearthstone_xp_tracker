@@ -18,7 +18,7 @@ A plugin for [Hearthstone Deck Tracker](https://hsreplay.net/downloads/) (HDT) t
 - **Tavern Pass:** enter your rewards track level, and the XP include the pass boost of 10%, 15% or 20%. The boost is calculated from public sources, not measured.
 - **Game history:** every game is saved to a local CSV file that you can open in a spreadsheet.
 - **Update hint:** the plugin tells you when a new version is available.
-- **Languages:** overlay and dashboard in English (default) and German, selectable in the dashboard.
+- **Languages:** overlay and dashboard in all 14 languages of the Hearthstone client, selectable in the dashboard: Deutsch, English (default), Español (AL), Español (EU), Français, Italiano, 日本語, Polski, Português, Русский, ภาษาไทย, 한국어, 繁體中文, 简体中文. Game terms follow each client. German and Polish are checked by a native speaker; the other translations are machine-assisted, and [corrections are welcome](CONTRIBUTING.md#translations).
 
 ## Installation
 
