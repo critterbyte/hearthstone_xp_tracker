@@ -2,7 +2,7 @@
 
 **Install guide in your language:** [Deutsch](docs/de/INSTALL.md) · [Español (AL)](docs/es-MX/INSTALL.md) · [Español (EU)](docs/es-ES/INSTALL.md) · [Français](docs/fr/INSTALL.md) · [Italiano](docs/it/INSTALL.md) · [日本語](docs/ja/INSTALL.md) · [Polski](docs/pl/INSTALL.md) · [Português](docs/pt-BR/INSTALL.md) · [Русский](docs/ru/INSTALL.md) · [ภาษาไทย](docs/th/INSTALL.md) · [한국어](docs/ko/INSTALL.md) · [繁體中文](docs/zh-TW/INSTALL.md) · [简体中文](docs/zh-CN/INSTALL.md)
 
-A plugin for [Hearthstone Deck Tracker](https://hsreplay.net/downloads/) (HDT) that shows how much reward track XP your current game is worth.
+A plugin for [Hearthstone Deck Tracker](https://hsreplay.net/downloads/) (HDT) that shows how much reward track XP your current game is worth. Along the way, it also tracks the damage you deal.
 
 [![build](https://github.com/critterbyte/hearthstone_xp_tracker/actions/workflows/build.yml/badge.svg)](https://github.com/critterbyte/hearthstone_xp_tracker/actions/workflows/build.yml)
 
@@ -13,8 +13,8 @@ A plugin for [Hearthstone Deck Tracker](https://hsreplay.net/downloads/) (HDT) t
 - **Live overlay** at the bottom left above your portrait, or above the Hearthstone settings button:
   - XP time: the part of the game that counts for XP
   - the XP you get if you win, and if you lose
-  - the damage your side dealt to the opponent, in total and to the hero (can be switched off)
 - **Summary after each game:** XP time, total time including the mulligan, and the XP earned.
+- **Damage tracker:** along the way, the overlay counts the damage your side deals to the opponent, in total and to the hero, live and in the summary after each game. You can switch it off in the dashboard.
 - **AFK rule:** a turn that runs out without any action does not count, and neither does the opponent turn after it. The overlay shows this live.
 - **Dashboard:** XP, XP per hour, win rate, decks, lost XP and charts for today, this week, this season or all time.
 - **Tavern Pass:** enter your rewards track level, and the XP include the pass boost of 10%, 15% or 20%. The boost is calculated from public sources, not measured.
