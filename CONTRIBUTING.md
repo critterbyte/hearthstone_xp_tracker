@@ -10,7 +10,9 @@ Translations of the documentation and the plugin are planned for later.
 
 ## Privacy first
 
-Hearthstone's log files contain BattleTags of you and your opponents. Please never post raw logs or screenshots with other players' names in issues or pull requests. Remove the names first, or share only the numbers.
+Hearthstone's log files contain BattleTags and Battle.net account ids (`GameAccountId=[hi=… lo=…]`) of you and your opponents. Please never post raw logs or screenshots with other players' names in issues or pull requests. Remove the names first, or share only the numbers.
+
+Test data uses placeholders only: players such as "Alice" and "Bob", and account ids such as `[hi=1 lo=1]` (`[hi=0 lo=0]` is the computer). Never copy a log line into a test unchanged. `PrivacyTests` fails the build when a file in the repository contains a BattleTag or a real-looking account id.
 
 ## Building
 
