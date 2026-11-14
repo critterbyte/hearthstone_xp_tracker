@@ -41,11 +41,14 @@ Switch it off when the event ends.
 
 With "Tavern Pass (XP boost)" switched on in the dashboard, "If win:", "If loss:" and "Earned:" include the pass boost for your rewards track level. Event XP get no boost.
 
-The last row is always shown, live and in the summary after the game:
+The last two rows show the damage, live and in the summary after the game. Switch them off with "Show damage on the overlay" in the dashboard.
 
 | Row | Meaning |
 |---|---|
-| "Damage:" | All damage your side dealt to the opponent's hero and minions so far: your attacks, your minions' attacks, spells, weapons, hero power and other effects. Each hit counts with the amount the game shows, also when it is more than the target's health or hits armor. Damage to your own hero or minions does not count, and neither does damage without a source, such as fatigue. A hit on a Divine Shield is 0. |
+| "Total Damage:" | All damage your side dealt to the opponent's hero and minions so far: your attacks, your minions' attacks, spells, weapons, hero power and other effects. Each hit counts with the amount the game shows, also when it is more than the target's health or hits armor. Damage to your own hero or minions does not count, and neither does damage without a source, such as fatigue. A hit on a Divine Shield is 0. |
+| "Hero Damage:" | The part of "Total Damage:" that hit the opponent's hero, including the part that armor absorbed |
+
+The damage is read when the server confirms an action, so it can rise a moment before the animation on the board.
 
 While the XP time is below 60 seconds, both XP values show "+0". Games under one minute give no XP. See [FORMULA.md](FORMULA.md) for the rules.
 
@@ -90,11 +93,11 @@ The dashboard window is called "HS XP Tracker". Open it in HDT in one of two way
 | "Last 30 days" | Games of the last 30 days, including today |
 | "All time" | All games in the history |
 | "Refresh" | Read the history again |
-| "Export CSV" | Save a copy of the history file |
 | "Open data folder" | Open the folder with the history file in Windows Explorer |
 | "Event running (show event XP)" | Switch on during a Hearthstone event: the overlay shows the event XP, and new games store it. |
 | "Tavern Pass (XP boost)" | Switch on if you own the Tavern Pass of the current expansion. |
 | "Level" with "−", a number and "+" | Your rewards track level. Click "−" or "+", or type the number. The line below shows the boost and the next step, for example "10% XP boost, 2 levels to 15%". The boost is 10%, from level 20 on 15% and from level 70 on 20% (see [FORMULA.md](FORMULA.md#tavern-pass)). Update the level when you pass level 20 or 70. |
+| "Show damage on the overlay" | Show or hide the rows "Total Damage:" and "Hero Damage:". On by default. |
 | "Check for updates when HDT starts" | Turn the update check on or off. See [Privacy](#privacy). |
 
 A finished game appears in an open dashboard on its own. You do not need to click "Refresh".

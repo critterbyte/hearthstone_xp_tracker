@@ -20,6 +20,7 @@ public class DamageCounterTests
         Feed(tracker, Power("12:00:10", "BLOCK_END"));
 
         Assert.Equal(3, tracker.DamageDealt);
+        Assert.Equal(3, tracker.HeroDamageDealt);
     }
 
     [Fact]
@@ -31,6 +32,37 @@ public class DamageCounterTests
         Feed(tracker, Power("12:00:10", "BLOCK_END"));
 
         Assert.Equal(3, tracker.DamageDealt);
+        Assert.Equal(3, tracker.HeroDamageDealt);
+    }
+
+    [Fact]
+    public void HeroDamage_CountsOnlyHitsOnTheEnemyHero()
+    {
+        var tracker = Started();
+        Feed(tracker, Hit(EnemyMinion, 2, source: 52, damageAfter: 2));
+        Feed(tracker, Hit(EnemyHero, 5, source: 52, damageAfter: 5));
+        Feed(tracker, Hit(MyHero, 4, source: 51, damageAfter: 4));
+        Feed(tracker, Power("12:00:10", "BLOCK_END"));
+
+        Assert.Equal(7, tracker.DamageDealt);
+        Assert.Equal(5, tracker.HeroDamageDealt);
+    }
+
+    [Fact]
+    public void HeroCardPlayedByTheOpponent_BecomesTheHeroForHeroDamage()
+    {
+        // The opponent's hero card is hidden in hand and revealed with its card type when played.
+        const string NewHero = "[entityName=Scourgeborne Arthas id=88 zone=PLAY zonePos=0 cardId=HERO_11p_LichKing player=2]";
+        var tracker = Started();
+        Feed(tracker,
+            Power("12:00:05", "SHOW_ENTITY - Updating Entity=[entityName=UNKNOWN ENTITY [cardType=INVALID] id=88 zone=HAND zonePos=3 cardId= player=2] CardID=HERO_11p_LichKing"),
+            Power("12:00:05", "    tag=CONTROLLER value=2"),
+            Power("12:00:05", "    tag=CARDTYPE value=HERO"),
+            Power("12:00:05", "BLOCK_END"));
+        Feed(tracker, Hit(NewHero, 6, source: 52, damageAfter: 6));
+        Feed(tracker, Power("12:00:10", "BLOCK_END"));
+
+        Assert.Equal(6, tracker.HeroDamageDealt);
     }
 
     [Fact]
@@ -43,6 +75,7 @@ public class DamageCounterTests
         Feed(tracker, Power("12:00:10", "BLOCK_END"));
 
         Assert.Equal(2, tracker.DamageDealt);
+        Assert.Equal(0, tracker.HeroDamageDealt);
     }
 
     [Fact]
@@ -133,17 +166,30 @@ public class DamageCounterTests
             Power("12:05:00", "TAG_CHANGE Entity=Alice tag=PLAYSTATE value=WON"),
             Power("12:05:00", "TAG_CHANGE Entity=GameEntity tag=STATE value=COMPLETE"));
 
-        Assert.Equal(30, Assert.Single(finished).DamageDealt);
+        var game = Assert.Single(finished);
+        Assert.Equal(30, game.DamageDealt);
+        Assert.Equal(30, game.HeroDamageDealt);
         Assert.Equal(30, tracker.DamageDealt);
 
         Feed(tracker, GameStart("12:10:00", "GT_RANKED", localStarts: true));
         Assert.Equal(0, tracker.DamageDealt);
+        Assert.Equal(0, tracker.HeroDamageDealt);
     }
 
-    // A started game with both heroes and one minion per side on the board.
+    // A started game with both heroes and one minion per side on the board. Heroes are created with their card type, as in the log.
     private static PowerLogTracker Started()
     {
         var tracker = StartedRankedGame("12:00:00");
+        Feed(tracker,
+            Power("12:00:00", "FULL_ENTITY - Creating ID=64 CardID=HERO_04"),
+            Power("12:00:00", "    tag=CONTROLLER value=1"),
+            Power("12:00:00", "    tag=CARDTYPE value=HERO"),
+            Power("12:00:00", "FULL_ENTITY - Creating ID=70 CardID=HERO_10am"),
+            Power("12:00:00", "    tag=CONTROLLER value=2"),
+            Power("12:00:00", "    tag=CARDTYPE value=HERO"),
+            Power("12:00:00", "FULL_ENTITY - Creating ID=51 CardID=GDB_105"),
+            Power("12:00:00", "    tag=CONTROLLER value=2"),
+            Power("12:00:00", "    tag=CARDTYPE value=MINION"));
         foreach (var entity in new[] { MyHero, MyMinion, EnemyHero, EnemyMinion })
         {
             Feed(tracker, Power("12:00:01", $"TAG_CHANGE Entity={entity} tag=ZONE value=PLAY "));

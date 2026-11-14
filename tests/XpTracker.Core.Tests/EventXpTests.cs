@@ -117,6 +117,14 @@ public sealed class EventXpTests : IDisposable
     }
 
     [Fact]
+    public void Settings_RememberTheDamageSwitch_OnByDefault()
+    {
+        Assert.True(XpTrackerSettings.Parse(Array.Empty<string>()).ShowDamage);
+        Assert.False(XpTrackerSettings.Parse(new[] { "ShowDamage=false" }).ShowDamage);
+        Assert.Contains("ShowDamage=false", new XpTrackerSettings { ShowDamage = false }.ToLines());
+    }
+
+    [Fact]
     public void Summary_AddsUpEventXp()
     {
         var a = Sample("10:18:45");

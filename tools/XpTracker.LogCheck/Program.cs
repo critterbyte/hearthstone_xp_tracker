@@ -20,7 +20,7 @@ if (args.Length == 0)
     return 1;
 }
 
-Console.WriteLine("Date\tFirstTurn\tMode\tResult\tXpSeconds\tPlaySeconds\tWithMulliganSeconds\tAfkTurns\tDamage");
+Console.WriteLine("Date\tFirstTurn\tMode\tResult\tXpSeconds\tPlaySeconds\tWithMulliganSeconds\tAfkTurns\tDamage\tHeroDamage");
 foreach (var source in args.SelectMany(Expand).OrderBy(Path.GetFileName, StringComparer.Ordinal))
 {
     var watch = Stopwatch.StartNew();
@@ -52,7 +52,8 @@ static void Print(FinishedGame game)
         s.PlaySeconds.ToString("0.00", CultureInfo.InvariantCulture),
         s.WithMulliganSeconds.ToString("0.00", CultureInfo.InvariantCulture),
         game.Clock.AfkTurns,
-        game.DamageDealt));
+        game.DamageDealt,
+        game.HeroDamageDealt));
 }
 
 static IEnumerable<string> Expand(string path) =>

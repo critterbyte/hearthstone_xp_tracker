@@ -70,16 +70,25 @@ public class XpDisplayTextTests
     }
 
     [Fact]
-    public void Damage_IsTheLastRow_LiveAndAfterTheGame()
+    public void Damage_AreTheLastRows_LiveAndAfterTheGame()
     {
         var clock = Started("10:00:00");
 
         Assert.Equal(
-            new[] { "XP time:|6:12|", "If win:|+49|xp", "If loss:|+35|xp", "Event XP:|+6|", "Damage:|47|" },
-            Rows(XpDisplayText.For(clock, GameMode.Ranked, At("10:06:12"), eventActive: true, damageDealt: 47)));
+            new[] { "XP time:|6:12|", "If win:|+49|xp", "If loss:|+35|xp", "Event XP:|+6|", "Total Damage:|47|", "Hero Damage:|21|" },
+            Rows(XpDisplayText.For(clock, GameMode.Ranked, At("10:06:12"), eventActive: true, damageDealt: 47, heroDamageDealt: 21)));
 
         clock.EndGame(At("10:06:12"), GameResult.Win);
-        Assert.Equal("Damage:|47|", Rows(XpDisplayText.For(clock, GameMode.Ranked, At("10:07:00"), damageDealt: 47)).Last());
+        var summary = Rows(XpDisplayText.For(clock, GameMode.Ranked, At("10:07:00"), damageDealt: 47, heroDamageDealt: 21));
+        Assert.Equal(new[] { "Total Damage:|47|", "Hero Damage:|21|" }, summary.Skip(summary.Length - 2));
+    }
+
+    [Fact]
+    public void Damage_SwitchedOff_ShowsNoDamageRows()
+    {
+        var lines = XpDisplayText.For(Started("10:00:00"), GameMode.Ranked, At("10:06:12"), damageDealt: null, heroDamageDealt: null);
+
+        Assert.DoesNotContain(lines, l => l.Label.Contains("Damage"));
     }
 
     [Fact]

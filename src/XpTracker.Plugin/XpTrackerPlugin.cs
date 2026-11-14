@@ -119,8 +119,16 @@ public class XpTrackerPlugin : IPlugin
 
         var now = DateTime.Now;
         var update = _update?.VersionText;
+        var showDamage = _settings.ShowDamage;
         var lines = _tail.Read(t => XpDisplayText.WithUpdate(
-            XpDisplayText.For(t?.Clock, t?.Mode ?? GameMode.Other, now, _settings.EventActive, t?.DamageDealt, _settings.XpBonusPercent),
+            XpDisplayText.For(
+                t?.Clock,
+                t?.Mode ?? GameMode.Other,
+                now,
+                _settings.EventActive,
+                showDamage ? t?.DamageDealt : null,
+                _settings.XpBonusPercent,
+                showDamage ? t?.HeroDamageDealt : null),
             gameRunning: t?.Clock is { HasStarted: true, IsOver: false },
             update));
         // The text changes at most once per second; only touch the visual tree when it does.
@@ -139,7 +147,7 @@ public class XpTrackerPlugin : IPlugin
     {
         if (_dashboard is null)
         {
-            _dashboard = new DashboardWindow(_history, HistoryPath, () => _tail?.CurrentSession, IsHearthstoneRunning, HdtDecks.All, _settings.CheckForUpdates, SetCheckForUpdates, _settings.EventActive, SetEventActive, _settings.TavernPass, _settings.TavernPassLevel, SetTavernPass);
+            _dashboard = new DashboardWindow(_history, HistoryPath, () => _tail?.CurrentSession, IsHearthstoneRunning, HdtDecks.All, _settings.CheckForUpdates, SetCheckForUpdates, _settings.EventActive, SetEventActive, _settings.TavernPass, _settings.TavernPassLevel, SetTavernPass, _settings.ShowDamage, SetShowDamage);
             _dashboard.ShowUpdate(_update);
             _dashboard.Closed += (_, _) => _dashboard = null;
             _dashboard.Show();
@@ -189,6 +197,14 @@ public class XpTrackerPlugin : IPlugin
     private void SetEventActive(bool active)
     {
         _settings.EventActive = active;
+        SaveSettings();
+        _shownKey = string.Empty;
+    }
+
+    // Called from the dashboard check box "Show damage on the overlay": shows or hides the two damage rows at once.
+    private void SetShowDamage(bool show)
+    {
+        _settings.ShowDamage = show;
         SaveSettings();
         _shownKey = string.Empty;
     }

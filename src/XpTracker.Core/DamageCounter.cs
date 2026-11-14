@@ -4,7 +4,8 @@ using System.Collections.Generic;
 namespace XpTracker.Core;
 
 /// <summary>
-/// Adds up the damage the local player's side deals to the opponent's side in one game, from Power.log lines.
+/// Adds up the damage the local player's side deals to the opponent's side in one game, from Power.log lines,
+/// in total and to the opponent's hero.
 /// </summary>
 /// <remarks>
 /// Every hit is logged as <c>META_DATA - Meta=DAMAGE Data=N</c> with the target in the next <c>Info[0]</c> line.
@@ -19,6 +20,9 @@ public sealed class DamageCounter
     private readonly Func<int, bool> _isLocalPlayer;
     private readonly Dictionary<int, int> _controllers = new();
     private readonly Dictionary<int, int> _lastSource = new();
+
+    // Entities with CARDTYPE HERO: the heroes and hero cards, which become the hero when played.
+    private readonly HashSet<int> _heroes = new();
     private readonly List<int> _pendingTargets = new();
     private int _pendingAmount;
     private bool _readingTargets;
@@ -32,6 +36,9 @@ public sealed class DamageCounter
 
     /// <summary>Damage dealt so far; a hit is added once the lines after it named its source.</summary>
     public int Dealt { get; private set; }
+
+    /// <summary>The part of <see cref="Dealt"/> that hit the opponent's hero.</summary>
+    public int DealtToHero { get; private set; }
 
     /// <summary>A player entity ("Player EntityID=2 PlayerID=1") belongs to its player.</summary>
     public void SetController(int entityId, int playerId) => _controllers[entityId] = playerId;
@@ -104,7 +111,7 @@ public sealed class DamageCounter
         _readingTargets = false;
         _describedEntity = null;
         Note(entity);
-        if ((tag == "LAST_AFFECTED_BY" || tag == "CONTROLLER") && EntityId(entity) is { } id)
+        if ((tag == "LAST_AFFECTED_BY" || tag == "CONTROLLER" || tag == "CARDTYPE") && EntityId(entity) is { } id)
         {
             OnTag(id, tag, value);
         }
@@ -115,6 +122,20 @@ public sealed class DamageCounter
 
     private void OnTag(int entity, string tag, string value)
     {
+        if (tag == "CARDTYPE")
+        {
+            if (value == "HERO")
+            {
+                _heroes.Add(entity);
+            }
+            else
+            {
+                _heroes.Remove(entity);
+            }
+
+            return;
+        }
+
         if (!int.TryParse(value, out var number))
         {
             return;
@@ -140,6 +161,10 @@ public sealed class DamageCounter
                 && _controllers.TryGetValue(target, out var targetPlayer) && !_isLocalPlayer(targetPlayer))
             {
                 Dealt += _pendingAmount;
+                if (_heroes.Contains(target))
+                {
+                    DealtToHero += _pendingAmount;
+                }
             }
         }
 

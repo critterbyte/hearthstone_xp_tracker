@@ -34,9 +34,10 @@ public sealed class XpLine
 public static class XpDisplayText
 {
     /// <param name="eventActive">A Hearthstone event is running: adds an "Event XP:" row with the event XP.</param>
-    /// <param name="damageDealt">Damage dealt to the opponent's side so far: adds a "Damage:" row as the last row.</param>
+    /// <param name="damageDealt">Damage dealt to the opponent's side so far: adds a "Total Damage:" row; null hides the damage rows.</param>
     /// <param name="xpBonus">Tavern Pass XP boost in percent for "If win:", "If loss:" and "Earned:"; event XP get no boost.</param>
-    public static IReadOnlyList<XpLine> For(XpClock? clock, GameMode mode, DateTime now, bool eventActive = false, int? damageDealt = null, int xpBonus = 0)
+    /// <param name="heroDamageDealt">The part of the damage that hit the opponent's hero: adds a "Hero Damage:" row below "Total Damage:".</param>
+    public static IReadOnlyList<XpLine> For(XpClock? clock, GameMode mode, DateTime now, bool eventActive = false, int? damageDealt = null, int xpBonus = 0, int? heroDamageDealt = null)
     {
         var winRate = XpRates.RateFor(mode, GameResult.Win);
         var lossRate = XpRates.RateFor(mode, GameResult.Loss);
@@ -78,7 +79,11 @@ public static class XpDisplayText
 
         if (damageDealt is { } damage)
         {
-            lines.Add(new XpLine("Damage:", damage.ToString(CultureInfo.InvariantCulture)));
+            lines.Add(new XpLine("Total Damage:", damage.ToString(CultureInfo.InvariantCulture)));
+            if (heroDamageDealt is { } heroDamage)
+            {
+                lines.Add(new XpLine("Hero Damage:", heroDamage.ToString(CultureInfo.InvariantCulture)));
+            }
         }
 
         return lines;
