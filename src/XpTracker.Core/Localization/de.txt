@@ -1,9 +1,9 @@
 # Deutsche Texte des Hearthstone XP Tracker. Quelle: en.txt (bei Abweichungen gilt die englische Fassung).
-# Begriffe wie im deutschen Hearthstone-Client: EP (Erfahrungspunkte), Belohnungspfad, Tavernenpass,
-# Gewertet, Ungewertet, Kampf in der Taverne, "Zug beenden". Anrede: du.
+# Begriffe wie im deutschen Hearthstone-Client (Client-Strings, Build 37.0): EP, Belohnungsweg, Gasthauspass, Stufe,
+# Gewertet, Ungewertet, Kartenchaos, Button "Fertig". Anrede: du.
 
 # Plugin entry in HDT
-plugin.description=Zeigt die Belohnungspfad-EP der laufenden Partie und die EP-Zeit, auf der sie beruhen.
+plugin.description=Zeigt die Belohnungsweg-EP der laufenden Partie und die EP-Zeit, auf der sie beruhen.
 plugin.dashboard=EP-Dashboard
 
 # Overlay rows
@@ -28,8 +28,8 @@ result.Tie=Unentschieden
 result.Unknown=Unbekannt
 mode.Ranked=Gewertet
 mode.Casual=Ungewertet
-mode.TavernBrawl=Kampf in der Taverne
-mode.TavernBrawlPvE=Kampf in der Taverne (PvE)
+mode.TavernBrawl=Kartenchaos
+mode.TavernBrawlPvE=Kartenchaos (PvE)
 mode.Other=Sonstige
 format.Wild=Wild
 format.Standard=Standard
@@ -66,10 +66,10 @@ option.eventTip=Einschalten, solange ein Hearthstone-Event läuft: Das Overlay z
 option.damage=Schaden im Overlay anzeigen
 option.damageTip=Zeigt die Zeilen „Gesamtschaden:“ und „Heldenschaden:“: den Schaden, den deine Seite dem Gegner in der laufenden oder letzten Partie zugefügt hat.
 option.updates=Beim Start von HDT nach Updates suchen
-tavern.check=Tavernenpass (EP-Bonus)
-tavern.checkTip=Einschalten, wenn du den Tavernenpass der aktuellen Erweiterung besitzt. Trage darunter deine Stufe im Belohnungspfad ein: Der Bonus beträgt 10 %, ab Stufe 20 15 %, ab Stufe 70 20 % (laut Hearthstone-Wiki, nicht gemessen).
+tavern.check=Gasthauspass (EP-Bonus)
+tavern.checkTip=Einschalten, wenn du den Gasthauspass der aktuellen Erweiterung besitzt. Trage darunter deine Stufe im Belohnungsweg ein: Der Bonus beträgt 10 %, ab Stufe 20 15 %, ab Stufe 70 20 % (laut Hearthstone-Wiki, nicht gemessen).
 tavern.level=Stufe
-tavern.levelTip=Stufe im Belohnungspfad
+tavern.levelTip=Stufe im Belohnungsweg
 tavern.noBoost=Kein EP-Bonus
 tavern.boostMax={0} % EP-Bonus (Maximum)
 tavern.boostNextOne={0} % EP-Bonus, noch 1 Stufe bis {1} %
@@ -105,7 +105,7 @@ overview.eventXpNote=1 pro Minute EP-Zeit
 # Dashboard: lost XP tiles
 lost.xpValue={0} EP
 lost.afk=AFK-Züge
-lost.afkNote={0} Züge ohne Aktion und ohne „Zug beenden“
+lost.afkNote={0} Züge ohne Aktion und ohne „Fertig“
 lost.short=Partien unter 1 Minute
 lost.shortNote={0} Partien unter der 60-Sekunden-Grenze
 lost.outside=Zeit außerhalb von Partien

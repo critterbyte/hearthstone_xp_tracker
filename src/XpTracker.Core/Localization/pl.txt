@@ -1,0 +1,142 @@
+# Polski. Źródło: en.txt (w razie rozbieżności obowiązuje wersja angielska).
+# Terminy z klienta Hearthstone plPL (teksty klienta, build 37.0): PD, Ścieżka nagród, Karnet Karczmarza,
+# Poziom, Ranking, Rozrywka, Karczemna bójka, przycisk "KONIEC TURY". Sprawdzone przez rodzimego użytkownika języka.
+
+# Plugin entry in HDT
+plugin.description=Pokazuje PD ze Ścieżki nagród za bieżącą grę i czas PD, na którym się opierają.
+plugin.dashboard=Panel PD
+
+# Overlay rows
+overlay.xpTime=Czas PD:
+overlay.ifWin=Za zwycięstwo:
+overlay.ifLoss=Za porażkę:
+overlay.lastGame=Ostatnia gra:
+overlay.totalTime=Czas całkowity:
+overlay.earned=Zdobyte:
+overlay.unknown=nieznane
+overlay.eventXp=PD wydarzenia:
+overlay.totalDamage=Obrażenia łącznie:
+overlay.heroDamage=Obrażenia bohatera:
+overlay.paused=(wstrzymane)
+overlay.max=(maks.)
+overlay.updateAvailable=Dostępna aktualizacja:
+
+# Game results, modes, formats and classes
+result.Win=Zwycięstwo
+result.Loss=Porażka
+result.Tie=Remis
+result.Unknown=Nieznany
+mode.Ranked=Ranking
+mode.Casual=Rozrywka
+mode.TavernBrawl=Karczemna bójka
+mode.TavernBrawlPvE=Karczemna bójka (PvE)
+mode.Other=Inne
+format.Wild=Dzicz
+format.Standard=Standard
+class.DEATHKNIGHT=Rycerz śmierci
+class.DEMONHUNTER=Łowca demonów
+class.DRUID=Druid
+class.HUNTER=Łowca
+class.MAGE=Mag
+class.PALADIN=Paladyn
+class.PRIEST=Kapłan
+class.ROGUE=Łotr
+class.SHAMAN=Szaman
+class.WARLOCK=Czarnoksiężnik
+class.WARRIOR=Wojownik
+deck.none=Brak zapisanej talii
+
+# Dashboard: update hint
+update.available=Dostępna jest wersja {0}.
+update.availableInstalled=Dostępna jest wersja {0} (zainstalowana: {1}).
+update.openPage=Otwórz stronę pobierania
+
+# Dashboard: toolbar and options
+period.session=Sesja
+period.today=Dzisiaj
+period.week=Ten tydzień
+period.season=Ten sezon
+period.last30Days=Ostatnie 30 dni
+period.all=Cały czas
+toolbar.refresh=Odśwież
+toolbar.openFolder=Otwórz folder danych
+option.language=Język (Language)
+option.event=Trwa wydarzenie (pokaż PD wydarzenia)
+option.eventTip=Włącz w trakcie wydarzenia w Hearthstone: nakładka pokazuje PD wydarzenia, a nowe gry je zapisują.
+option.damage=Pokaż obrażenia na nakładce
+option.damageTip=Pokazuje wiersze „Obrażenia łącznie:” i „Obrażenia bohatera:”: obrażenia zadane przeciwnikowi przez twoją stronę w bieżącej lub ostatniej grze.
+option.updates=Sprawdzaj aktualizacje przy starcie HDT
+tavern.check=Karnet Karczmarza (premia PD)
+tavern.checkTip=Włącz, jeśli masz Karnet Karczmarza bieżącego rozszerzenia. Wpisz poniżej swój poziom na Ścieżce nagród: premia wynosi 10%, od poziomu 20 – 15%, od poziomu 70 – 20% (według wiki Hearthstone, niezmierzone).
+tavern.level=Poziom
+tavern.levelTip=Poziom na Ścieżce nagród
+tavern.noBoost=Brak premii PD
+tavern.boostMax={0}% premii PD (maksimum)
+tavern.boostNextOne={0}% premii PD, jeszcze 1 poziom do {1}%
+tavern.boostNextMany={0}% premii PD, jeszcze {1} poz. do {2}%
+
+# Dashboard: session line
+session.none=Brak sesji.
+session.running=Sesja od {0} (trwa)
+session.ended=Sesja od {0} (zakończona)
+
+# Dashboard: tabs
+tab.overview=Przegląd
+tab.decks=Talie
+tab.lostXp=Utracone PD
+tab.games=Gry
+tab.charts=Wykresy
+
+# Dashboard: overview tiles
+overview.xp=PD
+overview.xpTime=Czas PD
+overview.playTime=Czas gry z ręką startową
+overview.onlineTime=Czas online
+overview.games=Gry
+overview.winsLosses=Zwycięstwa: {0}, porażki: {1}
+overview.xpPerHour=PD na godzinę
+overview.xpPerHourNote=czasu PD
+overview.xpPerOnlineHour=PD na godzinę online
+overview.xpPerOnlineHourNote=z menu i kolejką
+overview.winRate=Odsetek zwycięstw
+overview.eventXp=PD wydarzenia
+overview.eventXpNote=1 za minutę czasu PD
+
+# Dashboard: lost XP tiles
+lost.xpValue={0} PD
+lost.afk=Tury AFK
+lost.afkNote=Tury bez akcji i bez „KONIEC TURY”: {0}
+lost.short=Gry poniżej 1 minuty
+lost.shortNote=Gry poniżej minimum 60 s: {0}
+lost.outside=Czas poza grami
+lost.outsideNote={0} online, ale poza grą (menu, kolejka, przerwy)
+
+# Dashboard: table columns
+column.deck=Talia
+column.games=Gry
+column.winRate=% zwycięstw
+column.xp=PD
+column.xpPerHour=PD na godzinę
+column.avgGame=Śr. gra
+column.date=Data
+column.start=Początek
+column.mode=Tryb
+column.result=Wynik
+column.xpTime=Czas PD
+column.totalTime=Czas całkowity
+column.event=Wydarzenie
+column.afk=AFK
+column.opponent=Przeciwnik
+
+# Dashboard: charts
+chart.xpEarned=Zdobyte PD
+chart.xpEarnedNote=PD z gier rozpoczętych w danej godzinie (Dzisiaj) lub danego dnia. Godziny lub dni bez gier mają wartość 0.
+chart.xpPerHour=PD na godzinę
+chart.xpPerHourNote=Tempo w każdej godzinie lub każdego dnia: PD podzielone przez czas PD. Linia przerywana to średnia z całego okresu.
+chart.xpAxis=PD
+chart.average=Średnia
+chart.averageTooltip=Średnia okresu: {0} PD/h
+chart.xpTooltip={0} · {1} PD · {2}
+chart.rateTooltip={0} · {1} PD/h · {2}
+chart.gameOne=1 gra
+chart.gameMany=Gry: {0}

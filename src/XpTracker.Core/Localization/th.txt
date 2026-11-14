@@ -1,0 +1,142 @@
+# ภาษาไทย ต้นฉบับ: en.txt (หากไม่ตรงกัน ให้ยึดฉบับภาษาอังกฤษ)
+# คำศัพท์จากไคลเอนต์ Hearthstone thTH (ข้อความในไคลเอนต์ บิลด์ 37.0): XP, แทร็ครางวัล, ทาเวิร์นพาส, เลเวล,
+# จัดอันดับ, ปกติ, ท้าประลอง, ปุ่ม "จบเทิร์น" แปลโดยใช้เครื่องช่วย
+
+# Plugin entry in HDT
+plugin.description=แสดง XP ของแทร็ครางวัลจากเกมปัจจุบัน และเวลา XP ที่ใช้คำนวณ
+plugin.dashboard=แดชบอร์ด XP
+
+# Overlay rows
+overlay.xpTime=เวลา XP:
+overlay.ifWin=ถ้าชนะ:
+overlay.ifLoss=ถ้าแพ้:
+overlay.lastGame=เกมล่าสุด:
+overlay.totalTime=เวลารวม:
+overlay.earned=ได้รับ:
+overlay.unknown=ไม่ทราบ
+overlay.eventXp=XP กิจกรรม:
+overlay.totalDamage=ความเสียหายรวม:
+overlay.heroDamage=ความเสียหายต่อฮีโร่:
+overlay.paused=(หยุดชั่วคราว)
+overlay.max=(สูงสุด)
+overlay.updateAvailable=มีอัปเดต:
+
+# Game results, modes, formats and classes
+result.Win=ชนะ
+result.Loss=แพ้
+result.Tie=เสมอ
+result.Unknown=ไม่ทราบ
+mode.Ranked=จัดอันดับ
+mode.Casual=ปกติ
+mode.TavernBrawl=ท้าประลอง
+mode.TavernBrawlPvE=ท้าประลอง (PvE)
+mode.Other=อื่นๆ
+format.Wild=อิสระ
+format.Standard=มาตรฐาน
+class.DEATHKNIGHT=เดธไนท์
+class.DEMONHUNTER=ดีมอนฮันเตอร์
+class.DRUID=ดรูอิด
+class.HUNTER=ฮันเตอร์
+class.MAGE=เมจ
+class.PALADIN=พาลาดิน
+class.PRIEST=พรีสต์
+class.ROGUE=โร้ก
+class.SHAMAN=ชาแมน
+class.WARLOCK=วอร์ล็อค
+class.WARRIOR=วอริเออร์
+deck.none=ไม่มีบันทึกเด็ค
+
+# Dashboard: update hint
+update.available=มีเวอร์ชัน {0} ให้ใช้งาน
+update.availableInstalled=มีเวอร์ชัน {0} ให้ใช้งาน (ติดตั้งอยู่: {1})
+update.openPage=เปิดหน้าดาวน์โหลด
+
+# Dashboard: toolbar and options
+period.session=เซสชัน
+period.today=วันนี้
+period.week=สัปดาห์นี้
+period.season=ซีซันนี้
+period.last30Days=30 วันล่าสุด
+period.all=ทั้งหมด
+toolbar.refresh=รีเฟรช
+toolbar.openFolder=เปิดโฟลเดอร์ข้อมูล
+option.language=ภาษา (Language)
+option.event=มีกิจกรรมอยู่ (แสดง XP กิจกรรม)
+option.eventTip=เปิดไว้ระหว่างที่มีกิจกรรมของ Hearthstone: โอเวอร์เลย์จะแสดง XP กิจกรรม และเกมใหม่จะบันทึกไว้
+option.damage=แสดงความเสียหายบนโอเวอร์เลย์
+option.damageTip=แสดงแถว "ความเสียหายรวม:" และ "ความเสียหายต่อฮีโร่:" คือความเสียหายที่ฝั่งของคุณทำต่อคู่แข่งในเกมปัจจุบันหรือเกมล่าสุด
+option.updates=ตรวจหาอัปเดตเมื่อเริ่ม HDT
+tavern.check=ทาเวิร์นพาส (โบนัส XP)
+tavern.checkTip=เปิดไว้หากคุณมีทาเวิร์นพาสของส่วนเสริมปัจจุบัน ใส่เลเวลแทร็ครางวัลของคุณด้านล่าง: โบนัสคือ 10% ตั้งแต่เลเวล 20 เป็น 15% และตั้งแต่เลเวล 70 เป็น 20% (ตาม Hearthstone Wiki ยังไม่ได้วัด)
+tavern.level=เลเวล
+tavern.levelTip=เลเวลแทร็ครางวัล
+tavern.noBoost=ไม่มีโบนัส XP
+tavern.boostMax=โบนัส XP {0}% (สูงสุด)
+tavern.boostNextOne=โบนัส XP {0}% อีก 1 เลเวลจะเป็น {1}%
+tavern.boostNextMany=โบนัส XP {0}% อีก {1} เลเวลจะเป็น {2}%
+
+# Dashboard: session line
+session.none=ยังไม่มีเซสชัน
+session.running=เซสชันตั้งแต่ {0} (กำลังดำเนินอยู่)
+session.ended=เซสชันตั้งแต่ {0} (จบแล้ว)
+
+# Dashboard: tabs
+tab.overview=ภาพรวม
+tab.decks=เด็ค
+tab.lostXp=XP ที่เสียไป
+tab.games=เกม
+tab.charts=กราฟ
+
+# Dashboard: overview tiles
+overview.xp=XP
+overview.xpTime=เวลา XP
+overview.playTime=เวลาเล่นรวมการ์ดเริ่มเกม
+overview.onlineTime=เวลาออนไลน์
+overview.games=เกม
+overview.winsLosses=ชนะ {0} แพ้ {1}
+overview.xpPerHour=XP ต่อชั่วโมง
+overview.xpPerHourNote=ของเวลา XP
+overview.xpPerOnlineHour=XP ต่อชั่วโมงออนไลน์
+overview.xpPerOnlineHourNote=รวมเมนูและการรอคิว
+overview.winRate=อัตราชนะ
+overview.eventXp=XP กิจกรรม
+overview.eventXpNote=1 ต่อเวลา XP 1 นาที
+
+# Dashboard: lost XP tiles
+lost.xpValue={0} XP
+lost.afk=เทิร์น AFK
+lost.afkNote=เทิร์นที่ไม่มีการกระทำและไม่ได้กด "จบเทิร์น": {0}
+lost.short=เกมที่สั้นกว่า 1 นาที
+lost.shortNote=เกมที่ต่ำกว่าขั้นต่ำ 60 วินาที: {0}
+lost.outside=เวลานอกเกม
+lost.outsideNote=ออนไลน์แต่ไม่ได้อยู่ในเกม {0} (เมนู คิว พัก)
+
+# Dashboard: table columns
+column.deck=เด็ค
+column.games=เกม
+column.winRate=อัตราชนะ
+column.xp=XP
+column.xpPerHour=XP ต่อชั่วโมง
+column.avgGame=เกมเฉลี่ย
+column.date=วันที่
+column.start=เริ่ม
+column.mode=โหมด
+column.result=ผลลัพธ์
+column.xpTime=เวลา XP
+column.totalTime=เวลารวม
+column.event=กิจกรรม
+column.afk=AFK
+column.opponent=คู่แข่ง
+
+# Dashboard: charts
+chart.xpEarned=XP ที่ได้รับ
+chart.xpEarnedNote=XP ของเกมที่เริ่มในแต่ละชั่วโมง (วันนี้) หรือแต่ละวัน ชั่วโมงหรือวันที่ไม่มีเกมจะเป็น 0
+chart.xpPerHour=XP ต่อชั่วโมง
+chart.xpPerHourNote=ความเร็วในแต่ละชั่วโมงหรือแต่ละวัน: XP หารด้วยเวลา XP เส้นประคือค่าเฉลี่ยของทั้งช่วงเวลา
+chart.xpAxis=XP
+chart.average=ค่าเฉลี่ย
+chart.averageTooltip=ค่าเฉลี่ยของช่วงเวลา: {0} XP/ชม.
+chart.xpTooltip={0} · {1} XP · {2}
+chart.rateTooltip={0} · {1} XP/ชม. · {2}
+chart.gameOne=1 เกม
+chart.gameMany={0} เกม

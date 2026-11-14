@@ -1,0 +1,142 @@
+# 日本語。原文: en.txt（相違がある場合は英語版が優先されます）。
+# Hearthstone jaJP クライアントの用語（クライアント文字列、ビルド 37.0）: XP、報酬レーン、酒場パス、レベル、
+# ランク戦、カジュアル、酒場の喧嘩、ボタン「ターン終了」。機械翻訳を基にしています。
+
+# Plugin entry in HDT
+plugin.description=現在の試合で得られる報酬レーンのXPと、その元になるXP時間を表示します。
+plugin.dashboard=XPダッシュボード
+
+# Overlay rows
+overlay.xpTime=XP時間:
+overlay.ifWin=勝利時:
+overlay.ifLoss=敗北時:
+overlay.lastGame=前回の試合:
+overlay.totalTime=合計時間:
+overlay.earned=獲得:
+overlay.unknown=不明
+overlay.eventXp=イベントXP:
+overlay.totalDamage=合計ダメージ:
+overlay.heroDamage=ヒーローへのダメージ:
+overlay.paused=(一時停止)
+overlay.max=(上限)
+overlay.updateAvailable=アップデートあり:
+
+# Game results, modes, formats and classes
+result.Win=勝利
+result.Loss=敗北
+result.Tie=引き分け
+result.Unknown=不明
+mode.Ranked=ランク戦
+mode.Casual=カジュアル
+mode.TavernBrawl=酒場の喧嘩
+mode.TavernBrawlPvE=酒場の喧嘩 (PvE)
+mode.Other=その他
+format.Wild=ワイルド
+format.Standard=スタンダード
+class.DEATHKNIGHT=デスナイト
+class.DEMONHUNTER=デーモンハンター
+class.DRUID=ドルイド
+class.HUNTER=ハンター
+class.MAGE=メイジ
+class.PALADIN=パラディン
+class.PRIEST=プリースト
+class.ROGUE=ローグ
+class.SHAMAN=シャーマン
+class.WARLOCK=ウォーロック
+class.WARRIOR=ウォリアー
+deck.none=デッキの記録なし
+
+# Dashboard: update hint
+update.available=バージョン {0} が利用できます。
+update.availableInstalled=バージョン {0} が利用できます（インストール済み: {1}）。
+update.openPage=ダウンロードページを開く
+
+# Dashboard: toolbar and options
+period.session=セッション
+period.today=今日
+period.week=今週
+period.season=今シーズン
+period.last30Days=過去30日
+period.all=全期間
+toolbar.refresh=更新
+toolbar.openFolder=データフォルダーを開く
+option.language=言語 (Language)
+option.event=イベント開催中（イベントXPを表示）
+option.eventTip=Hearthstoneのイベント中にオンにします。オーバーレイにイベントXPが表示され、新しい試合に保存されます。
+option.damage=オーバーレイにダメージを表示
+option.damageTip=「合計ダメージ:」と「ヒーローへのダメージ:」の行を表示します。現在または前回の試合で、自分の側が相手に与えたダメージです。
+option.updates=HDTの起動時にアップデートを確認
+tavern.check=酒場パス（XPボーナス）
+tavern.checkTip=現在の拡張版の酒場パスを持っている場合にオンにします。下に報酬レーンのレベルを入力してください。ボーナスは10%、レベル20から15%、レベル70から20%です（Hearthstone Wikiによる。未計測）。
+tavern.level=レベル
+tavern.levelTip=報酬レーンのレベル
+tavern.noBoost=XPボーナスなし
+tavern.boostMax=XPボーナス{0}%（最大）
+tavern.boostNextOne=XPボーナス{0}%、あと1レベルで{1}%
+tavern.boostNextMany=XPボーナス{0}%、あと{1}レベルで{2}%
+
+# Dashboard: session line
+session.none=セッションはまだありません。
+session.running={0}からのセッション（継続中）
+session.ended={0}からのセッション（終了）
+
+# Dashboard: tabs
+tab.overview=概要
+tab.decks=デッキ
+tab.lostXp=失ったXP
+tab.games=試合
+tab.charts=グラフ
+
+# Dashboard: overview tiles
+overview.xp=XP
+overview.xpTime=XP時間
+overview.playTime=プレイ時間（最初の手札を含む）
+overview.onlineTime=オンライン時間
+overview.games=試合
+overview.winsLosses={0}勝 {1}敗
+overview.xpPerHour=1時間あたりのXP
+overview.xpPerHourNote=XP時間あたり
+overview.xpPerOnlineHour=オンライン1時間あたりのXP
+overview.xpPerOnlineHourNote=メニューと待ち時間を含む
+overview.winRate=勝率
+overview.eventXp=イベントXP
+overview.eventXpNote=XP時間1分ごとに1
+
+# Dashboard: lost XP tiles
+lost.xpValue={0} XP
+lost.afk=放置ターン
+lost.afkNote=行動も「ターン終了」もなかったターン: {0}
+lost.short=1分未満の試合
+lost.shortNote=最低60秒に届かなかった試合: {0}
+lost.outside=試合外の時間
+lost.outsideNote=オンラインだが試合外: {0}（メニュー、待ち時間、休憩）
+
+# Dashboard: table columns
+column.deck=デッキ
+column.games=試合
+column.winRate=勝率
+column.xp=XP
+column.xpPerHour=XP/時
+column.avgGame=平均試合時間
+column.date=日付
+column.start=開始
+column.mode=モード
+column.result=結果
+column.xpTime=XP時間
+column.totalTime=合計時間
+column.event=イベント
+column.afk=放置
+column.opponent=対戦相手
+
+# Dashboard: charts
+chart.xpEarned=獲得XP
+chart.xpEarnedNote=各時間（今日）または各日に始まった試合のXPです。試合のない時間や日は0です。
+chart.xpPerHour=1時間あたりのXP
+chart.xpPerHourNote=各時間または各日のペース: XPをXP時間で割った値です。破線は期間全体の平均です。
+chart.xpAxis=XP
+chart.average=平均
+chart.averageTooltip=期間の平均: {0} XP/時
+chart.xpTooltip={0} · {1} XP · {2}
+chart.rateTooltip={0} · {1} XP/時 · {2}
+chart.gameOne=1試合
+chart.gameMany={0}試合

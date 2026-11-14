@@ -1,0 +1,142 @@
+# Français. Source : en.txt (en cas de différence, la version anglaise fait foi).
+# Termes du client Hearthstone frFR (chaînes du client, build 37.0) : EXP, Parcours de récompenses,
+# Ticket de la taverne, Niveau, Classé, Non classé, Bras de fer, bouton « Fin du tour ». Traduction assistée par machine.
+
+# Plugin entry in HDT
+plugin.description=Affiche l'EXP du Parcours de récompenses de la partie en cours et le temps d'EXP sur lequel elle repose.
+plugin.dashboard=Tableau de bord EXP
+
+# Overlay rows
+overlay.xpTime=Temps d'EXP :
+overlay.ifWin=Si victoire :
+overlay.ifLoss=Si défaite :
+overlay.lastGame=Dernière partie :
+overlay.totalTime=Temps total :
+overlay.earned=Gagnée :
+overlay.unknown=inconnue
+overlay.eventXp=EXP d'évènement :
+overlay.totalDamage=Dégâts totaux :
+overlay.heroDamage=Dégâts au héros :
+overlay.paused=(en pause)
+overlay.max=(max.)
+overlay.updateAvailable=Mise à jour disponible :
+
+# Game results, modes, formats and classes
+result.Win=Victoire
+result.Loss=Défaite
+result.Tie=Égalité
+result.Unknown=Inconnu
+mode.Ranked=Classé
+mode.Casual=Non classé
+mode.TavernBrawl=Bras de fer
+mode.TavernBrawlPvE=Bras de fer (JcE)
+mode.Other=Autre
+format.Wild=Libre
+format.Standard=Standard
+class.DEATHKNIGHT=Chevalier de la mort
+class.DEMONHUNTER=Chasseur de démons
+class.DRUID=Druide
+class.HUNTER=Chasseur
+class.MAGE=Mage
+class.PALADIN=Paladin
+class.PRIEST=Prêtre
+class.ROGUE=Voleur
+class.SHAMAN=Chaman
+class.WARLOCK=Démoniste
+class.WARRIOR=Guerrier
+deck.none=Aucun deck enregistré
+
+# Dashboard: update hint
+update.available=La version {0} est disponible.
+update.availableInstalled=La version {0} est disponible (installée : {1}).
+update.openPage=Ouvrir la page de téléchargement
+
+# Dashboard: toolbar and options
+period.session=Session
+period.today=Aujourd'hui
+period.week=Cette semaine
+period.season=Cette saison
+period.last30Days=30 derniers jours
+period.all=Tout
+toolbar.refresh=Actualiser
+toolbar.openFolder=Ouvrir le dossier des données
+option.language=Langue (Language)
+option.event=Évènement en cours (afficher l'EXP d'évènement)
+option.eventTip=À activer pendant un évènement Hearthstone : l'overlay affiche l'EXP d'évènement et les nouvelles parties l'enregistrent.
+option.damage=Afficher les dégâts dans l'overlay
+option.damageTip=Affiche les lignes « Dégâts totaux : » et « Dégâts au héros : » : les dégâts infligés par votre camp à l'adversaire pendant la partie en cours ou la dernière.
+option.updates=Rechercher des mises à jour au démarrage de HDT
+tavern.check=Ticket de la taverne (bonus d'EXP)
+tavern.checkTip=À activer si vous possédez le Ticket de la taverne de l'extension actuelle. Indiquez ci-dessous votre niveau dans le Parcours de récompenses : le bonus est de 10 %, de 15 % à partir du niveau 20 et de 20 % à partir du niveau 70 (selon le wiki Hearthstone, non mesuré).
+tavern.level=Niveau
+tavern.levelTip=Niveau dans le Parcours de récompenses
+tavern.noBoost=Aucun bonus d'EXP
+tavern.boostMax={0} % de bonus d'EXP (maximum)
+tavern.boostNextOne={0} % de bonus d'EXP, encore 1 niveau avant {1} %
+tavern.boostNextMany={0} % de bonus d'EXP, encore {1} niveaux avant {2} %
+
+# Dashboard: session line
+session.none=Aucune session pour l'instant.
+session.running=Session depuis {0} (en cours)
+session.ended=Session depuis {0} (terminée)
+
+# Dashboard: tabs
+tab.overview=Vue d'ensemble
+tab.decks=Decks
+tab.lostXp=EXP perdue
+tab.games=Parties
+tab.charts=Graphiques
+
+# Dashboard: overview tiles
+overview.xp=EXP
+overview.xpTime=Temps d'EXP
+overview.playTime=Temps de jeu avec la main de départ
+overview.onlineTime=Temps en ligne
+overview.games=Parties
+overview.winsLosses={0} victoires, {1} défaites
+overview.xpPerHour=EXP par heure
+overview.xpPerHourNote=de temps d'EXP
+overview.xpPerOnlineHour=EXP par heure en ligne
+overview.xpPerOnlineHourNote=menus et file d'attente compris
+overview.winRate=Taux de victoire
+overview.eventXp=EXP d'évènement
+overview.eventXpNote=1 par minute de temps d'EXP
+
+# Dashboard: lost XP tiles
+lost.xpValue={0} EXP
+lost.afk=Tours AFK
+lost.afkNote={0} tours sans action ni « Fin du tour »
+lost.short=Parties de moins d'1 minute
+lost.shortNote={0} parties sous le minimum de 60 s
+lost.outside=Temps hors des parties
+lost.outsideNote={0} en ligne mais hors partie (menus, file d'attente, pauses)
+
+# Dashboard: table columns
+column.deck=Deck
+column.games=Parties
+column.winRate=Taux de victoire
+column.xp=EXP
+column.xpPerHour=EXP par heure
+column.avgGame=Partie moy.
+column.date=Date
+column.start=Début
+column.mode=Mode
+column.result=Résultat
+column.xpTime=Temps d'EXP
+column.totalTime=Temps total
+column.event=Évènement
+column.afk=AFK
+column.opponent=Adversaire
+
+# Dashboard: charts
+chart.xpEarned=EXP gagnée
+chart.xpEarnedNote=EXP des parties commencées à chaque heure (Aujourd'hui) ou chaque jour. Les heures ou jours sans partie sont à 0.
+chart.xpPerHour=EXP par heure
+chart.xpPerHourNote=Rythme à chaque heure ou chaque jour : EXP divisée par le temps d'EXP. La ligne pointillée est la moyenne de toute la période.
+chart.xpAxis=EXP
+chart.average=Moyenne
+chart.averageTooltip=Moyenne de la période : {0} EXP/h
+chart.xpTooltip={0} · {1} EXP · {2}
+chart.rateTooltip={0} · {1} EXP/h · {2}
+chart.gameOne=1 partie
+chart.gameMany={0} parties

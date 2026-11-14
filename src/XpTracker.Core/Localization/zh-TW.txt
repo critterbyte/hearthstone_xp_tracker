@@ -1,0 +1,142 @@
+# 繁體中文。原文：en.txt（如有出入，以英文版為準）。
+# 爐石戰記 zhTW 用戶端用語（用戶端字串，版本 37.0）：經驗值、獎勵軌跡、旅店貴賓證、等級、排名模式、
+# 休閒模式、旅店大亂鬥、「結束回合」按鈕。以機器翻譯為基礎。
+
+# Plugin entry in HDT
+plugin.description=顯示本場對戰的獎勵軌跡經驗值，以及計算所依據的經驗值時間。
+plugin.dashboard=經驗值儀表板
+
+# Overlay rows
+overlay.xpTime=經驗值時間：
+overlay.ifWin=獲勝時：
+overlay.ifLoss=落敗時：
+overlay.lastGame=上一場：
+overlay.totalTime=總時間：
+overlay.earned=獲得：
+overlay.unknown=未知
+overlay.eventXp=事件經驗值：
+overlay.totalDamage=總傷害：
+overlay.heroDamage=英雄傷害：
+overlay.paused=（暫停）
+overlay.max=（上限）
+overlay.updateAvailable=有可用更新：
+
+# Game results, modes, formats and classes
+result.Win=勝利
+result.Loss=落敗
+result.Tie=平手
+result.Unknown=未知
+mode.Ranked=排名模式
+mode.Casual=休閒模式
+mode.TavernBrawl=旅店大亂鬥
+mode.TavernBrawlPvE=旅店大亂鬥（PvE）
+mode.Other=其他
+format.Wild=開放
+format.Standard=標準
+class.DEATHKNIGHT=死亡騎士
+class.DEMONHUNTER=惡魔獵人
+class.DRUID=德魯伊
+class.HUNTER=獵人
+class.MAGE=法師
+class.PALADIN=聖騎士
+class.PRIEST=牧師
+class.ROGUE=盜賊
+class.SHAMAN=薩滿
+class.WARLOCK=術士
+class.WARRIOR=戰士
+deck.none=沒有記錄套牌
+
+# Dashboard: update hint
+update.available=版本 {0} 已推出。
+update.availableInstalled=版本 {0} 已推出（已安裝：{1}）。
+update.openPage=開啟下載頁面
+
+# Dashboard: toolbar and options
+period.session=本次工作階段
+period.today=今天
+period.week=本週
+period.season=本賽季
+period.last30Days=最近 30 天
+period.all=全部
+toolbar.refresh=重新整理
+toolbar.openFolder=開啟資料夾
+option.language=語言（Language）
+option.event=事件進行中（顯示事件經驗值）
+option.eventTip=爐石戰記事件期間請開啟：覆蓋層會顯示事件經驗值，新對戰也會記錄下來。
+option.damage=在覆蓋層顯示傷害
+option.damageTip=顯示「總傷害：」與「英雄傷害：」兩行：你這一方在本場或上一場對戰中對對手造成的傷害。
+option.updates=啟動 HDT 時檢查更新
+tavern.check=旅店貴賓證（經驗值加成）
+tavern.checkTip=如果你擁有目前資料片的旅店貴賓證，請開啟此項，並在下方輸入你的獎勵軌跡等級：加成為 10%，等級 20 起為 15%，等級 70 起為 20%（依據爐石戰記 Wiki，未經實測）。
+tavern.level=等級
+tavern.levelTip=獎勵軌跡等級
+tavern.noBoost=沒有經驗值加成
+tavern.boostMax=經驗值加成 {0}%（最高）
+tavern.boostNextOne=經驗值加成 {0}%，再升 1 級可達 {1}%
+tavern.boostNextMany=經驗值加成 {0}%，再升 {1} 級可達 {2}%
+
+# Dashboard: session line
+session.none=尚無工作階段。
+session.running=自 {0} 起的工作階段（進行中）
+session.ended=自 {0} 起的工作階段（已結束）
+
+# Dashboard: tabs
+tab.overview=總覽
+tab.decks=套牌
+tab.lostXp=損失的經驗值
+tab.games=對戰
+tab.charts=圖表
+
+# Dashboard: overview tiles
+overview.xp=經驗值
+overview.xpTime=經驗值時間
+overview.playTime=遊戲時間（含起手換牌）
+overview.onlineTime=上線時間
+overview.games=對戰
+overview.winsLosses={0} 勝 {1} 敗
+overview.xpPerHour=每小時經驗值
+overview.xpPerHourNote=以經驗值時間計
+overview.xpPerOnlineHour=每上線小時經驗值
+overview.xpPerOnlineHourNote=含選單與排隊時間
+overview.winRate=勝率
+overview.eventXp=事件經驗值
+overview.eventXpNote=每分鐘經驗值時間 1 點
+
+# Dashboard: lost XP tiles
+lost.xpValue={0} 點經驗值
+lost.afk=閒置回合
+lost.afkNote=沒有任何動作也沒按「結束回合」的回合：{0}
+lost.short=不到 1 分鐘的對戰
+lost.shortNote=未達 60 秒下限的對戰：{0}
+lost.outside=對戰以外的時間
+lost.outsideNote=上線但不在對戰中：{0}（選單、排隊、休息）
+
+# Dashboard: table columns
+column.deck=套牌
+column.games=對戰
+column.winRate=勝率
+column.xp=經驗值
+column.xpPerHour=每小時經驗值
+column.avgGame=平均對戰
+column.date=日期
+column.start=開始
+column.mode=模式
+column.result=結果
+column.xpTime=經驗值時間
+column.totalTime=總時間
+column.event=事件
+column.afk=閒置
+column.opponent=對手
+
+# Dashboard: charts
+chart.xpEarned=獲得的經驗值
+chart.xpEarnedNote=每個小時（今天）或每天開始的對戰所獲得的經驗值。沒有對戰的小時或日子為 0。
+chart.xpPerHour=每小時經驗值
+chart.xpPerHourNote=每個小時或每天的速度：經驗值除以經驗值時間。虛線是整個期間的平均值。
+chart.xpAxis=經驗值
+chart.average=平均
+chart.averageTooltip=期間平均：每小時 {0} 點經驗值
+chart.xpTooltip={0} · {1} 點經驗值 · {2}
+chart.rateTooltip={0} · 每小時 {1} 點經驗值 · {2}
+chart.gameOne=1 場對戰
+chart.gameMany={0} 場對戰

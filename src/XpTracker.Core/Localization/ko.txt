@@ -1,0 +1,142 @@
+# 한국어. 원문: en.txt (차이가 있으면 영어판이 우선합니다).
+# 하스스톤 koKR 클라이언트 용어(클라이언트 문자열, 빌드 37.0): 경험치, 보상의 길, 선술집 패스, 레벨,
+# 등급전, 일반전, 선술집 난투, "턴 종료" 버튼. 기계 번역을 바탕으로 했습니다.
+
+# Plugin entry in HDT
+plugin.description=현재 게임에서 얻는 보상의 길 경험치와 그 기준이 되는 경험치 시간을 보여 줍니다.
+plugin.dashboard=경험치 대시보드
+
+# Overlay rows
+overlay.xpTime=경험치 시간:
+overlay.ifWin=승리 시:
+overlay.ifLoss=패배 시:
+overlay.lastGame=지난 게임:
+overlay.totalTime=전체 시간:
+overlay.earned=획득:
+overlay.unknown=알 수 없음
+overlay.eventXp=이벤트 경험치:
+overlay.totalDamage=전체 피해:
+overlay.heroDamage=영웅 피해:
+overlay.paused=(일시 정지)
+overlay.max=(최대)
+overlay.updateAvailable=업데이트 있음:
+
+# Game results, modes, formats and classes
+result.Win=승리
+result.Loss=패배
+result.Tie=무승부
+result.Unknown=알 수 없음
+mode.Ranked=등급전
+mode.Casual=일반전
+mode.TavernBrawl=선술집 난투
+mode.TavernBrawlPvE=선술집 난투 (PvE)
+mode.Other=기타
+format.Wild=야생
+format.Standard=정규
+class.DEATHKNIGHT=죽음의 기사
+class.DEMONHUNTER=악마사냥꾼
+class.DRUID=드루이드
+class.HUNTER=사냥꾼
+class.MAGE=마법사
+class.PALADIN=성기사
+class.PRIEST=사제
+class.ROGUE=도적
+class.SHAMAN=주술사
+class.WARLOCK=흑마법사
+class.WARRIOR=전사
+deck.none=기록된 덱 없음
+
+# Dashboard: update hint
+update.available={0} 버전을 사용할 수 있습니다.
+update.availableInstalled={0} 버전을 사용할 수 있습니다(설치됨: {1}).
+update.openPage=다운로드 페이지 열기
+
+# Dashboard: toolbar and options
+period.session=세션
+period.today=오늘
+period.week=이번 주
+period.season=이번 시즌
+period.last30Days=최근 30일
+period.all=전체 기간
+toolbar.refresh=새로 고침
+toolbar.openFolder=데이터 폴더 열기
+option.language=언어 (Language)
+option.event=이벤트 진행 중(이벤트 경험치 표시)
+option.eventTip=하스스톤 이벤트 기간에 켜세요. 오버레이에 이벤트 경험치가 표시되고 새 게임에 저장됩니다.
+option.damage=오버레이에 피해 표시
+option.damageTip="전체 피해:"와 "영웅 피해:" 줄을 표시합니다. 현재 또는 지난 게임에서 내 편이 상대에게 준 피해입니다.
+option.updates=HDT 시작 시 업데이트 확인
+tavern.check=선술집 패스(경험치 보너스)
+tavern.checkTip=현재 확장팩의 선술집 패스가 있으면 켜세요. 아래에 보상의 길 레벨을 입력하세요. 보너스는 10%, 20레벨부터 15%, 70레벨부터 20%입니다(하스스톤 위키 기준, 측정하지 않음).
+tavern.level=레벨
+tavern.levelTip=보상의 길 레벨
+tavern.noBoost=경험치 보너스 없음
+tavern.boostMax=경험치 보너스 {0}%(최대)
+tavern.boostNextOne=경험치 보너스 {0}%, {1}%까지 1레벨
+tavern.boostNextMany=경험치 보너스 {0}%, {2}%까지 {1}레벨
+
+# Dashboard: session line
+session.none=아직 세션이 없습니다.
+session.running={0}부터 세션(진행 중)
+session.ended={0}부터 세션(종료)
+
+# Dashboard: tabs
+tab.overview=개요
+tab.decks=덱
+tab.lostXp=잃은 경험치
+tab.games=게임
+tab.charts=그래프
+
+# Dashboard: overview tiles
+overview.xp=경험치
+overview.xpTime=경험치 시간
+overview.playTime=플레이 시간(시작 카드 포함)
+overview.onlineTime=접속 시간
+overview.games=게임
+overview.winsLosses={0}승 {1}패
+overview.xpPerHour=시간당 경험치
+overview.xpPerHourNote=경험치 시간 기준
+overview.xpPerOnlineHour=접속 시간당 경험치
+overview.xpPerOnlineHourNote=메뉴와 대기 시간 포함
+overview.winRate=승률
+overview.eventXp=이벤트 경험치
+overview.eventXpNote=경험치 시간 1분당 1
+
+# Dashboard: lost XP tiles
+lost.xpValue=경험치 {0}
+lost.afk=자리 비움 턴
+lost.afkNote=행동도 "턴 종료"도 없는 턴: {0}
+lost.short=1분 미만 게임
+lost.shortNote=최소 60초에 못 미친 게임: {0}
+lost.outside=게임 외 시간
+lost.outsideNote=접속했지만 게임 중이 아닌 시간: {0}(메뉴, 대기, 휴식)
+
+# Dashboard: table columns
+column.deck=덱
+column.games=게임
+column.winRate=승률
+column.xp=경험치
+column.xpPerHour=시간당 경험치
+column.avgGame=평균 게임
+column.date=날짜
+column.start=시작
+column.mode=모드
+column.result=결과
+column.xpTime=경험치 시간
+column.totalTime=전체 시간
+column.event=이벤트
+column.afk=자리 비움
+column.opponent=상대
+
+# Dashboard: charts
+chart.xpEarned=획득 경험치
+chart.xpEarnedNote=각 시간(오늘) 또는 각 날짜에 시작한 게임의 경험치입니다. 게임이 없는 시간이나 날짜는 0입니다.
+chart.xpPerHour=시간당 경험치
+chart.xpPerHourNote=각 시간 또는 각 날짜의 속도: 경험치를 경험치 시간으로 나눈 값입니다. 점선은 전체 기간의 평균입니다.
+chart.xpAxis=경험치
+chart.average=평균
+chart.averageTooltip=기간 평균: 시간당 경험치 {0}
+chart.xpTooltip={0} · 경험치 {1} · {2}
+chart.rateTooltip={0} · 시간당 경험치 {1} · {2}
+chart.gameOne=게임 1회
+chart.gameMany=게임 {0}회
