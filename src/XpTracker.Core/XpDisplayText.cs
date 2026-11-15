@@ -5,16 +5,18 @@ using System.Globalization;
 namespace XpTracker.Core;
 
 /// <summary>
-/// One overlay row: a label and a value; XP values are shown with an XP icon, event XP with a crystal.
+/// One overlay row: a label and a value; XP values are shown with an XP icon, event XP with a crystal,
+/// and the update hint with a highlighted label.
 /// </summary>
 public sealed class XpLine
 {
-    public XpLine(string label, string value, bool isXp = false, bool isEvent = false)
+    public XpLine(string label, string value, bool isXp = false, bool isEvent = false, bool isUpdate = false)
     {
         Label = label;
         Value = value;
         IsXp = isXp;
         IsEvent = isEvent;
+        IsUpdate = isUpdate;
     }
 
     public string Label { get; }
@@ -24,6 +26,9 @@ public sealed class XpLine
     public bool IsXp { get; }
 
     public bool IsEvent { get; }
+
+    /// <summary>The "Update available:" row; the overlay shows its label in mana blue so it catches the eye.</summary>
+    public bool IsUpdate { get; }
 
     public override string ToString() => Label + " " + Value;
 }
@@ -100,7 +105,7 @@ public static class XpDisplayText
             return lines;
         }
 
-        return new List<XpLine>(lines) { new XpLine(Localizer.Text("overlay.updateAvailable"), newVersion!) };
+        return new List<XpLine>(lines) { new XpLine(Localizer.Text("overlay.updateAvailable"), newVersion!, isUpdate: true) };
     }
 
     private static string Suffix(XpSnapshot snapshot, bool isOver)

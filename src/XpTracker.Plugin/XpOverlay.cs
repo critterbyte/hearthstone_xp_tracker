@@ -36,6 +36,9 @@ internal sealed class XpOverlay : Border
         (Color.FromArgb(0x60, 0xFF, 0xFF, 0xFF), 0.0),
         (Color.FromArgb(0x00, 0xFF, 0xFF, 0xFF), 1.0)));
     private static readonly Brush TubeBorder = Frozen(new SolidColorBrush(Color.FromRgb(0x10, 0x14, 0x22)));
+
+    // Mana blue, as the check marks and selected values in the dashboard: the update hint stands out from the white labels.
+    private static readonly Brush UpdateLabel = Frozen(new SolidColorBrush(Color.FromRgb(0x5D, 0xAD, 0xF2)));
     private static readonly FontFamily LabelFont = new("Segoe UI");
     private static readonly FontFamily ValueFont = new("Georgia");
 
@@ -195,6 +198,7 @@ internal sealed class XpOverlay : Border
             }
 
             _label.Text = line.Label;
+            _label.Foreground = line.IsUpdate ? UpdateLabel : Brushes.White;
             _value.Text = line.Value;
             _icon.Visibility = line.IsXp ? Visibility.Visible : Visibility.Collapsed;
             _crystal.Visibility = line.IsEvent ? Visibility.Visible : Visibility.Collapsed;

@@ -455,14 +455,24 @@ internal sealed class DashboardWindow : Window
 
         var toolbar = new DockPanel();
         var options = new StackPanel { VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(0, 4, 10, 4) };
+        // Language and overlay position in two columns: labels right-aligned, both drop-downs equally wide and flush
+        // with the right edge, so they line up in every language whatever the length of the labels.
+        var selections = new Grid { HorizontalAlignment = HorizontalAlignment.Right, Margin = new Thickness(0, 2, 0, 2) };
+        selections.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+        selections.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
         if (_setLanguage is not null)
         {
-            options.Children.Add(LanguageSelection());
+            AddSelection(selections, T("option.language"), LanguageBox());
         }
 
         if (_setOverlayPosition is not null)
         {
-            options.Children.Add(OverlayPositionSelection());
+            AddSelection(selections, T("option.overlayPosition"), OverlayPositionBox());
+        }
+
+        if (selections.Children.Count > 0)
+        {
+            options.Children.Add(selections);
         }
 
         if (_setEventActive is not null)
@@ -524,9 +534,24 @@ internal sealed class DashboardWindow : Window
 
     // "Language" with a drop-down of the client languages, each named in its own language.
     // The label keeps the English word in every language, so a wrong choice is easy to undo.
-    private FrameworkElement LanguageSelection()
+    private static void AddSelection(Grid grid, string label, ComboBox box)
     {
-        var box = new ComboBox { MinWidth = 130, Margin = new Thickness(6, 0, 0, 0) };
+        var row = grid.RowDefinitions.Count;
+        grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+        var text = new TextBlock { Text = label, Foreground = Parchment, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Right };
+        Grid.SetRow(text, row);
+        Grid.SetColumn(text, 0);
+        box.Margin = new Thickness(6, 0, 0, 4);
+        box.HorizontalAlignment = HorizontalAlignment.Stretch;
+        Grid.SetRow(box, row);
+        Grid.SetColumn(box, 1);
+        grid.Children.Add(text);
+        grid.Children.Add(box);
+    }
+
+    private ComboBox LanguageBox()
+    {
+        var box = new ComboBox { MinWidth = 130 };
         foreach (var language in Localizer.SelectableLanguages())
         {
             var item = new ComboBoxItem { Content = language.Value, Tag = language.Key };
@@ -545,16 +570,13 @@ internal sealed class DashboardWindow : Window
             }
         };
 
-        var row = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 2, 0, 4) };
-        row.Children.Add(new TextBlock { Text = T("option.language"), Foreground = Parchment, VerticalAlignment = VerticalAlignment.Center });
-        row.Children.Add(box);
-        return row;
+        return box;
     }
 
     // "Overlay position": right above the Hearthstone settings button (default), or left above the player's portrait.
-    private FrameworkElement OverlayPositionSelection()
+    private ComboBox OverlayPositionBox()
     {
-        var box = new ComboBox { MinWidth = 130, Margin = new Thickness(6, 0, 0, 0) };
+        var box = new ComboBox { MinWidth = 130 };
         foreach (var (position, text) in new[]
         {
             (OverlayPosition.Right, T("option.overlayRight")),
@@ -578,10 +600,7 @@ internal sealed class DashboardWindow : Window
             }
         };
 
-        var row = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 0, 0, 4) };
-        row.Children.Add(new TextBlock { Text = T("option.overlayPosition"), Foreground = Parchment, VerticalAlignment = VerticalAlignment.Center });
-        row.Children.Add(box);
-        return row;
+        return box;
     }
 
     // "Tavern Pass" check box, the rewards track level as [-] [number] [+], and the boost that follows from it.
@@ -748,9 +767,24 @@ internal sealed class DashboardWindow : Window
             VerticalAlignment = VerticalAlignment.Center,
             Effect = new DropShadowEffect { Color = Colors.Black, ShadowDepth = 2, BlurRadius = 4, Opacity = 0.8 },
         };
-        var row = new StackPanel { Orientation = Orientation.Horizontal };
-        row.Children.Add(icon);
-        row.Children.Add(title);
+        var titleRow = new StackPanel { Orientation = Orientation.Horizontal };
+        titleRow.Children.Add(icon);
+        titleRow.Children.Add(title);
+
+        // Installed version in the top right corner, in mana blue: the same three-part number as on GitHub.
+        var version = new TextBlock
+        {
+            Text = "v" + UpdateCheck.Display(typeof(DashboardWindow).Assembly.GetName().Version),
+            FontFamily = TitleFont,
+            FontSize = 16,
+            FontWeight = FontWeights.Bold,
+            Foreground = ManaBright,
+            VerticalAlignment = VerticalAlignment.Center,
+        };
+        var row = new DockPanel { LastChildFill = false };
+        DockPanel.SetDock(version, Dock.Right);
+        row.Children.Add(version);
+        row.Children.Add(titleRow);
         return new Border
         {
             Child = row,

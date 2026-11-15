@@ -69,6 +69,7 @@ public class UpdateCheckTests
     {
         Assert.Equal("0.2.0", Release("v0.2.0").VersionText);
         Assert.Equal("0.1.0", UpdateCheck.Display(new Version(0, 1, 0, 0)));
+        Assert.Equal("0.1.0", UpdateCheck.Normalize(new Version(0, 1, 0, 0)).ToString());
     }
 
     [Theory]
@@ -91,6 +92,8 @@ public class UpdateCheckTests
         var line = Assert.Single(lines);
         Assert.Equal("Update available:", line.Label);
         Assert.Equal("0.2.0", line.Value);
+        Assert.True(line.IsUpdate);
+        Assert.False(line.IsXp);
     }
 
     [Fact]
@@ -101,6 +104,7 @@ public class UpdateCheckTests
         var lines = XpDisplayText.WithUpdate(summary, gameRunning: false, "0.2.0");
 
         Assert.Equal(new[] { "Last game:", "Earned:", "Update available:" }, lines.Select(l => l.Label));
+        Assert.Equal(new[] { false, false, true }, lines.Select(l => l.IsUpdate));
     }
 
     [Fact]
