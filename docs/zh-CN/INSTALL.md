@@ -75,6 +75,13 @@
 - 在选择起始手牌时，叠加层会隐藏。它会在第一个回合出现。
 - 检查 HDT 自己的叠加层是否正常工作。插件是绘制在 HDT 的叠加层上的。
 
+**安装较旧的版本后，HDT 仍在运行较新的版本。**
+
+- HDT 不是直接从 `%APPDATA%\HearthstoneDeckTracker\Plugins` 加载插件，而是加载它自己程序文件夹中的副本：`%LOCALAPPDATA%\HearthstoneDeckTracker\app-<HDT 版本>\Plugins`。只有当 `%APPDATA%` 中的文件更新时，它才会替换那里的文件。较旧版本的文件日期更早，所以 HDT 会保留较新的副本。
+- 要回到较旧的版本：关闭 HDT，按照上面的说明安装较旧的版本，删除 `%LOCALAPPDATA%\HearthstoneDeckTracker\app-<HDT 版本>\Plugins` 中的 `HearthstoneXpTracker` 文件夹，然后重新启动 HDT。HDT 会重新复制插件。
+- 从 0.1.2 版起，面板会在右上角显示当前运行的版本。
+- 更新到较新的版本不受影响。
+
 **其他问题。**
 
 请[提交 issue](https://github.com/critterbyte/hearthstone_xp_tracker/issues/new/choose)，并写明你的 HDT 版本，以及你原本期望看到的内容。

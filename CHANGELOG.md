@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- `docs/INSTALL.md` and its translations explain why HDT keeps running the newer version after an older one was installed: HDT loads plugins from a copy in its own program folder and replaces a file there only when the file in `%APPDATA%` is newer (checked in HDT's `PluginManager`). They describe how to go back to an older version.
+
 ## [0.1.2] - 2026-11-15
 
 A more visible update hint and the installed version in the dashboard.

@@ -75,6 +75,13 @@
 - 在選擇起手的手牌時，覆蓋層會隱藏。它會在第一個回合出現。
 - 確認 HDT 本身的覆蓋層可以正常運作。外掛程式是畫在 HDT 的覆蓋層上。
 
+**安裝較舊的版本後，HDT 仍在執行較新的版本。**
+
+- HDT 不是直接從 `%APPDATA%\HearthstoneDeckTracker\Plugins` 載入外掛程式，而是載入它自己程式資料夾中的副本：`%LOCALAPPDATA%\HearthstoneDeckTracker\app-<HDT 版本>\Plugins`。只有當 `%APPDATA%` 中的檔案比較新時，它才會取代那裡的檔案。較舊版本的檔案日期比較舊，所以 HDT 會保留較新的副本。
+- 要回到較舊的版本：關閉 HDT，依照上面的說明安裝較舊的版本，刪除 `%LOCALAPPDATA%\HearthstoneDeckTracker\app-<HDT 版本>\Plugins` 中的 `HearthstoneXpTracker` 資料夾，然後重新啟動 HDT。HDT 會重新複製外掛程式。
+- 從 0.1.2 版起，儀表板會在右上角顯示目前執行的版本。
+- 更新到較新的版本不受影響。
+
 **其他問題。**
 
 請[提出 issue](https://github.com/critterbyte/hearthstone_xp_tracker/issues/new/choose)，並附上你的 HDT 版本，以及你原本預期看到的內容。

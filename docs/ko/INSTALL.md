@@ -75,6 +75,13 @@
 - 시작 카드를 고르는 동안에는 오버레이가 숨겨집니다. 첫 턴에 나타납니다.
 - HDT 자체 오버레이가 작동하는지 확인하세요. 플러그인은 HDT 오버레이 위에 그려집니다.
 
+**이전 버전을 설치했는데도 HDT가 계속 최신 버전을 실행합니다.**
+
+- HDT는 플러그인을 `%APPDATA%\HearthstoneDeckTracker\Plugins`에서 직접 불러오지 않고, 자체 프로그램 폴더인 `%LOCALAPPDATA%\HearthstoneDeckTracker\app-<HDT 버전>\Plugins`에 있는 복사본을 불러옵니다. 그 복사본은 `%APPDATA%`의 파일이 더 새로울 때만 교체됩니다. 이전 릴리스의 파일은 날짜가 더 오래되었으므로 HDT는 최신 복사본을 그대로 둡니다.
+- 이전 버전으로 되돌리려면: HDT를 닫고, 위에서 설명한 대로 이전 버전을 설치한 다음, `%LOCALAPPDATA%\HearthstoneDeckTracker\app-<HDT 버전>\Plugins` 안의 `HearthstoneXpTracker` 폴더를 삭제하고 HDT를 다시 시작하세요. HDT가 플러그인을 다시 복사합니다.
+- 버전 0.1.2부터 대시보드 오른쪽 위에 실행 중인 버전이 표시됩니다.
+- 최신 버전으로 업데이트할 때는 영향이 없습니다.
+
 **다른 문제가 있습니다.**
 
 [이슈를 열고](https://github.com/critterbyte/hearthstone_xp_tracker/issues/new/choose) HDT 버전과 기대한 화면을 적어 주세요.
