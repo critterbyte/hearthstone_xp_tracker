@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Community files: `CODE_OF_CONDUCT.md` (Contributor Covenant 2.1), `SECURITY.md` (private vulnerability reports through GitHub, no public issues) and a pull request template with the checklist from `CONTRIBUTING.md`. Reports go through GitHub's private reporting, so no e-mail address is published.
+
 ### Changed
 
 - `docs/INSTALL.md` and its translations explain why HDT keeps running the newer version after an older one was installed: HDT loads plugins from a copy in its own program folder and replaces a file there only when the file in `%APPDATA%` is newer (checked in HDT's `PluginManager`). They describe how to go back to an older version.

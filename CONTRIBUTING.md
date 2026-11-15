@@ -7,6 +7,8 @@ Thank you for helping! You can contribute in several ways:
 - **Fix or improve a translation** of the plugin or the user guides: see [Translations](#translations).
 - **Contribute code or documentation**: see below.
 
+Everyone taking part is expected to follow the [Code of Conduct](CODE_OF_CONDUCT.md). Security problems are reported privately, not as an issue: see [SECURITY.md](SECURITY.md).
+
 ## Privacy first
 
 Hearthstone's log files contain BattleTags and Battle.net account ids (`GameAccountId=[hi=… lo=…]`) of you and your opponents. Please never post raw logs or screenshots with other players' names in issues or pull requests. Remove the names first, or share only the numbers.
