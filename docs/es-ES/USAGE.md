@@ -13,7 +13,7 @@ Los textos entre comillas, como "Tiempo de PE:", son los textos que muestra el p
 <a id="overlay"></a>
 ## Overlay
 
-El overlay es un pequeño recuadro abajo a la izquierda, sobre tu retrato ("You" con tu rango). En el panel puedes moverlo encima del botón de opciones de Hearthstone (el engranaje de la esquina inferior derecha). Las etiquetas están a la izquierda. Los valores están a la derecha, en barras azules.
+El overlay es un pequeño recuadro abajo a la derecha, sobre el botón de opciones de Hearthstone (el engranaje de la esquina inferior derecha). En el panel puedes moverlo abajo a la izquierda, sobre tu retrato ("You" con tu rango). Las etiquetas están a la izquierda. Los valores están a la derecha, en barras azules.
 
 El overlay solo se muestra en **Con rango, Aficionado, Pelea de taberna y Arena**. Los demás modos aún no se miden, así que en ellos el plugin no muestra nada. Una Pelea de taberna contra el ordenador (JcE, por ejemplo contra el tabernero) no da PE, así que en ella el overlay muestra "+0".
 
@@ -103,7 +103,7 @@ La ventana del panel se llama "HS XP Tracker". Ábrela en HDT de una de estas do
 | "Actualizar" | Vuelve a leer el historial |
 | "Abrir carpeta de datos" | Abre la carpeta del archivo del historial en el Explorador de Windows |
 | "Idioma (Language)" | Idioma del overlay, del panel y de la entrada del plugin en el menú. El inglés es el idioma predeterminado. El cambio se aplica al momento; el panel se vuelve a abrir en el nuevo idioma. En los idiomas distintos del inglés, la etiqueta mantiene la palabra inglesa, como aquí: "Idioma (Language)". |
-| "Posición del overlay" | Dónde está el overlay: "Izquierda, sobre tu retrato" (predeterminado, así la lista del mazo de HDT a la derecha queda libre) o "Derecha, sobre el botón de opciones". El overlay se mueve al momento. |
+| "Posición del overlay" | Dónde está el overlay: "Derecha, sobre el botón de opciones" (predeterminado) o "Izquierda, sobre tu retrato", así la lista del mazo de HDT a la derecha queda libre. El overlay se mueve al momento. |
 | "Evento activo (mostrar PE de evento)" | Actívalo durante un evento de Hearthstone: el overlay muestra los PE de evento y las partidas nuevas los guardan. |
 | "Pase de taberna (bonificación de PE)" | Actívalo si tienes el Pase de taberna de la expansión actual. La bonificación se calcula, no se mide: con el pase, los PE mostrados pueden desviarse 1 PE por partida (consulta [FORMULA.md](../FORMULA.md#tavern-pass)). |
 | "Nivel" con "−", un número y "+" | Tu nivel en el Mapa de recompensas. Pulsa "−" o "+", o escribe el número. La línea de debajo muestra la bonificación y el siguiente escalón, por ejemplo "10 % de bonificación de PE, 2 niveles para el 15 %". La bonificación es del 10 %, a partir del nivel 20 del 15 % y a partir del nivel 70 del 20 % (consulta [FORMULA.md](../FORMULA.md#tavern-pass)). Actualiza el nivel cuando superes el nivel 20 o el 70. |

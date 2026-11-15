@@ -10,7 +10,7 @@ The calculation engine is covered by unit tests. The points below need a real ga
 ## Live overlay
 
 - [ ] Nothing is shown in the menu before the first game and during the mulligan.
-- [ ] The overlay appears with the first turn at the bottom left, above your portrait ("You" with the rank), and covers neither game controls nor HDT's card lists, also in long languages such as Polski or ภาษาไทย.
+- [ ] The overlay appears with the first turn at the bottom right, above the Hearthstone settings button, and covers no game controls, also in long languages such as Polski or ภาษาไทย.
 - [ ] Text size and position fit at different window sizes (windowed and full screen).
 - [ ] XP time counts up during own and opponent turns.
 - [ ] "Win" and "Loss" XP values grow with the XP time and match `docs/FORMULA.md`.
@@ -56,7 +56,7 @@ The calculation engine is covered by unit tests. The points below need a real ga
 ## Dashboard options
 
 - [ ] "Language": every language switches the overlay, the dashboard (it opens again in the new language) and the menu entry at once; texts fit, with no missing characters (check at least Русский, 日本語, 简体中文 and ภาษาไทย).
-- [ ] "Overlay position": "Left, above your portrait" and "Right, above the settings button" move the overlay at once, also during a game.
+- [ ] "Overlay position": "Right, above the settings button" (the default) and "Left, above your portrait" move the overlay at once, also during a game. On the left it covers neither the portrait ("You" with the rank) nor HDT's card lists.
 - [ ] "Event running" and "Show damage on the overlay" show and hide their rows at once.
 - [ ] "Tavern Pass": switched on, the level changes the boost text and the overlay values; switch it off again before the next game (games store the boost they were played with).
 - [ ] "Check for updates when HDT starts" can be switched off and on; check marks and selected values are mana blue.

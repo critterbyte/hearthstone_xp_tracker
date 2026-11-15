@@ -13,7 +13,7 @@ Les textes entre guillemets, comme « Temps d'EXP : », sont les textes affiché
 <a id="overlay"></a>
 ## Overlay
 
-L'overlay est un petit cadre en bas à gauche, au-dessus de votre portrait (« You » avec votre rang). Dans le tableau de bord, vous pouvez le placer plutôt au-dessus du bouton des options de Hearthstone (la roue dentée en bas à droite). Les libellés sont à gauche. Les valeurs sont à droite, dans des barres bleues.
+L'overlay est un petit cadre en bas à droite, au-dessus du bouton des options de Hearthstone (la roue dentée en bas à droite). Dans le tableau de bord, vous pouvez le placer plutôt en bas à gauche, au-dessus de votre portrait (« You » avec votre rang). Les libellés sont à gauche. Les valeurs sont à droite, dans des barres bleues.
 
 L'overlay ne s'affiche qu'en **Classé, Non classé, Bras de fer et Arène**. Les autres modes ne sont pas encore mesurés, le plugin n'y affiche donc rien. Un Bras de fer contre l'ordinateur (JcE, par exemple contre l'aubergiste) ne rapporte pas d'EXP, l'overlay y affiche donc « +0 ».
 
@@ -103,7 +103,7 @@ La fenêtre du tableau de bord s'appelle « HS XP Tracker ». Ouvrez-la dans HDT
 | « Actualiser » | Relit l'historique |
 | « Ouvrir le dossier des données » | Ouvre le dossier du fichier d'historique dans l'Explorateur de fichiers Windows |
 | « Langue (Language) » | Langue de l'overlay, du tableau de bord et de l'entrée de menu du plugin. L'anglais est la langue par défaut. Le changement s'applique immédiatement ; le tableau de bord se rouvre dans la nouvelle langue. Dans les langues autres que l'anglais, le libellé garde le mot anglais, comme ici : « Langue (Language) ». |
-| « Position de l'overlay » | Emplacement de l'overlay : « À gauche, au-dessus de votre portrait » (par défaut, la liste du deck de HDT à droite reste libre) ou « À droite, au-dessus du bouton des options ». L'overlay se déplace aussitôt. |
+| « Position de l'overlay » | Emplacement de l'overlay : « À droite, au-dessus du bouton des options » (par défaut) ou « À gauche, au-dessus de votre portrait », pour laisser libre la liste du deck de HDT à droite. L'overlay se déplace aussitôt. |
 | « Évènement en cours (afficher l'EXP d'évènement) » | À activer pendant un évènement Hearthstone : l'overlay affiche l'EXP d'évènement et les nouvelles parties l'enregistrent. |
 | « Ticket de la taverne (bonus d'EXP) » | À activer si vous possédez le Ticket de la taverne de l'extension actuelle. Le bonus est calculé, pas mesuré : avec le ticket, l'EXP affichée peut différer de 1 EXP par partie (voir [FORMULA.md](../FORMULA.md#tavern-pass)). |
 | « Niveau » avec « − », un nombre et « + » | Votre niveau dans le Parcours de récompenses. Cliquez sur « − » ou « + », ou saisissez le nombre. La ligne en dessous indique le bonus et le palier suivant, par exemple « 10 % de bonus d'EXP, encore 2 niveaux avant 15 % ». Le bonus est de 10 %, de 15 % à partir du niveau 20 et de 20 % à partir du niveau 70 (voir [FORMULA.md](../FORMULA.md#tavern-pass)). Mettez le niveau à jour quand vous passez le niveau 20 ou 70. |

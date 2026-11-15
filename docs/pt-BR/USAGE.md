@@ -13,7 +13,7 @@ Os textos entre aspas, como "Tempo de EXP:", são os textos que o plugin mostra.
 <a id="overlay"></a>
 ## Overlay
 
-O overlay é uma pequena caixa no canto inferior esquerdo, acima do seu retrato ("You" com o seu ranque). No painel, você pode movê-lo para cima do botão de configurações do Hearthstone (a engrenagem no canto inferior direito). Os rótulos ficam à esquerda. Os valores ficam à direita, em barras azuis.
+O overlay é uma pequena caixa no canto inferior direito, acima do botão de configurações do Hearthstone (a engrenagem no canto inferior direito). No painel, você pode movê-lo para o canto inferior esquerdo, acima do seu retrato ("You" com o seu ranque). Os rótulos ficam à esquerda. Os valores ficam à direita, em barras azuis.
 
 O overlay só é mostrado em **Ranqueado, Casual, Contenda de Taverna e Arena**. Os outros modos ainda não são medidos, então o plugin não mostra nada neles. Uma Contenda de Taverna contra o computador (JxA, por exemplo contra o Estalajadeiro) não dá EXP, então o overlay mostra "+0" nela.
 
@@ -103,7 +103,7 @@ A janela do painel se chama "HS XP Tracker". Abra-a no HDT de uma destas duas fo
 | "Atualizar" | Lê o histórico de novo |
 | "Abrir pasta de dados" | Abre a pasta do arquivo de histórico no Explorador de Arquivos do Windows |
 | "Idioma (Language)" | Idioma do overlay, do painel e da entrada do plugin no menu. O padrão é inglês. A mudança vale na hora; o painel abre de novo no novo idioma. Nos idiomas que não são o inglês, o rótulo mantém a palavra em inglês, como aqui: "Idioma (Language)". |
-| "Posição do overlay" | Onde o overlay fica: "À esquerda, acima do seu retrato" (padrão, assim a lista do deck do HDT à direita fica livre) ou "À direita, acima do botão de opções". O overlay muda na hora. |
+| "Posição do overlay" | Onde o overlay fica: "À direita, acima do botão de opções" (padrão) ou "À esquerda, acima do seu retrato", assim a lista do deck do HDT à direita fica livre. O overlay muda na hora. |
 | "Evento ativo (mostrar EXP de Evento)" | Ative durante um evento do Hearthstone: o overlay mostra a EXP de Evento e as novas partidas a salvam. |
 | "Passe da Taverna (bônus de EXP)" | Ative se você tem o Passe da Taverna da expansão atual. O bônus é calculado, não medido: com o passe, a EXP mostrada pode errar por 1 EXP por partida (veja [FORMULA.md](../FORMULA.md#tavern-pass)). |
 | "Nível" com "−", um número e "+" | O seu nível na Trilha da Recompensa. Clique em "−" ou "+", ou digite o número. A linha abaixo mostra o bônus e o próximo degrau, por exemplo "10% de bônus de EXP, faltam 2 níveis para 15%". O bônus é de 10%, a partir do nível 20 de 15% e a partir do nível 70 de 20% (veja [FORMULA.md](../FORMULA.md#tavern-pass)). Atualize o nível quando passar do nível 20 ou 70. |

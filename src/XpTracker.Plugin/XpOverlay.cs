@@ -80,7 +80,7 @@ internal sealed class XpOverlay : Border
     }
 
     /// <summary>Corner the overlay is placed in; applied with the next <see cref="Place"/>.</summary>
-    public OverlayPosition Position { get; set; } = OverlayPosition.Left;
+    public OverlayPosition Position { get; set; } = OverlayPosition.Right;
 
     public void Place(double canvasWidth, double canvasHeight)
     {

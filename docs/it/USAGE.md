@@ -13,7 +13,7 @@ I testi tra virgolette, come "Tempo PE:", sono i testi che mostra il plugin.
 <a id="overlay"></a>
 ## Overlay
 
-L'overlay è un piccolo riquadro in basso a sinistra, sopra il tuo ritratto ("You" con il tuo grado). Nel pannello puoi spostarlo sopra il pulsante delle impostazioni di Hearthstone (l'ingranaggio nell'angolo in basso a destra). Le etichette sono a sinistra. I valori sono a destra, in barre blu.
+L'overlay è un piccolo riquadro in basso a destra, sopra il pulsante delle impostazioni di Hearthstone (l'ingranaggio nell'angolo in basso a destra). Nel pannello puoi spostarlo in basso a sinistra, sopra il tuo ritratto ("You" con il tuo grado). Le etichette sono a sinistra. I valori sono a destra, in barre blu.
 
 L'overlay compare solo in **Classificata, Amichevole, Rissa e Arena**. Le altre modalità non sono ancora misurate, quindi lì il plugin non mostra nulla. Una Rissa contro il computer (PvE, per esempio contro il Locandiere) non dà PE, quindi lì l'overlay mostra "+0".
 
@@ -103,7 +103,7 @@ La finestra del pannello si chiama "HS XP Tracker". Aprila in HDT in uno di ques
 | "Aggiorna" | Rilegge la cronologia |
 | "Apri la cartella dei dati" | Apre in Esplora file di Windows la cartella con il file della cronologia |
 | "Lingua (Language)" | Lingua dell'overlay, del pannello e della voce di menu del plugin. L'inglese è la lingua predefinita. La modifica vale subito; il pannello si riapre nella nuova lingua. Nelle lingue diverse dall'inglese l'etichetta mantiene la parola inglese, come qui "Lingua (Language)". |
-| "Posizione dell'overlay" | Dove si trova l'overlay: "A sinistra, sopra il tuo ritratto" (predefinito, così l'elenco del mazzo di HDT a destra resta libero) oppure "A destra, sopra il pulsante delle opzioni". L'overlay si sposta subito. |
+| "Posizione dell'overlay" | Dove si trova l'overlay: "A destra, sopra il pulsante delle opzioni" (predefinito) oppure "A sinistra, sopra il tuo ritratto", così l'elenco del mazzo di HDT a destra resta libero. L'overlay si sposta subito. |
 | "Evento in corso (mostra i PE Evento)" | Attivalo durante un evento di Hearthstone: l'overlay mostra i PE Evento e le nuove partite li salvano. |
 | "Pass Locanda (bonus PE)" | Attivalo se possiedi il Pass Locanda dell'espansione attuale. Il bonus è calcolato, non misurato: con il pass, i PE mostrati possono sbagliare di 1 PE per partita (vedi [FORMULA.md](../FORMULA.md#tavern-pass)). |
 | "Livello" con "−", un numero e "+" | Il tuo livello nel Percorso Ricompense. Fai clic su "−" o "+", oppure scrivi il numero. La riga sotto mostra il bonus e il passo successivo, per esempio "Bonus PE del 10%, ancora 2 livelli per il 15%". Il bonus è del 10%, dal livello 20 del 15% e dal livello 70 del 20% (vedi [FORMULA.md](../FORMULA.md#tavern-pass)). Aggiorna il livello quando superi il livello 20 o 70. |
