@@ -124,6 +124,8 @@ For "Session", a line below the toolbar names the session, for example "Session 
 
 Online time is counted per Hearthstone session: from the start of Hearthstone to the end of the last game. While Hearthstone is running, it counts up to now. Only sessions with at least one game in the period count.
 
+Games in modes without measured rates, for example Battlegrounds, are stored without XP. They are listed under "Games" and count in the play time and the online time, but not in the other tiles, the deck table or the charts.
+
 **Decks**
 
 One row per deck: games, win rate, XP, XP per hour and the average game length. The deck with the highest XP per hour is at the top.

@@ -133,6 +133,8 @@ Pour « Session », une ligne sous la barre d'outils indique la session, par exe
 
 Le temps en ligne est compté par session Hearthstone : du lancement de Hearthstone à la fin de la dernière partie. Tant que Hearthstone est lancé, il compte jusqu'à maintenant. Seules les sessions avec au moins une partie dans la période comptent.
 
+Les parties dans des modes sans taux mesurés, par exemple les Champs de bataille, sont enregistrées sans EXP. Elles figurent sous « Parties » et comptent dans le temps de jeu et le temps en ligne, mais pas dans les autres tuiles, le tableau des decks ni les graphiques.
+
 **Decks**
 
 Une ligne par deck : parties, taux de victoire, EXP, EXP par heure et durée moyenne des parties. Le deck avec le plus d'EXP par heure est en haut.

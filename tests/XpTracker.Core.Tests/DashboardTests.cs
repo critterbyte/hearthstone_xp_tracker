@@ -105,6 +105,72 @@ public class DashboardTests
     }
 
     [Fact]
+    public void Lost_AfkGameBelowTheMinimum_IsNotCountedTwice()
+    {
+        // 200 s played, but AFK turns left only 50 s of XP time: the game gave 0 XP instead of 26.
+        var game = Game("2026-11-08 10:00:00", 200, GameResult.Win, 0, xpSeconds: 50, afkTurns: 2);
+
+        var lost = Dashboard.Lost(new[] { game }, new SummaryStats());
+
+        Assert.Equal(1, lost.ShortGames);
+        Assert.Equal(7, lost.ShortGamesXp);
+        Assert.Equal(19, lost.AfkXp);
+        Assert.Equal(XpRates.ExpectedXp(200, XpRates.RankedWin), lost.ShortGamesXp + lost.AfkXp);
+    }
+
+    [Fact]
+    public void Lost_TavernBrawlAgainstTheComputer_LosesNothing()
+    {
+        var game = Game("2026-11-08 10:00:00", 40, GameResult.Loss, 0, afkTurns: 1);
+        game.Mode = GameMode.TavernBrawlPvE;
+
+        var lost = Dashboard.Lost(new[] { game }, new SummaryStats());
+
+        Assert.Equal(0, lost.ShortGames);
+        Assert.Equal(0, lost.ShortGamesXp);
+        Assert.Equal(0, lost.AfkTurns);
+        Assert.Equal(0, lost.AfkXp);
+    }
+
+    [Fact]
+    public void Summary_GamesOfUnmeasuredModes_CountOnlyInPlayAndOnlineTime()
+    {
+        var ranked = Game("2026-11-08 10:00:00", 360, GameResult.Win, 47);
+        var other = OtherGame("2026-11-08 10:10:00", 1200);
+
+        var summary = Dashboard.Summary(new[] { ranked, other }, At("2026-11-08 00:00:00"), At("2026-11-08 12:00:00"), currentSession: null);
+
+        Assert.Equal(1, summary.Games);
+        Assert.Equal(1, summary.Wins);
+        Assert.Equal(0, summary.Losses);
+        Assert.Equal(47, summary.Xp);
+        Assert.Equal(360, summary.XpSeconds, 2);
+        Assert.Equal(470, summary.XpPerHour, 0);
+        Assert.Equal(1560, summary.PlaySeconds, 2);
+        // Session from 09:10:51 (log folder) to the end of the other game (10:30:00).
+        Assert.Equal((At("2026-11-08 10:30:00") - At("2026-11-08 09:10:51")).TotalSeconds, summary.OnlineSeconds, 2);
+    }
+
+    [Fact]
+    public void DecksAndCharts_LeaveOutGamesOfUnmeasuredModes()
+    {
+        var ranked = Game("2026-11-08 10:00:00", 360, GameResult.Win, 47);
+        ranked.Deck = "Pirate Rogue";
+        var other = OtherGame("2026-11-08 10:10:00", 1200);
+        other.Deck = "Pirate Rogue";
+        var games = new[] { ranked, other };
+
+        var deck = Assert.Single(Dashboard.Decks(games));
+        var hour = Dashboard.Buckets(games, DashboardPeriod.Today, At("2026-11-08 12:00:00"))[10];
+
+        Assert.Equal(1, deck.Games);
+        Assert.Equal(470, deck.XpPerHour, 0);
+        Assert.Equal(1, hour.Games);
+        Assert.Equal(360, hour.XpSeconds, 2);
+        Assert.Equal(470, hour.XpPerHour!.Value, 0);
+    }
+
+    [Fact]
     public void Days_SumXpPerCalendarDay()
     {
         var games = new[]
@@ -138,6 +204,16 @@ public class DashboardTests
             AfkTurns = afkTurns,
             Xp = xp,
         };
+    }
+
+    // A game of a mode without measured rates, for example Battlegrounds: stored without XP.
+    private static GameRecord OtherGame(string start, double playSeconds)
+    {
+        var game = Game(start, playSeconds, GameResult.Loss, 0);
+        game.Mode = GameMode.Other;
+        game.Format = string.Empty;
+        game.Xp = null;
+        return game;
     }
 
     private static DateTime At(string value) => DateTime.ParseExact(value, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);

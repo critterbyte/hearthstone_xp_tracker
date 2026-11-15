@@ -133,6 +133,8 @@ Bei „Sitzung“ nennt eine Zeile unter der Werkzeugleiste die Sitzung, zum Bei
 
 Die Online-Zeit wird pro Hearthstone-Sitzung gezählt: vom Start von Hearthstone bis zum Ende der letzten Partie. Solange Hearthstone läuft, zählt sie bis jetzt. Es zählen nur Sitzungen mit mindestens einer Partie im Zeitraum.
 
+Partien in Modi ohne gemessene Raten, zum Beispiel Schlachtfeld, werden ohne EP gespeichert. Sie stehen unter „Partien“ und zählen bei Spielzeit und Online-Zeit mit, aber nicht in den übrigen Kacheln, der Deck-Tabelle und den Diagrammen.
+
 **Decks**
 
 Eine Zeile pro Deck: Partien, Siegquote, EP, EP pro Stunde und die durchschnittliche Partiedauer. Das Deck mit den meisten EP pro Stunde steht oben.

@@ -133,6 +133,8 @@ Per "Sessione", una riga sotto la barra degli strumenti indica la sessione, per 
 
 Il tempo online si conta per ogni sessione di Hearthstone: dall'avvio di Hearthstone alla fine dell'ultima partita. Mentre Hearthstone è aperto, conta fino ad adesso. Contano solo le sessioni con almeno una partita nel periodo.
 
+Le partite in modalità senza tassi misurati, per esempio Battaglia, vengono salvate senza PE. Compaiono in "Partite" e contano nel tempo di gioco e nel tempo online, ma non negli altri riquadri, nella tabella dei mazzi né nei grafici.
+
 **Mazzi**
 
 Una riga per mazzo: partite, percentuale di vittorie, PE, PE all'ora e durata media della partita. Il mazzo con più PE all'ora è in cima.

@@ -133,6 +133,8 @@ En "Sesión", una línea debajo de la barra de herramientas indica la sesión, p
 
 El tiempo en línea se cuenta por sesión de Hearthstone: desde que se abre Hearthstone hasta el final de la última partida. Mientras Hearthstone está abierto, cuenta hasta ahora. Solo cuentan las sesiones con al menos una partida en el periodo.
 
+Las partidas en modos sin tasas medidas, por ejemplo Campos de batalla, se guardan sin EXP. Aparecen en "Partidas" y cuentan para el tiempo de juego y el tiempo en línea, pero no para los demás recuadros, la tabla de mazos ni los gráficos.
+
 **Mazos**
 
 Una fila por mazo: partidas, porcentaje de victorias, EXP, EXP por hora y la duración media de las partidas. El mazo con más EXP por hora está arriba.
