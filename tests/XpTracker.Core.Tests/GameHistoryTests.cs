@@ -73,6 +73,62 @@ public sealed class GameHistoryTests : IDisposable
     }
 
     [Fact]
+    public void DamagedRow_IsSkippedAndCounted()
+    {
+        new GameHistory(File).Add(Sample("10:18:45"));
+        System.IO.File.AppendAllLines(File, new[] { DamagedRow });
+
+        var history = new GameHistory(File);
+        var loaded = Assert.Single(history.Load());
+
+        Assert.Equal(Sample("10:18:45").Key, loaded.Key);
+        Assert.Equal(1, history.UnreadableRows);
+    }
+
+    [Fact]
+    public void DamagedRow_DoesNotBlockNewGames()
+    {
+        new GameHistory(File).Add(Sample("10:18:45"));
+        System.IO.File.AppendAllLines(File, new[] { DamagedRow });
+
+        var history = new GameHistory(File);
+        Assert.True(history.Add(Sample("11:00:00")));
+        Assert.False(history.Add(Sample("10:18:45")));
+
+        Assert.Equal(2, new GameHistory(File).Load().Count);
+    }
+
+    [Fact]
+    public void DamagedRow_IsKeptWhenTheFileIsRewritten()
+    {
+        var history = new GameHistory(File);
+        history.Add(Sample("10:18:45"));
+        System.IO.File.AppendAllLines(File, new[] { DamagedRow, "too,short", string.Empty });
+        var games = history.Load().ToList();
+        games[0].Deck = "Filled later";
+
+        history.ReplaceAll(games);
+
+        var lines = System.IO.File.ReadAllLines(File);
+        Assert.Equal(4, lines.Length);
+        Assert.Equal(DamagedRow, lines[2]);
+        Assert.Equal("too,short", lines[3]);
+        Assert.Equal(2, history.UnreadableRows);
+        Assert.Equal("Filled later", Assert.Single(new GameHistory(File).Load()).Deck);
+    }
+
+    [Fact]
+    public void CleanFile_HasNoUnreadableRows()
+    {
+        var history = new GameHistory(File);
+        history.Add(Sample("10:18:45"));
+
+        history.Load();
+
+        Assert.Equal(0, history.UnreadableRows);
+    }
+
+    [Fact]
     public void MissingFile_LoadsEmpty()
     {
         Assert.Empty(new GameHistory(File).Load());
@@ -92,6 +148,10 @@ public sealed class GameHistoryTests : IDisposable
             Directory.Delete(_folder, recursive: true);
         }
     }
+
+    // A row as a spreadsheet with German settings saves it: other date format, decimal commas.
+    private const string DamagedRow =
+        "Hearthstone_2026_11_08_09_10_51,08.11.2026 10:40,08.11.2026 10:47,Ranked,Wild,Win,\"349,68\",\"412,14\",\"472,62\",1,46,Deck,ROGUE,WARRIOR,,0";
 
     private static GameRecord Sample(string start) => new()
     {

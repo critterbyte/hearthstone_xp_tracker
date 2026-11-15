@@ -34,6 +34,13 @@ public sealed class GameHistory
         _path = path;
     }
 
+    /// <summary>
+    /// Rows of the file that could not be read at the last <see cref="Load"/> or <see cref="ReplaceAll"/>, for example
+    /// after the file was saved by a spreadsheet with other date or number formats. They are skipped, and kept
+    /// unchanged at the end of the file when it is rewritten.
+    /// </summary>
+    public int UnreadableRows { get; private set; }
+
     /// <summary>Appends the game unless a game with the same session and start is already stored.</summary>
     /// <returns>True if the game was written.</returns>
     public bool Add(GameRecord record)
@@ -86,6 +93,10 @@ public sealed class GameHistory
                 Directory.CreateDirectory(directory);
             }
 
+            // Rows that cannot be read are not in the records; they are written back as they are, so nothing is lost.
+            ReadFile(out var unreadable);
+            UnreadableRows = unreadable.Count;
+
             var temp = _path + ".tmp";
             using (var writer = new StreamWriter(temp, append: false, new UTF8Encoding(false)))
             {
@@ -93,6 +104,11 @@ public sealed class GameHistory
                 foreach (var record in list)
                 {
                     writer.WriteLine(ToCsv(record));
+                }
+
+                foreach (var line in unreadable)
+                {
+                    writer.WriteLine(line);
                 }
             }
 
@@ -109,24 +125,60 @@ public sealed class GameHistory
         }
     }
 
+    /// <summary>Reads all games. Rows that cannot be read are skipped and counted in <see cref="UnreadableRows"/>.</summary>
     public IReadOnlyList<GameRecord> Load()
     {
+        lock (_sync)
+        {
+            var records = ReadFile(out var unreadable);
+            UnreadableRows = unreadable.Count;
+            return records;
+        }
+    }
+
+    private List<GameRecord> ReadFile(out List<string> unreadable)
+    {
+        var records = new List<GameRecord>();
+        unreadable = new List<string>();
         if (!File.Exists(_path))
         {
-            return Array.Empty<GameRecord>();
+            return records;
         }
 
-        var records = new List<GameRecord>();
         foreach (var line in File.ReadLines(_path, Encoding.UTF8).Skip(1))
         {
-            var fields = SplitCsv(line);
-            if (fields.Count >= OldColumnCount)
+            if (line.Trim().Length == 0)
             {
-                records.Add(FromCsv(fields));
+                continue;
+            }
+
+            var fields = SplitCsv(line);
+            if (fields.Count >= OldColumnCount && TryFromCsv(fields, out var record))
+            {
+                records.Add(record);
+            }
+            else
+            {
+                unreadable.Add(line);
             }
         }
 
         return records;
+    }
+
+    // A row edited by hand or saved by a spreadsheet can have other date or number formats.
+    private static bool TryFromCsv(IReadOnlyList<string> fields, out GameRecord record)
+    {
+        try
+        {
+            record = FromCsv(fields);
+            return true;
+        }
+        catch (Exception ex) when (ex is FormatException or OverflowException)
+        {
+            record = new GameRecord();
+            return false;
+        }
     }
 
     private static string ToCsv(GameRecord r) => string.Join(",", new[]
