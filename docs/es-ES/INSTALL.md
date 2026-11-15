@@ -75,6 +75,13 @@ Elimina también esta carpeta si no quieres conservar los datos.
 - Mientras eliges tu mano inicial, el overlay está oculto. Aparece con el primer turno.
 - Comprueba que el overlay del propio HDT funciona. El plugin dibuja sobre el overlay de HDT.
 
+**Después de instalar una versión anterior, HDT sigue usando la más nueva.**
+
+- HDT no carga el plugin desde `%APPDATA%\HearthstoneDeckTracker\Plugins`, sino desde una copia en su propia carpeta de programa, `%LOCALAPPDATA%\HearthstoneDeckTracker\app-<versión de HDT>\Plugins`, y solo reemplaza un archivo allí cuando el archivo en `%APPDATA%` es más nuevo. Los archivos de una versión anterior son más antiguos, así que HDT conserva la copia más nueva.
+- Para volver a una versión anterior: cierra HDT, instala la versión anterior como se describe arriba, borra la carpeta `HearthstoneXpTracker` en `%LOCALAPPDATA%\HearthstoneDeckTracker\app-<versión de HDT>\Plugins` y vuelve a iniciar HDT. HDT copia el plugin de nuevo.
+- Desde la versión 0.1.2, el panel muestra la versión en uso en la esquina superior derecha.
+- Las actualizaciones a una versión más nueva no se ven afectadas.
+
 **Falla otra cosa.**
 
 Por favor, [abre una incidencia](https://github.com/critterbyte/hearthstone_xp_tracker/issues/new/choose) e indica tu versión de HDT y lo que esperabas ver.

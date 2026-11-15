@@ -68,6 +68,13 @@ Delete this folder too if you do not want to keep the data.
 - During the mulligan the overlay is hidden. It appears with the first turn.
 - Check that HDT's own overlay works. The plugin draws on the HDT overlay.
 
+**After installing an older version, HDT still runs the newer one.**
+
+- HDT does not load the plugin from `%APPDATA%\HearthstoneDeckTracker\Plugins`. It loads a copy in its own program folder, `%LOCALAPPDATA%\HearthstoneDeckTracker\app-<HDT version>\Plugins`, and replaces a file there only when the file in `%APPDATA%` is newer. The files of an older release are older, so HDT keeps the newer copy.
+- To go back to an older version: close HDT, install the older version as described above, delete the folder `HearthstoneXpTracker` in `%LOCALAPPDATA%\HearthstoneDeckTracker\app-<HDT version>\Plugins`, and start HDT again. HDT then copies the plugin again.
+- From version 0.1.2 on, the dashboard shows the running version in the top right corner.
+- Updates to a newer version are not affected.
+
 **Something else is wrong.**
 
 Please [open an issue](https://github.com/critterbyte/hearthstone_xp_tracker/issues/new/choose) and include your HDT version and what you expected to see.

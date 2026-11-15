@@ -75,6 +75,13 @@
 - 最初の手札の選択中は、オーバーレイは表示されません。最初のターンで表示されます。
 - HDT 自体のオーバーレイが動いているか確認してください。このプラグインは HDT のオーバーレイ上に描画します。
 
+**古いバージョンをインストールしても、HDT が新しいバージョンのまま動く。**
+
+- HDT はプラグインを `%APPDATA%\HearthstoneDeckTracker\Plugins` から直接読み込まず、自分のプログラムフォルダー `%LOCALAPPDATA%\HearthstoneDeckTracker\app-<HDT のバージョン>\Plugins` にあるコピーを読み込みます。そこにあるファイルは、`%APPDATA%` 側のファイルのほうが新しい場合にだけ置き換えられます。古いリリースのファイルは日付が古いため、HDT は新しいコピーを使い続けます。
+- 古いバージョンに戻すには: HDT を閉じ、上の手順で古いバージョンをインストールし、`%LOCALAPPDATA%\HearthstoneDeckTracker\app-<HDT のバージョン>\Plugins` 内の `HearthstoneXpTracker` フォルダーを削除してから HDT を起動します。HDT がプラグインをコピーし直します。
+- バージョン 0.1.2 以降、ダッシュボードの右上に実行中のバージョンが表示されます。
+- 新しいバージョンへのアップデートには影響しません。
+
 **ほかの問題がある。**
 
 [Issue を作成](https://github.com/critterbyte/hearthstone_xp_tracker/issues/new/choose)し、HDT のバージョンと、本来表示されるはずだった内容を書いてください。

@@ -75,6 +75,13 @@ Usuń też ten folder, jeśli nie chcesz zachować danych.
 - Podczas wyboru ręki startowej nakładka jest ukryta. Pojawia się w pierwszej turze.
 - Sprawdź, czy działa nakładka samego HDT. Wtyczka rysuje na nakładce HDT.
 
+**Po zainstalowaniu starszej wersji HDT nadal używa nowszej.**
+
+- HDT nie wczytuje wtyczki z `%APPDATA%\HearthstoneDeckTracker\Plugins`, tylko z kopii we własnym folderze programu, `%LOCALAPPDATA%\HearthstoneDeckTracker\app-<wersja HDT>\Plugins`. Zastępuje tam plik tylko wtedy, gdy plik w `%APPDATA%` jest nowszy. Pliki starszej wersji są starsze, więc HDT zostawia nowszą kopię.
+- Aby wrócić do starszej wersji: zamknij HDT, zainstaluj starszą wersję tak, jak opisano wyżej, usuń folder `HearthstoneXpTracker` w `%LOCALAPPDATA%\HearthstoneDeckTracker\app-<wersja HDT>\Plugins` i uruchom HDT ponownie. HDT skopiuje wtyczkę od nowa.
+- Od wersji 0.1.2 panel pokazuje działającą wersję w prawym górnym rogu.
+- Nie dotyczy to aktualizacji do nowszej wersji.
+
 **Coś innego nie działa.**
 
 [Zgłoś problem](https://github.com/critterbyte/hearthstone_xp_tracker/issues/new/choose) i podaj swoją wersję HDT oraz to, czego się spodziewałeś.
