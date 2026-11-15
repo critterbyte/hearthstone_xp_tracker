@@ -208,6 +208,71 @@ public class PowerLogTrackerTests
     }
 
     [Fact]
+    public void IsGameRunning_CoversTheMulliganAndEndsWithTheGame()
+    {
+        var tracker = new PowerLogTracker(Day);
+        Assert.False(tracker.IsGameRunning);
+
+        Feed(tracker, GameStart("12:00:00", "GT_RANKED", localStarts: true));
+        Feed(tracker, Power("12:00:05", "TAG_CHANGE Entity=GameEntity tag=STEP value=BEGIN_MULLIGAN"));
+        Assert.True(tracker.IsGameRunning);
+        Assert.False(tracker.Clock!.HasStarted);
+
+        Feed(tracker,
+            Line("12:00:20", "GameState.SendChoices()", "id=1 ChoiceType=MULLIGAN"),
+            Power("12:00:30", "TAG_CHANGE Entity=GameEntity tag=STEP value=MAIN_READY"));
+        Assert.True(tracker.IsGameRunning);
+
+        Feed(tracker,
+            Power("12:05:00", "TAG_CHANGE Entity=Alice tag=PLAYSTATE value=WON"),
+            Power("12:05:00", "TAG_CHANGE Entity=GameEntity tag=STATE value=COMPLETE"));
+        Assert.False(tracker.IsGameRunning);
+    }
+
+    [Fact]
+    public void IsGameRunning_EndsForAGameConcededDuringTheMulligan()
+    {
+        var finished = new List<FinishedGame>();
+        var tracker = new PowerLogTracker(Day);
+        tracker.GameFinished += finished.Add;
+        Feed(tracker, GameStart("12:00:00", "GT_RANKED", localStarts: true));
+        Feed(tracker,
+            Power("12:00:05", "TAG_CHANGE Entity=GameEntity tag=STEP value=BEGIN_MULLIGAN"),
+            Power("12:00:15", "TAG_CHANGE Entity=Alice tag=PLAYSTATE value=CONCEDED"),
+            Power("12:00:15", "TAG_CHANGE Entity=GameEntity tag=STATE value=COMPLETE"));
+
+        Assert.False(tracker.IsGameRunning);
+        Assert.Empty(finished);
+    }
+
+    [Theory]
+    [InlineData("GT_RANKED", "FT_STANDARD", GameMode.Ranked)]
+    [InlineData("GT_RANKED", "FT_WILD", GameMode.Ranked)]
+    [InlineData("GT_CASUAL", "FT_WILD", GameMode.Casual)]
+    [InlineData("GT_RANKED", "FT_TWIST", GameMode.Other)]
+    [InlineData("GT_CASUAL", "FT_CLASSIC", GameMode.Other)]
+    [InlineData("GT_ARENA", "FT_TWIST", GameMode.Arena)]
+    public void RankedAndCasual_AreMeasuredInStandardAndWildOnly(string gameType, string formatType, GameMode expected)
+    {
+        var tracker = new PowerLogTracker(Day);
+        Feed(tracker, GameStart("12:00:00", gameType, localStarts: true));
+        Feed(tracker, Line("12:00:00", "GameState.DebugPrintGame()", "FormatType=" + formatType));
+
+        Assert.Equal(expected, tracker.Mode);
+    }
+
+    [Fact]
+    public void RankedWithoutAFormatInTheLog_StaysRanked()
+    {
+        var tracker = new PowerLogTracker(Day);
+        Feed(tracker,
+            Power("12:00:00", "CREATE_GAME"),
+            Line("12:00:00", "GameState.DebugPrintGame()", "GameType=GT_RANKED"));
+
+        Assert.Equal(GameMode.Ranked, tracker.Mode);
+    }
+
+    [Fact]
     public void NewGame_StartsANewClock()
     {
         var tracker = StartedRankedGame("12:00:00");

@@ -161,7 +161,7 @@ The timestamps carry only the time of day, not the date. The plugin takes the da
 
 ## Not covered yet
 
-- **Battlegrounds, Twist and solo adventures** are not measured. The plugin shows nothing in these modes.
+- **Battlegrounds, Twist and solo adventures** are not measured. The plugin shows nothing in these modes. Ranked and Casual count as measured in the formats Standard and Wild only; a game in another format, such as Twist, is stored without XP.
   - **According to [5]:** Casual, Ranked, Arena, Battlegrounds, Tavern Brawls and Adventures give XP.
   - **According to [5]:** Friendly Challenges do not give XP.
 - **Tavern Pass:** not measured, because of the project's free-to-play policy. The plugin calculates the boost as described in [Tavern Pass](#tavern-pass); the rounding with the boost is assumed.

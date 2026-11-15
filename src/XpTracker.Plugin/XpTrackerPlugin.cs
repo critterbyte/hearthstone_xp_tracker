@@ -131,7 +131,7 @@ public class XpTrackerPlugin : IPlugin
                 showDamage ? t?.DamageDealt : null,
                 _settings.XpBonusPercent,
                 showDamage ? t?.HeroDamageDealt : null),
-            gameRunning: t?.Clock is { HasStarted: true, IsOver: false },
+            gameRunning: t?.IsGameRunning ?? false,
             update));
         // The text changes at most once per second; only touch the visual tree when it does.
         var key = string.Join("\n", lines.Select(l => l + (l.IsXp ? " xp" : l.IsEvent ? " event" : string.Empty)));
