@@ -56,7 +56,7 @@ This page is about playing normally and efficiently. Bots, win trading, account 
 
 ## Tavern Pass
 
-- **According to [6]:** the Tavern Pass gives a 10% XP boost at once, 15% at track level 20 and 20% at level 70, for the rest of the expansion.
+- **According to [6] and [7]:** the Tavern Pass gives a 10% XP boost at once, 15% at track level 20 and 20% at level 70, for the rest of the expansion.
 - **According to [7]:** the boost applies to XP from any source.
 - Not measured: whether the boost multiplies the game rates exactly. All measurements were made without it.
 

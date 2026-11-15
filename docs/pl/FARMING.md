@@ -66,7 +66,7 @@ Ta strona dotyczy normalnej, wydajnej gry. Boty, ustawianie wyników, współdzi
 <a id="tavern-pass"></a>
 ## Karnet Karczmarza
 
-- **Według [6]:** Karnet Karczmarza daje od razu 10% premii PD, 15% od poziomu 20 na Ścieżce nagród i 20% od poziomu 70, do końca rozszerzenia.
+- **Według [6] i [7]:** Karnet Karczmarza daje od razu 10% premii PD, 15% od poziomu 20 na Ścieżce nagród i 20% od poziomu 70, do końca rozszerzenia.
 - **Według [7]:** premia dotyczy PD z każdego źródła.
 - Niezmierzone: czy premia dokładnie mnoży stawki za gry. Wszystkie pomiary wykonano bez karnetu.
 

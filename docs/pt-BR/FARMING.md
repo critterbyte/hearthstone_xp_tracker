@@ -66,7 +66,7 @@ Esta página trata de jogar de forma normal e eficiente. Bots, win trading, comp
 <a id="tavern-pass"></a>
 ## Passe da Taverna
 
-- **Segundo [6]:** o Passe da Taverna dá um bônus de EXP de 10% na hora, de 15% no nível 20 da trilha e de 20% no nível 70, pelo resto da expansão.
+- **Segundo [6] e [7]:** o Passe da Taverna dá um bônus de EXP de 10% na hora, de 15% no nível 20 da trilha e de 20% no nível 70, pelo resto da expansão.
 - **Segundo [7]:** o bônus vale para EXP de qualquer origem.
 - Não medido: se o bônus multiplica exatamente as taxas das partidas. Todas as medições foram feitas sem ele.
 

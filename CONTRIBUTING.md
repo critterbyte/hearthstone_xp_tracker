@@ -3,10 +3,9 @@
 Thank you for helping! You can contribute in several ways:
 
 - **Report a bug** or **suggest a feature**: [open an issue](https://github.com/critterbyte/hearthstone_xp_tracker/issues/new/choose).
-- **Contribute measurements**: the formula comes from measured games. Modes such as Arena and Battlegrounds still need data. See [Contributing measurements](#contributing-measurements).
+- **Contribute measurements**: the formula comes from measured games. Modes such as Battlegrounds still need data, and so does the Tavern Pass boost. See [Contributing measurements](#contributing-measurements).
+- **Fix or improve a translation** of the plugin or the user guides: see [Translations](#translations).
 - **Contribute code or documentation**: see below.
-
-Translations of the documentation and the plugin are planned for later.
 
 ## Privacy first
 
