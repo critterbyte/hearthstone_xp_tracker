@@ -1,0 +1,36 @@
+# Security policy
+
+## Supported versions
+
+Only the newest release gets security fixes. The plugin tells you when a newer version is available; please update before reporting.
+
+| Version | Supported |
+|---|---|
+| Newest release on the [Releases page](https://github.com/critterbyte/hearthstone_xp_tracker/releases) | Yes |
+| Older releases | No |
+
+## Reporting a vulnerability
+
+Please **do not open a public issue** for a security problem.
+
+Report it privately instead: on the repository's **Security** tab, choose **Report a vulnerability**. This opens a private advisory that only you and the maintainer can see. See GitHub's guide on [privately reporting a security vulnerability](https://docs.github.com/en/code-security/security-advisories/guidance-on-reporting-and-writing-information-about-vulnerabilities/privately-reporting-a-security-vulnerability).
+
+Please include:
+
+- the plugin version and your HDT version,
+- what the problem is and what an attacker could do with it,
+- steps to reproduce it.
+
+Do not include logs with BattleTags or account ids; remove them first.
+
+This is a hobby project maintained by one person, so the answer may take a few days. Once the problem is fixed and a new release is out, the advisory is published with credit to you, unless you prefer to stay anonymous.
+
+## Scope
+
+Examples of what counts as a security problem:
+
+- The plugin reads or sends data it should not, for example anything beyond the plugin name and version in the update check.
+- The update hint can be made to link to a site outside this repository.
+- A crafted `Power.log`, `hs_games.csv` or `settings.ini` makes the plugin run code or write files outside its data folder.
+
+Not in scope: bugs in Hearthstone or Hearthstone Deck Tracker themselves (please report those to Blizzard or HearthSim), and wrong XP values (please open a normal issue).
