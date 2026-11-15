@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- The dashboard shows the installed version in the top right corner of its title bar, in mana blue (for example "v0.1.2").
+
+### Changed
+
+- The overlay's "Update available:" label is mana blue instead of white, so the hint catches the eye.
+- The dashboard's "Language" and "Overlay position" drop-downs are equally wide and line up on the right, with their labels right-aligned, in every language.
+- HDT's plugin list shows the version with three parts, as on GitHub (0.1.2 instead of 0.1.2.0).
+
 ## [0.1.1] - 2026-11-15
 
 Bug fixes after the first public beta, found in a review of the whole project.

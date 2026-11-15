@@ -50,7 +50,8 @@ public class XpTrackerPlugin : IPlugin
 
     public string Author => "critterbyte";
 
-    public Version Version => typeof(XpTrackerPlugin).Assembly.GetName().Version;
+    // Three parts (0.1.2) as on GitHub; the assembly version always has four (0.1.2.0). Shown in HDT's plugin list.
+    public Version Version => UpdateCheck.Normalize(typeof(XpTrackerPlugin).Assembly.GetName().Version);
 
     // Entry in HDT's Plugins menu; created on first access, which happens on the UI thread.
     public MenuItem MenuItem
