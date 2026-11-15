@@ -15,6 +15,7 @@ A plugin for [Hearthstone Deck Tracker](https://hsreplay.net/downloads/) (HDT) t
 - **Live overlay** at the bottom right above the Hearthstone settings button, or at the bottom left above your portrait:
   - XP time: the part of the game that counts for XP
   - the XP you get if you win, and if you lose
+- **Event XP tracking:** during Hearthstone events, the overlay also shows the event XP of the game (one per minute of XP time), live and in the summary, and the dashboard adds them up. Switch on "Event running" in the dashboard.
 - **Summary after each game:** XP time, total time including the mulligan, and the XP earned.
 - **Damage tracker:** along the way, the overlay counts the damage your side deals to the opponent, in total and to the hero, live and in the summary after each game. You can switch it off in the dashboard.
 - **AFK rule:** a turn that runs out without any action does not count, and neither does the opponent turn after it. The overlay shows this live.
