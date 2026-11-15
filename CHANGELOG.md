@@ -7,7 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Dashboard: games in modes without measured rates (for example Battlegrounds) no longer count in "Games", "XP time", "XP per hour", "Win rate", the deck table and the charts. They are stored without XP, so they lowered the XP per hour before. They still appear in the game list and count in the play time and the online time.
+
 ### Fixed
+
+- Lost XP: a game that AFK turns pushed below the 60-second minimum is no longer counted in both "AFK turns" and "Games under 1 minute"; the two tiles now add up to the XP the game would have given. A Tavern Brawl against the computer no longer counts as a game under 1 minute, because it gives no XP anyway.
 
 - A row of `hs_games.csv` that cannot be read no longer stops the dashboard from opening or new games from being stored, for example after the file was saved by a spreadsheet with other date or number formats. Such rows are skipped and kept unchanged at the end of the file when the plugin rewrites it.
 - Games after midnight get the right date when Hearthstone was started on an earlier day. Before, starting HDT after midnight in a session from the evening made the overlay show "30:00 (max)" during the game, and a game after a break of 12 to 24 hours in the same session was stored on the previous day. The date now comes from the system clock instead of being counted up from the session's start date.

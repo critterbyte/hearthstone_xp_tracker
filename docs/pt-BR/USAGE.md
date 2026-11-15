@@ -133,6 +133,8 @@ Em "Sessão", uma linha abaixo da barra de ferramentas indica a sessão, por exe
 
 O tempo on-line é contado por sessão do Hearthstone: desde o início do Hearthstone até o fim da última partida. Enquanto o Hearthstone está aberto, ele conta até agora. Só contam as sessões com pelo menos uma partida no período.
 
+As partidas em modos sem taxas medidas, por exemplo os Campos de Batalha, são salvas sem EXP. Elas aparecem em "Partidas" e contam no tempo de jogo e no tempo on-line, mas não nos outros blocos, na tabela de decks nem nos gráficos.
+
 **Decks**
 
 Uma linha por deck: partidas, taxa de vitórias, EXP, EXP por hora e a duração média das partidas. O deck com mais EXP por hora fica no topo.

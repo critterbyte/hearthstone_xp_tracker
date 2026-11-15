@@ -133,6 +133,8 @@ Dla okresu „Sesja” wiersz pod paskiem narzędzi podaje sesję, na przykład 
 
 Czas online jest liczony dla każdej sesji Hearthstone: od uruchomienia Hearthstone do końca ostatniej gry. Dopóki Hearthstone działa, liczy się do teraz. Liczą się tylko sesje z co najmniej jedną grą w okresie.
 
+Gry w trybach bez zmierzonych stawek, na przykład Ustawka, są zapisywane bez PD. Są widoczne w „Gry” i liczą się do czasu gry oraz czasu online, ale nie do pozostałych kafelków, tabeli talii ani wykresów.
+
 **Talie**
 
 Jeden wiersz na talię: gry, odsetek zwycięstw, PD, PD na godzinę i średnia długość gry. Talia z najwyższym wynikiem PD na godzinę jest na górze.

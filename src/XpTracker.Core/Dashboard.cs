@@ -219,7 +219,7 @@ public static class Dashboard
 
     private static void Fill(List<TimeBucket> buckets, IEnumerable<GameRecord> games)
     {
-        foreach (var game in games)
+        foreach (var game in games.Where(g => XpRates.IsMeasured(g.Mode)))
         {
             var bucket = buckets.FirstOrDefault(b => game.Start >= b.Start && game.Start < b.End);
             if (bucket is null)
@@ -248,25 +248,32 @@ public static class Dashboard
         return games.Where(g => g.Start >= start).OrderBy(g => g.Start).ToList();
     }
 
+    /// <summary>
+    /// Games, wins, losses, XP and XP time count only games of modes with measured rates, so games of other modes
+    /// (stored without XP) do not lower the XP per hour or change the win rate. Play time and online time count every game.
+    /// </summary>
     /// <param name="currentSession">Session that is still running; its online time counts up to <paramref name="now"/>.</param>
     public static SummaryStats Summary(IReadOnlyList<GameRecord> games, DateTime periodStart, DateTime now, string? currentSession)
     {
+        var measured = games.Where(g => XpRates.IsMeasured(g.Mode)).ToList();
         return new SummaryStats
         {
-            Games = games.Count,
-            Wins = games.Count(g => g.Result == GameResult.Win),
-            Losses = games.Count(g => g.Result == GameResult.Loss),
-            Xp = games.Sum(g => g.Xp ?? 0),
+            Games = measured.Count,
+            Wins = measured.Count(g => g.Result == GameResult.Win),
+            Losses = measured.Count(g => g.Result == GameResult.Loss),
+            Xp = measured.Sum(g => g.Xp ?? 0),
             EventXp = games.Sum(g => g.EventXp ?? 0),
             HasEventXp = games.Any(g => g.EventXp is not null),
-            XpSeconds = games.Sum(g => g.XpSeconds),
+            XpSeconds = measured.Sum(g => g.XpSeconds),
             PlaySeconds = games.Sum(g => g.WithMulliganSeconds),
             OnlineSeconds = OnlineSeconds(games, periodStart, now, currentSession),
         };
     }
 
+    /// <summary>One row per deck, from the games of modes with measured rates.</summary>
     public static IReadOnlyList<DeckStats> Decks(IEnumerable<GameRecord> games) =>
-        games.GroupBy(g => g.Deck.Length > 0 ? g.Deck : NoDeck)
+        games.Where(g => XpRates.IsMeasured(g.Mode))
+            .GroupBy(g => g.Deck.Length > 0 ? g.Deck : NoDeck)
             .Select(group => new DeckStats
             {
                 Deck = group.Key,
@@ -284,22 +291,29 @@ public static class Dashboard
         var lost = new LostXpStats();
         foreach (var game in games)
         {
+            // Without a rate nothing is known, and at rate 0 (Tavern Brawl against the computer) nothing can be lost.
             var rate = XpRates.RateFor(game.Mode, game.Result);
-            lost.AfkTurns += game.AfkTurns;
-            if (rate is null)
+            if (rate is null || rate.Value <= 0)
             {
                 continue;
             }
 
-            if (game.AfkTurns > 0)
-            {
-                lost.AfkXp += Math.Max(0, XpRates.ExpectedXp(game.PlaySeconds, rate.Value, game.XpBonus) - (game.Xp ?? 0));
-            }
+            lost.AfkTurns += game.AfkTurns;
 
-            if (game.XpSeconds < XpRates.MinXpSeconds)
+            // A game below the minimum loses the XP of its XP time as a short game. AFK turns lose only the rest,
+            // so a game that AFK turns pushed below the minimum is not counted twice.
+            var isShort = game.XpSeconds < XpRates.MinXpSeconds;
+            var shortXp = isShort ? XpRates.FormulaXp(game.XpSeconds, rate.Value, game.XpBonus) : 0;
+            if (isShort)
             {
                 lost.ShortGames++;
-                lost.ShortGamesXp += XpRates.FormulaXp(game.XpSeconds, rate.Value, game.XpBonus);
+                lost.ShortGamesXp += shortXp;
+            }
+
+            if (game.AfkTurns > 0)
+            {
+                var counted = isShort ? shortXp : game.Xp ?? 0;
+                lost.AfkXp += Math.Max(0, XpRates.ExpectedXp(game.PlaySeconds, rate.Value, game.XpBonus) - counted);
             }
         }
 

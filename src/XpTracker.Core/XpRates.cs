@@ -47,6 +47,12 @@ public static class XpRates
         };
     }
 
+    /// <summary>
+    /// True for modes with measured rates. Games of other modes (for example Battlegrounds) are stored without XP
+    /// and do not count in the dashboard's XP time, XP per hour, win rate, decks and charts.
+    /// </summary>
+    public static bool IsMeasured(GameMode mode) => RateFor(mode, GameResult.Win) is not null;
+
     /// <summary>Event XP of a game in this mode, or null if not known for the mode (for example Battlegrounds).</summary>
     public static int? EventXpFor(GameMode mode, double xpSeconds) => mode switch
     {
