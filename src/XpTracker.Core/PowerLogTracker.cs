@@ -90,6 +90,12 @@ public sealed class PowerLogTracker
 
     public GameMode Mode => _game?.Mode ?? GameMode.Other;
 
+    /// <summary>
+    /// True from the creation of a game, so also during the mulligan, until the game is complete.
+    /// Unlike the clock it also ends for a game that is conceded during the mulligan.
+    /// </summary>
+    public bool IsGameRunning => _game is { IsComplete: false };
+
     /// <summary>Damage the player's side dealt to the opponent's side in the current or last game.</summary>
     public int DamageDealt => _game?.Damage?.Dealt ?? 0;
 
@@ -211,8 +217,14 @@ public sealed class PowerLogTracker
                 game.Clock.StartTurn(SideOf(first), time);
                 game.CurrentSide = SideOf(first);
             }
-            else if (tag == "STATE" && value == "COMPLETE" && game.Clock.HasStarted && !game.Clock.IsOver)
+            else if (tag == "STATE" && value == "COMPLETE" && !(game.Clock.HasStarted && !game.Clock.IsOver))
             {
+                // Ended before the first turn (a concede during the mulligan): no XP time, nothing to store.
+                game.IsComplete = true;
+            }
+            else if (tag == "STATE" && value == "COMPLETE")
+            {
+                game.IsComplete = true;
                 game.Clock.EndGame(time, game.Result);
                 game.Damage!.Flush();
                 GameFinished?.Invoke(new FinishedGame(_session, game.FirstTurn ?? time, time, game.Mode, game.Format, game.Clock, game.Damage.Dealt, game.Damage.DealtToHero));
@@ -473,8 +485,26 @@ public sealed class PowerLogTracker
         /// <summary>The opponent has no account, so it is the computer.</summary>
         public bool AgainstComputer { get; set; }
 
-        /// <summary>A Tavern Brawl against the computer pays differently from one against a player.</summary>
-        public GameMode Mode => Type == GameMode.TavernBrawl && AgainstComputer ? GameMode.TavernBrawlPvE : Type;
+        /// <summary>
+        /// A Tavern Brawl against the computer pays differently from one against a player. Ranked and Casual are
+        /// measured in Standard and Wild only; another format (for example Twist) counts as a mode without rates.
+        /// </summary>
+        public GameMode Mode
+        {
+            get
+            {
+                if (Type == GameMode.TavernBrawl && AgainstComputer)
+                {
+                    return GameMode.TavernBrawlPvE;
+                }
+
+                var constructed = Type == GameMode.Ranked || Type == GameMode.Casual;
+                return constructed && Format.Length > 0 && Format != "Standard" && Format != "Wild" ? GameMode.Other : Type;
+            }
+        }
+
+        /// <summary>The log reported the end of the game (STATE COMPLETE).</summary>
+        public bool IsComplete { get; set; }
 
         public string Format { get; set; } = string.Empty;
 
