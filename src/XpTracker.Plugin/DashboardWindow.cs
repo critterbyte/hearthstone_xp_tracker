@@ -378,6 +378,10 @@ internal sealed class DashboardWindow : Window
     {
         var axis = chart.AxisX[0];
         axis.Labels = labels;
+
+        // LiveCharts starts the labels at the axis minimum rounded to its own magnitude, which is 0.1 or 0.01 for a few
+        // points. The labels then sit at -0.4, 0.6, ... and show the previous step. A unit of 1 anchors them at 0, 1, ...
+        axis.Unit = 1;
         axis.MinValue = -0.4;
         axis.MaxValue = Math.Max(labels.Length, 1) - 0.6;
         axis.Separator.Step = labels.Length switch

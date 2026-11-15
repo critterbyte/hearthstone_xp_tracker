@@ -51,6 +51,7 @@ First public beta: XP for Ranked, Casual, Tavern Brawl and Arena, measured game 
 
 - The dashboard's online time no longer keeps counting after Hearthstone was closed.
 - After a restart of Hearthstone, the dashboard shows the new session at once (within 5 seconds) instead of the previous one, and the online time starts with the new session. Hearthstone creates the new log folder at start but the `Power.log` only with the first game; the plugin now follows the newest session folder and reads the log as soon as it appears.
+- The dashboard charts label each point with its own hour or day. With few points, such as a week or a session, the labels were shifted half a step to the left and showed the previous day.
 
 - Ranked win rate changed from 0.1308 to 0.13054 XP/s. A 417.37-second win gave 54 XP, but 0.1308 calculated 55; a 425.27-second win gave 56 XP, but 0.1305 calculated 55. The measured range is now 0.130505 to 0.13058 XP/s, and the Ranked loss range 0.09317 to 0.09322 XP/s. When the dashboard opens, the XP of games already in the history is calculated again with the current rates.
 
