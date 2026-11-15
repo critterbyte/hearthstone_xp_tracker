@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-11-15
+
+Bug fixes after the first public beta, found in a review of the whole project.
+
 ### Changed
 
 - Dashboard: games in modes without measured rates (for example Battlegrounds) no longer count in "Games", "XP time", "XP per hour", "Win rate", the deck table and the charts. They are stored without XP, so they lowered the XP per hour before. They still appear in the game list and count in the play time and the online time.
@@ -17,7 +21,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The overlay no longer shows "Update available:" during the mulligan. It appears only while no game is running, as documented.
 - Ranked and Casual games in formats other than Standard and Wild (for example Twist) no longer get the Ranked or Casual rates, which were never measured there. They are stored without XP, and the overlay shows nothing, as `docs/FORMULA.md` says.
 - Documentation: `CONTRIBUTING.md` no longer calls translations planned or Arena unmeasured. `FARMING.md` and its translations name both sources for the Tavern Pass boost: the official post [6] for the percentages and the Hearthstone Wiki [7] for the levels.
-
 - A row of `hs_games.csv` that cannot be read no longer stops the dashboard from opening or new games from being stored, for example after the file was saved by a spreadsheet with other date or number formats. Such rows are skipped and kept unchanged at the end of the file when the plugin rewrites it.
 - Games after midnight get the right date when Hearthstone was started on an earlier day. Before, starting HDT after midnight in a session from the evening made the overlay show "30:00 (max)" during the game, and a game after a break of 12 to 24 hours in the same session was stored on the previous day. The date now comes from the system clock instead of being counted up from the session's start date.
 - A game that ends while `hs_games.csv` is open in another program is no longer lost: the plugin keeps it and writes it with the next game or the next refresh of the dashboard, as long as HDT keeps running.
@@ -74,5 +77,6 @@ First public beta: XP for Ranked, Casual, Tavern Brawl and Arena, measured game 
 - A Rewind card (game reset) no longer restarts the XP time on the overlay.
 - Starting HDT during a game no longer loses the time before the start.
 
-[Unreleased]: https://github.com/critterbyte/hearthstone_xp_tracker/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/critterbyte/hearthstone_xp_tracker/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/critterbyte/hearthstone_xp_tracker/releases/tag/v0.1.1
 [0.1.0]: https://github.com/critterbyte/hearthstone_xp_tracker/releases/tag/v0.1.0
