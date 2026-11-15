@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- A row of `hs_games.csv` that cannot be read no longer stops the dashboard from opening or new games from being stored, for example after the file was saved by a spreadsheet with other date or number formats. Such rows are skipped and kept unchanged at the end of the file when the plugin rewrites it.
+
 ## [0.1.0] - 2026-11-15
 
 First public beta: XP for Ranked, Casual, Tavern Brawl and Arena, measured game by game.

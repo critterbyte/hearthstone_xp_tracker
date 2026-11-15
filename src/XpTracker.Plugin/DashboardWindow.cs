@@ -201,7 +201,7 @@ internal sealed class DashboardWindow : Window
         {
             all = _history.Load();
         }
-        catch (IOException)
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
         {
             all = Array.Empty<GameRecord>();
         }
@@ -420,7 +420,7 @@ internal sealed class DashboardWindow : Window
                 _history.ReplaceAll(games);
             }
         }
-        catch (IOException)
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
         {
             // The history stays as it is; the next opening tries again.
         }
