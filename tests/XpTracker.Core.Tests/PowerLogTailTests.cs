@@ -124,6 +124,27 @@ public sealed class PowerLogTailTests : IDisposable
     }
 
     [Fact]
+    public void FailingLine_IsSkippedAndTheReaderGoesOn()
+    {
+        Append(GameStart("09:30:00", "GT_RANKED", localStarts: true));
+        Append(
+            Line("09:30:20", "GameState.SendChoices()", "id=1 ChoiceType=MULLIGAN"),
+            Power("09:31:00", "TAG_CHANGE Entity=GameEntity tag=STEP value=MAIN_READY"),
+            Power("09:35:00", "TAG_CHANGE Entity=GameEntity tag=STATE value=COMPLETE"));
+        var tail = new PowerLogTail(() => _root);
+        tail.GameFinished += _ => throw new InvalidOperationException("handler failed");
+
+        tail.Poll();
+        Append(GameStart("09:40:00", "GT_CASUAL", localStarts: true));
+        tail.Poll();
+
+        Assert.Equal(1, tail.FailedLines);
+        Assert.Equal(GameMode.Casual, tail.Read(t => t!.Mode));
+        // 13 lines of the first game and 10 of the second, each read once.
+        Assert.Equal(23, tail.Read(t => t!.LinesProcessed));
+    }
+
+    [Fact]
     public void MissingLogsFolder_DoesNothing()
     {
         var tail = new PowerLogTail(() => Path.Combine(_root, "missing"));

@@ -28,6 +28,7 @@ public sealed class GameHistory
     private readonly string _path;
     private readonly object _sync = new();
     private HashSet<string>? _keys;
+    private readonly List<GameRecord> _pending = new();
 
     public GameHistory(string path)
     {
@@ -53,31 +54,104 @@ public sealed class GameHistory
                 return false;
             }
 
-            var directory = Path.GetDirectoryName(_path);
-            if (!string.IsNullOrEmpty(directory))
+            try
             {
-                Directory.CreateDirectory(directory);
+                Write(record);
+            }
+            catch
+            {
+                // Not stored: forget the key, so the same game can be added again later.
+                _keys.Remove(record.Key);
+                throw;
             }
 
-            var newFile = !File.Exists(_path) || new FileInfo(_path).Length == 0;
-            if (!newFile && File.ReadLines(_path, Encoding.UTF8).FirstOrDefault() != string.Join(",", Columns))
-            {
-                // Older file without the newest columns: rewrite it once with the current header.
-                var all = Load().ToList();
-                all.Add(record);
-                ReplaceAll(all);
-                return true;
-            }
-
-            using var writer = new StreamWriter(_path, append: true, new UTF8Encoding(false));
-            if (newFile)
-            {
-                writer.WriteLine(string.Join(",", Columns));
-            }
-
-            writer.WriteLine(ToCsv(record));
             return true;
         }
+    }
+
+    /// <summary>Games that could not be written yet because the file was not accessible; see <see cref="TryAdd"/>.</summary>
+    public int PendingGames
+    {
+        get
+        {
+            lock (_sync)
+            {
+                return _pending.Count;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Like <see cref="Add"/>, but a game that cannot be written (the file is open in another program, or access is
+    /// denied) is kept in memory and written with the next call or with <see cref="RetryPending"/>.
+    /// </summary>
+    /// <returns>True if at least one game was written to the file.</returns>
+    public bool TryAdd(GameRecord record)
+    {
+        lock (_sync)
+        {
+            if (_pending.All(p => p.Key != record.Key))
+            {
+                _pending.Add(record);
+            }
+
+            return RetryPending() > 0;
+        }
+    }
+
+    /// <summary>Writes the games that could not be written before.</summary>
+    /// <returns>Number of games written to the file now.</returns>
+    public int RetryPending()
+    {
+        lock (_sync)
+        {
+            var written = 0;
+            while (_pending.Count > 0)
+            {
+                try
+                {
+                    if (Add(_pending[0]))
+                    {
+                        written++;
+                    }
+                }
+                catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+                {
+                    break;
+                }
+
+                _pending.RemoveAt(0);
+            }
+
+            return written;
+        }
+    }
+
+    private void Write(GameRecord record)
+    {
+        var directory = Path.GetDirectoryName(_path);
+        if (!string.IsNullOrEmpty(directory))
+        {
+            Directory.CreateDirectory(directory);
+        }
+
+        var newFile = !File.Exists(_path) || new FileInfo(_path).Length == 0;
+        if (!newFile && File.ReadLines(_path, Encoding.UTF8).FirstOrDefault() != string.Join(",", Columns))
+        {
+            // Older file without the newest columns: rewrite it once with the current header.
+            var all = Load().ToList();
+            all.Add(record);
+            ReplaceAll(all);
+            return;
+        }
+
+        using var writer = new StreamWriter(_path, append: true, new UTF8Encoding(false));
+        if (newFile)
+        {
+            writer.WriteLine(string.Join(",", Columns));
+        }
+
+        writer.WriteLine(ToCsv(record));
     }
 
     /// <summary>Rewrites the whole file, for example after deck names were filled in.</summary>

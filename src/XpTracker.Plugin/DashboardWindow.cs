@@ -199,6 +199,8 @@ internal sealed class DashboardWindow : Window
         IReadOnlyList<GameRecord> all;
         try
         {
+            // Games that could not be written while the file was open in another program.
+            _history.RetryPending();
             all = _history.Load();
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)

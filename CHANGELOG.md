@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - A row of `hs_games.csv` that cannot be read no longer stops the dashboard from opening or new games from being stored, for example after the file was saved by a spreadsheet with other date or number formats. Such rows are skipped and kept unchanged at the end of the file when the plugin rewrites it.
 - Games after midnight get the right date when Hearthstone was started on an earlier day. Before, starting HDT after midnight in a session from the evening made the overlay show "30:00 (max)" during the game, and a game after a break of 12 to 24 hours in the same session was stored on the previous day. The date now comes from the system clock instead of being counted up from the session's start date.
+- A game that ends while `hs_games.csv` is open in another program is no longer lost: the plugin keeps it and writes it with the next game or the next refresh of the dashboard, as long as HDT keeps running.
+- An unexpected error while reading `Power.log` no longer stops the overlay until HDT is restarted. The line is skipped, reading goes on, and the error is written to HDT's log once.
 
 ## [0.1.0] - 2026-11-15
 

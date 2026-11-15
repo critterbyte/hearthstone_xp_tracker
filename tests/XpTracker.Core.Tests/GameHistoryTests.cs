@@ -129,6 +129,68 @@ public sealed class GameHistoryTests : IDisposable
     }
 
     [Fact]
+    public void FailedAdd_CanBeRepeated()
+    {
+        var history = new GameHistory(File);
+        history.Add(Sample("10:18:45"));
+
+        using (new FileStream(File, FileMode.Open, FileAccess.ReadWrite, FileShare.None))
+        {
+            Assert.ThrowsAny<IOException>(() => history.Add(Sample("11:00:00")));
+        }
+
+        Assert.True(history.Add(Sample("11:00:00")));
+        Assert.Equal(2, new GameHistory(File).Load().Count);
+    }
+
+    [Fact]
+    public void TryAdd_WithALockedFile_KeepsTheGameAndWritesItWithTheNextOne()
+    {
+        var history = new GameHistory(File);
+        history.Add(Sample("10:18:45"));
+
+        // Another program, for example a spreadsheet, has the file open.
+        using (new FileStream(File, FileMode.Open, FileAccess.ReadWrite, FileShare.None))
+        {
+            Assert.False(history.TryAdd(Sample("11:00:00")));
+            Assert.False(history.TryAdd(Sample("11:00:00")));
+            Assert.Equal(1, history.PendingGames);
+        }
+
+        Assert.True(history.TryAdd(Sample("11:30:00")));
+
+        Assert.Equal(0, history.PendingGames);
+        Assert.Equal(new[] { "10:18", "11:00", "11:30" }, new GameHistory(File).Load().Select(g => g.Start.ToString("HH:mm")));
+    }
+
+    [Fact]
+    public void RetryPending_WritesTheKeptGames()
+    {
+        var history = new GameHistory(File);
+        history.Add(Sample("10:18:45"));
+        using (new FileStream(File, FileMode.Open, FileAccess.ReadWrite, FileShare.None))
+        {
+            history.TryAdd(Sample("11:00:00"));
+            Assert.Equal(0, history.RetryPending());
+        }
+
+        Assert.Equal(1, history.RetryPending());
+        Assert.Equal(0, history.RetryPending());
+        Assert.Equal(2, new GameHistory(File).Load().Count);
+    }
+
+    [Fact]
+    public void TryAdd_OfAStoredGame_WritesNothing()
+    {
+        var history = new GameHistory(File);
+        Assert.True(history.TryAdd(Sample("10:18:45")));
+        Assert.False(history.TryAdd(Sample("10:18:45")));
+
+        Assert.Equal(0, history.PendingGames);
+        Assert.Single(new GameHistory(File).Load());
+    }
+
+    [Fact]
     public void MissingFile_LoadsEmpty()
     {
         Assert.Empty(new GameHistory(File).Load());
