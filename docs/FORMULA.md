@@ -157,6 +157,8 @@ The plugin asks for the pass and the rewards track level in the dashboard and st
 
 Timestamps in the log have seven decimal places (100-nanosecond ticks). Whole seconds are not precise enough to tell the rates apart.
 
+The timestamps carry only the time of day, not the date. The plugin takes the date from the system clock: a line belongs to the latest day on which its time is not in the future. This is right for every game of the last 24 hours, also when Hearthstone runs past midnight or stays open overnight. Known limit: if HDT starts more than 24 hours after the last game of a Hearthstone session that is still open, that one game is read with a later date.
+
 ## Not covered yet
 
 - **Battlegrounds, Twist and solo adventures** are not measured. The plugin shows nothing in these modes.

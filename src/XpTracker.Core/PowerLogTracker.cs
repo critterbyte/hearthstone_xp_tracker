@@ -47,11 +47,16 @@ public sealed class FinishedGame
 /// <remarks>
 /// Only GameState lines are used; PowerTaskList lines repeat the same data with a delay.
 /// A Rewind (GAME_RESET) recreates entities with plain tag lines, which are ignored, so the clock runs on.
+/// Log lines carry only the time of day. A live reader sets <see cref="ReferenceTime"/>, so the date comes from the
+/// system clock; without it (replaying a stored log) the date is counted up from the session date.
 /// </remarks>
 public sealed class PowerLogTracker
 {
     // The server lowers a player's next turn limit to this value when a turn ran out without any action.
     public const int AfkTurnLimit = 10;
+
+    // A line may be a moment newer than the reference time that was taken before it was read.
+    private static readonly TimeSpan ReferenceTolerance = TimeSpan.FromMinutes(1);
 
     private const string UnknownPlayerName = "UNKNOWN HUMAN PLAYER";
 
@@ -61,13 +66,23 @@ public sealed class PowerLogTracker
     private TimeSpan? _lastTimeOfDay;
     private Game? _game;
 
-    /// <param name="sessionDate">Date the log file was started; log lines only carry the time of day.</param>
+    /// <param name="sessionDate">
+    /// Date the log file was started; log lines only carry the time of day. Used while no <see cref="ReferenceTime"/> is set.
+    /// </param>
     /// <param name="session">Name of the log session, passed on to finished games.</param>
     public PowerLogTracker(DateTime sessionDate, string session = "")
     {
         _sessionDate = sessionDate.Date;
         _session = session;
     }
+
+    /// <summary>
+    /// The current local time while lines are read as they are written, set by the reader before each batch of lines.
+    /// Each line then gets the latest date on which its time of day is not after this time. That is right for every
+    /// line written within the last 24 hours, also when the session started on an earlier day or paused for many hours.
+    /// Null when a stored log is replayed: the date then counts up from the session date at each midnight in the log.
+    /// </summary>
+    public DateTime? ReferenceTime { get; set; }
 
     public event Action<FinishedGame>? GameFinished;
 
@@ -417,6 +432,18 @@ public sealed class PowerLogTracker
         }
 
         var timeOfDay = new TimeSpan(hours, minutes, seconds) + TimeSpan.FromTicks(ticks);
+        if (ReferenceTime is { } reference)
+        {
+            var latest = reference + ReferenceTolerance;
+            time = latest.Date + timeOfDay;
+            if (time > latest)
+            {
+                time = time.AddDays(-1);
+            }
+
+            return true;
+        }
+
         if (_lastTimeOfDay is { } last && timeOfDay < last - TimeSpan.FromHours(12))
         {
             _dayOffset++;

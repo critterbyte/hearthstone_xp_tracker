@@ -108,6 +108,22 @@ public sealed class PowerLogTailTests : IDisposable
     }
 
     [Fact]
+    public void WithAClock_StartingAfterMidnight_DatesTheGameByTheClock()
+    {
+        // The session folder is from the 8th; the reader starts on the 9th, two minutes into a game that began at 00:10.
+        Append(GameStart("00:10:00", "GT_RANKED", localStarts: true));
+        Append(
+            Line("00:10:00", "GameState.SendChoices()", "id=1 ChoiceType=MULLIGAN"),
+            Power("00:10:00", "TAG_CHANGE Entity=GameEntity tag=STEP value=MAIN_READY"));
+        var now = new DateTime(2026, 11, 9, 0, 12, 0);
+
+        var tail = new PowerLogTail(() => _root, now: () => now);
+        tail.Poll();
+
+        Assert.Equal(120, tail.Read(t => t!.Clock!.GetSnapshot(now).XpSeconds), 3);
+    }
+
+    [Fact]
     public void MissingLogsFolder_DoesNothing()
     {
         var tail = new PowerLogTail(() => Path.Combine(_root, "missing"));
