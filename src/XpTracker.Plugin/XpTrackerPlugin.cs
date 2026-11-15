@@ -194,7 +194,6 @@ public class XpTrackerPlugin : IPlugin
         _dashboard?.ShowUpdate(update);
     }
 
-    // Called from the dashboard check box.
     // Called from the dashboard check box "Event running": shows the event XP row and stores event XP with new games.
     private void SetEventActive(bool active)
     {
@@ -286,17 +285,7 @@ public class XpTrackerPlugin : IPlugin
     private void SetCheckForUpdates(bool check)
     {
         _settings.CheckForUpdates = check;
-        try
-        {
-            _settings.Save(SettingsPath);
-        }
-        catch (IOException)
-        {
-            // The setting applies until HDT is closed; the next start reads the old file.
-        }
-        catch (UnauthorizedAccessException)
-        {
-        }
+        SaveSettings();
 
         if (check)
         {
@@ -332,36 +321,36 @@ public class XpTrackerPlugin : IPlugin
             DeckMatcher.FillMissing(new[] { record }, HdtDecks.All());
         }
 
-        try
+        // If the file is open in another program, the game is kept in memory and written with the next game
+        // or the next refresh of the dashboard.
+        if (_history.TryAdd(record))
         {
-            if (_history.Add(record))
-            {
-                _dashboard?.Refresh();
-            }
-        }
-        catch (IOException)
-        {
-            // The file may be open in another program; the game is missing from the history then.
-        }
-        catch (UnauthorizedAccessException)
-        {
+            _dashboard?.Refresh();
         }
     }
 
     private static async Task PollLoop(PowerLogTail tail, CancellationToken token)
     {
+        string? lastError = null;
         while (!token.IsCancellationRequested)
         {
             try
             {
                 tail.Poll();
             }
-            catch (IOException)
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
             {
                 // The log may be locked or replaced for a moment; try again on the next poll.
             }
-            catch (UnauthorizedAccessException)
+            catch (Exception ex)
             {
+                // Anything else must not end the reader for the rest of the HDT session. Each kind of error is logged once.
+                var text = ex.GetType().FullName + ": " + ex.Message;
+                if (text != lastError)
+                {
+                    lastError = text;
+                    Hearthstone_Deck_Tracker.Utility.Logging.Log.Error(ex);
+                }
             }
 
             try

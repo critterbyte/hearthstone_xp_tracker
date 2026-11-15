@@ -59,6 +59,9 @@ public sealed class PowerLogTail
     /// <summary>Time the last <see cref="Poll"/> took, for performance checks.</summary>
     public TimeSpan LastPollDuration { get; private set; }
 
+    /// <summary>Lines that raised an error while they were processed and were skipped.</summary>
+    public long FailedLines { get; private set; }
+
     /// <summary>Reads new lines. Call periodically from a background thread.</summary>
     public void Poll()
     {
@@ -214,7 +217,16 @@ public sealed class PowerLogTail
             {
                 if (line.Length > 0)
                 {
-                    _tracker!.ProcessLine(line.TrimEnd('\r'));
+                    try
+                    {
+                        _tracker!.ProcessLine(line.TrimEnd('\r'));
+                    }
+                    catch (Exception)
+                    {
+                        // An unexpected line, or a failing GameFinished handler, must not stop the reader or make it
+                        // read the same lines again: the line is skipped and reading goes on.
+                        FailedLines++;
+                    }
                 }
             }
 
