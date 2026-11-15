@@ -118,6 +118,96 @@ public class PowerLogTrackerTests
     }
 
     [Fact]
+    public void ReferenceTime_GameAcrossMidnight_CountsTheFullTime()
+    {
+        var tracker = new PowerLogTracker(Day) { ReferenceTime = Day.Add(new TimeSpan(23, 59, 31)) };
+        Feed(tracker, GameStart("23:59:30", "GT_RANKED", localStarts: true));
+        Feed(tracker,
+            Line("23:59:30", "GameState.SendChoices()", "id=1 ChoiceType=MULLIGAN"),
+            Power("23:59:30", "TAG_CHANGE Entity=GameEntity tag=STEP value=MAIN_READY"));
+
+        tracker.ReferenceTime = Day.AddDays(1).Add(new TimeSpan(0, 0, 31));
+        Feed(tracker,
+            Power("00:00:30", "TAG_CHANGE Entity=Alice tag=PLAYSTATE value=LOST"),
+            Power("00:00:30", "TAG_CHANGE Entity=GameEntity tag=STATE value=COMPLETE"));
+
+        Assert.Equal(60, tracker.Clock!.GetSnapshot(Day.AddDays(1).AddMinutes(5)).XpSeconds, 3);
+    }
+
+    [Fact]
+    public void ReferenceTime_ReaderStartedAfterMidnight_DatesTheGameToday()
+    {
+        // Hearthstone was started on the 8th at 23:50; the reader only starts with a game on the 9th at 00:10.
+        var nextDay = Day.AddDays(1);
+        var tracker = new PowerLogTracker(Day) { ReferenceTime = nextDay.Add(new TimeSpan(0, 12, 0)) };
+        Feed(tracker, GameStart("00:10:00", "GT_RANKED", localStarts: true));
+        Feed(tracker,
+            Line("00:10:00", "GameState.SendChoices()", "id=1 ChoiceType=MULLIGAN"),
+            Power("00:10:00", "TAG_CHANGE Entity=GameEntity tag=STEP value=MAIN_READY"));
+
+        Assert.Equal(120, tracker.Clock!.GetSnapshot(nextDay.Add(new TimeSpan(0, 12, 0))).XpSeconds, 3);
+    }
+
+    [Fact]
+    public void ReferenceTime_GameBeforeMidnightReadAfterMidnight_KeepsItsDate()
+    {
+        var finished = new List<FinishedGame>();
+        var nextDay = Day.AddDays(1);
+        var tracker = new PowerLogTracker(Day) { ReferenceTime = nextDay.Add(new TimeSpan(0, 5, 0)) };
+        tracker.GameFinished += finished.Add;
+        Feed(tracker, GameStart("23:50:00", "GT_RANKED", localStarts: true));
+        Feed(tracker,
+            Line("23:50:00", "GameState.SendChoices()", "id=1 ChoiceType=MULLIGAN"),
+            Power("23:50:00", "TAG_CHANGE Entity=GameEntity tag=STEP value=MAIN_READY"),
+            Power("00:01:00", "TAG_CHANGE Entity=Alice tag=PLAYSTATE value=WON"),
+            Power("00:01:00", "TAG_CHANGE Entity=GameEntity tag=STATE value=COMPLETE"));
+
+        var game = Assert.Single(finished);
+        Assert.Equal(Day.Add(new TimeSpan(23, 50, 0)), game.FirstTurn);
+        Assert.Equal(nextDay.Add(new TimeSpan(0, 1, 0)), game.End);
+    }
+
+    [Fact]
+    public void ReferenceTime_LongBreakInOneSession_DatesTheNextGameOnTheNextDay()
+    {
+        // A game at 21:00, Hearthstone stays open, the next game at 10:00: the time of day goes back by less than 12 hours.
+        var finished = new List<FinishedGame>();
+        var nextDay = Day.AddDays(1);
+        var tracker = new PowerLogTracker(Day) { ReferenceTime = Day.Add(new TimeSpan(21, 5, 1)) };
+        tracker.GameFinished += finished.Add;
+        Feed(tracker, GameStart("21:00:00", "GT_RANKED", localStarts: true));
+        Feed(tracker,
+            Line("21:00:00", "GameState.SendChoices()", "id=1 ChoiceType=MULLIGAN"),
+            Power("21:00:00", "TAG_CHANGE Entity=GameEntity tag=STEP value=MAIN_READY"),
+            Power("21:05:00", "TAG_CHANGE Entity=Alice tag=PLAYSTATE value=WON"),
+            Power("21:05:00", "TAG_CHANGE Entity=GameEntity tag=STATE value=COMPLETE"));
+
+        tracker.ReferenceTime = nextDay.Add(new TimeSpan(10, 5, 1));
+        Feed(tracker, GameStart("10:00:00", "GT_RANKED", localStarts: true));
+        Feed(tracker,
+            Line("10:00:00", "GameState.SendChoices()", "id=1 ChoiceType=MULLIGAN"),
+            Power("10:00:00", "TAG_CHANGE Entity=GameEntity tag=STEP value=MAIN_READY"),
+            Power("10:05:00", "TAG_CHANGE Entity=Alice tag=PLAYSTATE value=WON"),
+            Power("10:05:00", "TAG_CHANGE Entity=GameEntity tag=STATE value=COMPLETE"));
+
+        Assert.Equal(2, finished.Count);
+        Assert.Equal(Day.Add(new TimeSpan(21, 0, 0)), finished[0].FirstTurn);
+        Assert.Equal(nextDay.Add(new TimeSpan(10, 0, 0)), finished[1].FirstTurn);
+    }
+
+    [Fact]
+    public void ReferenceTime_LineAMomentNewerThanTheReference_StaysOnTheSameDay()
+    {
+        var tracker = new PowerLogTracker(Day) { ReferenceTime = Day.Add(new TimeSpan(12, 0, 0)) };
+        Feed(tracker, GameStart("12:00:00", "GT_RANKED", localStarts: true));
+        Feed(tracker,
+            Line("12:00:00", "GameState.SendChoices()", "id=1 ChoiceType=MULLIGAN"),
+            Power("12:00:20", "TAG_CHANGE Entity=GameEntity tag=STEP value=MAIN_READY"));
+
+        Assert.Equal(40, tracker.Clock!.GetSnapshot(Day.Add(new TimeSpan(12, 1, 0))).XpSeconds, 3);
+    }
+
+    [Fact]
     public void NewGame_StartsANewClock()
     {
         var tracker = StartedRankedGame("12:00:00");

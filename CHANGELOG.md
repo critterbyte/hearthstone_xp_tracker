@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Games after midnight get the right date when Hearthstone was started on an earlier day. Before, starting HDT after midnight in a session from the evening made the overlay show "30:00 (max)" during the game, and a game after a break of 12 to 24 hours in the same session was stored on the previous day. The date now comes from the system clock instead of being counted up from the session's start date.
+
 ## [0.1.0] - 2026-11-15
 
 First public beta: XP for Ranked, Casual, Tavern Brawl and Arena, measured game by game.
