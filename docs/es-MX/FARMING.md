@@ -66,7 +66,7 @@ Esta página trata de jugar de forma normal y eficiente. Los bots, el win tradin
 <a id="tavern-pass"></a>
 ## Pase de la taberna
 
-- **Según [6]:** el Pase de la taberna da de inmediato una bonificación de EXP del 10 %, del 15 % en el nivel 20 de la senda y del 20 % en el nivel 70, durante el resto de la expansión.
+- **Según [6] y [7]:** el Pase de la taberna da de inmediato una bonificación de EXP del 10 %, del 15 % en el nivel 20 de la senda y del 20 % en el nivel 70, durante el resto de la expansión.
 - **Según [7]:** la bonificación se aplica a la EXP de cualquier origen.
 - Sin medir: si la bonificación multiplica exactamente las tasas de las partidas. Todas las mediciones se hicieron sin ella.
 

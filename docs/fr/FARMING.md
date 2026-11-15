@@ -66,7 +66,7 @@ Cette page parle de jouer normalement et efficacement. Les bots, le win trading,
 <a id="tavern-pass"></a>
 ## Ticket de la taverne
 
-- **Selon [6] :** le Ticket de la taverne donne immédiatement un bonus d'EXP de 10 %, de 15 % au niveau 20 du parcours et de 20 % au niveau 70, pour le reste de l'extension.
+- **Selon [6] et [7] :** le Ticket de la taverne donne immédiatement un bonus d'EXP de 10 %, de 15 % au niveau 20 du parcours et de 20 % au niveau 70, pour le reste de l'extension.
 - **Selon [7] :** le bonus s'applique à l'EXP de toute origine.
 - Non mesuré : si le bonus multiplie exactement les taux des parties. Toutes les mesures ont été faites sans lui.
 

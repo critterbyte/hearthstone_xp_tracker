@@ -66,7 +66,7 @@ Diese Seite handelt vom normalen, effizienten Spielen. Bots, Win-Trading, Accoun
 <a id="tavern-pass"></a>
 ## Gasthauspass
 
-- **Laut [6]:** Der Gasthauspass gibt sofort 10 % EP-Bonus, ab Stufe 20 des Belohnungswegs 15 % und ab Stufe 70 20 %, für den Rest der Erweiterung.
+- **Laut [6] und [7]:** Der Gasthauspass gibt sofort 10 % EP-Bonus, ab Stufe 20 des Belohnungswegs 15 % und ab Stufe 70 20 %, für den Rest der Erweiterung.
 - **Laut [7]:** Der Bonus gilt für EP aus jeder Quelle.
 - Nicht gemessen: ob der Bonus die Raten der Partien genau multipliziert. Alle Messungen wurden ohne Pass gemacht.
 

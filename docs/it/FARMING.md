@@ -66,7 +66,7 @@ Questa pagina parla di giocare in modo normale ed efficiente. Bot, compravendita
 <a id="tavern-pass"></a>
 ## Pass Locanda
 
-- **Secondo [6]:** il Pass Locanda dà subito un bonus PE del 10%, del 15% dal livello 20 del percorso e del 20% dal livello 70, per il resto dell'espansione.
+- **Secondo [6] e [7]:** il Pass Locanda dà subito un bonus PE del 10%, del 15% dal livello 20 del percorso e del 20% dal livello 70, per il resto dell'espansione.
 - **Secondo [7]:** il bonus vale per i PE di qualsiasi fonte.
 - Non misurato: se il bonus moltiplica esattamente i valori delle partite. Tutte le misurazioni sono state fatte senza il pass.
 
