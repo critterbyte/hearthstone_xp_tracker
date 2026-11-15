@@ -13,7 +13,7 @@ Teksty w cudzysłowie, na przykład „Czas PD:”, to teksty, które pokazuje w
 <a id="overlay"></a>
 ## Nakładka
 
-Nakładka to małe pole w lewym dolnym rogu, nad twoim portretem („You” z twoją rangą). W panelu możesz zamiast tego przenieść ją nad przycisk ustawień Hearthstone (koło zębate w prawym dolnym rogu). Etykiety są po lewej. Wartości są po prawej, na niebieskich paskach.
+Nakładka to małe pole w prawym dolnym rogu, nad przyciskiem ustawień Hearthstone (koło zębate w prawym dolnym rogu). W panelu możesz zamiast tego przenieść ją do lewego dolnego rogu, nad twój portret („You” z twoją rangą). Etykiety są po lewej. Wartości są po prawej, na niebieskich paskach.
 
 Nakładka jest widoczna tylko w trybach **Ranking, Rozrywka, Karczemna bójka i Arena**. Inne tryby nie są jeszcze mierzone, więc wtyczka nic tam nie pokazuje. Karczemna bójka przeciwko komputerowi (PvE, na przykład przeciwko Karczmarzowi) nie daje PD, więc nakładka pokazuje tam „+0”.
 
@@ -103,7 +103,7 @@ Okno panelu nazywa się „HS XP Tracker”. Otworzysz je w HDT na jeden z dwóc
 | „Odśwież” | Ponowne odczytanie historii |
 | „Otwórz folder danych” | Otwiera folder z plikiem historii w Eksploratorze Windows |
 | „Język (Language)” | Język nakładki, panelu i pozycji wtyczki w menu. Domyślnie angielski. Zmiana działa od razu; panel otwiera się ponownie w nowym języku. W innych językach etykieta zachowuje angielskie słowo, na przykład „Język (Language)”. |
-| „Położenie nakładki” | Gdzie jest nakładka: „Po lewej, nad twoim portretem” (domyślnie, dzięki temu lista talii HDT po prawej pozostaje widoczna) albo „Po prawej, nad przyciskiem ustawień”. Nakładka przesuwa się od razu. |
+| „Położenie nakładki” | Gdzie jest nakładka: „Po prawej, nad przyciskiem ustawień” (domyślnie) albo „Po lewej, nad twoim portretem”, dzięki czemu lista talii HDT po prawej pozostaje widoczna. Nakładka przesuwa się od razu. |
 | „Trwa wydarzenie (pokaż PD wydarzenia)” | Włącz w trakcie wydarzenia w Hearthstone: nakładka pokazuje PD wydarzenia, a nowe gry je zapisują. |
 | „Karnet Karczmarza (premia PD)” | Włącz, jeśli masz Karnet Karczmarza bieżącego rozszerzenia. Premia jest obliczana, a nie mierzona: z karnetem pokazane PD mogą różnić się o 1 PD na grę (zobacz [FORMULA.md](../FORMULA.md#tavern-pass)). |
 | „Poziom” z „−”, liczbą i „+” | Twój poziom na Ścieżce nagród. Kliknij „−” lub „+” albo wpisz liczbę. Wiersz poniżej pokazuje premię i następny próg, na przykład „10% premii PD, jeszcze 2 poz. do 15%”. Premia wynosi 10%, od poziomu 20 – 15%, a od poziomu 70 – 20% (zobacz [FORMULA.md](../FORMULA.md#tavern-pass)). Zaktualizuj poziom, gdy przekroczysz poziom 20 lub 70. |

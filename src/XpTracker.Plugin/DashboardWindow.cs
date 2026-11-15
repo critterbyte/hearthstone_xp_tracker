@@ -92,7 +92,7 @@ internal sealed class DashboardWindow : Window
         Action<bool>? setShowDamage = null,
         string language = Localizer.DefaultLanguage,
         Action<string>? setLanguage = null,
-        OverlayPosition overlayPosition = OverlayPosition.Left,
+        OverlayPosition overlayPosition = OverlayPosition.Right,
         Action<OverlayPosition>? setOverlayPosition = null)
     {
         _overlayPosition = overlayPosition;
@@ -549,14 +549,14 @@ internal sealed class DashboardWindow : Window
         return row;
     }
 
-    // "Overlay position": left above the player's portrait, or right above the Hearthstone settings button.
+    // "Overlay position": right above the Hearthstone settings button (default), or left above the player's portrait.
     private FrameworkElement OverlayPositionSelection()
     {
         var box = new ComboBox { MinWidth = 130, Margin = new Thickness(6, 0, 0, 0) };
         foreach (var (position, text) in new[]
         {
-            (OverlayPosition.Left, T("option.overlayLeft")),
             (OverlayPosition.Right, T("option.overlayRight")),
+            (OverlayPosition.Left, T("option.overlayLeft")),
         })
         {
             var item = new ComboBoxItem { Content = text, Tag = position };

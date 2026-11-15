@@ -19,8 +19,8 @@ public sealed class XpTrackerSettings
     /// <summary>Show the rows "Total Damage:" and "Hero Damage:" on the overlay.</summary>
     public bool ShowDamage { get; set; } = true;
 
-    /// <summary>Where the overlay sits: left above the player's portrait (default) or right above the settings button.</summary>
-    public OverlayPosition OverlayPosition { get; set; } = OverlayPosition.Left;
+    /// <summary>Where the overlay sits: right above the settings button (default) or left above the player's portrait.</summary>
+    public OverlayPosition OverlayPosition { get; set; } = OverlayPosition.Right;
 
     /// <summary>Language of the overlay and the dashboard, for example "en" or "de"; English by default.</summary>
     public string Language { get; set; } = Localizer.DefaultLanguage;
