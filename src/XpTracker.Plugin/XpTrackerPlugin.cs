@@ -71,7 +71,7 @@ public class XpTrackerPlugin : IPlugin
     {
         _overlay = new XpOverlay();
         HdtCore.OverlayCanvas.Children.Add(_overlay);
-        _tail = new PowerLogTail(FindLogsFolder);
+        _tail = new PowerLogTail(FindLogsFolder, now: () => DateTime.Now);
         _tail.GameFinished += OnGameFinished;
         _stop = new CancellationTokenSource();
         var token = _stop.Token;

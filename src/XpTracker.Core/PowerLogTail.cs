@@ -27,14 +27,20 @@ public sealed class PowerLogTail
     private long _position;
     private PowerLogTracker? _tracker;
     private readonly TimeSpan _folderCheckInterval;
+    private readonly Func<DateTime>? _now;
     private DateTime _nextFolderCheck;
 
     /// <param name="logsRoot">Returns Hearthstone's Logs folder; called again when the folder may have changed.</param>
     /// <param name="folderCheckInterval">How often to look for a newer session folder; 5 seconds by default.</param>
-    public PowerLogTail(Func<string?> logsRoot, TimeSpan? folderCheckInterval = null)
+    /// <param name="now">
+    /// Returns the current local time. The plugin passes the system clock, so each line gets its date from the clock
+    /// (see <see cref="PowerLogTracker.ReferenceTime"/>). Without it, the date is counted up from the session folder's date.
+    /// </param>
+    public PowerLogTail(Func<string?> logsRoot, TimeSpan? folderCheckInterval = null, Func<DateTime>? now = null)
     {
         _logsRoot = logsRoot;
         _folderCheckInterval = folderCheckInterval ?? TimeSpan.FromSeconds(5);
+        _now = now;
     }
 
     /// <summary>Raised on the polling thread when a game ends in the log.</summary>
@@ -199,8 +205,11 @@ public sealed class PowerLogTail
             text = text.Substring(1);
         }
 
+        // Taken after the read, so no line in this batch is newer than the reference time.
+        var reference = _now?.Invoke();
         lock (_sync)
         {
+            _tracker!.ReferenceTime = reference;
             foreach (var line in text.Split('\n'))
             {
                 if (line.Length > 0)
