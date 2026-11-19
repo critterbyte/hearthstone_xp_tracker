@@ -32,6 +32,9 @@ internal sealed class XpTrackerApp
     private static readonly string HistoryPath = Path.Combine(DataFolder, "hs_games.csv");
     private static readonly string SettingsPath = Path.Combine(DataFolder, "settings.ini");
 
+    // Where the former Hearthstone Deck Tracker plugin kept its history and settings; only read.
+    private static readonly string PluginFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "HearthstoneDeckTracker", "XpTracker");
+
     // Read once per app start; the installation folder does not change while the app runs.
     private static readonly Lazy<string?> InstallLocation = new(ReadInstallLocation);
 
@@ -54,6 +57,7 @@ internal sealed class XpTrackerApp
 
     public void Start()
     {
+        ImportPluginData();
         _settings = XpTrackerSettings.Load(SettingsPath);
         Localizer.SetLanguage(_settings.Language);
         SwitchOnGameLog();
@@ -131,6 +135,33 @@ internal sealed class XpTrackerApp
         _tray?.Dispose();
         _tray = null;
         Application.Current.Shutdown();
+    }
+
+    // Takes over what the HDT plugin recorded: its settings once, when the app has none yet, and at every start the
+    // games the app does not have yet, so games played with the plugin while the app was not running are not lost.
+    private void ImportPluginData()
+    {
+        try
+        {
+            var oldSettings = Path.Combine(PluginFolder, "settings.ini");
+            if (!File.Exists(SettingsPath) && File.Exists(oldSettings))
+            {
+                Directory.CreateDirectory(DataFolder);
+                File.Copy(oldSettings, SettingsPath);
+                AppLog.Info("Took over the settings of the HDT plugin.");
+            }
+
+            var games = _history.ImportFrom(Path.Combine(PluginFolder, "hs_games.csv"));
+            if (games > 0)
+            {
+                AppLog.Info("Took over " + games + " games from the HDT plugin.");
+            }
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+        {
+            // For example the plugin is just writing its file; the next start tries again.
+            AppLog.Error(ex);
+        }
     }
 
     // Makes sure Hearthstone writes the Power.log; see LogConfig.

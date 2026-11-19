@@ -199,6 +199,73 @@ public sealed class GameHistory
         }
     }
 
+    /// <summary>
+    /// Takes over the games of another history file, for example the one of the former HDT plugin. The other file is
+    /// only read. Games that are missing here are added; a game stored in both keeps its own values and only gets deck
+    /// and classes it lacks.
+    /// </summary>
+    /// <returns>Number of games that were added or completed.</returns>
+    public int ImportFrom(string otherPath)
+    {
+        lock (_sync)
+        {
+            if (!File.Exists(otherPath) || string.Equals(Path.GetFullPath(otherPath), Path.GetFullPath(_path), StringComparison.OrdinalIgnoreCase))
+            {
+                return 0;
+            }
+
+            var own = Load().ToList();
+            var byKey = new Dictionary<string, GameRecord>();
+            foreach (var record in own)
+            {
+                byKey[record.Key] = record;
+            }
+
+            var changed = 0;
+            foreach (var other in new GameHistory(otherPath).Load())
+            {
+                if (!byKey.TryGetValue(other.Key, out var existing))
+                {
+                    own.Add(other);
+                    byKey[other.Key] = other;
+                    changed++;
+                    continue;
+                }
+
+                var completed = false;
+                if (existing.Deck.Length == 0 && other.Deck.Length > 0)
+                {
+                    existing.Deck = other.Deck;
+                    completed = true;
+                }
+
+                if (existing.PlayerClass.Length == 0 && other.PlayerClass.Length > 0)
+                {
+                    existing.PlayerClass = other.PlayerClass;
+                    completed = true;
+                }
+
+                if (existing.OpponentClass.Length == 0 && other.OpponentClass.Length > 0)
+                {
+                    existing.OpponentClass = other.OpponentClass;
+                    completed = true;
+                }
+
+                if (completed)
+                {
+                    changed++;
+                }
+            }
+
+            if (changed > 0)
+            {
+                ReplaceAll(own.OrderBy(r => r.Start));
+            }
+
+            return changed;
+        }
+    }
+
     /// <summary>Reads all games. Rows that cannot be read are skipped and counted in <see cref="UnreadableRows"/>.</summary>
     public IReadOnlyList<GameRecord> Load()
     {
