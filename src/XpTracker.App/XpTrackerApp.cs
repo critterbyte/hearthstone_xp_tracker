@@ -5,13 +5,14 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 using XpTracker.Core;
 
 namespace XpTracker.App;
 
 /// <summary>
 /// The running tracker: reads Hearthstone's Power.log on a background thread, stores finished games
-/// and opens the dashboard. Created and used on the UI thread.
+/// and shows the overlay and the dashboard. Created and used on the UI thread.
 /// </summary>
 /// <remarks>
 /// Game times come from Hearthstone's Power.log, so a game that is already running when the app starts is still read
@@ -20,6 +21,9 @@ namespace XpTracker.App;
 internal sealed class XpTrackerApp
 {
     private static readonly TimeSpan PollInterval = TimeSpan.FromMilliseconds(250);
+
+    // The overlay text changes at most once per second; the window follows the game window ten times per second.
+    private static readonly TimeSpan OverlayInterval = TimeSpan.FromMilliseconds(100);
 
     /// <summary>The app's own data folder: game history, settings and the error log.</summary>
     public static readonly string DataFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "HearthstoneXpTracker");
@@ -34,6 +38,10 @@ internal sealed class XpTrackerApp
     private PowerLogTail? _tail;
     private TrayIcon? _tray;
     private CancellationTokenSource? _stop;
+    private OverlayWindow? _overlayWindow;
+    private DispatcherTimer? _overlayTimer;
+    private string _shownKey = string.Empty;
+    private string? _lastOverlayError;
 
     public void Start()
     {
@@ -48,6 +56,11 @@ internal sealed class XpTrackerApp
         Task.Run(() => PollLoop(tail, token), token);
 
         _tray = new TrayIcon(OpenDashboard, Exit);
+
+        _overlayWindow = new OverlayWindow(new XpOverlay { Position = _settings.OverlayPosition });
+        _overlayTimer = new DispatcherTimer { Interval = OverlayInterval };
+        _overlayTimer.Tick += (_, _) => UpdateOverlay();
+        _overlayTimer.Start();
 
         if (_settings.CheckForUpdates)
         {
@@ -83,6 +96,10 @@ internal sealed class XpTrackerApp
 
     private void Exit()
     {
+        _overlayTimer?.Stop();
+        _overlayTimer = null;
+        _overlayWindow?.Close();
+        _overlayWindow = null;
         _stop?.Cancel();
         _stop = null;
         if (_tail is not null)
@@ -96,6 +113,55 @@ internal sealed class XpTrackerApp
         _tray?.Dispose();
         _tray = null;
         Application.Current.Shutdown();
+    }
+
+    // Shows the current or last game on the overlay and keeps the overlay over the game window.
+    private void UpdateOverlay()
+    {
+        if (_overlayWindow is not { } window || _tail is not { } tail)
+        {
+            return;
+        }
+
+        try
+        {
+            var now = DateTime.Now;
+            var update = _update?.VersionText;
+            var showDamage = _settings.ShowDamage;
+            var lines = tail.Read(t => XpDisplayText.WithUpdate(
+                XpDisplayText.For(
+                    t?.Clock,
+                    t?.Mode ?? GameMode.Other,
+                    now,
+                    _settings.EventActive,
+                    showDamage ? t?.DamageDealt : null,
+                    _settings.XpBonusPercent,
+                    showDamage ? t?.HeroDamageDealt : null),
+                gameRunning: t?.IsGameRunning ?? false,
+                update));
+
+            // Only touch the visual tree when the text changes.
+            var key = string.Join("\n", lines.Select(l => l + (l.IsXp ? " xp" : l.IsEvent ? " event" : string.Empty)));
+            if (key != _shownKey)
+            {
+                _shownKey = key;
+                window.Overlay.Show(lines);
+            }
+
+            window.Follow();
+            var area = window.GameArea;
+            window.Overlay.Place(area.Width, area.Height);
+        }
+        catch (Exception ex)
+        {
+            // A failing update must not stop the timer; the next tick tries again. Each kind of error is logged once.
+            var text = ex.GetType().FullName + ": " + ex.Message;
+            if (text != _lastOverlayError)
+            {
+                _lastOverlayError = text;
+                AppLog.Error(ex);
+            }
+        }
     }
 
     // One request per app start (or when the check is switched on again); runs in the background.
@@ -136,6 +202,7 @@ internal sealed class XpTrackerApp
     {
         _settings.EventActive = active;
         SaveSettings();
+        _shownKey = string.Empty;
     }
 
     // Called from the dashboard's language selection. The menu changes at once; the dashboard is built again in the
@@ -146,6 +213,7 @@ internal sealed class XpTrackerApp
         SaveSettings();
         Localizer.SetLanguage(_settings.Language);
         _tray?.UpdateTexts();
+        _shownKey = string.Empty;
 
         if (_dashboard is { } old)
         {
@@ -164,27 +232,33 @@ internal sealed class XpTrackerApp
         }
     }
 
-    // Called from the dashboard's overlay position selection.
+    // Called from the dashboard's overlay position selection; the overlay moves with the next update.
     private void SetOverlayPosition(OverlayPosition position)
     {
         _settings.OverlayPosition = position;
         SaveSettings();
+        if (_overlayWindow is not null)
+        {
+            _overlayWindow.Overlay.Position = position;
+        }
     }
 
-    // Called from the dashboard check box "Show damage on the overlay".
+    // Called from the dashboard check box "Show damage on the overlay": shows or hides the two damage rows at once.
     private void SetShowDamage(bool show)
     {
         _settings.ShowDamage = show;
         SaveSettings();
+        _shownKey = string.Empty;
     }
 
-    // Called from the dashboard: "Tavern Pass" check box and the rewards track level. Changes the XP stored with new
-    // games; games already stored keep the boost they were played with.
+    // Called from the dashboard: "Tavern Pass" check box and the rewards track level. Changes the overlay at once and the XP
+    // stored with new games; games already stored keep the boost they were played with.
     private void SetTavernPass(bool owned, int level)
     {
         _settings.TavernPass = owned;
         _settings.TavernPassLevel = TavernPassBonus.ClampLevel(level);
         SaveSettings();
+        _shownKey = string.Empty;
     }
 
     private void SetCheckForUpdates(bool check)
@@ -200,7 +274,8 @@ internal sealed class XpTrackerApp
         {
             _update = null;
             _dashboard?.ShowUpdate(null);
-            }
+            _shownKey = string.Empty;
+        }
     }
 
     private void SaveSettings()
