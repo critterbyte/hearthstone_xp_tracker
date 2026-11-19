@@ -2,7 +2,7 @@
 # Termini del client Hearthstone itIT (stringhe del client, build 37.0): PE, Percorso Ricompense, Pass Locanda,
 # Livello, Classificata, Amichevole, Rissa, pulsante "FINE TURNO". Traduzione assistita da macchina.
 
-# Plugin entry in HDT
+# Notification area icon and its menu
 app.dashboard=Pannello PE
 app.exit=Esci
 log.on=Registro di gioco (Power.log): attivo
@@ -73,7 +73,7 @@ option.eventTip=Attivalo durante un evento di Hearthstone: l'overlay mostra i PE
 option.eventHint=È in corso un evento di Hearthstone? Spunta la casella qui sopra per contare i PE Evento.
 option.damage=Mostra i danni nell'overlay
 option.damageTip=Mostra le righe "Danni totali:" e "Danni all'eroe:": i danni inflitti dalla tua parte all'avversario nella partita in corso o nell'ultima.
-option.updates=Cerca aggiornamenti all'avvio di HDT
+option.updates=Cerca aggiornamenti all'avvio del tracker
 tavern.check=Pass Locanda (bonus PE)
 tavern.checkTip=Attivalo se possiedi il Pass Locanda dell'espansione attuale. Inserisci qui sotto il tuo livello nel Percorso Ricompense: il bonus è del 10%, dal livello 20 del 15% e dal livello 70 del 20% (secondo la wiki di Hearthstone, non misurato).
 tavern.level=Livello

@@ -2,7 +2,7 @@
 # Begriffe wie im deutschen Hearthstone-Client (Client-Strings, Build 37.0): EP, Belohnungsweg, Gasthauspass, Stufe,
 # Gewertet, Ungewertet, Kartenchaos, Button "Fertig". Anrede: du.
 
-# Plugin entry in HDT
+# Notification area icon and its menu
 app.dashboard=EP-Dashboard
 app.exit=Beenden
 log.on=Spiel-Log (Power.log): an
@@ -73,7 +73,7 @@ option.eventTip=Einschalten, solange ein Hearthstone-Event läuft: Das Overlay z
 option.eventHint=Läuft gerade ein Hearthstone-Event? Dann oben anhaken, um Event-EP zu zählen.
 option.damage=Schaden im Overlay anzeigen
 option.damageTip=Zeigt die Zeilen „Gesamtschaden:“ und „Heldenschaden:“: den Schaden, den deine Seite dem Gegner in der laufenden oder letzten Partie zugefügt hat.
-option.updates=Beim Start von HDT nach Updates suchen
+option.updates=Beim Start des Trackers nach Updates suchen
 tavern.check=Gasthauspass (EP-Bonus)
 tavern.checkTip=Einschalten, wenn du den Gasthauspass der aktuellen Erweiterung besitzt. Trage darunter deine Stufe im Belohnungsweg ein: Der Bonus beträgt 10 %, ab Stufe 20 15 %, ab Stufe 70 20 % (laut Hearthstone-Wiki, nicht gemessen).
 tavern.level=Stufe

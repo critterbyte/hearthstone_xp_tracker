@@ -2,7 +2,7 @@
 # Terminy z klienta Hearthstone plPL (teksty klienta, build 37.0): PD, Ścieżka nagród, Karnet Karczmarza,
 # Poziom, Ranking, Rozrywka, Karczemna bójka, przycisk "KONIEC TURY". Sprawdzone przez rodzimego użytkownika języka.
 
-# Plugin entry in HDT
+# Notification area icon and its menu
 app.dashboard=Panel PD
 app.exit=Zakończ
 log.on=Dziennik gry (Power.log): włączony
@@ -73,7 +73,7 @@ option.eventTip=Włącz w trakcie wydarzenia w Hearthstone: nakładka pokazuje P
 option.eventHint=Trwa wydarzenie w Hearthstone? Zaznacz pole powyżej, aby liczyć PD wydarzenia.
 option.damage=Pokaż obrażenia na nakładce
 option.damageTip=Pokazuje wiersze „Obrażenia łącznie:” i „Obrażenia bohatera:”: obrażenia zadane przeciwnikowi przez twoją stronę w bieżącej lub ostatniej grze.
-option.updates=Sprawdzaj aktualizacje przy starcie HDT
+option.updates=Sprawdzaj aktualizacje przy starcie trackera
 tavern.check=Karnet Karczmarza (premia PD)
 tavern.checkTip=Włącz, jeśli masz Karnet Karczmarza bieżącego rozszerzenia. Wpisz poniżej swój poziom na Ścieżce nagród: premia wynosi 10%, od poziomu 20 – 15%, od poziomu 70 – 20% (według wiki Hearthstone, niezmierzone).
 tavern.level=Poziom

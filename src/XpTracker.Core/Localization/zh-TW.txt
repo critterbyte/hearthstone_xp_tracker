@@ -2,7 +2,7 @@
 # 爐石戰記 zhTW 用戶端用語（用戶端字串，版本 37.0）：經驗值、獎勵軌跡、旅店貴賓證、等級、排名模式、
 # 休閒模式、旅店大亂鬥、「結束回合」按鈕。以機器翻譯為基礎。
 
-# Plugin entry in HDT
+# Notification area icon and its menu
 app.dashboard=經驗值儀表板
 app.exit=結束
 log.on=遊戲記錄（Power.log）：已開啟
@@ -73,7 +73,7 @@ option.eventTip=爐石戰記事件期間請開啟：覆蓋層會顯示事件經�
 option.eventHint=爐石戰記正在進行事件嗎？勾選上方的方塊即可統計事件經驗值。
 option.damage=在覆蓋層顯示傷害
 option.damageTip=顯示「總傷害：」與「英雄傷害：」兩行：你這一方在本場或上一場對戰中對對手造成的傷害。
-option.updates=啟動 HDT 時檢查更新
+option.updates=啟動追蹤器時檢查更新
 tavern.check=旅店貴賓證（經驗值加成）
 tavern.checkTip=如果你擁有目前資料片的旅店貴賓證，請開啟此項，並在下方輸入你的獎勵軌跡等級：加成為 10%，等級 20 起為 15%，等級 70 起為 20%（依據爐石戰記 Wiki，未經實測）。
 tavern.level=等級

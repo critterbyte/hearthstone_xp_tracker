@@ -2,7 +2,7 @@
 # Termos do cliente Hearthstone ptBR (textos do cliente, build 37.0): EXP, Trilha da Recompensa, Passe da Taverna,
 # Nível, Ranqueado, Casual, Contenda de Taverna, botão "FIM DO TURNO". Tradução assistida por máquina.
 
-# Plugin entry in HDT
+# Notification area icon and its menu
 app.dashboard=Painel de EXP
 app.exit=Sair
 log.on=Log do jogo (Power.log): ativado
@@ -73,7 +73,7 @@ option.eventTip=Ative durante um evento do Hearthstone: o overlay mostra a EXP d
 option.eventHint=Há um evento de Hearthstone ativo? Marque a caixa acima para contar a EXP de Evento.
 option.damage=Mostrar o dano no overlay
 option.damageTip=Mostra as linhas "Dano total:" e "Dano ao herói:": o dano que o seu lado causou ao oponente na partida atual ou na última.
-option.updates=Procurar atualizações ao iniciar o HDT
+option.updates=Procurar atualizações ao iniciar o tracker
 tavern.check=Passe da Taverna (bônus de EXP)
 tavern.checkTip=Ative se você tem o Passe da Taverna da expansão atual. Informe abaixo o seu nível na Trilha da Recompensa: o bônus é de 10%, a partir do nível 20 de 15% e a partir do nível 70 de 20% (segundo a wiki do Hearthstone, não medido).
 tavern.level=Nível

@@ -2,7 +2,7 @@
 # Format: key=value, one per line. {0}, {1}, ... are placeholders and must stay in every translation.
 # Use the game's own terms of each language (Ranked, Tavern Brawl, Rewards Track, Tavern Pass, class names).
 
-# Plugin entry in HDT
+# Notification area icon and its menu
 app.dashboard=XP dashboard
 app.exit=Exit
 log.on=Game log (Power.log): on
@@ -74,7 +74,7 @@ option.eventTip=Switch on while a Hearthstone event runs: the overlay shows the 
 option.eventHint=Is a Hearthstone event running? Tick the box above to count event XP.
 option.damage=Show damage on the overlay
 option.damageTip=Shows the rows "Total Damage:" and "Hero Damage:": the damage your side dealt to the opponent in the current or last game.
-option.updates=Check for updates when HDT starts
+option.updates=Check for updates when the tracker starts
 tavern.check=Tavern Pass (XP boost)
 tavern.checkTip=Switch on if you own the Tavern Pass of the current expansion. Enter your rewards track level below: the boost is 10%, from level 20 on 15%, from level 70 on 20% (according to the Hearthstone Wiki, not measured yet).
 tavern.level=Level

@@ -2,7 +2,7 @@
 # Termes du client Hearthstone frFR (chaînes du client, build 37.0) : EXP, Parcours de récompenses,
 # Ticket de la taverne, Niveau, Classé, Non classé, Bras de fer, bouton « Fin du tour ». Traduction assistée par machine.
 
-# Plugin entry in HDT
+# Notification area icon and its menu
 app.dashboard=Tableau de bord EXP
 app.exit=Quitter
 log.on=Journal de partie (Power.log) : activé
@@ -73,7 +73,7 @@ option.eventTip=À activer pendant un évènement Hearthstone : l'overlay affich
 option.eventHint=Un évènement Hearthstone est en cours ? Cochez la case ci-dessus pour compter l'EXP d'évènement.
 option.damage=Afficher les dégâts dans l'overlay
 option.damageTip=Affiche les lignes « Dégâts totaux : » et « Dégâts au héros : » : les dégâts infligés par votre camp à l'adversaire pendant la partie en cours ou la dernière.
-option.updates=Rechercher des mises à jour au démarrage de HDT
+option.updates=Rechercher des mises à jour au démarrage du tracker
 tavern.check=Ticket de la taverne (bonus d'EXP)
 tavern.checkTip=À activer si vous possédez le Ticket de la taverne de l'extension actuelle. Indiquez ci-dessous votre niveau dans le Parcours de récompenses : le bonus est de 10 %, de 15 % à partir du niveau 20 et de 20 % à partir du niveau 70 (selon le wiki Hearthstone, non mesuré).
 tavern.level=Niveau

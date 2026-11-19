@@ -2,7 +2,7 @@
 # Términos del cliente de Hearthstone esMX (cadenas del cliente, build 37.0): EXP, Senda de recompensas,
 # Pase de la taberna, Nivel, Clasificado, Casual, Gresca de la taberna, botón "LISTO". Traducción asistida por máquina.
 
-# Plugin entry in HDT
+# Notification area icon and its menu
 app.dashboard=Panel de EXP
 app.exit=Salir
 log.on=Registro de partida (Power.log): activado
@@ -73,7 +73,7 @@ option.eventTip=Actívalo mientras haya un evento de Hearthstone: el overlay mue
 option.eventHint=¿Hay un evento de Hearthstone en curso? Marca la casilla de arriba para contar la EXP de evento.
 option.damage=Mostrar el daño en el overlay
 option.damageTip=Muestra las filas "Daño total:" y "Daño al héroe:": el daño que tu lado hizo al oponente en la partida actual o en la última.
-option.updates=Buscar actualizaciones al iniciar HDT
+option.updates=Buscar actualizaciones al iniciar el tracker
 tavern.check=Pase de la taberna (bonificación de EXP)
 tavern.checkTip=Actívalo si tienes el Pase de la taberna de la expansión actual. Escribe abajo tu nivel en la Senda de recompensas: la bonificación es del 10 %, desde el nivel 20 del 15 % y desde el nivel 70 del 20 % (según la wiki de Hearthstone, sin medir).
 tavern.level=Nivel

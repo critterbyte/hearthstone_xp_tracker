@@ -33,7 +33,7 @@ public sealed class PowerLogTail
     /// <param name="logsRoot">Returns Hearthstone's Logs folder; called again when the folder may have changed.</param>
     /// <param name="folderCheckInterval">How often to look for a newer session folder; 5 seconds by default.</param>
     /// <param name="now">
-    /// Returns the current local time. The plugin passes the system clock, so each line gets its date from the clock
+    /// Returns the current local time. The app passes the system clock, so each line gets its date from the clock
     /// (see <see cref="PowerLogTracker.ReferenceTime"/>). Without it, the date is counted up from the session folder's date.
     /// </param>
     public PowerLogTail(Func<string?> logsRoot, TimeSpan? folderCheckInterval = null, Func<DateTime>? now = null)

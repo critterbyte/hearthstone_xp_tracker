@@ -2,7 +2,7 @@
 # 炉石传说 zhCN 客户端用语（客户端字符串，版本 37.0）：经验值、奖励路线、炉石通行证、等级、排名模式、
 # 休闲模式、乱斗模式、“结束回合”按钮。以机器翻译为基础。
 
-# Plugin entry in HDT
+# Notification area icon and its menu
 app.dashboard=经验值面板
 app.exit=退出
 log.on=游戏日志（Power.log）：已开启
@@ -73,7 +73,7 @@ option.eventTip=炉石传说活动期间请开启：叠加层会显示活动经�
 option.eventHint=炉石传说正在进行活动吗？勾选上方的方框即可统计活动经验值。
 option.damage=在叠加层显示伤害
 option.damageTip=显示“总伤害：”和“英雄伤害：”两行：你这一方在本局或上一局中对对手造成的伤害。
-option.updates=启动 HDT 时检查更新
+option.updates=启动追踪器时检查更新
 tavern.check=炉石通行证（经验值加成）
 tavern.checkTip=如果你拥有当前扩展包的炉石通行证，请开启此项，并在下方输入你的奖励路线等级：加成为 10%，20 级起为 15%，70 级起为 20%（依据炉石传说 Wiki，未经实测）。
 tavern.level=等级

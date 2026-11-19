@@ -6,11 +6,11 @@ using System.IO;
 namespace XpTracker.Core;
 
 /// <summary>
-/// User settings of the plugin, stored as "Key=value" lines.
+/// User settings of the app, stored as "Key=value" lines.
 /// </summary>
 public sealed class XpTrackerSettings
 {
-    /// <summary>Ask GitHub for a newer release when HDT starts.</summary>
+    /// <summary>Ask GitHub for a newer release when the app starts.</summary>
     public bool CheckForUpdates { get; set; } = true;
 
     /// <summary>A Hearthstone event is running: show and store event XP. Switched on and off by the user.</summary>

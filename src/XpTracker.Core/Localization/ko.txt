@@ -2,7 +2,7 @@
 # 하스스톤 koKR 클라이언트 용어(클라이언트 문자열, 빌드 37.0): 경험치, 보상의 길, 선술집 패스, 레벨,
 # 등급전, 일반전, 선술집 난투, "턴 종료" 버튼. 기계 번역을 바탕으로 했습니다.
 
-# Plugin entry in HDT
+# Notification area icon and its menu
 app.dashboard=경험치 대시보드
 app.exit=종료
 log.on=게임 로그(Power.log): 켜짐
@@ -73,7 +73,7 @@ option.eventTip=하스스톤 이벤트 기간에 켜세요. 오버레이에 이�
 option.eventHint=하스스톤 이벤트가 진행 중인가요? 위 상자에 체크하면 이벤트 경험치를 계산합니다.
 option.damage=오버레이에 피해 표시
 option.damageTip="전체 피해:"와 "영웅 피해:" 줄을 표시합니다. 현재 또는 지난 게임에서 내 편이 상대에게 준 피해입니다.
-option.updates=HDT 시작 시 업데이트 확인
+option.updates=트래커 시작 시 업데이트 확인
 tavern.check=선술집 패스(경험치 보너스)
 tavern.checkTip=현재 확장팩의 선술집 패스가 있으면 켜세요. 아래에 보상의 길 레벨을 입력하세요. 보너스는 10%, 20레벨부터 15%, 70레벨부터 20%입니다(하스스톤 위키 기준, 측정하지 않음).
 tavern.level=레벨

@@ -30,7 +30,7 @@ public sealed class ReleaseInfo
 }
 
 /// <summary>
-/// Finds out whether a newer plugin release exists. Release tags must have the form vX.Y.Z.
+/// Finds out whether a newer release exists. Release tags must have the form vX.Y.Z.
 /// </summary>
 public static class UpdateCheck
 {

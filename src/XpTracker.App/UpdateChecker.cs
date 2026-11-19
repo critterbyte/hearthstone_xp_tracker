@@ -10,7 +10,7 @@ using XpTracker.Core;
 namespace XpTracker.App;
 
 /// <summary>
-/// Asks GitHub for the plugin's releases. The request carries only a User-Agent with the plugin name and version.
+/// Asks GitHub for the app's releases. The request carries only a User-Agent with the app name and version.
 /// </summary>
 internal static class UpdateChecker
 {

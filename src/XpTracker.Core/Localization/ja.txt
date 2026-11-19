@@ -2,7 +2,7 @@
 # Hearthstone jaJP クライアントの用語（クライアント文字列、ビルド 37.0）: XP、報酬レーン、酒場パス、レベル、
 # ランク戦、カジュアル、酒場の喧嘩、ボタン「ターン終了」。機械翻訳を基にしています。
 
-# Plugin entry in HDT
+# Notification area icon and its menu
 app.dashboard=XPダッシュボード
 app.exit=終了
 log.on=ゲームログ（Power.log）：オン
@@ -73,7 +73,7 @@ option.eventTip=Hearthstoneのイベント中にオンにします。オーバ�
 option.eventHint=ハースストーンのイベント開催中？上のチェックを入れるとイベントXPを数えます。
 option.damage=オーバーレイにダメージを表示
 option.damageTip=「合計ダメージ:」と「ヒーローへのダメージ:」の行を表示します。現在または前回の試合で、自分の側が相手に与えたダメージです。
-option.updates=HDTの起動時にアップデートを確認
+option.updates=トラッカーの起動時にアップデートを確認
 tavern.check=酒場パス（XPボーナス）
 tavern.checkTip=現在の拡張版の酒場パスを持っている場合にオンにします。下に報酬レーンのレベルを入力してください。ボーナスは10%、レベル20から15%、レベル70から20%です（Hearthstone Wikiによる。未計測）。
 tavern.level=レベル
