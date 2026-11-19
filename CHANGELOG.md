@@ -7,13 +7,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+The tracker becomes a stand-alone Windows program. Hearthstone Deck Tracker (HDT) stops supporting plugins on 30 November 2026; the tracker keeps the same overlay, dashboard and formula and no longer needs HDT.
+
 ### Added
 
+- `HearthstoneXpTracker.exe`: a program of its own (WPF, .NET Framework 4.7.2, part of Windows 10 and 11). Only one instance runs; starting it again opens the dashboard of the running one.
+- A gold "XP" icon in the notification area: a click opens the dashboard, its menu has "XP dashboard" and "Exit". The EXE and the dashboard window use the same icon.
+- An overlay window of its own: it lies over Hearthstone's game area, follows the game window, lets every click through, never takes the focus and is shown only while Hearthstone is the active window.
+- The tracker switches on Hearthstone's game log itself: it adds the `[Power]` section to `%LOCALAPPDATA%\Blizzard\Hearthstone\log.config` if it is missing, changes nothing else in the file and keeps a copy as `log.config.bak`. If Hearthstone was running, a notice asks to restart it once. A status line in the dashboard shows whether the log is on.
+- The Hearthstone folder is found through the running game, the Battle.net uninstall entry or the default folder.
+- The classes of both heroes are read from the `Power.log`, stored in the same form as HDT stored them.
+- The history and the settings of the HDT plugin are taken over: at every start, the games the tracker does not have yet are added from `%APPDATA%\HearthstoneDeckTracker\XpTracker\hs_games.csv`, and the settings are copied once. The plugin's files are only read.
+- A hint below "Event running (show event XP)" while it is off, because the tracker cannot tell when an event runs.
+- `THIRD-PARTY-NOTICES.txt` with the licenses of LiveCharts and Newtonsoft.Json, which the ZIP now contains.
+- A CI job on Windows that builds the app, runs the tests and builds the release ZIP for every pull request.
 - Community files: `CODE_OF_CONDUCT.md` (Contributor Covenant 2.1), `SECURITY.md` (private vulnerability reports through GitHub, no public issues) and a pull request template with the checklist from `CONTRIBUTING.md`. Reports go through GitHub's private reporting, so no e-mail address is published.
 
 ### Changed
 
-- `docs/INSTALL.md` and its translations explain why HDT keeps running the newer version after an older one was installed: HDT loads plugins from a copy in its own program folder and replaces a file there only when the file in `%APPDATA%` is newer (checked in HDT's `PluginManager`). They describe how to go back to an older version.
+- Game history, settings and a small error log are stored in `%APPDATA%\HearthstoneXpTracker`.
+- The update check runs when the tracker starts; the option is called "Check for updates when the tracker starts".
+- The release ZIP contains the app and its libraries and can be extracted into any folder. `release.ps1` and `build.ps1` no longer need an HDT installation.
+- README, install and usage guides in all 14 languages, `CONTRIBUTING.md`, `SECURITY.md`, the test checklist and the issue templates describe the app instead of the plugin.
+
+### Removed
+
+- The HDT plugin. Version 0.1.2 stays available on the Releases page until HDT ends plugin support.
+- The *Decks* tab and the deck column of the game list: deck names came from HDT. The history file keeps its `Deck` column, so older games keep their deck names.
 
 ## [0.1.2] - 2026-11-15
 

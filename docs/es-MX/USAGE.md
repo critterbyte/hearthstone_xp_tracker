@@ -2,20 +2,22 @@
 
 > Traducción asistida por máquina. Si difiere de la [versión en inglés](../USAGE.md), rige la versión en inglés. Las correcciones son bienvenidas: [abre un issue](https://github.com/critterbyte/hearthstone_xp_tracker/issues/new/choose).
 
-El plugin tiene tres partes:
+El tracker funciona en segundo plano, con un ícono dorado "XP" en el área de notificación (*notification area*), abajo a la derecha de la barra de tareas. Tiene tres partes:
 
 - el **overlay** en el juego
 - la ventana del **panel**
 - el archivo del **historial de partidas**
 
-Los textos entre comillas, como "Tiempo de EXP:", son los textos que muestra el plugin.
+Los textos entre comillas, como "Tiempo de EXP:", son los textos que muestra el tracker.
 
 <a id="overlay"></a>
 ## Overlay
 
 El overlay es un pequeño recuadro abajo a la derecha, sobre el botón de opciones de Hearthstone (el engrane en la esquina inferior derecha). En el panel puedes moverlo abajo a la izquierda, sobre tu retrato ("You" con tu rango). Las etiquetas están a la izquierda. Los valores están a la derecha, en barras azules.
 
-El overlay solo se muestra en **Clasificado, Casual, Gresca de la taberna y Arena**. Los demás modos todavía no se miden, así que ahí el plugin no muestra nada. Una Gresca de la taberna contra la computadora (JcE, por ejemplo contra el Tabernero) no da EXP, así que ahí el overlay muestra "+0".
+El overlay solo se muestra mientras Hearthstone es la ventana activa. Nunca toma el foco, y todos los clics lo atraviesan y llegan al juego.
+
+El overlay solo se muestra en **Clasificado, Casual, Gresca de la taberna y Arena**. Los demás modos todavía no se miden, así que ahí el tracker no muestra nada. Una Gresca de la taberna contra la computadora (JcE, por ejemplo contra el Tabernero) no da EXP, así que ahí el overlay muestra "+0".
 
 <a id="during-a-game"></a>
 ### Durante una partida
@@ -56,7 +58,7 @@ El daño se lee cuando el servidor confirma una acción, así que puede subir un
 
 Mientras el tiempo de EXP esté por debajo de 60 segundos, los dos valores de EXP muestran "+0". Las partidas de menos de un minuto no dan EXP. Consulta [FORMULA.md](../FORMULA.md) para ver las reglas.
 
-Si inicias HDT a mitad de una partida, el plugin de todos modos lee la partida desde el principio.
+Si inicias el tracker a mitad de una partida, de todos modos lee la partida desde el principio.
 
 <a id="after-a-game"></a>
 ### Después de una partida
@@ -73,7 +75,7 @@ Después de la partida, el overlay muestra un resumen hasta la mano inicial de t
 <a id="update-hint"></a>
 ### Aviso de actualización
 
-Cuando existe una versión más nueva del plugin, el overlay muestra una fila más mientras no hay ninguna partida en curso:
+Cuando existe una versión más nueva del tracker, el overlay muestra una fila más mientras no hay ninguna partida en curso:
 
 | Fila | Significado |
 |---|---|
@@ -84,10 +86,13 @@ El panel muestra un enlace a la página de descarga. Consulta [INSTALL.md](INSTA
 <a id="dashboard"></a>
 ## Panel
 
-La ventana del panel se llama "HS XP Tracker". Ábrela en HDT de una de estas dos formas:
+La ventana del panel se llama "HS XP Tracker". Se abre cuando arranca el tracker. Para volver a abrirla:
 
-- el menú *Plugins* → "Panel de EXP"
-- *Settings* (el ícono de engrane a la derecha de la barra superior) *→ Tracker → Plugins* → el botón "Panel de EXP" del plugin
+- haz clic en el ícono dorado "XP" del área de notificación (*notification area*),
+- haz clic derecho en el ícono y elige "Panel de EXP", o
+- vuelve a iniciar `HearthstoneXpTracker.exe`.
+
+Si cierras el panel, el tracker y el overlay siguen funcionando. Para cerrar el tracker, haz clic derecho en el ícono y elige "Salir".
 
 <a id="toolbar"></a>
 ### Barra de herramientas
@@ -102,17 +107,19 @@ La ventana del panel se llama "HS XP Tracker". Ábrela en HDT de una de estas do
 | "Todo" | Todas las partidas del historial |
 | "Actualizar" | Vuelve a leer el historial |
 | "Abrir carpeta de datos" | Abre la carpeta del archivo del historial en el Explorador de Windows |
-| "Idioma (Language)" | Idioma del overlay, del panel y de la entrada del plugin en el menú. El inglés es el idioma predeterminado. El cambio se aplica de inmediato; el panel se vuelve a abrir en el nuevo idioma. En los idiomas que no son inglés, la etiqueta conserva la palabra en inglés, como aquí: "Idioma (Language)". |
-| "Posición del overlay" | Dónde está el overlay: "Derecha, sobre el botón de opciones" (predeterminado) o "Izquierda, sobre tu retrato", así la lista de mazo de HDT a la derecha queda libre. El overlay se mueve al instante. |
-| "Evento en curso (mostrar EXP de evento)" | Actívalo durante un evento de Hearthstone: el overlay muestra la EXP de evento y las partidas nuevas la guardan. |
+| "Idioma (Language)" | Idioma del overlay, del panel y del menú del ícono. El inglés es el idioma predeterminado. El cambio se aplica de inmediato; el panel se vuelve a abrir en el nuevo idioma. En los idiomas que no son inglés, la etiqueta conserva la palabra en inglés, como aquí: "Idioma (Language)". |
+| "Posición del overlay" | Dónde está el overlay: "Derecha, sobre el botón de opciones" (predeterminado) o "Izquierda, sobre tu retrato", así el lado derecho queda libre, por ejemplo para la lista de mazo de Hearthstone Deck Tracker. El overlay se mueve al instante. |
+| "Evento en curso (mostrar EXP de evento)" | Actívalo durante un evento de Hearthstone: el overlay muestra la EXP de evento y las partidas nuevas la guardan. El tracker no puede saber cuándo hay un evento, así que esta opción está desactivada de forma predeterminada; mientras lo esté, un breve aviso debajo te lo recuerda. |
 | "Pase de la taberna (bonificación de EXP)" | Actívalo si tienes el Pase de la taberna de la expansión actual. La bonificación se calcula, no se mide: con el pase, la EXP mostrada puede variar en 1 EXP por partida (consulta [FORMULA.md](../FORMULA.md#tavern-pass)). |
 | "Nivel" con "−", un número y "+" | Tu nivel en la Senda de recompensas. Haz clic en "−" o "+", o escribe el número. La línea de abajo muestra la bonificación y el siguiente paso, por ejemplo "10 % de bonificación de EXP, 2 niveles para 15 %". La bonificación es del 10 %, desde el nivel 20 del 15 % y desde el nivel 70 del 20 % (consulta [FORMULA.md](../FORMULA.md#tavern-pass)). Actualiza el nivel cuando pases el nivel 20 o el 70. |
 | "Mostrar el daño en el overlay" | Muestra u oculta las filas "Daño total:" y "Daño al héroe:". Activado de forma predeterminada. |
-| "Buscar actualizaciones al iniciar HDT" | Activa o desactiva la búsqueda de actualizaciones. Consulta [Privacidad](#privacy). |
+| "Buscar actualizaciones al iniciar el tracker" | Activa o desactiva la búsqueda de actualizaciones. Consulta [Privacidad](#privacy). |
 
 Una partida terminada aparece sola en el panel abierto. No necesitas hacer clic en "Actualizar".
 
 En "Sesión", una línea debajo de la barra de herramientas indica la sesión, por ejemplo "Sesión desde mar. 2026-11-10, 19:56 (en curso)" o "(terminada)". Una sesión puede seguir después de la medianoche.
+
+Debajo, una línea de estado indica si Hearthstone escribe el registro de partida que lee el tracker: "Registro de partida (Power.log): activado". Si el tracker tuvo que activar el registro con Hearthstone abierto, la línea te pide en rojo que reinicies Hearthstone una vez. Si no pudo activarlo, lo indica en rojo y menciona el archivo (consulta [INSTALL.md](INSTALL.md#troubleshooting)).
 
 <a id="tabs"></a>
 ### Pestañas
@@ -133,13 +140,7 @@ En "Sesión", una línea debajo de la barra de herramientas indica la sesión, p
 
 El tiempo en línea se cuenta por sesión de Hearthstone: desde que se abre Hearthstone hasta el final de la última partida. Mientras Hearthstone está abierto, cuenta hasta ahora. Solo cuentan las sesiones con al menos una partida en el periodo.
 
-Las partidas en modos sin tasas medidas, por ejemplo Campos de batalla, se guardan sin EXP. Aparecen en "Partidas" y cuentan para el tiempo de juego y el tiempo en línea, pero no para los demás recuadros, la tabla de mazos ni los gráficos.
-
-**Mazos**
-
-Una fila por mazo: partidas, porcentaje de victorias, EXP, EXP por hora y la duración media de las partidas. El mazo con más EXP por hora está arriba.
-
-Los nombres de los mazos vienen de las estadísticas propias de HDT. Una partida que HDT no registró muestra "Sin mazo registrado".
+Las partidas en modos sin tasas medidas, por ejemplo Campos de batalla, se guardan sin EXP. Aparecen en "Partidas" y cuentan para el tiempo de juego y el tiempo en línea, pero no para los demás recuadros ni los gráficos.
 
 **EXP perdida**
 
@@ -151,7 +152,7 @@ Los nombres de los mazos vienen de las estadísticas propias de HDT. Una partida
 
 **Partidas**
 
-Todas las partidas del periodo, de la más reciente a la más antigua: fecha, inicio, modo, resultado, tiempo de EXP, tiempo total, EXP, EXP de evento, turnos AFK, mazo y clase del oponente. Haz clic en el encabezado de una columna para ordenar.
+Todas las partidas del periodo, de la más reciente a la más antigua: fecha, inicio, modo, resultado, tiempo de EXP, tiempo total, EXP, EXP de evento, turnos AFK y clase del oponente. Haz clic en el encabezado de una columna para ordenar.
 
 **Gráficos**
 
@@ -179,7 +180,7 @@ Una partida cuenta en la hora o en el día en que empezó.
 Cada partida terminada se agrega a un archivo CSV:
 
 ```
-%APPDATA%\HearthstoneDeckTracker\XpTracker\hs_games.csv
+%APPDATA%\HearthstoneXpTracker\hs_games.csv
 ```
 
 El archivo usa comas entre los campos y un punto como separador decimal. Las horas son en hora local.
@@ -196,20 +197,21 @@ El archivo usa comas entre los campos y un punto como separador decimal. Las hor
 | `PlaySeconds` | Tiempo desde el primer turno hasta el final, incluidos los turnos AFK |
 | `WithMulliganSeconds` | Tiempo incluida la mano inicial |
 | `AfkTurns` | Número de turnos AFK propios |
-| `Xp` | EXP calculada por el plugin; vacía en los modos sin tasas medidas |
-| `Deck` | Nombre del mazo según HDT |
+| `Xp` | EXP calculada por el tracker; vacía en los modos sin tasas medidas |
+| `Deck` | Nombre del mazo, solo en las partidas registradas por el antiguo plugin de HDT; vacío en las partidas más recientes |
 | `PlayerClass` | Tu clase |
 | `OpponentClass` | La clase del oponente |
-| `EventXp` | EXP de evento calculada por el plugin; vacía en las partidas fuera de eventos. Los archivos de versiones anteriores sin esta columna se siguen leyendo, y la columna se agrega con la siguiente partida. |
+| `EventXp` | EXP de evento calculada por el tracker; vacía en las partidas fuera de eventos. Los archivos de versiones anteriores sin esta columna se siguen leyendo, y la columna se agrega con la siguiente partida. |
 | `XpBonus` | Bonificación de EXP del Pase de la taberna, en porcentaje, que aplicaba cuando se jugó la partida, por ejemplo `15`; `0` sin el pase. Los archivos anteriores sin esta columna se leen como `0`. |
 
-La columna `Xp` la calcula el plugin a partir del tiempo de EXP. El juego en sí no registra la EXP. Cuando se abre el panel, el plugin vuelve a calcular la EXP de todas las partidas guardadas con las tasas actuales, así que una tasa corregida también arregla las partidas anteriores. Cada partida conserva su propio `XpBonus`, así que si después cambias el pase o el nivel, las partidas anteriores no cambian.
+La columna `Xp` la calcula el tracker a partir del tiempo de EXP. El juego en sí no registra la EXP. Cuando se abre el panel, el tracker vuelve a calcular la EXP de todas las partidas guardadas con las tasas actuales, así que una tasa corregida también arregla las partidas anteriores. Cada partida conserva su propio `XpBonus`, así que si después cambias el pase o el nivel, las partidas anteriores no cambian.
 
-Una partida leída dos veces del mismo log se guarda solo una vez. Al instalar una nueva versión del plugin, el archivo se conserva.
+Una partida leída dos veces del mismo log se guarda solo una vez. Al instalar una nueva versión, el archivo se conserva. Cada vez que arranca, el tracker también agrega las partidas del historial del antiguo plugin de HDT que todavía no tiene (consulta [INSTALL.md](INSTALL.md#coming-from-the-hdt-plugin)).
 
 <a id="privacy"></a>
 ## Privacidad
 
-- El historial de partidas y la configuración se quedan en tu computadora. El plugin no sube nada.
-- La única solicitud de red es la búsqueda de actualizaciones. Cuando HDT inicia, el plugin le pregunta una vez a GitHub si existe una versión más nueva. La solicitud solo envía el nombre y la versión del plugin, por ejemplo `HearthstoneXpTracker/0.1.0`. Como en cualquier solicitud web, GitHub ve tu dirección IP.
-- Para desactivar la búsqueda de actualizaciones, desmarca "Buscar actualizaciones al iniciar HDT" en el panel. La opción se guarda en `%APPDATA%\HearthstoneDeckTracker\XpTracker\settings.ini`.
+- El historial de partidas y la configuración se quedan en tu computadora. El tracker no sube nada.
+- La única solicitud de red es la búsqueda de actualizaciones. Cuando el tracker arranca, le pregunta una vez a GitHub si existe una versión más nueva. La solicitud solo envía el nombre y la versión del programa, por ejemplo `HearthstoneXpTracker/0.2.0`. Como en cualquier solicitud web, GitHub ve tu dirección IP.
+- Para desactivar la búsqueda de actualizaciones, desmarca "Buscar actualizaciones al iniciar el tracker" en el panel. La opción se guarda en `%APPDATA%\HearthstoneXpTracker\settings.ini`.
+- El tracker solo lee el log de Hearthstone. No lee la memoria del juego ni modifica archivos del juego. Solo escribe en su propia carpeta de datos y, una sola vez, la sección `[Power]` de `log.config` (consulta [INSTALL.md](INSTALL.md#requirements)).

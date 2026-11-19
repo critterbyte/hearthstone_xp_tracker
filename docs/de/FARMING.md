@@ -7,7 +7,7 @@ Faire Tipps für mehr Belohnungsweg-EP pro Stunde. Sie folgen aus der [EP-Formel
 - **Gemessen:** von diesem Projekt ermittelt.
 - **Laut [n]:** aus den Quellen am Ende dieser Seite.
 
-Das Dashboard des Plugins zeigt, wo deine EP bleiben. Der Tab „Verlorene EP“ ist ein guter Startpunkt (siehe [USAGE.md](USAGE.md#tabs)).
+Das Dashboard des Trackers zeigt, wo deine EP bleiben. Der Tab „Verlorene EP“ ist ein guter Startpunkt (siehe [USAGE.md](USAGE.md#tabs)).
 
 <a id="play-fair"></a>
 ## Fair spielen

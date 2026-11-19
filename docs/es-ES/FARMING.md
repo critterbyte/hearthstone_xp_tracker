@@ -7,7 +7,7 @@ Consejos limpios para conseguir más PE del Mapa de recompensas por hora. Se der
 - **Medido:** lo ha descubierto este proyecto.
 - **Según [n]:** de las fuentes que hay al final de esta página.
 
-El panel del plugin muestra adónde van tus PE. La pestaña "PE perdidos" es un buen punto de partida (consulta [USAGE.md](USAGE.md#tabs)).
+El panel del tracker muestra adónde van tus PE. La pestaña "PE perdidos" es un buen punto de partida (consulta [USAGE.md](USAGE.md#tabs)).
 
 <a id="play-fair"></a>
 ## Juega limpio

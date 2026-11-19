@@ -9,7 +9,7 @@
 - [ ] `CHANGELOG.md` has a line under *Unreleased*.
 - [ ] Code, comments, commit messages and documentation are in English (Conventional Commits).
 - [ ] No real BattleTags, account ids or other players' names in code, tests, screenshots or this description (see [Privacy first](../CONTRIBUTING.md#privacy-first)).
-- [ ] No HDT files added.
+- [ ] The tracker stays passive (log files and window position only); new libraries are listed in `THIRD-PARTY-NOTICES.txt`.
 - [ ] If an English user guide changed: the translations in `docs/<code>/` are updated, or this description says which ones are behind.
 - [ ] If overlay or dashboard texts changed: all language files in `src/XpTracker.Core/Localization/` have the new keys.
 

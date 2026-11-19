@@ -13,13 +13,13 @@ Write down the XP right after each game; the game does not log it.
 
 ## Games
 
-| Mode | Result | XP shown | XP time (from the plugin or LogCheck) | Notes |
+| Mode | Result | XP shown | XP time (from the tracker or LogCheck) | Notes |
 |---|---|---:|---:|---|
 | | | | | |
 
 ## Setup
 
-- Plugin version:
+- Tracker version:
 - Tavern Pass or other XP boost active: yes / no
 - Anything unusual (AFK turns, concede, disconnect, Rewind):
 

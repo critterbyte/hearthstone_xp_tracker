@@ -2,20 +2,22 @@
 
 > Maschinell unterstützte Übersetzung. Weicht sie von der [englischen Fassung](../USAGE.md) ab, gilt die englische Fassung. Korrekturen sind willkommen: [eröffne ein Issue](https://github.com/critterbyte/hearthstone_xp_tracker/issues/new/choose).
 
-Das Plugin besteht aus drei Teilen:
+Der Tracker läuft im Hintergrund, mit einem goldenen „XP“-Symbol im Infobereich (*notification area*) unten rechts in der Taskleiste. Er besteht aus drei Teilen:
 
 - dem **Overlay** im Spiel
 - dem **Dashboard**-Fenster
 - der Datei mit dem **Partieverlauf**
 
-Die Texte in Anführungszeichen, etwa „EP-Zeit:“, sind die Texte, die das Plugin anzeigt.
+Die Texte in Anführungszeichen, etwa „EP-Zeit:“, sind die Texte, die der Tracker anzeigt.
 
 <a id="overlay"></a>
 ## Overlay
 
 Das Overlay ist ein kleiner Kasten unten rechts über dem Einstellungs-Button von Hearthstone (dem Zahnrad unten rechts). Im Dashboard kannst du es stattdessen unten links über dein Spielerbild („You“ mit deinem Rang) setzen. Links stehen die Beschriftungen, rechts die Werte in blauen Balken.
 
-Das Overlay erscheint nur in **Gewertet, Ungewertet, Kartenchaos und Arena**. Andere Modi werden noch nicht gemessen, dort zeigt das Plugin nichts an. Ein Kartenchaos gegen den Computer (PvE, zum Beispiel gegen den Gastwirt) gibt keine EP, darum zeigt das Overlay dort „+0“.
+Das Overlay erscheint nur, solange Hearthstone das aktive Fenster ist. Es übernimmt nie den Fokus, und jeder Klick geht durch es hindurch an das Spiel.
+
+Das Overlay erscheint nur in **Gewertet, Ungewertet, Kartenchaos und Arena**. Andere Modi werden noch nicht gemessen, dort zeigt der Tracker nichts an. Ein Kartenchaos gegen den Computer (PvE, zum Beispiel gegen den Gastwirt) gibt keine EP, darum zeigt das Overlay dort „+0“.
 
 <a id="during-a-game"></a>
 ### Während einer Partie
@@ -56,7 +58,7 @@ Der Schaden wird gelesen, sobald der Server eine Aktion bestätigt. Er kann also
 
 Solange die EP-Zeit unter 60 Sekunden liegt, zeigen beide EP-Werte „+0“. Partien unter einer Minute geben keine EP. Die Regeln stehen in [FORMULA.md](../FORMULA.md).
 
-Startest du HDT mitten in einer Partie, liest das Plugin die Partie trotzdem von Anfang an.
+Startest du den Tracker mitten in einer Partie, liest er die Partie trotzdem von Anfang an.
 
 <a id="after-a-game"></a>
 ### Nach einer Partie
@@ -73,7 +75,7 @@ Nach der Partie zeigt das Overlay bis zum Mulligan deiner nächsten Partie eine 
 <a id="update-hint"></a>
 ### Update-Hinweis
 
-Gibt es eine neuere Version des Plugins, zeigt das Overlay eine weitere Zeile, solange keine Partie läuft:
+Gibt es eine neuere Version des Trackers, zeigt das Overlay eine weitere Zeile, solange keine Partie läuft:
 
 | Zeile | Bedeutung |
 |---|---|
@@ -84,10 +86,13 @@ Das Dashboard zeigt einen Link zur Downloadseite. Wie du aktualisierst, steht in
 <a id="dashboard"></a>
 ## Dashboard
 
-Das Dashboard-Fenster heißt „HS XP Tracker“. Du öffnest es in HDT auf einem von zwei Wegen:
+Das Dashboard-Fenster heißt „HS XP Tracker“. Es öffnet sich, wenn der Tracker startet. So öffnest du es erneut:
 
-- Menü *Plugins* → „EP-Dashboard“
-- *Settings* (das Zahnrad rechts in der oberen Leiste) *→ Tracker → Plugins* → der Button „EP-Dashboard“ des Plugins
+- klicke auf das goldene „XP“-Symbol im Infobereich, oder
+- klicke mit der rechten Maustaste auf das Symbol und wähle „EP-Dashboard“, oder
+- starte `HearthstoneXpTracker.exe` erneut.
+
+Wenn du das Dashboard schließt, laufen der Tracker und das Overlay weiter. Um den Tracker zu beenden, klicke mit der rechten Maustaste auf das Symbol und wähle „Beenden“.
 
 <a id="toolbar"></a>
 ### Werkzeugleiste
@@ -102,17 +107,19 @@ Das Dashboard-Fenster heißt „HS XP Tracker“. Du öffnest es in HDT auf eine
 | „Gesamt“ | Alle Partien im Verlauf |
 | „Aktualisieren“ | Den Verlauf neu einlesen |
 | „Datenordner öffnen“ | Den Ordner mit der Verlaufsdatei im Windows Explorer öffnen |
-| „Sprache (Language)“ | Sprache des Overlays, des Dashboards und des Menüeintrags des Plugins. Standard ist Englisch. Die Änderung gilt sofort; das Dashboard öffnet sich in der neuen Sprache neu. In anderen Sprachen behält die Beschriftung das englische Wort, zum Beispiel „Sprache (Language)“. |
-| „Overlay-Position“ | Wo das Overlay sitzt: „Rechts über dem Einstellungs-Knopf“ (Standard) oder „Links über deinem Spielerbild“, so bleibt die HDT-Deckliste rechts frei, zum Beispiel bei langen Einzelkarten-Decks. Das Overlay wechselt sofort. |
-| „Event läuft (Event-EP anzeigen)“ | Während eines Hearthstone-Events einschalten: Das Overlay zeigt die Event-EP, und neue Partien speichern sie. |
+| „Sprache (Language)“ | Sprache des Overlays, des Dashboards und des Menüs am Symbol. Standard ist Englisch. Die Änderung gilt sofort; das Dashboard öffnet sich in der neuen Sprache neu. In anderen Sprachen behält die Beschriftung das englische Wort, zum Beispiel „Sprache (Language)“. |
+| „Overlay-Position“ | Wo das Overlay sitzt: „Rechts über dem Einstellungs-Knopf“ (Standard) oder „Links über deinem Spielerbild“, so bleibt die rechte Seite frei, zum Beispiel für die Deckliste von Hearthstone Deck Tracker. Das Overlay wechselt sofort. |
+| „Event läuft (Event-EP anzeigen)“ | Während eines Hearthstone-Events einschalten: Das Overlay zeigt die Event-EP, und neue Partien speichern sie. Der Tracker kann nicht erkennen, wann ein Event läuft, darum ist dies standardmäßig aus; solange es aus ist, erinnert dich ein kurzer Hinweis darunter daran. |
 | „Gasthauspass (EP-Bonus)“ | Einschalten, wenn du den Gasthauspass der aktuellen Erweiterung besitzt. Der Bonus wird berechnet, nicht gemessen: Mit dem Pass können die angezeigten EP pro Partie um 1 EP abweichen (siehe [FORMULA.md](../FORMULA.md#tavern-pass)). |
 | „Stufe“ mit „−“, einer Zahl und „+“ | Deine Stufe im Belohnungsweg. Klicke auf „−“ oder „+“ oder tippe die Zahl ein. Die Zeile darunter zeigt den Bonus und die nächste Schwelle, zum Beispiel „10 % EP-Bonus, noch 2 Stufen bis 15 %“. Der Bonus beträgt 10 %, ab Stufe 20 15 % und ab Stufe 70 20 % (siehe [FORMULA.md](../FORMULA.md#tavern-pass)). Passe die Stufe an, wenn du Stufe 20 oder 70 erreichst. |
 | „Schaden im Overlay anzeigen“ | Die Zeilen „Gesamtschaden:“ und „Heldenschaden:“ ein- oder ausblenden. Standardmäßig an. |
-| „Beim Start von HDT nach Updates suchen“ | Die Update-Prüfung ein- oder ausschalten. Siehe [Datenschutz](#privacy). |
+| „Beim Start des Trackers nach Updates suchen“ | Die Update-Prüfung ein- oder ausschalten. Siehe [Datenschutz](#privacy). |
 
 Eine beendete Partie erscheint in einem offenen Dashboard von selbst. Du musst nicht auf „Aktualisieren“ klicken.
 
 Bei „Sitzung“ nennt eine Zeile unter der Werkzeugleiste die Sitzung, zum Beispiel „Sitzung seit Di 2026-11-10, 19:56 (läuft)“ oder „(beendet)“. Eine Sitzung kann über Mitternacht hinaus laufen.
+
+Darunter zeigt eine Statuszeile, ob Hearthstone das Spiel-Log schreibt, das der Tracker liest: „Spiel-Log (Power.log): an“. Musste der Tracker das Log einschalten, während Hearthstone lief, bittet die Zeile in Rot, Hearthstone einmal neu zu starten. Konnte er das Log nicht einschalten, sagt sie das in Rot und nennt die Datei (siehe [INSTALL.md](INSTALL.md#troubleshooting)).
 
 <a id="tabs"></a>
 ### Tabs
@@ -133,13 +140,7 @@ Bei „Sitzung“ nennt eine Zeile unter der Werkzeugleiste die Sitzung, zum Bei
 
 Die Online-Zeit wird pro Hearthstone-Sitzung gezählt: vom Start von Hearthstone bis zum Ende der letzten Partie. Solange Hearthstone läuft, zählt sie bis jetzt. Es zählen nur Sitzungen mit mindestens einer Partie im Zeitraum.
 
-Partien in Modi ohne gemessene Raten, zum Beispiel Schlachtfeld, werden ohne EP gespeichert. Sie stehen unter „Partien“ und zählen bei Spielzeit und Online-Zeit mit, aber nicht in den übrigen Kacheln, der Deck-Tabelle und den Diagrammen.
-
-**Decks**
-
-Eine Zeile pro Deck: Partien, Siegquote, EP, EP pro Stunde und die durchschnittliche Partiedauer. Das Deck mit den meisten EP pro Stunde steht oben.
-
-Die Decknamen stammen aus der Statistik von HDT. Eine Partie, die HDT nicht erfasst hat, zeigt „Kein Deck erfasst“.
+Partien in Modi ohne gemessene Raten, zum Beispiel Schlachtfeld, werden ohne EP gespeichert. Sie stehen unter „Partien“ und zählen bei Spielzeit und Online-Zeit mit, aber nicht in den übrigen Kacheln oder den Diagrammen.
 
 **Verlorene EP**
 
@@ -151,7 +152,7 @@ Die Decknamen stammen aus der Statistik von HDT. Eine Partie, die HDT nicht erfa
 
 **Partien**
 
-Alle Partien des Zeitraums, die neueste zuerst: Datum, Start, Modus, Ergebnis, EP-Zeit, Gesamtzeit, EP, Event-EP, AFK-Züge, Deck und Klasse des Gegners. Klicke auf einen Spaltenkopf, um zu sortieren.
+Alle Partien des Zeitraums, die neueste zuerst: Datum, Start, Modus, Ergebnis, EP-Zeit, Gesamtzeit, EP, Event-EP, AFK-Züge und Klasse des Gegners. Klicke auf einen Spaltenkopf, um zu sortieren.
 
 **Diagramme**
 
@@ -179,7 +180,7 @@ Eine Partie zählt in der Stunde oder an dem Tag, in der oder an dem sie begonne
 Jede beendete Partie wird an eine CSV-Datei angehängt:
 
 ```
-%APPDATA%\HearthstoneDeckTracker\XpTracker\hs_games.csv
+%APPDATA%\HearthstoneXpTracker\hs_games.csv
 ```
 
 Die Datei trennt die Felder mit Kommas und nutzt einen Punkt als Dezimalzeichen. Zeiten sind Ortszeit.
@@ -196,20 +197,21 @@ Die Datei trennt die Felder mit Kommas und nutzt einen Punkt als Dezimalzeichen.
 | `PlaySeconds` | Zeit vom ersten Zug bis zum Ende, AFK-Züge eingeschlossen |
 | `WithMulliganSeconds` | Zeit einschließlich Mulligan |
 | `AfkTurns` | Anzahl der eigenen AFK-Züge |
-| `Xp` | Vom Plugin berechnete EP; leer bei Modi ohne gemessene Raten |
-| `Deck` | Deckname aus HDT |
+| `Xp` | Vom Tracker berechnete EP; leer bei Modi ohne gemessene Raten |
+| `Deck` | Deckname, nur bei Partien, die das frühere HDT-Plugin erfasst hat; leer bei neueren Partien |
 | `PlayerClass` | Deine Klasse |
 | `OpponentClass` | Die Klasse des Gegners |
-| `EventXp` | Vom Plugin berechnete Event-EP; leer bei Partien außerhalb von Events. Dateien älterer Versionen ohne diese Spalte werden weiterhin gelesen, und die Spalte kommt mit der nächsten Partie hinzu. |
+| `EventXp` | Vom Tracker berechnete Event-EP; leer bei Partien außerhalb von Events. Dateien älterer Versionen ohne diese Spalte werden weiterhin gelesen, und die Spalte kommt mit der nächsten Partie hinzu. |
 | `XpBonus` | EP-Bonus des Gasthauspasses in Prozent, der beim Spielen der Partie galt, zum Beispiel `15`; `0` ohne Pass. Ältere Dateien ohne diese Spalte werden als `0` gelesen. |
 
-Die Spalte `Xp` berechnet das Plugin aus der EP-Zeit. Das Spiel selbst protokolliert keine EP. Beim Öffnen des Dashboards berechnet das Plugin die EP aller gespeicherten Partien mit den aktuellen Raten neu, eine korrigierte Rate berichtigt also auch ältere Partien. Jede Partie behält ihren eigenen `XpBonus`, spätere Änderungen am Pass oder an der Stufe ändern ältere Partien also nicht.
+Die Spalte `Xp` berechnet der Tracker aus der EP-Zeit. Das Spiel selbst protokolliert keine EP. Beim Öffnen des Dashboards berechnet der Tracker die EP aller gespeicherten Partien mit den aktuellen Raten neu, eine korrigierte Rate berichtigt also auch ältere Partien. Jede Partie behält ihren eigenen `XpBonus`, spätere Änderungen am Pass oder an der Stufe ändern ältere Partien also nicht.
 
-Eine Partie, die zweimal aus demselben Log gelesen wird, wird nur einmal gespeichert. Bei der Installation einer neuen Plugin-Version bleibt die Datei erhalten.
+Eine Partie, die zweimal aus demselben Log gelesen wird, wird nur einmal gespeichert. Bei der Installation einer neuen Version bleibt die Datei erhalten. Bei jedem Start übernimmt der Tracker außerdem die Partien aus dem Verlauf des früheren HDT-Plugins, die er noch nicht hat (siehe [INSTALL.md](INSTALL.md#coming-from-the-hdt-plugin)).
 
 <a id="privacy"></a>
 ## Datenschutz
 
-- Der Partieverlauf und die Einstellungen bleiben auf deinem Computer. Das Plugin lädt nichts hoch.
-- Die einzige Netzwerkanfrage ist die Update-Prüfung. Beim Start von HDT fragt das Plugin einmal bei GitHub nach, ob es eine neuere Version gibt. Die Anfrage sendet nur den Namen und die Version des Plugins, zum Beispiel `HearthstoneXpTracker/0.1.0`. Wie bei jeder Webanfrage sieht GitHub deine IP-Adresse.
-- Um die Update-Prüfung auszuschalten, entferne im Dashboard den Haken bei „Beim Start von HDT nach Updates suchen“. Die Einstellung wird in `%APPDATA%\HearthstoneDeckTracker\XpTracker\settings.ini` gespeichert.
+- Der Partieverlauf und die Einstellungen bleiben auf deinem Computer. Der Tracker lädt nichts hoch.
+- Die einzige Netzwerkanfrage ist die Update-Prüfung. Beim Start des Trackers fragt er einmal bei GitHub nach, ob es eine neuere Version gibt. Die Anfrage sendet nur den Namen und die Version des Programms, zum Beispiel `HearthstoneXpTracker/0.2.0`. Wie bei jeder Webanfrage sieht GitHub deine IP-Adresse.
+- Um die Update-Prüfung auszuschalten, entferne im Dashboard den Haken bei „Beim Start des Trackers nach Updates suchen“. Die Einstellung wird in `%APPDATA%\HearthstoneXpTracker\settings.ini` gespeichert.
+- Der Tracker liest nur das Log von Hearthstone. Er liest nicht den Speicher des Spiels und ändert keine Spieldateien. Er schreibt nur in seinen eigenen Datenordner und einmalig den Abschnitt `[Power]` in `log.config` (siehe [INSTALL.md](INSTALL.md#requirements)).

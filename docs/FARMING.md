@@ -5,7 +5,7 @@ Fair tips for more reward track XP per hour. They follow from the [XP formula](F
 - **Measured:** found by this project.
 - **According to [n]:** from the sources at the end of this page.
 
-The plugin's dashboard shows where your XP goes. The "Lost XP" tab is a good place to start (see [USAGE.md](USAGE.md#tabs)).
+The tracker's dashboard shows where your XP goes. The "Lost XP" tab is a good place to start (see [USAGE.md](USAGE.md#tabs)).
 
 ## Play fair
 

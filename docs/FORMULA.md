@@ -1,6 +1,6 @@
 # XP formula
 
-Hearthstone does not write reward track XP to any log file, and Blizzard has not published the formula. This page describes the formula the plugin uses and how it was found.
+Hearthstone does not write reward track XP to any log file, and Blizzard has not published the formula. This page describes the formula the tracker uses and how it was found.
 
 Each statement is marked:
 
@@ -45,7 +45,7 @@ All values in this table are **measured**.
 - A win pays 1.40 times a loss.
 - Casual, Tavern Brawl and Arena pay 0.71 times Ranked.
 - **Measured:** Arena pays exactly like Casual. Wins of 771.81 s, 1101.72 s and 712.97 s gave 72, 103 and 66 XP (0.0932 gives 71.93, 102.68 and 66.45), a loss of 1163.04 s gave 77 XP (0.0666 gives 77.46). With the Ranked rates it would have been 101, 144, 93 and 108 XP. Event XP follow the same formula as in the other modes.
-- **Measured:** a Tavern Brawl against the computer (PvE) gives nothing. Two losses of 1:39 and 4:29 against the Innkeeper gave 0 XP and 0 event XP. Wins against the computer are not measured yet. The plugin recognizes such games by the opponent's missing account in the log (`GameAccountId=[hi=0 lo=0]`).
+- **Measured:** a Tavern Brawl against the computer (PvE) gives nothing. Two losses of 1:39 and 4:29 against the Innkeeper gave 0 XP and 0 event XP. Wins against the computer are not measured yet. The tracker recognizes such games by the opponent's missing account in the log (`GameAccountId=[hi=0 lo=0]`).
 - Standard and Wild pay the same.
 
 These rates are the middle of ranges that fit every measured game:
@@ -82,7 +82,7 @@ All rows are **measured**. Other clicks, such as picking up a card or using an e
 
 **According to [4]:** since patch 29.6 (2024), "extended periods of inactivity will now reward less XP". Normal actions, "or even just hitting the end turn button", are not affected. This matches the measured rule.
 
-**Measured:** when a turn ends by the timer without any action, the server lowers that player's next turn limit to 10 seconds. The `Power.log` shows this as `TAG_CHANGE ... tag=TIMEOUT value=10`. The plugin uses this marker to find AFK turns. If the next own turn is also idle, it is excluded too. As soon as you play a card again, the turn counts fully, even under the 10-second limit.
+**Measured:** when a turn ends by the timer without any action, the server lowers that player's next turn limit to 10 seconds. The `Power.log` shows this as `TAG_CHANGE ... tag=TIMEOUT value=10`. The tracker uses this marker to find AFK turns. If the next own turn is also idle, it is excluded too. As soon as you play a card again, the turn counts fully, even under the 10-second limit.
 
 ## What does not matter
 
@@ -114,7 +114,7 @@ eventXp = round(xpSeconds / 60)
 
 All rates above were measured **without** a Tavern Pass. They are the base rates.
 
-> **The Tavern Pass boost is calculated, not measured.** The plugin applies the boost from the sources below by calculation only. No game with a Tavern Pass has been measured. It is therefore not known:
+> **The Tavern Pass boost is calculated, not measured.** The tracker applies the boost from the sources below by calculation only. No game with a Tavern Pass has been measured. It is therefore not known:
 >
 > - whether the boost applies to the XP from game time at all
 > - whether the game rounds before or after adding the boost
@@ -143,7 +143,7 @@ All rates above were measured **without** a Tavern Pass. They are the base rates
 - **Assumed:** the boost does not change event XP. Not measured.
 - The 60-second minimum and the 30-minute cap stay the same.
 
-The plugin asks for the pass and the rewards track level in the dashboard and stores the boost with each game. With a pass, the XP the plugin shows can differ by about 1 XP per game from the XP the game gives, if the game rounds in another order. A few measured games with the pass would show whether these assumptions hold.
+The tracker asks for the pass and the rewards track level in the dashboard and stores the boost with each game. With a pass, the XP the tracker shows can differ by about 1 XP per game from the XP the game gives, if the game rounds in another order. A few measured games with the pass would show whether these assumptions hold.
 
 ## Log markers used
 
@@ -157,14 +157,14 @@ The plugin asks for the pass and the rewards track level in the dashboard and st
 
 Timestamps in the log have seven decimal places (100-nanosecond ticks). Whole seconds are not precise enough to tell the rates apart.
 
-The timestamps carry only the time of day, not the date. The plugin takes the date from the system clock: a line belongs to the latest day on which its time is not in the future. This is right for every game of the last 24 hours, also when Hearthstone runs past midnight or stays open overnight. Known limit: if HDT starts more than 24 hours after the last game of a Hearthstone session that is still open, that one game is read with a later date.
+The timestamps carry only the time of day, not the date. The tracker takes the date from the system clock: a line belongs to the latest day on which its time is not in the future. This is right for every game of the last 24 hours, also when Hearthstone runs past midnight or stays open overnight. Known limit: if the tracker starts more than 24 hours after the last game of a Hearthstone session that is still open, that one game is read with a later date.
 
 ## Not covered yet
 
-- **Battlegrounds, Twist and solo adventures** are not measured. The plugin shows nothing in these modes. Ranked and Casual count as measured in the formats Standard and Wild only; a game in another format, such as Twist, is stored without XP.
+- **Battlegrounds, Twist and solo adventures** are not measured. The tracker shows nothing in these modes. Ranked and Casual count as measured in the formats Standard and Wild only; a game in another format, such as Twist, is stored without XP.
   - **According to [5]:** Casual, Ranked, Arena, Battlegrounds, Tavern Brawls and Adventures give XP.
   - **According to [5]:** Friendly Challenges do not give XP.
-- **Tavern Pass:** not measured, because of the project's free-to-play policy. The plugin calculates the boost as described in [Tavern Pass](#tavern-pass); the rounding with the boost is assumed.
+- **Tavern Pass:** not measured, because of the project's free-to-play policy. The tracker calculates the boost as described in [Tavern Pass](#tavern-pass); the rounding with the boost is assumed.
 - **30-minute cap:** not measured, see above.
 
 ## Sources

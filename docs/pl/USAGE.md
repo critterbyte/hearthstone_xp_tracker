@@ -2,20 +2,22 @@
 
 > Tłumaczenie wspomagane maszynowo. Jeśli różni się od [wersji angielskiej](../USAGE.md), obowiązuje wersja angielska. Poprawki są mile widziane: [zgłoś problem](https://github.com/critterbyte/hearthstone_xp_tracker/issues/new/choose).
 
-Wtyczka ma trzy części:
+Tracker działa w tle, ze złotą ikoną „XP” w obszarze powiadomień (*notification area*) w prawym dolnym rogu paska zadań. Ma trzy części:
 
 - **nakładkę** w grze
 - okno **panelu**
 - plik z **historią gier**
 
-Teksty w cudzysłowie, na przykład „Czas PD:”, to teksty, które pokazuje wtyczka.
+Teksty w cudzysłowie, na przykład „Czas PD:”, to teksty, które pokazuje tracker.
 
 <a id="overlay"></a>
 ## Nakładka
 
 Nakładka to małe pole w prawym dolnym rogu, nad przyciskiem ustawień Hearthstone (koło zębate w prawym dolnym rogu). W panelu możesz zamiast tego przenieść ją do lewego dolnego rogu, nad twój portret („You” z twoją rangą). Etykiety są po lewej. Wartości są po prawej, na niebieskich paskach.
 
-Nakładka jest widoczna tylko w trybach **Ranking, Rozrywka, Karczemna bójka i Arena**. Inne tryby nie są jeszcze mierzone, więc wtyczka nic tam nie pokazuje. Karczemna bójka przeciwko komputerowi (PvE, na przykład przeciwko Karczmarzowi) nie daje PD, więc nakładka pokazuje tam „+0”.
+Nakładka jest widoczna tylko wtedy, gdy Hearthstone jest aktywnym oknem. Nigdy nie przejmuje fokusu, a każde kliknięcie przechodzi przez nią do gry.
+
+Nakładka jest widoczna tylko w trybach **Ranking, Rozrywka, Karczemna bójka i Arena**. Inne tryby nie są jeszcze mierzone, więc tracker nic tam nie pokazuje. Karczemna bójka przeciwko komputerowi (PvE, na przykład przeciwko Karczmarzowi) nie daje PD, więc nakładka pokazuje tam „+0”.
 
 <a id="during-a-game"></a>
 ### W trakcie gry
@@ -56,7 +58,7 @@ Obrażenia są odczytywane, gdy serwer potwierdzi akcję, więc mogą wzrosnąć
 
 Dopóki czas PD jest poniżej 60 sekund, obie wartości PD pokazują „+0”. Gry krótsze niż minuta nie dają PD. Zasady opisuje [FORMULA.md](../FORMULA.md).
 
-Jeśli uruchomisz HDT w trakcie gry, wtyczka i tak odczyta grę od początku.
+Jeśli uruchomisz tracker w trakcie gry, i tak odczyta on grę od początku.
 
 <a id="after-a-game"></a>
 ### Po grze
@@ -73,7 +75,7 @@ Po grze nakładka pokazuje podsumowanie aż do wyboru ręki startowej w twojej n
 <a id="update-hint"></a>
 ### Informacja o aktualizacji
 
-Gdy istnieje nowsza wersja wtyczki, nakładka pokazuje jeszcze jeden wiersz, kiedy nie trwa żadna gra:
+Gdy istnieje nowsza wersja trackera, nakładka pokazuje jeszcze jeden wiersz, kiedy nie trwa żadna gra:
 
 | Wiersz | Znaczenie |
 |---|---|
@@ -84,10 +86,13 @@ Panel pokazuje link do strony pobierania. Jak zaktualizować, opisuje [INSTALL.m
 <a id="dashboard"></a>
 ## Panel
 
-Okno panelu nazywa się „HS XP Tracker”. Otworzysz je w HDT na jeden z dwóch sposobów:
+Okno panelu nazywa się „HS XP Tracker”. Otwiera się przy starcie trackera. Aby otworzyć je ponownie:
 
-- menu *Plugins* → „Panel PD”
-- *Settings* (ikona koła zębatego po prawej stronie górnego paska) *→ Tracker → Plugins* → przycisk wtyczki „Panel PD”
+- kliknij złotą ikonę „XP” w obszarze powiadomień albo
+- kliknij ikonę prawym przyciskiem myszy i wybierz „Panel PD” albo
+- ponownie uruchom `HearthstoneXpTracker.exe`.
+
+Zamknięcie panelu nie zatrzymuje trackera ani nakładki. Aby zakończyć działanie trackera, kliknij ikonę prawym przyciskiem myszy i wybierz „Zakończ”.
 
 <a id="toolbar"></a>
 ### Pasek narzędzi
@@ -102,17 +107,19 @@ Okno panelu nazywa się „HS XP Tracker”. Otworzysz je w HDT na jeden z dwóc
 | „Cały czas” | Wszystkie gry w historii |
 | „Odśwież” | Ponowne odczytanie historii |
 | „Otwórz folder danych” | Otwiera folder z plikiem historii w Eksploratorze Windows |
-| „Język (Language)” | Język nakładki, panelu i pozycji wtyczki w menu. Domyślnie angielski. Zmiana działa od razu; panel otwiera się ponownie w nowym języku. W innych językach etykieta zachowuje angielskie słowo, na przykład „Język (Language)”. |
-| „Położenie nakładki” | Gdzie jest nakładka: „Po prawej, nad przyciskiem ustawień” (domyślnie) albo „Po lewej, nad twoim portretem”, dzięki czemu lista talii HDT po prawej pozostaje widoczna. Nakładka przesuwa się od razu. |
-| „Trwa wydarzenie (pokaż PD wydarzenia)” | Włącz w trakcie wydarzenia w Hearthstone: nakładka pokazuje PD wydarzenia, a nowe gry je zapisują. |
+| „Język (Language)” | Język nakładki, panelu i menu ikony. Domyślnie angielski. Zmiana działa od razu; panel otwiera się ponownie w nowym języku. W innych językach etykieta zachowuje angielskie słowo, na przykład „Język (Language)”. |
+| „Położenie nakładki” | Gdzie jest nakładka: „Po prawej, nad przyciskiem ustawień” (domyślnie) albo „Po lewej, nad twoim portretem”, dzięki czemu prawa strona pozostaje wolna, na przykład na listę talii Hearthstone Deck Tracker. Nakładka przesuwa się od razu. |
+| „Trwa wydarzenie (pokaż PD wydarzenia)” | Włącz w trakcie wydarzenia w Hearthstone: nakładka pokazuje PD wydarzenia, a nowe gry je zapisują. Tracker nie potrafi rozpoznać, kiedy trwa wydarzenie, więc ta opcja jest domyślnie wyłączona; dopóki jest wyłączona, przypomina o niej krótka wskazówka pod nią. |
 | „Karnet Karczmarza (premia PD)” | Włącz, jeśli masz Karnet Karczmarza bieżącego rozszerzenia. Premia jest obliczana, a nie mierzona: z karnetem pokazane PD mogą różnić się o 1 PD na grę (zobacz [FORMULA.md](../FORMULA.md#tavern-pass)). |
 | „Poziom” z „−”, liczbą i „+” | Twój poziom na Ścieżce nagród. Kliknij „−” lub „+” albo wpisz liczbę. Wiersz poniżej pokazuje premię i następny próg, na przykład „10% premii PD, jeszcze 2 poz. do 15%”. Premia wynosi 10%, od poziomu 20 – 15%, a od poziomu 70 – 20% (zobacz [FORMULA.md](../FORMULA.md#tavern-pass)). Zaktualizuj poziom, gdy przekroczysz poziom 20 lub 70. |
 | „Pokaż obrażenia na nakładce” | Pokazuje lub ukrywa wiersze „Obrażenia łącznie:” i „Obrażenia bohatera:”. Domyślnie włączone. |
-| „Sprawdzaj aktualizacje przy starcie HDT” | Włącza lub wyłącza sprawdzanie aktualizacji. Zobacz [Prywatność](#privacy). |
+| „Sprawdzaj aktualizacje przy starcie trackera” | Włącza lub wyłącza sprawdzanie aktualizacji. Zobacz [Prywatność](#privacy). |
 
 Zakończona gra sama pojawia się w otwartym panelu. Nie musisz klikać „Odśwież”.
 
 Dla okresu „Sesja” wiersz pod paskiem narzędzi podaje sesję, na przykład „Sesja od wt. 2026-11-10, 19:56 (trwa)” albo „(zakończona)”. Sesja może trwać po północy.
+
+Poniżej wiersz stanu pokazuje, czy Hearthstone zapisuje dziennik gry, który czyta tracker: „Dziennik gry (Power.log): włączony”. Jeśli tracker musiał włączyć dziennik, gdy Hearthstone był uruchomiony, wiersz na czerwono prosi o jednorazowe ponowne uruchomienie Hearthstone. Jeśli nie udało się włączyć dziennika, wiersz informuje o tym na czerwono i podaje nazwę pliku (zobacz [INSTALL.md](INSTALL.md#troubleshooting)).
 
 <a id="tabs"></a>
 ### Karty
@@ -133,13 +140,7 @@ Dla okresu „Sesja” wiersz pod paskiem narzędzi podaje sesję, na przykład 
 
 Czas online jest liczony dla każdej sesji Hearthstone: od uruchomienia Hearthstone do końca ostatniej gry. Dopóki Hearthstone działa, liczy się do teraz. Liczą się tylko sesje z co najmniej jedną grą w okresie.
 
-Gry w trybach bez zmierzonych stawek, na przykład Ustawka, są zapisywane bez PD. Są widoczne w „Gry” i liczą się do czasu gry oraz czasu online, ale nie do pozostałych kafelków, tabeli talii ani wykresów.
-
-**Talie**
-
-Jeden wiersz na talię: gry, odsetek zwycięstw, PD, PD na godzinę i średnia długość gry. Talia z najwyższym wynikiem PD na godzinę jest na górze.
-
-Nazwy talii pochodzą ze statystyk HDT. Gra, której HDT nie zapisał, pokazuje „Brak zapisanej talii”.
+Gry w trybach bez zmierzonych stawek, na przykład Ustawka, są zapisywane bez PD. Są widoczne w „Gry” i liczą się do czasu gry oraz czasu online, ale nie do pozostałych kafelków ani wykresów.
 
 **Utracone PD**
 
@@ -151,7 +152,7 @@ Nazwy talii pochodzą ze statystyk HDT. Gra, której HDT nie zapisał, pokazuje 
 
 **Gry**
 
-Wszystkie gry z okresu, od najnowszej: data, początek, tryb, wynik, czas PD, czas całkowity, PD, PD wydarzenia, tury AFK, talia i klasa przeciwnika. Kliknij nagłówek kolumny, aby posortować.
+Wszystkie gry z okresu, od najnowszej: data, początek, tryb, wynik, czas PD, czas całkowity, PD, PD wydarzenia, tury AFK i klasa przeciwnika. Kliknij nagłówek kolumny, aby posortować.
 
 **Wykresy**
 
@@ -179,7 +180,7 @@ Gra liczy się w godzinie lub w dniu, w którym się zaczęła.
 Każda zakończona gra jest dopisywana do pliku CSV:
 
 ```
-%APPDATA%\HearthstoneDeckTracker\XpTracker\hs_games.csv
+%APPDATA%\HearthstoneXpTracker\hs_games.csv
 ```
 
 Plik oddziela pola przecinkami, a jako separatora dziesiętnego używa kropki. Czasy są w czasie lokalnym.
@@ -196,20 +197,21 @@ Plik oddziela pola przecinkami, a jako separatora dziesiętnego używa kropki. C
 | `PlaySeconds` | Czas od pierwszej tury do końca, łącznie z turami AFK |
 | `WithMulliganSeconds` | Czas łącznie z wyborem ręki startowej |
 | `AfkTurns` | Liczba własnych tur AFK |
-| `Xp` | PD obliczone przez wtyczkę; puste dla trybów bez zmierzonych stawek |
-| `Deck` | Nazwa talii z HDT |
+| `Xp` | PD obliczone przez tracker; puste dla trybów bez zmierzonych stawek |
+| `Deck` | Nazwa talii, tylko dla gier zapisanych przez dawną wtyczkę HDT; puste dla nowszych gier |
 | `PlayerClass` | Twoja klasa |
 | `OpponentClass` | Klasa przeciwnika |
-| `EventXp` | PD wydarzenia obliczone przez wtyczkę; puste dla gier poza wydarzeniami. Pliki ze starszych wersji bez tej kolumny nadal są odczytywane, a kolumna zostaje dodana przy następnej grze. |
+| `EventXp` | PD wydarzenia obliczone przez tracker; puste dla gier poza wydarzeniami. Pliki ze starszych wersji bez tej kolumny nadal są odczytywane, a kolumna zostaje dodana przy następnej grze. |
 | `XpBonus` | Premia PD z Karnetu Karczmarza w procentach, obowiązująca w chwili rozegrania gry, na przykład `15`; `0` bez karnetu. Starsze pliki bez tej kolumny są odczytywane jako `0`. |
 
-Kolumnę `Xp` wtyczka oblicza z czasu PD. Sama gra nie zapisuje PD w logu. Po otwarciu panelu wtyczka ponownie oblicza PD wszystkich zapisanych gier według aktualnych stawek, więc poprawiona stawka naprawia też starsze gry. Każda gra zachowuje własną wartość `XpBonus`, więc późniejsza zmiana karnetu lub poziomu nie zmienia starszych gier.
+Kolumnę `Xp` tracker oblicza z czasu PD. Sama gra nie zapisuje PD w logu. Po otwarciu panelu tracker ponownie oblicza PD wszystkich zapisanych gier według aktualnych stawek, więc poprawiona stawka naprawia też starsze gry. Każda gra zachowuje własną wartość `XpBonus`, więc późniejsza zmiana karnetu lub poziomu nie zmienia starszych gier.
 
-Gra odczytana dwa razy z tego samego logu jest zapisywana tylko raz. Instalacja nowej wersji wtyczki zachowuje plik.
+Gra odczytana dwa razy z tego samego logu jest zapisywana tylko raz. Instalacja nowej wersji zachowuje plik. Przy każdym uruchomieniu tracker dodaje też z historii dawnej wtyczki HDT gry, których jeszcze nie ma (zobacz [INSTALL.md](INSTALL.md#coming-from-the-hdt-plugin)).
 
 <a id="privacy"></a>
 ## Prywatność
 
-- Historia gier i ustawienia zostają na twoim komputerze. Wtyczka niczego nie wysyła.
-- Jedynym zapytaniem sieciowym jest sprawdzanie aktualizacji. Przy starcie HDT wtyczka raz pyta GitHub, czy istnieje nowsze wydanie. Zapytanie wysyła tylko nazwę i wersję wtyczki, na przykład `HearthstoneXpTracker/0.1.0`. Jak przy każdym zapytaniu w sieci, GitHub widzi twój adres IP.
-- Aby wyłączyć sprawdzanie aktualizacji, odznacz w panelu „Sprawdzaj aktualizacje przy starcie HDT”. Ustawienie jest zapisywane w `%APPDATA%\HearthstoneDeckTracker\XpTracker\settings.ini`.
+- Historia gier i ustawienia zostają na twoim komputerze. Tracker niczego nie wysyła.
+- Jedynym zapytaniem sieciowym jest sprawdzanie aktualizacji. Przy uruchomieniu tracker raz pyta GitHub, czy istnieje nowsze wydanie. Zapytanie wysyła tylko nazwę i wersję programu, na przykład `HearthstoneXpTracker/0.2.0`. Jak przy każdym zapytaniu w sieci, GitHub widzi twój adres IP.
+- Aby wyłączyć sprawdzanie aktualizacji, odznacz w panelu „Sprawdzaj aktualizacje przy starcie trackera”. Ustawienie jest zapisywane w `%APPDATA%\HearthstoneXpTracker\settings.ini`.
+- Tracker tylko czyta log Hearthstone. Nie czyta pamięci gry i nie zmienia plików gry. Zapisuje wyłącznie we własnym folderze danych oraz jednorazowo sekcję `[Power]` w `log.config` (zobacz [INSTALL.md](INSTALL.md#requirements)).

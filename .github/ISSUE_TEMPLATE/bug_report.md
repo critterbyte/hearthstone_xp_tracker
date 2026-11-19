@@ -21,8 +21,8 @@ labels: bug
 
 ## Versions
 
-- Plugin version:
-- HDT version:
+- Tracker version (top right corner of the dashboard):
+- Windows version:
 - Game mode (Ranked, Casual, Tavern Brawl, ...):
 
 <!--

@@ -7,7 +7,7 @@ Consigli leciti per ottenere più PE del Percorso Ricompense all'ora. Derivano d
 - **Misurato:** scoperto da questo progetto.
 - **Secondo [n]:** dalle fonti alla fine di questa pagina.
 
-Il pannello del plugin mostra dove vanno i tuoi PE. La scheda "PE persi" è un buon punto di partenza (vedi [USAGE.md](USAGE.md#tabs)).
+Il pannello del tracker mostra dove vanno i tuoi PE. La scheda "PE persi" è un buon punto di partenza (vedi [USAGE.md](USAGE.md#tabs)).
 
 <a id="play-fair"></a>
 ## Gioca pulito
