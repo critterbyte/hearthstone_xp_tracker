@@ -3,8 +3,8 @@
 # 休闲模式、乱斗模式、“结束回合”按钮。以机器翻译为基础。
 
 # Plugin entry in HDT
-plugin.description=显示本局对战的奖励路线经验值，以及计算所依据的经验值时间。
-plugin.dashboard=经验值面板
+app.dashboard=经验值面板
+app.exit=退出
 
 # Overlay rows
 overlay.xpTime=经验值时间：
@@ -86,7 +86,6 @@ session.ended=自 {0} 起的会话（已结束）
 
 # Dashboard: tabs
 tab.overview=概览
-tab.decks=套牌
 tab.lostXp=损失的经验值
 tab.games=对局
 tab.charts=图表
@@ -116,12 +115,7 @@ lost.outside=对局以外的时间
 lost.outsideNote=在线但不在对局中：{0}（菜单、排队、休息）
 
 # Dashboard: table columns
-column.deck=套牌
-column.games=对局
-column.winRate=胜率
 column.xp=经验值
-column.xpPerHour=每小时经验值
-column.avgGame=平均对局
 column.date=日期
 column.start=开始
 column.mode=模式

@@ -3,8 +3,8 @@
 # Уровень, Рейтинг, Обычный, Потасовка в таверне, кнопка «ЗАКОНЧИТЬ». Машинный перевод с правкой.
 
 # Plugin entry in HDT
-plugin.description=Показывает опыт Ленты наград за текущий матч и время опыта, на котором он основан.
-plugin.dashboard=Панель опыта
+app.dashboard=Панель опыта
+app.exit=Выход
 
 # Overlay rows
 overlay.xpTime=Время опыта:
@@ -86,7 +86,6 @@ session.ended=Сеанс с {0} (завершён)
 
 # Dashboard: tabs
 tab.overview=Обзор
-tab.decks=Колоды
 tab.lostXp=Потерянный опыт
 tab.games=Матчи
 tab.charts=Графики
@@ -116,12 +115,7 @@ lost.outside=Время вне матчей
 lost.outsideNote={0} в сети, но не в матче (меню, очередь, перерывы)
 
 # Dashboard: table columns
-column.deck=Колода
-column.games=Матчи
-column.winRate=Доля побед
 column.xp=Опыт
-column.xpPerHour=Опыт в час
-column.avgGame=Ср. матч
 column.date=Дата
 column.start=Начало
 column.mode=Режим

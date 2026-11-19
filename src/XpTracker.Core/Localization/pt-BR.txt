@@ -3,8 +3,8 @@
 # Nível, Ranqueado, Casual, Contenda de Taverna, botão "FIM DO TURNO". Tradução assistida por máquina.
 
 # Plugin entry in HDT
-plugin.description=Mostra a EXP da Trilha da Recompensa da partida atual e o tempo de EXP em que ela se baseia.
-plugin.dashboard=Painel de EXP
+app.dashboard=Painel de EXP
+app.exit=Sair
 
 # Overlay rows
 overlay.xpTime=Tempo de EXP:
@@ -86,7 +86,6 @@ session.ended=Sessão desde {0} (encerrada)
 
 # Dashboard: tabs
 tab.overview=Visão geral
-tab.decks=Decks
 tab.lostXp=EXP perdida
 tab.games=Partidas
 tab.charts=Gráficos
@@ -116,12 +115,7 @@ lost.outside=Tempo fora de partidas
 lost.outsideNote={0} on-line, mas fora de partida (menus, fila, pausas)
 
 # Dashboard: table columns
-column.deck=Deck
-column.games=Partidas
-column.winRate=% de vitórias
 column.xp=EXP
-column.xpPerHour=EXP por hora
-column.avgGame=Partida média
 column.date=Data
 column.start=Início
 column.mode=Modo

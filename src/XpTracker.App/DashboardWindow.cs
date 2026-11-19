@@ -17,10 +17,10 @@ using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 using XpTracker.Core;
 
-namespace XpTracker.Plugin;
+namespace XpTracker.App;
 
 /// <summary>
-/// XP dashboard opened from the HDT plugins menu: overview, decks, lost XP, game list and the XP speed curve for a period.
+/// XP dashboard opened from the notification area icon: overview, lost XP, game list and the XP speed curve for a period.
 /// </summary>
 /// <remarks>
 /// Colors in the style of the Hearthstone client (dark wood, gold, parchment, mana blue); no game artwork or fonts are used.
@@ -51,7 +51,6 @@ internal sealed class DashboardWindow : Window
     private readonly TextBlock _sessionInfo = new() { Foreground = Muted, FontSize = 12, Margin = new Thickness(14, 0, 14, 6) };
     private readonly UniformGrid _overview = new() { Columns = 4, VerticalAlignment = VerticalAlignment.Top };
     private readonly UniformGrid _lost = new() { Columns = 3, VerticalAlignment = VerticalAlignment.Top };
-    private readonly DataGrid _decks = CreateGrid();
     private readonly DataGrid _games = CreateGrid();
     private readonly CartesianChart _xpChart = CreateChart(T("chart.xpAxis"));
     private readonly CartesianChart _rateChart = CreateChart(T("chart.xpPerHour"));
@@ -80,7 +79,6 @@ internal sealed class DashboardWindow : Window
         string historyPath,
         Func<string?> logSession,
         Func<bool> hearthstoneRunning,
-        Func<IReadOnlyList<DeckInfo>>? hdtDecks = null,
         bool checkForUpdates = true,
         Action<bool>? setCheckForUpdates = null,
         bool eventActive = false,
@@ -113,7 +111,7 @@ internal sealed class DashboardWindow : Window
         _eventActive = eventActive;
         _setEventActive = setEventActive;
         _updateBar = UpdateBar();
-        UpdateStoredGames(hdtDecks);
+        UpdateStoredGames();
 
         Title = "HS XP Tracker";
         // Wide enough for the toolbar in longer languages such as German; never wider than the screen.
@@ -125,12 +123,10 @@ internal sealed class DashboardWindow : Window
         Resources = Theme();
         WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
-        SetupDeckColumns();
         SetupGameColumns();
 
         var tabs = new TabControl { Background = Back, BorderBrush = Gold, BorderThickness = new Thickness(1), Padding = new Thickness(0), Margin = new Thickness(10, 0, 10, 10) };
         tabs.Items.Add(Tab(T("tab.overview"), Padded(_overview)));
-        tabs.Items.Add(Tab(T("tab.decks"), _decks));
         tabs.Items.Add(Tab(T("tab.lostXp"), Padded(_lost)));
         tabs.Items.Add(Tab(T("tab.games"), _games));
         tabs.Items.Add(Tab(T("tab.charts"), Charts()));
@@ -260,7 +256,6 @@ internal sealed class DashboardWindow : Window
         _lost.Children.Add(Tile(T("lost.short"), F("lost.xpValue", lost.ShortGamesXp), F("lost.shortNote", lost.ShortGames)));
         _lost.Children.Add(Tile(T("lost.outside"), F("lost.xpValue", lost.OutsideGamesXp), F("lost.outsideNote", TimeFormat.HoursMinutesSeconds(lost.OutsideGamesSeconds))));
 
-        _decks.ItemsSource = Dashboard.Decks(games).Select(d => new DeckRow(d)).ToList();
         _games.ItemsSource = games.Reverse().Select(g => new GameRow(g)).ToList();
 
         var labels = buckets.Select(b => b.Label).ToArray();
@@ -399,9 +394,8 @@ internal sealed class DashboardWindow : Window
     private static Brush Fade(byte r, byte g, byte b, byte topAlpha) =>
         Frozen(new LinearGradientBrush(Color.FromArgb(topAlpha, r, g, b), Color.FromArgb(0x08, r, g, b), 90));
 
-    // Brings stored games up to date: XP is calculated again with the current rates (a rate may have been corrected),
-    // and games stored without a deck (for example imported from logs) get deck and classes from HDT's statistics.
-    private void UpdateStoredGames(Func<IReadOnlyList<DeckInfo>>? hdtDecks)
+    // Brings stored games up to date: XP is calculated again with the current rates (a rate may have been corrected).
+    private void UpdateStoredGames()
     {
         try
         {
@@ -410,11 +404,6 @@ internal sealed class DashboardWindow : Window
             foreach (var game in games)
             {
                 changed |= game.RecalculateXp();
-            }
-
-            if (hdtDecks is not null && games.Any(g => g.Deck.Length == 0) && DeckMatcher.FillMissing(games, hdtDecks()) > 0)
-            {
-                changed = true;
             }
 
             if (changed)
@@ -969,16 +958,6 @@ internal sealed class DashboardWindow : Window
   </Style>
 </ResourceDictionary>");
 
-    private void SetupDeckColumns()
-    {
-        _decks.Columns.Add(Column(T("column.deck"), nameof(DeckRow.Deck), nameof(DeckRow.Deck), width: 2));
-        _decks.Columns.Add(Column(T("column.games"), nameof(DeckRow.Games), nameof(DeckRow.Games)));
-        _decks.Columns.Add(Column(T("column.winRate"), nameof(DeckRow.WinRate), nameof(DeckRow.WinRateValue)));
-        _decks.Columns.Add(Column(T("column.xp"), nameof(DeckRow.Xp), nameof(DeckRow.Xp)));
-        _decks.Columns.Add(Column(T("column.xpPerHour"), nameof(DeckRow.XpPerHour), nameof(DeckRow.XpPerHourValue)));
-        _decks.Columns.Add(Column(T("column.avgGame"), nameof(DeckRow.AverageGame), nameof(DeckRow.AverageGameSeconds)));
-    }
-
     private void SetupGameColumns()
     {
         _games.Columns.Add(Column(T("column.date"), nameof(GameRow.Date), nameof(GameRow.StartValue)));
@@ -990,7 +969,6 @@ internal sealed class DashboardWindow : Window
         _games.Columns.Add(Column(T("column.xp"), nameof(GameRow.Xp), nameof(GameRow.XpValue)));
         _games.Columns.Add(Column(T("column.event"), nameof(GameRow.EventXp), nameof(GameRow.EventXpValue)));
         _games.Columns.Add(Column(T("column.afk"), nameof(GameRow.AfkTurns), nameof(GameRow.AfkTurns)));
-        _games.Columns.Add(Column(T("column.deck"), nameof(GameRow.Deck), nameof(GameRow.Deck), width: 2));
         _games.Columns.Add(Column(T("column.opponent"), nameof(GameRow.Opponent), nameof(GameRow.Opponent)));
     }
 
@@ -1084,37 +1062,6 @@ internal sealed class DashboardWindow : Window
         return brush;
     }
 
-    private sealed class DeckRow
-    {
-        public DeckRow(DeckStats d)
-        {
-            Deck = d.Deck;
-            Games = d.Games;
-            WinRateValue = d.WinRate;
-            Xp = d.Xp;
-            XpPerHourValue = d.XpPerHour;
-            AverageGameSeconds = d.AverageGameSeconds;
-        }
-
-        public string Deck { get; }
-
-        public int Games { get; }
-
-        public double WinRateValue { get; }
-
-        public string WinRate => WinRateValue.ToString("0%", Localizer.Culture);
-
-        public int Xp { get; }
-
-        public double XpPerHourValue { get; }
-
-        public string XpPerHour => XpPerHourValue.ToString("0", Localizer.Culture);
-
-        public double AverageGameSeconds { get; }
-
-        public string AverageGame => TimeFormat.MinutesSeconds(AverageGameSeconds);
-    }
-
     private sealed class GameRow
     {
         public GameRow(GameRecord g)
@@ -1130,7 +1077,6 @@ internal sealed class DashboardWindow : Window
             EventXpValue = g.EventXp ?? -1;
             EventXp = g.EventXp?.ToString(CultureInfo.InvariantCulture) ?? "-";
             AfkTurns = g.AfkTurns;
-            Deck = g.Deck;
             Opponent = GameText.Class(g.OpponentClass);
         }
 
@@ -1161,8 +1107,6 @@ internal sealed class DashboardWindow : Window
         public string EventXp { get; }
 
         public int AfkTurns { get; }
-
-        public string Deck { get; }
 
         public string Opponent { get; }
     }

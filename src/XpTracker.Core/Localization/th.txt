@@ -3,8 +3,8 @@
 # จัดอันดับ, ปกติ, ท้าประลอง, ปุ่ม "จบเทิร์น" แปลโดยใช้เครื่องช่วย
 
 # Plugin entry in HDT
-plugin.description=แสดง XP ของแทร็ครางวัลจากเกมปัจจุบัน และเวลา XP ที่ใช้คำนวณ
-plugin.dashboard=แดชบอร์ด XP
+app.dashboard=แดชบอร์ด XP
+app.exit=ออก
 
 # Overlay rows
 overlay.xpTime=เวลา XP:
@@ -86,7 +86,6 @@ session.ended=เซสชันตั้งแต่ {0} (จบแล้ว)
 
 # Dashboard: tabs
 tab.overview=ภาพรวม
-tab.decks=เด็ค
 tab.lostXp=XP ที่เสียไป
 tab.games=เกม
 tab.charts=กราฟ
@@ -116,12 +115,7 @@ lost.outside=เวลานอกเกม
 lost.outsideNote=ออนไลน์แต่ไม่ได้อยู่ในเกม {0} (เมนู คิว พัก)
 
 # Dashboard: table columns
-column.deck=เด็ค
-column.games=เกม
-column.winRate=อัตราชนะ
 column.xp=XP
-column.xpPerHour=XP ต่อชั่วโมง
-column.avgGame=เกมเฉลี่ย
 column.date=วันที่
 column.start=เริ่ม
 column.mode=โหมด

@@ -3,8 +3,8 @@
 # Pase de la taberna, Nivel, Clasificado, Casual, Gresca de la taberna, botón "LISTO". Traducción asistida por máquina.
 
 # Plugin entry in HDT
-plugin.description=Muestra la EXP de la Senda de recompensas de la partida actual y el tiempo de EXP en que se basa.
-plugin.dashboard=Panel de EXP
+app.dashboard=Panel de EXP
+app.exit=Salir
 
 # Overlay rows
 overlay.xpTime=Tiempo de EXP:
@@ -86,7 +86,6 @@ session.ended=Sesión desde {0} (terminada)
 
 # Dashboard: tabs
 tab.overview=Resumen
-tab.decks=Mazos
 tab.lostXp=EXP perdida
 tab.games=Partidas
 tab.charts=Gráficos
@@ -116,12 +115,7 @@ lost.outside=Tiempo fuera de partidas
 lost.outsideNote={0} en línea pero sin partida (menús, cola, pausas)
 
 # Dashboard: table columns
-column.deck=Mazo
-column.games=Partidas
-column.winRate=% de victorias
 column.xp=EXP
-column.xpPerHour=EXP por hora
-column.avgGame=Partida media
 column.date=Fecha
 column.start=Inicio
 column.mode=Modo

@@ -3,8 +3,8 @@
 # Pase de taberna, Nivel, Con rango, Aficionado, Pelea de taberna, botón "LISTO". Traducción asistida por máquina.
 
 # Plugin entry in HDT
-plugin.description=Muestra los PE del Mapa de recompensas de la partida actual y el tiempo de PE en el que se basan.
-plugin.dashboard=Panel de PE
+app.dashboard=Panel de PE
+app.exit=Salir
 
 # Overlay rows
 overlay.xpTime=Tiempo de PE:
@@ -86,7 +86,6 @@ session.ended=Sesión desde {0} (terminada)
 
 # Dashboard: tabs
 tab.overview=Resumen
-tab.decks=Mazos
 tab.lostXp=PE perdidos
 tab.games=Partidas
 tab.charts=Gráficos
@@ -116,12 +115,7 @@ lost.outside=Tiempo fuera de partidas
 lost.outsideNote={0} conectado pero sin partida (menús, cola, pausas)
 
 # Dashboard: table columns
-column.deck=Mazo
-column.games=Partidas
-column.winRate=% de victorias
 column.xp=PE
-column.xpPerHour=PE por hora
-column.avgGame=Partida media
 column.date=Fecha
 column.start=Inicio
 column.mode=Modo

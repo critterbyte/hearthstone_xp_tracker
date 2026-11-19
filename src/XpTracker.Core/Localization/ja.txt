@@ -3,8 +3,8 @@
 # ランク戦、カジュアル、酒場の喧嘩、ボタン「ターン終了」。機械翻訳を基にしています。
 
 # Plugin entry in HDT
-plugin.description=現在の試合で得られる報酬レーンのXPと、その元になるXP時間を表示します。
-plugin.dashboard=XPダッシュボード
+app.dashboard=XPダッシュボード
+app.exit=終了
 
 # Overlay rows
 overlay.xpTime=XP時間:
@@ -86,7 +86,6 @@ session.ended={0}からのセッション（終了）
 
 # Dashboard: tabs
 tab.overview=概要
-tab.decks=デッキ
 tab.lostXp=失ったXP
 tab.games=試合
 tab.charts=グラフ
@@ -116,12 +115,7 @@ lost.outside=試合外の時間
 lost.outsideNote=オンラインだが試合外: {0}（メニュー、待ち時間、休憩）
 
 # Dashboard: table columns
-column.deck=デッキ
-column.games=試合
-column.winRate=勝率
 column.xp=XP
-column.xpPerHour=XP/時
-column.avgGame=平均試合時間
 column.date=日付
 column.start=開始
 column.mode=モード

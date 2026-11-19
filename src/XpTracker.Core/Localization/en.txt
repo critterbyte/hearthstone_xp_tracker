@@ -3,8 +3,8 @@
 # Use the game's own terms of each language (Ranked, Tavern Brawl, Rewards Track, Tavern Pass, class names).
 
 # Plugin entry in HDT
-plugin.description=Shows the reward track XP of the current game and the XP time it is based on.
-plugin.dashboard=XP dashboard
+app.dashboard=XP dashboard
+app.exit=Exit
 
 # Overlay rows
 overlay.xpTime=XP time:
@@ -87,7 +87,6 @@ session.ended=Session since {0} (ended)
 
 # Dashboard: tabs
 tab.overview=Overview
-tab.decks=Decks
 tab.lostXp=Lost XP
 tab.games=Games
 tab.charts=Charts
@@ -117,12 +116,7 @@ lost.outside=Time outside games
 lost.outsideNote={0} online but not in a game (menus, queue, breaks)
 
 # Dashboard: table columns
-column.deck=Deck
-column.games=Games
-column.winRate=Win rate
 column.xp=XP
-column.xpPerHour=XP per hour
-column.avgGame=Avg. game
 column.date=Date
 column.start=Start
 column.mode=Mode

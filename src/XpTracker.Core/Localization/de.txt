@@ -3,8 +3,8 @@
 # Gewertet, Ungewertet, Kartenchaos, Button "Fertig". Anrede: du.
 
 # Plugin entry in HDT
-plugin.description=Zeigt die Belohnungsweg-EP der laufenden Partie und die EP-Zeit, auf der sie beruhen.
-plugin.dashboard=EP-Dashboard
+app.dashboard=EP-Dashboard
+app.exit=Beenden
 
 # Overlay rows
 overlay.xpTime=EP-Zeit:
@@ -86,7 +86,6 @@ session.ended=Sitzung seit {0} (beendet)
 
 # Dashboard: tabs
 tab.overview=Übersicht
-tab.decks=Decks
 tab.lostXp=Verlorene EP
 tab.games=Partien
 tab.charts=Diagramme
@@ -116,12 +115,7 @@ lost.outside=Zeit außerhalb von Partien
 lost.outsideNote={0} online, aber in keiner Partie (Menüs, Warteschlange, Pausen)
 
 # Dashboard: table columns
-column.deck=Deck
-column.games=Partien
-column.winRate=Siegquote
 column.xp=EP
-column.xpPerHour=EP pro Stunde
-column.avgGame=Ø Partie
 column.date=Datum
 column.start=Start
 column.mode=Modus

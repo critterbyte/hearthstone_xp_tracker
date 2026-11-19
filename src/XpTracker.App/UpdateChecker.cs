@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using XpTracker.Core;
 
-namespace XpTracker.Plugin;
+namespace XpTracker.App;
 
 /// <summary>
 /// Asks GitHub for the plugin's releases. The request carries only a User-Agent with the plugin name and version.

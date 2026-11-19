@@ -3,8 +3,8 @@
 # Livello, Classificata, Amichevole, Rissa, pulsante "FINE TURNO". Traduzione assistita da macchina.
 
 # Plugin entry in HDT
-plugin.description=Mostra i PE del Percorso Ricompense della partita in corso e il tempo PE su cui si basano.
-plugin.dashboard=Pannello PE
+app.dashboard=Pannello PE
+app.exit=Esci
 
 # Overlay rows
 overlay.xpTime=Tempo PE:
@@ -86,7 +86,6 @@ session.ended=Sessione dal {0} (terminata)
 
 # Dashboard: tabs
 tab.overview=Panoramica
-tab.decks=Mazzi
 tab.lostXp=PE persi
 tab.games=Partite
 tab.charts=Grafici
@@ -116,12 +115,7 @@ lost.outside=Tempo fuori dalle partite
 lost.outsideNote={0} online ma non in partita (menu, coda, pause)
 
 # Dashboard: table columns
-column.deck=Mazzo
-column.games=Partite
-column.winRate=% vittorie
 column.xp=PE
-column.xpPerHour=PE all'ora
-column.avgGame=Partita media
 column.date=Data
 column.start=Inizio
 column.mode=Modalità

@@ -3,8 +3,8 @@
 # Poziom, Ranking, Rozrywka, Karczemna bójka, przycisk "KONIEC TURY". Sprawdzone przez rodzimego użytkownika języka.
 
 # Plugin entry in HDT
-plugin.description=Pokazuje PD ze Ścieżki nagród za bieżącą grę i czas PD, na którym się opierają.
-plugin.dashboard=Panel PD
+app.dashboard=Panel PD
+app.exit=Zakończ
 
 # Overlay rows
 overlay.xpTime=Czas PD:
@@ -86,7 +86,6 @@ session.ended=Sesja od {0} (zakończona)
 
 # Dashboard: tabs
 tab.overview=Przegląd
-tab.decks=Talie
 tab.lostXp=Utracone PD
 tab.games=Gry
 tab.charts=Wykresy
@@ -116,12 +115,7 @@ lost.outside=Czas poza grami
 lost.outsideNote={0} online, ale poza grą (menu, kolejka, przerwy)
 
 # Dashboard: table columns
-column.deck=Talia
-column.games=Gry
-column.winRate=% zwycięstw
 column.xp=PD
-column.xpPerHour=PD na godzinę
-column.avgGame=Śr. gra
 column.date=Data
 column.start=Początek
 column.mode=Tryb

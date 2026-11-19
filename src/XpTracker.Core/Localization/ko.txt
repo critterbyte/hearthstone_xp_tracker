@@ -3,8 +3,8 @@
 # 등급전, 일반전, 선술집 난투, "턴 종료" 버튼. 기계 번역을 바탕으로 했습니다.
 
 # Plugin entry in HDT
-plugin.description=현재 게임에서 얻는 보상의 길 경험치와 그 기준이 되는 경험치 시간을 보여 줍니다.
-plugin.dashboard=경험치 대시보드
+app.dashboard=경험치 대시보드
+app.exit=종료
 
 # Overlay rows
 overlay.xpTime=경험치 시간:
@@ -86,7 +86,6 @@ session.ended={0}부터 세션(종료)
 
 # Dashboard: tabs
 tab.overview=개요
-tab.decks=덱
 tab.lostXp=잃은 경험치
 tab.games=게임
 tab.charts=그래프
@@ -116,12 +115,7 @@ lost.outside=게임 외 시간
 lost.outsideNote=접속했지만 게임 중이 아닌 시간: {0}(메뉴, 대기, 휴식)
 
 # Dashboard: table columns
-column.deck=덱
-column.games=게임
-column.winRate=승률
 column.xp=경험치
-column.xpPerHour=시간당 경험치
-column.avgGame=평균 게임
 column.date=날짜
 column.start=시작
 column.mode=모드

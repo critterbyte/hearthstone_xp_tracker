@@ -3,8 +3,8 @@
 # 休閒模式、旅店大亂鬥、「結束回合」按鈕。以機器翻譯為基礎。
 
 # Plugin entry in HDT
-plugin.description=顯示本場對戰的獎勵軌跡經驗值，以及計算所依據的經驗值時間。
-plugin.dashboard=經驗值儀表板
+app.dashboard=經驗值儀表板
+app.exit=結束
 
 # Overlay rows
 overlay.xpTime=經驗值時間：
@@ -86,7 +86,6 @@ session.ended=自 {0} 起的工作階段（已結束）
 
 # Dashboard: tabs
 tab.overview=總覽
-tab.decks=套牌
 tab.lostXp=損失的經驗值
 tab.games=對戰
 tab.charts=圖表
@@ -116,12 +115,7 @@ lost.outside=對戰以外的時間
 lost.outsideNote=上線但不在對戰中：{0}（選單、排隊、休息）
 
 # Dashboard: table columns
-column.deck=套牌
-column.games=對戰
-column.winRate=勝率
 column.xp=經驗值
-column.xpPerHour=每小時經驗值
-column.avgGame=平均對戰
 column.date=日期
 column.start=開始
 column.mode=模式

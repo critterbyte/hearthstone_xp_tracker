@@ -3,8 +3,8 @@
 # Ticket de la taverne, Niveau, Classé, Non classé, Bras de fer, bouton « Fin du tour ». Traduction assistée par machine.
 
 # Plugin entry in HDT
-plugin.description=Affiche l'EXP du Parcours de récompenses de la partie en cours et le temps d'EXP sur lequel elle repose.
-plugin.dashboard=Tableau de bord EXP
+app.dashboard=Tableau de bord EXP
+app.exit=Quitter
 
 # Overlay rows
 overlay.xpTime=Temps d'EXP :
@@ -86,7 +86,6 @@ session.ended=Session depuis {0} (terminée)
 
 # Dashboard: tabs
 tab.overview=Vue d'ensemble
-tab.decks=Decks
 tab.lostXp=EXP perdue
 tab.games=Parties
 tab.charts=Graphiques
@@ -116,12 +115,7 @@ lost.outside=Temps hors des parties
 lost.outsideNote={0} en ligne mais hors partie (menus, file d'attente, pauses)
 
 # Dashboard: table columns
-column.deck=Deck
-column.games=Parties
-column.winRate=Taux de victoire
 column.xp=EXP
-column.xpPerHour=EXP par heure
-column.avgGame=Partie moy.
 column.date=Date
 column.start=Début
 column.mode=Mode

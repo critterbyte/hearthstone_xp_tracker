@@ -7,7 +7,7 @@ using System.Windows.Media.Effects;
 using System.Windows.Shapes;
 using XpTracker.Core;
 
-namespace XpTracker.Plugin;
+namespace XpTracker.App;
 
 /// <summary>
 /// Overlay box placed above the Hearthstone settings button: plain white labels on the left,
