@@ -1,13 +1,12 @@
 name: build
 
-# Builds and tests the calculation engine. The plugin itself needs a local
-# Hearthstone Deck Tracker installation and is built with build.ps1.
 on:
   push:
     branches: [main]
   pull_request:
 
 jobs:
+  # The calculation engine and its tests; they need no Windows.
   core:
     runs-on: ubuntu-latest
     steps:
@@ -17,3 +16,22 @@ jobs:
           global-json-file: global.json
       - name: Test
         run: dotnet test tests/XpTracker.Core.Tests -c Release
+
+  # The Windows app and the release ZIP, built the same way as with release.ps1.
+  app:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+      - name: Build, test and package
+        shell: pwsh
+        run: ./release.ps1 -AllowDirty
+      - uses: actions/upload-artifact@v4
+        with:
+          name: HearthstoneXpTracker
+          path: |
+            artifacts/*.zip
+            artifacts/*.sha256
+          retention-days: 14

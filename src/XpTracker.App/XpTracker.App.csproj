@@ -11,6 +11,8 @@
     <AssemblyName>HearthstoneXpTracker</AssemblyName>
     <RootNamespace>XpTracker.App</RootNamespace>
     <StartupObject>XpTracker.App.Program</StartupObject>
+    <!-- Gold "XP" coin, the same as the notification area icon; also used by the dashboard window. -->
+    <ApplicationIcon>app.ico</ApplicationIcon>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
 

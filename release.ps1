@@ -1,10 +1,9 @@
-﻿# Builds the release ZIP for GitHub: the two plugin DLLs, the license and a short install note.
+﻿# Builds the release ZIP for GitHub: the app, its libraries, the licenses and a short install note.
 # It builds and tests first, checks the version and the package content, and prints the SHA-256 checksum.
 # It does not tag, push or publish anything.
 #
-# Usage: .\release.ps1 [-HdtDir <folder containing HearthstoneDeckTracker.exe>] [-AllowDirty]
+# Usage: .\release.ps1 [-AllowDirty]
 param(
-    [string]$HdtDir,
     # Build even if there are uncommitted changes (for trying the script; not for a real release).
     [switch]$AllowDirty
 )
@@ -28,56 +27,73 @@ if ($version -notmatch '^\d+\.\d+\.\d+$') {
 Write-Host "Version: $version"
 
 # 2. Build and test.
-$buildArgs = @{ Configuration = 'Release' }
-if ($HdtDir) { $buildArgs.HdtDir = $HdtDir }
-& (Join-Path $root 'build.ps1') @buildArgs
+& (Join-Path $root 'build.ps1') -Configuration Release
 if ($LASTEXITCODE -ne 0) {
     throw "Build or tests failed."
 }
 
-# 3. The built DLLs must carry the version from Directory.Build.props.
-$sources = [ordered]@{
-    'HearthstoneXpTracker.dll' = Join-Path $root 'src\XpTracker.Plugin\bin\Release\HearthstoneXpTracker.dll'
-    'XpTracker.Core.dll'       = Join-Path $root 'src\XpTracker.Core\bin\Release\net472\XpTracker.Core.dll'
-}
-foreach ($name in $sources.Keys) {
-    $built = [Reflection.AssemblyName]::GetAssemblyName($sources[$name]).Version
+# 3. The app and the calculation engine must carry the version from Directory.Build.props.
+$bin = Join-Path $root 'src\XpTracker.App\bin\Release'
+foreach ($name in @('HearthstoneXpTracker.exe', 'XpTracker.Core.dll')) {
+    $built = [Reflection.AssemblyName]::GetAssemblyName((Join-Path $bin $name)).Version
     if ("$($built.Major).$($built.Minor).$($built.Build)" -ne $version) {
         throw "$name has version $built, expected $version."
     }
 }
 
-# 4. Put the package together in a folder named like the plugin folder in HDT.
+# 4. Put the package together in a folder that can be extracted anywhere.
 $artifacts = Join-Path $root 'artifacts'
 $staging = Join-Path $artifacts 'staging'
 $package = Join-Path $staging 'HearthstoneXpTracker'
 if (Test-Path $staging) { Remove-Item $staging -Recurse -Force }
 New-Item -ItemType Directory -Force $package | Out-Null
 
-foreach ($name in $sources.Keys) {
-    Copy-Item $sources[$name] (Join-Path $package $name)
+$binaries = @(
+    'HearthstoneXpTracker.exe',
+    'HearthstoneXpTracker.exe.config',
+    'XpTracker.Core.dll',
+    'LiveCharts.dll',
+    'LiveCharts.Wpf.dll',
+    'Newtonsoft.Json.dll'
+)
+foreach ($name in $binaries) {
+    Copy-Item (Join-Path $bin $name) (Join-Path $package $name)
 }
 Copy-Item (Join-Path $root 'LICENSE') (Join-Path $package 'LICENSE.txt')
+Copy-Item (Join-Path $root 'THIRD-PARTY-NOTICES.txt') (Join-Path $package 'THIRD-PARTY-NOTICES.txt')
 
 # Links to the translated install guides; the language names need this file to be saved as UTF-8 with BOM.
 $docs = 'https://github.com/critterbyte/hearthstone_xp_tracker/blob/main/docs'
 $install = @"
 Hearthstone XP Tracker $version
-A plugin for Hearthstone Deck Tracker (HDT) that shows the reward track XP of the current game.
+A small Windows program that shows the reward track XP of the current Hearthstone game.
+It only reads Hearthstone's log file; it does not change the game.
 
 Install
-1. Close HDT.
-2. Right-click the ZIP file, choose Properties, and select "Unblock" if it is shown.
-   Otherwise Windows may block the plugin.
-3. Extract the ZIP into the HDT plugins folder:
-   %APPDATA%\HearthstoneDeckTracker\Plugins
-   This creates the folder "HearthstoneXpTracker" with both DLL files.
-4. Start HDT. Open Settings (the gear icon on the right of the top bar) > Tracker > Plugins
-   and enable "Hearthstone XP Tracker".
+1. Right-click the ZIP file, choose Properties, and select "Unblock" if it is shown.
+2. Extract the ZIP into a folder of your choice, for example Documents.
+   This creates the folder "HearthstoneXpTracker".
+3. Start HearthstoneXpTracker.exe in that folder.
+   If Windows shows "Windows protected your PC", choose "More info" > "Run anyway".
+   The program is not signed yet, so Windows does not know it.
+4. The dashboard opens. Closing it keeps the tracker running: the gold "XP" icon in the
+   notification area (bottom right, maybe behind the ^ arrow) opens it again.
+   During a game the overlay appears over Hearthstone.
+If Hearthstone was already running at the first start, restart it once,
+so that it writes the game log the tracker reads.
+
+Coming from the Hearthstone Deck Tracker plugin
+HDT stops supporting plugins on 30 November 2026; this program replaces the plugin.
+It takes over your game history and settings automatically.
+Disable the plugin in HDT (Settings > Tracker > Plugins), otherwise two overlays are shown.
 
 Update
-Close HDT and extract the new ZIP the same way, replacing the old files.
-Your game history and settings are kept.
+Exit the tracker (right-click the icon > Exit) and extract the new ZIP into the same folder,
+replacing the old files. Your game history and settings are kept.
+
+Uninstall
+Exit the tracker and delete its folder.
+The game history and settings are in %APPDATA%\HearthstoneXpTracker; delete it to remove them too.
 
 Documentation: https://github.com/critterbyte/hearthstone_xp_tracker
 Language of the overlay and the dashboard: open the dashboard and choose "Language".
@@ -97,19 +113,19 @@ Install guide in other languages:
   繁體中文         $docs/zh-TW/INSTALL.md
   简体中文         $docs/zh-CN/INSTALL.md
 
-License: MIT, see LICENSE.txt.
-This is an unofficial plugin. It is not affiliated with HearthSim or Blizzard Entertainment.
+License: MIT, see LICENSE.txt. Included libraries: see THIRD-PARTY-NOTICES.txt.
+This is an unofficial program. It is not affiliated with Blizzard Entertainment or HearthSim.
 "@
 [IO.File]::WriteAllText((Join-Path $package 'INSTALL.txt'), $install.Replace("`r`n", "`n").Replace("`n", "`r`n"), (New-Object Text.UTF8Encoding($false)))
 
-# 5. Only these files may be in the package. HDT files must never be shipped.
-$expected = @('HearthstoneXpTracker.dll', 'INSTALL.txt', 'LICENSE.txt', 'XpTracker.Core.dll')
+# 5. Only these files may be in the package.
+$expected = @($binaries + @('INSTALL.txt', 'LICENSE.txt', 'THIRD-PARTY-NOTICES.txt') | Sort-Object)
 $actual = @(Get-ChildItem $package -Recurse -File | ForEach-Object { $_.Name } | Sort-Object)
 if (Compare-Object $expected $actual) {
     throw "Unexpected package content: $($actual -join ', ')"
 }
 
-# 6. Create the ZIP with the folder inside, so extracting it into the plugins folder is enough.
+# 6. Create the ZIP with the folder inside.
 $zip = Join-Path $artifacts "HearthstoneXpTracker-$version.zip"
 if (Test-Path $zip) { Remove-Item $zip -Force }
 Add-Type -AssemblyName System.IO.Compression, System.IO.Compression.FileSystem
