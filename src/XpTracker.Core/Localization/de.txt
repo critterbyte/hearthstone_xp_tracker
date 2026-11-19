@@ -67,6 +67,7 @@ option.overlayLeft=Links über deinem Spielerbild
 option.overlayRight=Rechts über dem Einstellungs-Knopf
 option.event=Event läuft (Event-EP anzeigen)
 option.eventTip=Einschalten, solange ein Hearthstone-Event läuft: Das Overlay zeigt die Event-EP, und neue Partien speichern sie.
+option.eventHint=Läuft gerade ein Hearthstone-Event? Dann oben anhaken, um Event-EP zu zählen.
 option.damage=Schaden im Overlay anzeigen
 option.damageTip=Zeigt die Zeilen „Gesamtschaden:“ und „Heldenschaden:“: den Schaden, den deine Seite dem Gegner in der laufenden oder letzten Partie zugefügt hat.
 option.updates=Beim Start von HDT nach Updates suchen

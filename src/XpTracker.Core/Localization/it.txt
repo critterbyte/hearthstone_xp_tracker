@@ -67,6 +67,7 @@ option.overlayLeft=A sinistra, sopra il tuo ritratto
 option.overlayRight=A destra, sopra il pulsante delle opzioni
 option.event=Evento in corso (mostra i PE Evento)
 option.eventTip=Attivalo durante un evento di Hearthstone: l'overlay mostra i PE Evento e le nuove partite li salvano.
+option.eventHint=È in corso un evento di Hearthstone? Spunta la casella qui sopra per contare i PE Evento.
 option.damage=Mostra i danni nell'overlay
 option.damageTip=Mostra le righe "Danni totali:" e "Danni all'eroe:": i danni inflitti dalla tua parte all'avversario nella partita in corso o nell'ultima.
 option.updates=Cerca aggiornamenti all'avvio di HDT

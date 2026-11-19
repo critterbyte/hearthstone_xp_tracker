@@ -67,6 +67,7 @@ option.overlayLeft=左（自分の肖像の上）
 option.overlayRight=右（設定ボタンの上）
 option.event=イベント開催中（イベントXPを表示）
 option.eventTip=Hearthstoneのイベント中にオンにします。オーバーレイにイベントXPが表示され、新しい試合に保存されます。
+option.eventHint=ハースストーンのイベント開催中？上のチェックを入れるとイベントXPを数えます。
 option.damage=オーバーレイにダメージを表示
 option.damageTip=「合計ダメージ:」と「ヒーローへのダメージ:」の行を表示します。現在または前回の試合で、自分の側が相手に与えたダメージです。
 option.updates=HDTの起動時にアップデートを確認

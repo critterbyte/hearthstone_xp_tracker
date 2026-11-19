@@ -67,6 +67,7 @@ option.overlayLeft=Izquierda, sobre tu retrato
 option.overlayRight=Derecha, sobre el botón de opciones
 option.event=Evento en curso (mostrar EXP de evento)
 option.eventTip=Actívalo mientras haya un evento de Hearthstone: el overlay muestra la EXP de evento y las partidas nuevas la guardan.
+option.eventHint=¿Hay un evento de Hearthstone en curso? Marca la casilla de arriba para contar la EXP de evento.
 option.damage=Mostrar el daño en el overlay
 option.damageTip=Muestra las filas "Daño total:" y "Daño al héroe:": el daño que tu lado hizo al oponente en la partida actual o en la última.
 option.updates=Buscar actualizaciones al iniciar HDT

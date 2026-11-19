@@ -67,6 +67,7 @@ option.overlayLeft=左側，你的頭像上方
 option.overlayRight=右側，設定按鈕上方
 option.event=事件進行中（顯示事件經驗值）
 option.eventTip=爐石戰記事件期間請開啟：覆蓋層會顯示事件經驗值，新對戰也會記錄下來。
+option.eventHint=爐石戰記正在進行事件嗎？勾選上方的方塊即可統計事件經驗值。
 option.damage=在覆蓋層顯示傷害
 option.damageTip=顯示「總傷害：」與「英雄傷害：」兩行：你這一方在本場或上一場對戰中對對手造成的傷害。
 option.updates=啟動 HDT 時檢查更新

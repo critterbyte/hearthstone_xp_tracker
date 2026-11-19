@@ -67,6 +67,7 @@ option.overlayLeft=左侧，你的头像上方
 option.overlayRight=右侧，设置按钮上方
 option.event=活动进行中（显示活动经验值）
 option.eventTip=炉石传说活动期间请开启：叠加层会显示活动经验值，新对局也会记录下来。
+option.eventHint=炉石传说正在进行活动吗？勾选上方的方框即可统计活动经验值。
 option.damage=在叠加层显示伤害
 option.damageTip=显示“总伤害：”和“英雄伤害：”两行：你这一方在本局或上一局中对对手造成的伤害。
 option.updates=启动 HDT 时检查更新

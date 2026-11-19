@@ -67,6 +67,7 @@ option.overlayLeft=왼쪽(내 초상화 위)
 option.overlayRight=오른쪽(설정 버튼 위)
 option.event=이벤트 진행 중(이벤트 경험치 표시)
 option.eventTip=하스스톤 이벤트 기간에 켜세요. 오버레이에 이벤트 경험치가 표시되고 새 게임에 저장됩니다.
+option.eventHint=하스스톤 이벤트가 진행 중인가요? 위 상자에 체크하면 이벤트 경험치를 계산합니다.
 option.damage=오버레이에 피해 표시
 option.damageTip="전체 피해:"와 "영웅 피해:" 줄을 표시합니다. 현재 또는 지난 게임에서 내 편이 상대에게 준 피해입니다.
 option.updates=HDT 시작 시 업데이트 확인

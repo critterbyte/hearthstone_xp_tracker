@@ -473,12 +473,27 @@ internal sealed class DashboardWindow : Window
                 Margin = new Thickness(0, 2, 0, 2),
                 ToolTip = T("option.eventTip"),
             };
+            // Off by default, because the app cannot tell when an event runs; new users easily miss the box, so a
+            // short hint stands below it while it is not ticked.
+            var eventHint = new TextBlock
+            {
+                Text = T("option.eventHint"),
+                Foreground = GoldBright,
+                FontSize = 11,
+                TextWrapping = TextWrapping.Wrap,
+                MaxWidth = 320,
+                HorizontalAlignment = HorizontalAlignment.Left,
+                Margin = new Thickness(22, 0, 0, 4),
+                Visibility = _eventActive ? Visibility.Collapsed : Visibility.Visible,
+            };
             eventCheck.Click += (_, _) =>
             {
                 _eventActive = eventCheck.IsChecked == true;
+                eventHint.Visibility = _eventActive ? Visibility.Collapsed : Visibility.Visible;
                 _setEventActive(_eventActive);
             };
             options.Children.Add(eventCheck);
+            options.Children.Add(eventHint);
         }
 
         if (_setShowDamage is not null)

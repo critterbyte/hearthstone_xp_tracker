@@ -68,6 +68,7 @@ option.overlayLeft=Left, above your portrait
 option.overlayRight=Right, above the settings button
 option.event=Event running (show event XP)
 option.eventTip=Switch on while a Hearthstone event runs: the overlay shows the event XP, and new games store it.
+option.eventHint=Is a Hearthstone event running? Tick the box above to count event XP.
 option.damage=Show damage on the overlay
 option.damageTip=Shows the rows "Total Damage:" and "Hero Damage:": the damage your side dealt to the opponent in the current or last game.
 option.updates=Check for updates when HDT starts

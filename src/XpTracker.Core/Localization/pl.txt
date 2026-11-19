@@ -67,6 +67,7 @@ option.overlayLeft=Po lewej, nad twoim portretem
 option.overlayRight=Po prawej, nad przyciskiem ustawień
 option.event=Trwa wydarzenie (pokaż PD wydarzenia)
 option.eventTip=Włącz w trakcie wydarzenia w Hearthstone: nakładka pokazuje PD wydarzenia, a nowe gry je zapisują.
+option.eventHint=Trwa wydarzenie w Hearthstone? Zaznacz pole powyżej, aby liczyć PD wydarzenia.
 option.damage=Pokaż obrażenia na nakładce
 option.damageTip=Pokazuje wiersze „Obrażenia łącznie:” i „Obrażenia bohatera:”: obrażenia zadane przeciwnikowi przez twoją stronę w bieżącej lub ostatniej grze.
 option.updates=Sprawdzaj aktualizacje przy starcie HDT
