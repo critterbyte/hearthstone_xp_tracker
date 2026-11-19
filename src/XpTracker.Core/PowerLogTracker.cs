@@ -8,8 +8,10 @@ namespace XpTracker.Core;
 /// </summary>
 public sealed class FinishedGame
 {
-    public FinishedGame(string session, DateTime firstTurn, DateTime end, GameMode mode, string format, XpClock clock, int damageDealt = 0, int heroDamageDealt = 0)
+    public FinishedGame(string session, DateTime firstTurn, DateTime end, GameMode mode, string format, XpClock clock, int damageDealt = 0, int heroDamageDealt = 0, string playerClass = "", string opponentClass = "")
     {
+        PlayerClass = playerClass;
+        OpponentClass = opponentClass;
         Session = session;
         FirstTurn = firstTurn;
         End = end;
@@ -22,6 +24,12 @@ public sealed class FinishedGame
 
     /// <summary>Damage the player's side dealt to the opponent's side, see <see cref="DamageCounter"/>.</summary>
     public int DamageDealt { get; }
+
+    /// <summary>Class of the player's hero at the start of the game ("Rogue", "DemonHunter", …), or empty.</summary>
+    public string PlayerClass { get; }
+
+    /// <summary>Class of the opponent's hero at the start of the game, or empty.</summary>
+    public string OpponentClass { get; }
 
     /// <summary>The part of <see cref="DamageDealt"/> that hit the opponent's hero.</summary>
     public int HeroDamageDealt { get; }
@@ -165,12 +173,23 @@ public sealed class PowerLogTracker
             _game.Damage!.OnLine(body);
         }
 
+        if (body.StartsWith("tag=", StringComparison.Ordinal))
+        {
+            OnBlockTag(body);
+        }
+        else
+        {
+            _game.BlockPlayer = null;
+            _game.BlockEntity = TryFullEntityId(body);
+        }
+
         if (body.StartsWith("Player EntityID=", StringComparison.Ordinal))
         {
             var parts = body.Split(' ');
             if (parts.Length >= 3 && TryValue(parts[1], "EntityID=", out var entityId) && TryValue(parts[2], "PlayerID=", out var playerId))
             {
                 _game.EntityToPlayer[entityId] = playerId;
+                _game.BlockPlayer = playerId;
                 _game.Damage!.SetController(entityId, playerId);
             }
 
@@ -201,6 +220,67 @@ public sealed class PowerLogTracker
         OnTagChange(entity, tag, value, time);
     }
 
+    // A tag line inside a block: the hero of a player, and the class of a hero card. Only the first hero of each
+    // player counts, so a hero card played later or a Rewind does not change the class (like HDT's OriginalClass).
+    private void OnBlockTag(string body)
+    {
+        var game = _game!;
+        var valueIndex = body.IndexOf(" value=", StringComparison.Ordinal);
+        if (valueIndex < 4)
+        {
+            return;
+        }
+
+        var tag = body.Substring(4, valueIndex - 4);
+        var value = body.Substring(valueIndex + 7).Trim();
+        if (game.BlockPlayer is { } player && tag == "HERO_ENTITY" && int.TryParse(value, out var hero) && !game.HeroEntity.ContainsKey(player))
+        {
+            game.HeroEntity[player] = hero;
+        }
+        else if (game.BlockEntity is { } entity && tag == "CLASS" && game.HeroEntity.ContainsValue(entity) && !game.HeroClass.ContainsKey(entity))
+        {
+            game.HeroClass[entity] = value;
+        }
+    }
+
+    // "FULL_ENTITY - Creating ID=74 CardID=HERO_03aq" starts the block of entity 74.
+    private static int? TryFullEntityId(string body)
+    {
+        const string prefix = "FULL_ENTITY - Creating ID=";
+        if (!body.StartsWith(prefix, StringComparison.Ordinal))
+        {
+            return null;
+        }
+
+        var end = body.IndexOf(' ', prefix.Length);
+        var id = end < 0 ? body.Substring(prefix.Length) : body.Substring(prefix.Length, end - prefix.Length);
+        return int.TryParse(id, out var value) ? value : null;
+    }
+
+    // The class of a side's first hero in the form Hearthstone Deck Tracker stores ("Rogue", "DemonHunter",
+    // "Deathknight"), so old and new rows of the history file read the same; empty if the log did not say.
+    private string ClassOf(Side side)
+    {
+        var game = _game!;
+        foreach (var pair in game.HeroEntity)
+        {
+            if (SideOf(pair.Key) == side && game.HeroClass.TryGetValue(pair.Value, out var logClass))
+            {
+                return StoredClass(logClass);
+            }
+        }
+
+        return string.Empty;
+    }
+
+    private static string StoredClass(string logClass) => logClass switch
+    {
+        "" => string.Empty,
+        "DEMONHUNTER" => "DemonHunter",
+        "DEATHKNIGHT" => "Deathknight",
+        _ => logClass.Substring(0, 1).ToUpperInvariant() + logClass.Substring(1).ToLowerInvariant(),
+    };
+
     private void OnTagChange(string entity, string tag, string value, DateTime time)
     {
         var game = _game!;
@@ -227,7 +307,7 @@ public sealed class PowerLogTracker
                 game.IsComplete = true;
                 game.Clock.EndGame(time, game.Result);
                 game.Damage!.Flush();
-                GameFinished?.Invoke(new FinishedGame(_session, game.FirstTurn ?? time, time, game.Mode, game.Format, game.Clock, game.Damage.Dealt, game.Damage.DealtToHero));
+                GameFinished?.Invoke(new FinishedGame(_session, game.FirstTurn ?? time, time, game.Mode, game.Format, game.Clock, game.Damage.Dealt, game.Damage.DealtToHero, ClassOf(Side.Player), ClassOf(Side.Opponent)));
             }
 
             return;
@@ -525,5 +605,17 @@ public sealed class PowerLogTracker
         public Dictionary<int, string> ChoiceNames { get; } = new();
 
         public Dictionary<int, int> TurnLimits { get; } = new();
+
+        /// <summary>First hero entity of each player.</summary>
+        public Dictionary<int, int> HeroEntity { get; } = new();
+
+        /// <summary>Class of each hero entity, as the log writes it (ROGUE, DEMONHUNTER, …).</summary>
+        public Dictionary<int, string> HeroClass { get; } = new();
+
+        /// <summary>Player whose "Player EntityID=…" block is being read, if any.</summary>
+        public int? BlockPlayer { get; set; }
+
+        /// <summary>Entity whose FULL_ENTITY block is being read, if any.</summary>
+        public int? BlockEntity { get; set; }
     }
 }
