@@ -5,6 +5,9 @@
 # Plugin entry in HDT
 app.dashboard=Tableau de bord EXP
 app.exit=Quitter
+log.on=Journal de partie (Power.log) : activé
+log.restart=Journal de partie activé. Redémarrez Hearthstone une fois pour qu'il écrive le journal.
+log.failed=Le journal de partie n'a pas pu être activé automatiquement. Ajoutez la section [Power] à {0} à la main (voir le guide d'installation).
 
 # Overlay rows
 overlay.xpTime=Temps d'EXP :

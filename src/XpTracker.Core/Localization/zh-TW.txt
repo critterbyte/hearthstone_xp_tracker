@@ -5,6 +5,9 @@
 # Plugin entry in HDT
 app.dashboard=經驗值儀表板
 app.exit=結束
+log.on=遊戲記錄（Power.log）：已開啟
+log.restart=已開啟遊戲記錄。請重新啟動一次爐石戰記，讓它寫入記錄。
+log.failed=無法自動開啟遊戲記錄。請手動將 [Power] 區段加入 {0}（請參閱安裝指南）。
 
 # Overlay rows
 overlay.xpTime=經驗值時間：

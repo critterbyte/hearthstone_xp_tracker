@@ -53,6 +53,12 @@ internal sealed class TrayIcon : IDisposable
         _exit.Text = Localizer.Text("app.exit");
     }
 
+    /// <summary>Shows a short message next to the icon, for example that Hearthstone needs a restart.</summary>
+    public void ShowNotice(string text, bool warning = false)
+    {
+        _icon.ShowBalloonTip(15000, "Hearthstone XP Tracker", text, warning ? ToolTipIcon.Warning : ToolTipIcon.Info);
+    }
+
     public void Dispose()
     {
         _icon.Visible = false;

@@ -5,6 +5,9 @@
 # Plugin entry in HDT
 app.dashboard=แดชบอร์ด XP
 app.exit=ออก
+log.on=บันทึกเกม (Power.log): เปิด
+log.restart=เปิดบันทึกเกมแล้ว โปรดรีสตาร์ท Hearthstone หนึ่งครั้งเพื่อให้เกมเขียนบันทึก
+log.failed=ไม่สามารถเปิดบันทึกเกมโดยอัตโนมัติ โปรดเพิ่มส่วน [Power] ลงใน {0} ด้วยตนเอง (ดูคู่มือการติดตั้ง)
 
 # Overlay rows
 overlay.xpTime=เวลา XP:

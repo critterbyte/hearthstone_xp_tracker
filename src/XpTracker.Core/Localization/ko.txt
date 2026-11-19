@@ -5,6 +5,9 @@
 # Plugin entry in HDT
 app.dashboard=경험치 대시보드
 app.exit=종료
+log.on=게임 로그(Power.log): 켜짐
+log.restart=게임 로그를 켰습니다. 로그가 기록되도록 하스스톤을 한 번 다시 시작하세요.
+log.failed=게임 로그를 자동으로 켜지 못했습니다. {0}에 [Power] 섹션을 직접 추가하세요(설치 안내 참조).
 
 # Overlay rows
 overlay.xpTime=경험치 시간:

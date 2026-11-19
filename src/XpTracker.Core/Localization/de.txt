@@ -5,6 +5,9 @@
 # Plugin entry in HDT
 app.dashboard=EP-Dashboard
 app.exit=Beenden
+log.on=Spiel-Log (Power.log): an
+log.restart=Spiel-Log eingeschaltet. Bitte Hearthstone einmal neu starten, damit es das Log schreibt.
+log.failed=Das Spiel-Log konnte nicht automatisch eingeschaltet werden. Bitte den Abschnitt [Power] von Hand in {0} eintragen (siehe Installationsanleitung).
 
 # Overlay rows
 overlay.xpTime=EP-Zeit:

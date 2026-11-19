@@ -5,6 +5,9 @@
 # Plugin entry in HDT
 app.dashboard=Painel de EXP
 app.exit=Sair
+log.on=Log do jogo (Power.log): ativado
+log.restart=Log do jogo ativado. Reinicie o Hearthstone uma vez para que ele grave o log.
+log.failed=Não foi possível ativar o log do jogo automaticamente. Adicione a seção [Power] a {0} manualmente (veja o guia de instalação).
 
 # Overlay rows
 overlay.xpTime=Tempo de EXP:

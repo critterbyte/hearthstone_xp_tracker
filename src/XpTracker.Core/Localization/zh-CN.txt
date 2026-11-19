@@ -5,6 +5,9 @@
 # Plugin entry in HDT
 app.dashboard=经验值面板
 app.exit=退出
+log.on=游戏日志（Power.log）：已开启
+log.restart=已开启游戏日志。请重启一次炉石传说，以便其写入日志。
+log.failed=无法自动开启游戏日志。请手动将 [Power] 部分添加到 {0}（参见安装指南）。
 
 # Overlay rows
 overlay.xpTime=经验值时间：

@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+using Microsoft.Win32;
 using XpTracker.Core;
 
 namespace XpTracker.App;
@@ -31,6 +32,9 @@ internal sealed class XpTrackerApp
     private static readonly string HistoryPath = Path.Combine(DataFolder, "hs_games.csv");
     private static readonly string SettingsPath = Path.Combine(DataFolder, "settings.ini");
 
+    // Read once per app start; the installation folder does not change while the app runs.
+    private static readonly Lazy<string?> InstallLocation = new(ReadInstallLocation);
+
     private readonly GameHistory _history = new(HistoryPath);
     private XpTrackerSettings _settings = new();
     private ReleaseInfo? _update;
@@ -42,11 +46,17 @@ internal sealed class XpTrackerApp
     private DispatcherTimer? _overlayTimer;
     private string _shownKey = string.Empty;
     private string? _lastOverlayError;
+    private LogConfigResult _logConfig = LogConfigResult.AlreadyOn;
+
+    // Set when the app switched the game log on while Hearthstone was running: the game reads log.config only when it
+    // starts, so it writes the log after its next start.
+    private DateTime? _restartNeededSince;
 
     public void Start()
     {
         _settings = XpTrackerSettings.Load(SettingsPath);
         Localizer.SetLanguage(_settings.Language);
+        SwitchOnGameLog();
 
         _tail = new PowerLogTail(FindLogsFolder, now: () => DateTime.Now);
         _tail.GameFinished += OnGameFinished;
@@ -56,6 +66,14 @@ internal sealed class XpTrackerApp
         Task.Run(() => PollLoop(tail, token), token);
 
         _tray = new TrayIcon(OpenDashboard, Exit);
+        if (_logConfig == LogConfigResult.Failed)
+        {
+            _tray.ShowNotice(Localizer.Format("log.failed", LogConfig.DefaultPath), warning: true);
+        }
+        else if (_restartNeededSince is not null)
+        {
+            _tray.ShowNotice(Localizer.Text("log.restart"));
+        }
 
         _overlayWindow = new OverlayWindow(new XpOverlay { Position = _settings.OverlayPosition });
         _overlayTimer = new DispatcherTimer { Interval = OverlayInterval };
@@ -77,7 +95,7 @@ internal sealed class XpTrackerApp
 
         if (_dashboard is null)
         {
-            _dashboard = new DashboardWindow(_history, HistoryPath, () => _tail?.CurrentSession, IsHearthstoneRunning, _settings.CheckForUpdates, SetCheckForUpdates, _settings.EventActive, SetEventActive, _settings.TavernPass, _settings.TavernPassLevel, SetTavernPass, _settings.ShowDamage, SetShowDamage, _settings.Language, SetLanguage, _settings.OverlayPosition, SetOverlayPosition);
+            _dashboard = new DashboardWindow(_history, HistoryPath, () => _tail?.CurrentSession, IsHearthstoneRunning, GameLogStatus, _settings.CheckForUpdates, SetCheckForUpdates, _settings.EventActive, SetEventActive, _settings.TavernPass, _settings.TavernPassLevel, SetTavernPass, _settings.ShowDamage, SetShowDamage, _settings.Language, SetLanguage, _settings.OverlayPosition, SetOverlayPosition);
             _dashboard.ShowUpdate(_update);
             _dashboard.Closed += (_, _) => _dashboard = null;
             _dashboard.Show();
@@ -113,6 +131,48 @@ internal sealed class XpTrackerApp
         _tray?.Dispose();
         _tray = null;
         Application.Current.Shutdown();
+    }
+
+    // Makes sure Hearthstone writes the Power.log; see LogConfig.
+    private void SwitchOnGameLog()
+    {
+        _logConfig = LogConfig.EnsureFile(LogConfig.DefaultPath, out var error);
+        switch (_logConfig)
+        {
+            case LogConfigResult.Updated:
+                AppLog.Info("Switched on the [Power] section in " + LogConfig.DefaultPath);
+                if (IsHearthstoneRunning())
+                {
+                    _restartNeededSince = DateTime.Now;
+                }
+
+                break;
+            case LogConfigResult.Failed:
+                AppLog.Info("Could not switch on the game log in " + LogConfig.DefaultPath + ": " + error);
+                break;
+        }
+    }
+
+    // Status line in the dashboard: the text, and whether it needs the user's attention.
+    private (string Text, bool Problem) GameLogStatus()
+    {
+        if (_logConfig == LogConfigResult.Failed)
+        {
+            return (Localizer.Format("log.failed", LogConfig.DefaultPath), true);
+        }
+
+        if (_restartNeededSince is { } since)
+        {
+            var started = GameStartTime();
+            if (started is not null && started < since)
+            {
+                return (Localizer.Text("log.restart"), true);
+            }
+
+            _restartNeededSince = null;
+        }
+
+        return (Localizer.Text("log.on"), false);
     }
 
     // Shows the current or last game on the overlay and keeps the overlay over the game window.
@@ -359,24 +419,81 @@ internal sealed class XpTrackerApp
         return processes.Length > 0;
     }
 
-    // The running game tells its folder; otherwise the default installation folder.
-    private static string? FindLogsFolder()
+    // When the running Hearthstone was started, or null when it is not running.
+    private static DateTime? GameStartTime()
     {
+        var processes = Process.GetProcessesByName("Hearthstone");
         try
         {
-            var game = Process.GetProcessesByName("Hearthstone").FirstOrDefault();
-            var exe = game?.MainModule?.FileName;
-            if (exe is not null)
-            {
-                return Path.Combine(Path.GetDirectoryName(exe)!, "Logs");
-            }
+            return processes.Length == 0 ? null : processes.Min(p => p.StartTime);
         }
         catch (Exception ex) when (ex is InvalidOperationException or System.ComponentModel.Win32Exception)
         {
+            return null;
+        }
+        finally
+        {
+            foreach (var process in processes)
+            {
+                process.Dispose();
+            }
+        }
+    }
+
+    // The running game, then the folder from the list of installed programs, then the default folder.
+    private static string? FindLogsFolder() =>
+        HearthstoneFolder.FindLogsFolder(RunningGameExe(), InstallLocation.Value, Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86));
+
+    private static string? RunningGameExe()
+    {
+        var processes = Process.GetProcessesByName("Hearthstone");
+        try
+        {
+            foreach (var process in processes)
+            {
+                try
+                {
+                    if (process.MainModule?.FileName is { } file)
+                    {
+                        return file;
+                    }
+                }
+                catch (Exception ex) when (ex is InvalidOperationException or System.ComponentModel.Win32Exception)
+                {
+                    // The process is just ending, or Windows does not tell its path.
+                }
+            }
+
+            return null;
+        }
+        finally
+        {
+            foreach (var process in processes)
+            {
+                process.Dispose();
+            }
+        }
+    }
+
+    // Battle.net registers the game as "Hearthstone" in the uninstall list, with its installation folder.
+    private static string? ReadInstallLocation()
+    {
+        foreach (var view in new[] { RegistryView.Registry32, RegistryView.Registry64 })
+        {
+            try
+            {
+                using var root = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, view);
+                using var key = root.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Hearthstone");
+                if (key?.GetValue("InstallLocation") is string location && location.Length > 0)
+                {
+                    return location;
+                }
+            }
+            catch (Exception ex) when (ex is System.Security.SecurityException or UnauthorizedAccessException or IOException)
+            {
+            }
         }
 
-        var programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
-        var fallback = Path.Combine(programFiles, "Hearthstone", "Logs");
-        return Directory.Exists(fallback) ? fallback : null;
+        return null;
     }
 }

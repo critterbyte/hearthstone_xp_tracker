@@ -47,8 +47,10 @@ internal sealed class DashboardWindow : Window
     private readonly string _historyPath;
     private readonly Func<string?> _logSession;
     private readonly Func<bool> _hearthstoneRunning;
+    private readonly Func<(string Text, bool Problem)>? _gameLogStatus;
     private readonly Dictionary<DashboardPeriod, ToggleButton> _periodButtons = new();
     private readonly TextBlock _sessionInfo = new() { Foreground = Muted, FontSize = 12, Margin = new Thickness(14, 0, 14, 6) };
+    private readonly TextBlock _logStatus = new() { FontSize = 12, TextWrapping = TextWrapping.Wrap, Margin = new Thickness(14, 0, 14, 6) };
     private readonly UniformGrid _overview = new() { Columns = 4, VerticalAlignment = VerticalAlignment.Top };
     private readonly UniformGrid _lost = new() { Columns = 3, VerticalAlignment = VerticalAlignment.Top };
     private readonly DataGrid _games = CreateGrid();
@@ -74,11 +76,13 @@ internal sealed class DashboardWindow : Window
 
     /// <param name="logSession">Session the log reader is reading; it stays the same after Hearthstone was closed.</param>
     /// <param name="hearthstoneRunning">Whether the game client is running, so the online time of its session counts up to now.</param>
+    /// <param name="gameLogStatus">Whether Hearthstone writes its Power.log, shown as a status line; a problem is shown in red.</param>
     public DashboardWindow(
         GameHistory history,
         string historyPath,
         Func<string?> logSession,
         Func<bool> hearthstoneRunning,
+        Func<(string Text, bool Problem)>? gameLogStatus = null,
         bool checkForUpdates = true,
         Action<bool>? setCheckForUpdates = null,
         bool eventActive = false,
@@ -106,6 +110,7 @@ internal sealed class DashboardWindow : Window
         _historyPath = historyPath;
         _logSession = logSession;
         _hearthstoneRunning = hearthstoneRunning;
+        _gameLogStatus = gameLogStatus;
         _checkForUpdates = checkForUpdates;
         _setCheckForUpdates = setCheckForUpdates;
         _eventActive = eventActive;
@@ -142,6 +147,8 @@ internal sealed class DashboardWindow : Window
         root.Children.Add(toolbar);
         DockPanel.SetDock(_sessionInfo, Dock.Top);
         root.Children.Add(_sessionInfo);
+        DockPanel.SetDock(_logStatus, Dock.Top);
+        root.Children.Add(_logStatus);
         root.Children.Add(tabs);
         Content = root;
 
@@ -232,6 +239,17 @@ internal sealed class DashboardWindow : Window
             periodStart = Dashboard.PeriodStart(_period, now);
             buckets = Dashboard.Buckets(games, _period, now);
             _sessionInfo.Visibility = Visibility.Collapsed;
+        }
+
+        if (_gameLogStatus?.Invoke() is { } status)
+        {
+            _logStatus.Text = status.Text;
+            _logStatus.Foreground = status.Problem ? EventRed : Muted;
+            _logStatus.Visibility = Visibility.Visible;
+        }
+        else
+        {
+            _logStatus.Visibility = Visibility.Collapsed;
         }
 
         var summary = Dashboard.Summary(games, periodStart, now, runningSession);

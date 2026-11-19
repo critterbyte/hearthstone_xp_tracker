@@ -5,6 +5,9 @@
 # Plugin entry in HDT
 app.dashboard=XPダッシュボード
 app.exit=終了
+log.on=ゲームログ（Power.log）：オン
+log.restart=ゲームログをオンにしました。ログを書き出すため、ハースストーンを一度再起動してください。
+log.failed=ゲームログを自動でオンにできませんでした。{0} に [Power] セクションを手動で追加してください（インストールガイド参照）。
 
 # Overlay rows
 overlay.xpTime=XP時間:

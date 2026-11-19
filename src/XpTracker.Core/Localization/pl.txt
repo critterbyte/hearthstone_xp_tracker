@@ -5,6 +5,9 @@
 # Plugin entry in HDT
 app.dashboard=Panel PD
 app.exit=Zakończ
+log.on=Dziennik gry (Power.log): włączony
+log.restart=Dziennik gry włączony. Uruchom ponownie Hearthstone, aby zaczął zapisywać dziennik.
+log.failed=Nie udało się automatycznie włączyć dziennika gry. Dodaj ręcznie sekcję [Power] do {0} (zobacz instrukcję instalacji).
 
 # Overlay rows
 overlay.xpTime=Czas PD:

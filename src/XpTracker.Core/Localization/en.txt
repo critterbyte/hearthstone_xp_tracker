@@ -5,6 +5,9 @@
 # Plugin entry in HDT
 app.dashboard=XP dashboard
 app.exit=Exit
+log.on=Game log (Power.log): on
+log.restart=Game log switched on. Restart Hearthstone once so that it writes the log.
+log.failed=The game log could not be switched on automatically. Add the [Power] section to {0} by hand (see the install guide).
 
 # Overlay rows
 overlay.xpTime=XP time:

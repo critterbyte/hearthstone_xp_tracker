@@ -5,6 +5,9 @@
 # Plugin entry in HDT
 app.dashboard=Панель опыта
 app.exit=Выход
+log.on=Журнал игры (Power.log): включён
+log.restart=Журнал игры включён. Перезапустите Hearthstone один раз, чтобы он начал вести журнал.
+log.failed=Не удалось автоматически включить журнал игры. Добавьте раздел [Power] в {0} вручную (см. руководство по установке).
 
 # Overlay rows
 overlay.xpTime=Время опыта:

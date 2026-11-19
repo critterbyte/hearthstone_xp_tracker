@@ -5,6 +5,9 @@
 # Plugin entry in HDT
 app.dashboard=Pannello PE
 app.exit=Esci
+log.on=Registro di gioco (Power.log): attivo
+log.restart=Registro di gioco attivato. Riavvia Hearthstone una volta perché scriva il registro.
+log.failed=Impossibile attivare automaticamente il registro di gioco. Aggiungi a mano la sezione [Power] a {0} (vedi la guida all'installazione).
 
 # Overlay rows
 overlay.xpTime=Tempo PE:
