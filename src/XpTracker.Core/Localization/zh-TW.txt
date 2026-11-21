@@ -2,9 +2,12 @@
 # 爐石戰記 zhTW 用戶端用語（用戶端字串，版本 37.0）：經驗值、獎勵軌跡、旅店貴賓證、等級、排名模式、
 # 休閒模式、旅店大亂鬥、「結束回合」按鈕。以機器翻譯為基礎。
 
-# Plugin entry in HDT
-plugin.description=顯示本場對戰的獎勵軌跡經驗值，以及計算所依據的經驗值時間。
-plugin.dashboard=經驗值儀表板
+# Notification area icon and its menu
+app.dashboard=經驗值儀表板
+app.exit=結束
+log.on=遊戲記錄（Power.log）：已開啟
+log.restart=已開啟遊戲記錄。請重新啟動一次爐石戰記，讓它寫入記錄。
+log.failed=無法自動開啟遊戲記錄。請手動將 [Power] 區段加入 {0}（請參閱安裝指南）。
 
 # Overlay rows
 overlay.xpTime=經驗值時間：
@@ -45,12 +48,16 @@ class.ROGUE=盜賊
 class.SHAMAN=薩滿
 class.WARLOCK=術士
 class.WARRIOR=戰士
-deck.none=沒有記錄套牌
 
 # Dashboard: update hint
 update.available=版本 {0} 已推出。
 update.availableInstalled=版本 {0} 已推出（已安裝：{1}）。
 update.openPage=開啟下載頁面
+
+# Dashboard: one-time question at the first start
+startMenu.question=要將追蹤器新增到 [開始] 功能表，方便日後找到嗎？
+startMenu.yes=新增
+startMenu.no=不用了
 
 # Dashboard: toolbar and options
 period.session=本次工作階段
@@ -67,9 +74,14 @@ option.overlayLeft=左側，你的頭像上方
 option.overlayRight=右側，設定按鈕上方
 option.event=事件進行中（顯示事件經驗值）
 option.eventTip=爐石戰記事件期間請開啟：覆蓋層會顯示事件經驗值，新對戰也會記錄下來。
+option.eventHint=爐石戰記正在進行事件嗎？勾選上方的方塊即可統計事件經驗值。
 option.damage=在覆蓋層顯示傷害
 option.damageTip=顯示「總傷害：」與「英雄傷害：」兩行：你這一方在本場或上一場對戰中對對手造成的傷害。
-option.updates=啟動 HDT 時檢查更新
+option.updates=啟動追蹤器時檢查更新
+option.autostart=隨 Windows 啟動
+option.autostartTip=登入 Windows 時在通知區域啟動追蹤器，不開啟儀表板。
+option.startMenu=[開始] 功能表捷徑
+option.startMenuTip=將「Hearthstone XP Tracker」新增到 [開始] 功能表。如果移動了追蹤器的資料夾，請從新位置啟動一次。
 tavern.check=旅店貴賓證（經驗值加成）
 tavern.checkTip=如果你擁有目前資料片的旅店貴賓證，請開啟此項，並在下方輸入你的獎勵軌跡等級：加成為 10%，等級 20 起為 15%，等級 70 起為 20%（依據爐石戰記 Wiki，未經實測）。
 tavern.level=等級
@@ -86,7 +98,6 @@ session.ended=自 {0} 起的工作階段（已結束）
 
 # Dashboard: tabs
 tab.overview=總覽
-tab.decks=套牌
 tab.lostXp=損失的經驗值
 tab.games=對戰
 tab.charts=圖表
@@ -116,12 +127,7 @@ lost.outside=對戰以外的時間
 lost.outsideNote=上線但不在對戰中：{0}（選單、排隊、休息）
 
 # Dashboard: table columns
-column.deck=套牌
-column.games=對戰
-column.winRate=勝率
 column.xp=經驗值
-column.xpPerHour=每小時經驗值
-column.avgGame=平均對戰
 column.date=日期
 column.start=開始
 column.mode=模式

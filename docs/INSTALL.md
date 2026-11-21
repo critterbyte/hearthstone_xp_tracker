@@ -2,82 +2,105 @@
 
 ## Requirements
 
-- Windows
-- [Hearthstone Deck Tracker](https://hsreplay.net/downloads/) (HDT). Tested with HDT 1.60.1.
+- Windows 10 or 11. The tracker needs .NET Framework 4.7.2, which is part of both.
 - Hearthstone
 
-The plugin reads Hearthstone's `Power.log`. HDT turns this log on by itself, so you do not need to change any Hearthstone settings.
+The tracker reads Hearthstone's `Power.log`. Hearthstone writes this log only when it is switched on in its own settings file, `%LOCALAPPDATA%\Blizzard\Hearthstone\log.config`. The tracker switches it on at its first start: it adds the `[Power]` section and changes nothing else in the file. Before that change it keeps a copy of the old file as `log.config.bak`.
 
 ## Install
 
-1. Download the ZIP file of the newest release from the [Releases page](https://github.com/critterbyte/hearthstone_xp_tracker/releases), for example `HearthstoneXpTracker-0.1.0.zip`.
-2. Close HDT.
-3. Right-click the ZIP file, choose *Properties*, and select *Unblock* if it is shown. Otherwise Windows may block the plugin.
-4. Open the HDT plugins folder. You can find it in two ways:
-   - In HDT: *Settings* (the gear icon on the right of the top bar) *→ Tracker → Plugins → Plugins Folder*
-   - In Windows Explorer: type `%APPDATA%\HearthstoneDeckTracker\Plugins` into the address bar
-5. Extract the ZIP into the plugins folder. This creates the folder `HearthstoneXpTracker` with these files:
-   - `HearthstoneXpTracker.dll`
-   - `XpTracker.Core.dll`
-   - `INSTALL.txt` and `LICENSE.txt`
-6. Start HDT.
-7. Open *Settings → Tracker → Plugins* and enable **Hearthstone XP Tracker**.
+1. Download the ZIP file of the newest release from the [Releases page](https://github.com/critterbyte/hearthstone_xp_tracker/releases), for example `HearthstoneXpTracker-0.2.0.zip`.
+2. Right-click the ZIP file, choose *Properties*, and select *Unblock* if it is shown.
+3. Extract the ZIP into a folder of your choice, for example *Documents*. This creates the folder `HearthstoneXpTracker` with these files:
+   - `HearthstoneXpTracker.exe`: the tracker
+   - `HearthstoneXpTracker.exe.config`, `XpTracker.Core.dll`, `LiveCharts.dll`, `LiveCharts.Wpf.dll` and `Newtonsoft.Json.dll`: needed by the tracker
+   - `INSTALL.txt`, `LICENSE.txt` and `THIRD-PARTY-NOTICES.txt`
+
+   Choose a folder you can write to. In *Program Files*, every update needs administrator rights.
+4. Start `HearthstoneXpTracker.exe`. If Windows shows "Windows protected your PC", choose *More info* and then *Run anyway*. The tracker is not signed yet, so Windows does not know it.
+5. The dashboard opens, and a gold "XP" icon appears in the notification area at the bottom right of the taskbar. It may be hidden behind the small arrow (^).
+
+If Hearthstone was already running at the first start, restart it once. Hearthstone reads `log.config` only when it starts.
 
 The overlay appears with the first turn of your next game. See [USAGE.md](USAGE.md) for what it shows.
 
-Both DLL files must be in the same folder. Without `XpTracker.Core.dll` the plugin does not start.
+All files must stay together in one folder. At the first start, a bar at the top of the dashboard asks once whether to add the tracker to the Start menu. To start the tracker automatically when you sign in to Windows, tick "Start with Windows" in the dashboard. If you move the folder later, start the tracker once from the new place; it then updates the Start menu shortcut and the autostart entry.
 
-Each release lists the SHA-256 checksum of the ZIP. To check your download, run `Get-FileHash HearthstoneXpTracker-0.1.0.zip` in PowerShell and compare the result.
+Each release lists the SHA-256 checksum of the ZIP. To check your download, run `Get-FileHash HearthstoneXpTracker-0.2.0.zip` in PowerShell and compare the result.
+
+## Coming from the HDT plugin
+
+Up to version 0.1.2, the tracker was a plugin for HDT. HDT stops supporting plugins on 30 November 2026, so the tracker is now a program of its own with the same overlay and dashboard.
+
+- **Your data comes along.** At every start, the tracker adds the games from the plugin's history (`%APPDATA%\HearthstoneDeckTracker\XpTracker\hs_games.csv`) that it does not have yet. It also takes over the plugin's settings once, if it has none of its own. The plugin's files are only read, never changed.
+- **Disable the plugin.** In HDT, open *Settings* (the gear icon on the right of the top bar) *→ Tracker → Plugins* and disable **Hearthstone XP Tracker**. Otherwise two overlays show the same numbers. You can also delete the folder `%APPDATA%\HearthstoneDeckTracker\Plugins\HearthstoneXpTracker`.
+- **No deck names for now.** HDT provided the deck names, so the *Decks* tab and the deck column are gone for now. Older games keep their deck names in the history file.
 
 ## Update
 
-When a newer version exists, the plugin tells you (see [USAGE.md](USAGE.md#update-hint)). To update:
+When a newer version exists, the tracker tells you (see [USAGE.md](USAGE.md#update-hint)). To update:
 
 1. Download the ZIP file of the new release and unblock it (see above).
-2. Close HDT.
-3. Extract the ZIP into the plugins folder again and replace the old files.
-4. Start HDT.
+2. Exit the tracker: right-click the gold "XP" icon and choose "Exit".
+3. Extract the ZIP into the same folder again and replace the old files.
+4. Start `HearthstoneXpTracker.exe`.
 
 Your game history and settings are kept. They are stored in a different folder (see below).
 
+To go back to an older version, do the same with its ZIP.
+
 ## Uninstall
 
-1. In HDT, open *Settings → Tracker → Plugins* and disable the plugin.
-2. Close HDT.
-3. Delete the folder `%APPDATA%\HearthstoneDeckTracker\Plugins\HearthstoneXpTracker`.
+1. In the dashboard, clear "Start with Windows" and "Shortcut in the Start menu".
+2. Exit the tracker: right-click the gold "XP" icon and choose "Exit".
+3. Delete the folder `HearthstoneXpTracker` you extracted.
 
-The plugin keeps your data in `%APPDATA%\HearthstoneDeckTracker\XpTracker`:
+The tracker keeps your data in `%APPDATA%\HearthstoneXpTracker`:
 
 | File | Content |
 |---|---|
 | `hs_games.csv` | Game history |
-| `settings.ini` | Plugin settings |
+| `settings.ini` | Settings |
+| `xptracker.log` | Unexpected errors, if any |
 
 Delete this folder too if you do not want to keep the data.
 
+The `[Power]` section stays in `log.config`, because other programs may use it too. It only makes Hearthstone write its log. To restore the file as it was before, replace `log.config` with `log.config.bak`.
+
 ## Troubleshooting
 
-**The plugin is not in the list, or HDT shows an error when loading it.**
+**Windows shows "Windows protected your PC".**
 
-- Check that both DLL files are in `%APPDATA%\HearthstoneDeckTracker\Plugins\HearthstoneXpTracker`, not one folder deeper (for example `...\HearthstoneXpTracker\HearthstoneXpTracker`).
-- Windows can block files downloaded from the internet. Right-click each DLL, choose *Properties*, and if there is an *Unblock* check box, select it and click *OK*. Then restart HDT.
+- Choose *More info* and then *Run anyway*. Windows shows this for programs it does not know yet. The tracker is open source; you can read the code on GitHub and check the SHA-256 checksum of the ZIP.
+
+**Nothing happens when I start the tracker.**
+
+- It may already be running. Starting it again opens the dashboard of the running tracker. Look for the gold "XP" icon in the notification area, also behind the small arrow (^).
+- Check that all files of the ZIP are in the same folder, and that the ZIP was unblocked (see [Install](#install)).
 
 **The overlay does not appear.**
 
 - The overlay is shown only in Ranked, Casual, Tavern Brawl and Arena. Other modes are not measured yet.
 - During the mulligan the overlay is hidden. It appears with the first turn.
-- Check that HDT's own overlay works. The plugin draws on the HDT overlay.
+- The overlay is shown only while Hearthstone is the active window. Click into the game once.
+- Look at the status line in the dashboard, below the period buttons. It should say "Game log (Power.log): on". If it asks you to restart Hearthstone, do that.
 
-**After installing an older version, HDT still runs the newer one.**
+**The dashboard says the game log could not be switched on.**
 
-- HDT does not load the plugin from `%APPDATA%\HearthstoneDeckTracker\Plugins`. It loads a copy in its own program folder, `%LOCALAPPDATA%\HearthstoneDeckTracker\app-<HDT version>\Plugins`, and replaces a file there only when the file in `%APPDATA%` is newer. The files of an older release are older, so HDT keeps the newer copy.
-- To go back to an older version: close HDT, install the older version as described above, delete the folder `HearthstoneXpTracker` in `%LOCALAPPDATA%\HearthstoneDeckTracker\app-<HDT version>\Plugins`, and start HDT again. HDT then copies the plugin again.
-- From version 0.1.2 on, the dashboard shows the running version in the top right corner.
-- Updates to a newer version are not affected.
+- The tracker could not write `%LOCALAPPDATA%\Blizzard\Hearthstone\log.config`. Close Hearthstone, open the file in Notepad (create it if it is missing), add these lines at the end, and save it:
+
+  ```ini
+  [Power]
+  LogLevel=1
+  FilePrinting=True
+  ConsolePrinting=False
+  ScreenPrinting=False
+  Verbose=True
+  ```
 
 **Something else is wrong.**
 
-Please [open an issue](https://github.com/critterbyte/hearthstone_xp_tracker/issues/new/choose) and include your HDT version and what you expected to see.
+Please [open an issue](https://github.com/critterbyte/hearthstone_xp_tracker/issues/new/choose) and include the tracker version (the dashboard shows it in the top right corner), your Windows version and what you expected to see. If `%APPDATA%\HearthstoneXpTracker\xptracker.log` exists, its last lines help too.
 
 ## Build from source
 

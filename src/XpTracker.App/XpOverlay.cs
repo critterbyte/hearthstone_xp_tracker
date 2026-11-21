@@ -7,7 +7,7 @@ using System.Windows.Media.Effects;
 using System.Windows.Shapes;
 using XpTracker.Core;
 
-namespace XpTracker.Plugin;
+namespace XpTracker.App;
 
 /// <summary>
 /// Overlay box placed above the Hearthstone settings button: plain white labels on the left,
@@ -21,7 +21,7 @@ internal sealed class XpOverlay : Border
     private const double RightBottomOffset = 0.085;
 
     // Left: above the player's name plate ("You" with the rank), measured from the bottom left corner,
-    // below the card lists HDT shows on the left; the box grows to the right.
+    // low enough to leave room for other overlays on the left; the box grows to the right.
     private const double LeftOffset = 0.006;
     private const double LeftBottomOffset = 0.2;
     private const double FontSizeFactor = 0.016;

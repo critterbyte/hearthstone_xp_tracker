@@ -47,16 +47,16 @@ public sealed class TavernPassTests : IDisposable
     [Fact]
     public void Boost_IsAppliedBeforeRounding()
     {
-        // 378.43 s × 0.13054 = 49.40 XP. Boost first: 49.40 × 1.15 = 56.81 → 57.
+        // 378.43 s × 0.130515 = 49.39 XP. Boost first: 49.39 × 1.15 = 56.80 → 57.
         // Rounding first would give round(49) × 1.15 = 56.35 → 56.
         Assert.Equal(57, XpRates.ExpectedXp(378.43, XpRates.RankedWin, 15));
     }
 
     [Theory]
     [InlineData(425.27, 0, 56)]
-    [InlineData(425.27, 10, 61)] // 55.51 × 1.10 = 61.07
-    [InlineData(425.27, 15, 64)] // 55.51 × 1.15 = 63.84
-    [InlineData(425.27, 20, 67)] // 55.51 × 1.20 = 66.62
+    [InlineData(425.27, 10, 61)] // 55.50 × 1.10 = 61.05
+    [InlineData(425.27, 15, 64)] // 55.50 × 1.15 = 63.83
+    [InlineData(425.27, 20, 67)] // 55.50 × 1.20 = 66.60
     public void Boost_RaisesTheXpOfAWin(double xpSeconds, int percent, int expected)
     {
         Assert.Equal(expected, XpRates.ExpectedXp(xpSeconds, XpRates.RankedWin, percent));
@@ -67,7 +67,7 @@ public sealed class TavernPassTests : IDisposable
     {
         Assert.Equal(0, XpRates.ExpectedXp(59.9, XpRates.RankedWin, 20));
 
-        // 1800 s × 0.13054 × 1.20 = 281.97
+        // 1800 s × 0.130515 × 1.20 = 281.91
         Assert.Equal(282, XpRates.ExpectedXp(2400, XpRates.RankedWin, 20));
     }
 
@@ -126,7 +126,7 @@ public sealed class TavernPassTests : IDisposable
         boosted.XpBonus = 15;
         var plain = Sample("10:30:00");
 
-        // 349.68 s × 0.13054 = 45.65 XP; with 15%: 52.49 → 52.
+        // 349.68 s × 0.130515 = 45.64 XP; with 15%: 52.48 → 52.
         Assert.True(boosted.RecalculateXp());
         Assert.Equal(52, boosted.Xp);
         Assert.False(plain.RecalculateXp());

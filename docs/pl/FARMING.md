@@ -7,7 +7,7 @@ Uczciwe wskazówki, jak zdobywać więcej PD ze Ścieżki nagród na godzinę. W
 - **Zmierzone:** ustalone przez ten projekt.
 - **Według [n]:** ze źródeł na końcu tej strony.
 
-Panel wtyczki pokazuje, gdzie podziewają się twoje PD. Karta „Utracone PD” to dobry punkt wyjścia (zobacz [USAGE.md](USAGE.md#tabs)).
+Panel trackera pokazuje, gdzie podziewają się twoje PD. Karta „Utracone PD” to dobry punkt wyjścia (zobacz [USAGE.md](USAGE.md#tabs)).
 
 <a id="play-fair"></a>
 ## Graj uczciwie

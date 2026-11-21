@@ -14,7 +14,7 @@ public static class GameText
     /// <summary>"Wild", "Standard" and so on; unknown formats are shown as stored.</summary>
     public static string Format(string format) => format.Length == 0 ? string.Empty : Localizer.TextOrNull("format." + format) ?? format;
 
-    /// <summary>Class name as HDT stores it ("Deathknight", "DemonHunter", "Mage" …); unknown classes are shown capitalized.</summary>
+    /// <summary>Class name as the history file stores it ("Deathknight", "DemonHunter", "Mage" …); unknown classes are shown capitalized.</summary>
     public static string Class(string storedClass)
     {
         if (storedClass.Length == 0)

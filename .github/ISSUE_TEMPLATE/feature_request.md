@@ -1,6 +1,6 @@
 ---
 name: Feature request
-about: Suggest an idea for the plugin
+about: Suggest an idea for the tracker
 title: ''
 labels: enhancement
 ---

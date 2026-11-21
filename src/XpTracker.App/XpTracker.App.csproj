@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Stand-alone Windows app. .NET Framework 4.7.2 is part of Windows 10 and 11,
+    so the release needs no runtime download and stays small.
+  -->
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net472</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <AssemblyName>HearthstoneXpTracker</AssemblyName>
+    <RootNamespace>XpTracker.App</RootNamespace>
+    <StartupObject>XpTracker.App.Program</StartupObject>
+    <!-- Gold "XP" coin, the same as the notification area icon; also used by the dashboard window. -->
+    <ApplicationIcon>app.ico</ApplicationIcon>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Charts for the dashboard (MIT license). -->
+    <PackageReference Include="LiveCharts.Wpf" Version="0.9.7" />
+    <!-- JSON reader for the update check (MIT license). -->
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Notification area icon -->
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Net.Http" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\XpTracker.Core\XpTracker.Core.csproj" />
+  </ItemGroup>
+
+</Project>

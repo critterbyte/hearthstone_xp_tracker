@@ -2,9 +2,12 @@
 # Format: key=value, one per line. {0}, {1}, ... are placeholders and must stay in every translation.
 # Use the game's own terms of each language (Ranked, Tavern Brawl, Rewards Track, Tavern Pass, class names).
 
-# Plugin entry in HDT
-plugin.description=Shows the reward track XP of the current game and the XP time it is based on.
-plugin.dashboard=XP dashboard
+# Notification area icon and its menu
+app.dashboard=XP dashboard
+app.exit=Exit
+log.on=Game log (Power.log): on
+log.restart=Game log switched on. Restart Hearthstone once so that it writes the log.
+log.failed=The game log could not be switched on automatically. Add the [Power] section to {0} by hand (see the install guide).
 
 # Overlay rows
 overlay.xpTime=XP time:
@@ -45,12 +48,16 @@ class.ROGUE=Rogue
 class.SHAMAN=Shaman
 class.WARLOCK=Warlock
 class.WARRIOR=Warrior
-deck.none=No deck recorded
 
 # Dashboard: update hint
 update.available=Version {0} is available.
 update.availableInstalled=Version {0} is available (installed: {1}).
 update.openPage=Open the download page
+
+# Dashboard: one-time question at the first start
+startMenu.question=Add the tracker to the Start menu, so you can find it again later?
+startMenu.yes=Add
+startMenu.no=No, thanks
 
 # Dashboard: toolbar and options
 period.session=Session
@@ -68,9 +75,14 @@ option.overlayLeft=Left, above your portrait
 option.overlayRight=Right, above the settings button
 option.event=Event running (show event XP)
 option.eventTip=Switch on while a Hearthstone event runs: the overlay shows the event XP, and new games store it.
+option.eventHint=Is a Hearthstone event running? Tick the box above to count event XP.
 option.damage=Show damage on the overlay
 option.damageTip=Shows the rows "Total Damage:" and "Hero Damage:": the damage your side dealt to the opponent in the current or last game.
-option.updates=Check for updates when HDT starts
+option.updates=Check for updates when the tracker starts
+option.autostart=Start with Windows
+option.autostartTip=Starts the tracker in the notification area when you sign in to Windows; the dashboard stays closed.
+option.startMenu=Shortcut in the Start menu
+option.startMenuTip=Adds "Hearthstone XP Tracker" to the Start menu. If you move the tracker's folder, start it once from the new place.
 tavern.check=Tavern Pass (XP boost)
 tavern.checkTip=Switch on if you own the Tavern Pass of the current expansion. Enter your rewards track level below: the boost is 10%, from level 20 on 15%, from level 70 on 20% (according to the Hearthstone Wiki, not measured yet).
 tavern.level=Level
@@ -87,7 +99,6 @@ session.ended=Session since {0} (ended)
 
 # Dashboard: tabs
 tab.overview=Overview
-tab.decks=Decks
 tab.lostXp=Lost XP
 tab.games=Games
 tab.charts=Charts
@@ -117,12 +128,7 @@ lost.outside=Time outside games
 lost.outsideNote={0} online but not in a game (menus, queue, breaks)
 
 # Dashboard: table columns
-column.deck=Deck
-column.games=Games
-column.winRate=Win rate
 column.xp=XP
-column.xpPerHour=XP per hour
-column.avgGame=Avg. game
 column.date=Date
 column.start=Start
 column.mode=Mode

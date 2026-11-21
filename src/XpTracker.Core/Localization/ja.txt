@@ -2,9 +2,12 @@
 # Hearthstone jaJP クライアントの用語（クライアント文字列、ビルド 37.0）: XP、報酬レーン、酒場パス、レベル、
 # ランク戦、カジュアル、酒場の喧嘩、ボタン「ターン終了」。機械翻訳を基にしています。
 
-# Plugin entry in HDT
-plugin.description=現在の試合で得られる報酬レーンのXPと、その元になるXP時間を表示します。
-plugin.dashboard=XPダッシュボード
+# Notification area icon and its menu
+app.dashboard=XPダッシュボード
+app.exit=終了
+log.on=ゲームログ（Power.log）：オン
+log.restart=ゲームログをオンにしました。ログを書き出すため、ハースストーンを一度再起動してください。
+log.failed=ゲームログを自動でオンにできませんでした。{0} に [Power] セクションを手動で追加してください（インストールガイド参照）。
 
 # Overlay rows
 overlay.xpTime=XP時間:
@@ -45,12 +48,16 @@ class.ROGUE=ローグ
 class.SHAMAN=シャーマン
 class.WARLOCK=ウォーロック
 class.WARRIOR=ウォリアー
-deck.none=デッキの記録なし
 
 # Dashboard: update hint
 update.available=バージョン {0} が利用できます。
 update.availableInstalled=バージョン {0} が利用できます（インストール済み: {1}）。
 update.openPage=ダウンロードページを開く
+
+# Dashboard: one-time question at the first start
+startMenu.question=あとで見つけやすいように、トラッカーをスタート メニューに追加しますか？
+startMenu.yes=追加
+startMenu.no=追加しない
 
 # Dashboard: toolbar and options
 period.session=セッション
@@ -67,9 +74,14 @@ option.overlayLeft=左（自分の肖像の上）
 option.overlayRight=右（設定ボタンの上）
 option.event=イベント開催中（イベントXPを表示）
 option.eventTip=Hearthstoneのイベント中にオンにします。オーバーレイにイベントXPが表示され、新しい試合に保存されます。
+option.eventHint=ハースストーンのイベント開催中？上のチェックを入れるとイベントXPを数えます。
 option.damage=オーバーレイにダメージを表示
 option.damageTip=「合計ダメージ:」と「ヒーローへのダメージ:」の行を表示します。現在または前回の試合で、自分の側が相手に与えたダメージです。
-option.updates=HDTの起動時にアップデートを確認
+option.updates=トラッカーの起動時にアップデートを確認
+option.autostart=Windows の起動時に開始
+option.autostartTip=Windows へのサインイン時にトラッカーを通知領域で起動します。ダッシュボードは開きません。
+option.startMenu=スタート メニューのショートカット
+option.startMenuTip=スタート メニューに「Hearthstone XP Tracker」を追加します。トラッカーのフォルダーを移動した場合は、新しい場所から一度起動してください。
 tavern.check=酒場パス（XPボーナス）
 tavern.checkTip=現在の拡張版の酒場パスを持っている場合にオンにします。下に報酬レーンのレベルを入力してください。ボーナスは10%、レベル20から15%、レベル70から20%です（Hearthstone Wikiによる。未計測）。
 tavern.level=レベル
@@ -86,7 +98,6 @@ session.ended={0}からのセッション（終了）
 
 # Dashboard: tabs
 tab.overview=概要
-tab.decks=デッキ
 tab.lostXp=失ったXP
 tab.games=試合
 tab.charts=グラフ
@@ -116,12 +127,7 @@ lost.outside=試合外の時間
 lost.outsideNote=オンラインだが試合外: {0}（メニュー、待ち時間、休憩）
 
 # Dashboard: table columns
-column.deck=デッキ
-column.games=試合
-column.winRate=勝率
 column.xp=XP
-column.xpPerHour=XP/時
-column.avgGame=平均試合時間
 column.date=日付
 column.start=開始
 column.mode=モード

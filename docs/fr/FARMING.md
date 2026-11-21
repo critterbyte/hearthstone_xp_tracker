@@ -7,7 +7,7 @@ Des conseils loyaux pour gagner plus d'EXP du Parcours de récompenses par heure
 - **Mesuré :** constaté par ce projet.
 - **Selon [n] :** d'après les sources en bas de cette page.
 
-Le tableau de bord du plugin montre où passe votre EXP. L'onglet « EXP perdue » est un bon point de départ (voir [USAGE.md](USAGE.md#tabs)).
+Le tableau de bord du tracker montre où passe votre EXP. L'onglet « EXP perdue » est un bon point de départ (voir [USAGE.md](USAGE.md#tabs)).
 
 <a id="play-fair"></a>
 ## Jouer loyalement

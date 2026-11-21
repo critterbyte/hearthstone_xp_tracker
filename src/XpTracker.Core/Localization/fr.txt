@@ -2,9 +2,12 @@
 # Termes du client Hearthstone frFR (chaînes du client, build 37.0) : EXP, Parcours de récompenses,
 # Ticket de la taverne, Niveau, Classé, Non classé, Bras de fer, bouton « Fin du tour ». Traduction assistée par machine.
 
-# Plugin entry in HDT
-plugin.description=Affiche l'EXP du Parcours de récompenses de la partie en cours et le temps d'EXP sur lequel elle repose.
-plugin.dashboard=Tableau de bord EXP
+# Notification area icon and its menu
+app.dashboard=Tableau de bord EXP
+app.exit=Quitter
+log.on=Journal de partie (Power.log) : activé
+log.restart=Journal de partie activé. Redémarrez Hearthstone une fois pour qu'il écrive le journal.
+log.failed=Le journal de partie n'a pas pu être activé automatiquement. Ajoutez la section [Power] à {0} à la main (voir le guide d'installation).
 
 # Overlay rows
 overlay.xpTime=Temps d'EXP :
@@ -45,12 +48,16 @@ class.ROGUE=Voleur
 class.SHAMAN=Chaman
 class.WARLOCK=Démoniste
 class.WARRIOR=Guerrier
-deck.none=Aucun deck enregistré
 
 # Dashboard: update hint
 update.available=La version {0} est disponible.
 update.availableInstalled=La version {0} est disponible (installée : {1}).
 update.openPage=Ouvrir la page de téléchargement
+
+# Dashboard: one-time question at the first start
+startMenu.question=Ajouter le tracker au menu Démarrer pour le retrouver plus tard ?
+startMenu.yes=Ajouter
+startMenu.no=Non, merci
 
 # Dashboard: toolbar and options
 period.session=Session
@@ -67,9 +74,14 @@ option.overlayLeft=À gauche, au-dessus de votre portrait
 option.overlayRight=À droite, au-dessus du bouton des options
 option.event=Évènement en cours (afficher l'EXP d'évènement)
 option.eventTip=À activer pendant un évènement Hearthstone : l'overlay affiche l'EXP d'évènement et les nouvelles parties l'enregistrent.
+option.eventHint=Un évènement Hearthstone est en cours ? Cochez la case ci-dessus pour compter l'EXP d'évènement.
 option.damage=Afficher les dégâts dans l'overlay
 option.damageTip=Affiche les lignes « Dégâts totaux : » et « Dégâts au héros : » : les dégâts infligés par votre camp à l'adversaire pendant la partie en cours ou la dernière.
-option.updates=Rechercher des mises à jour au démarrage de HDT
+option.updates=Rechercher des mises à jour au démarrage du tracker
+option.autostart=Lancer avec Windows
+option.autostartTip=Lance le tracker dans la zone de notification à l'ouverture de session Windows ; le tableau de bord reste fermé.
+option.startMenu=Raccourci dans le menu Démarrer
+option.startMenuTip=Ajoute « Hearthstone XP Tracker » au menu Démarrer. Si vous déplacez le dossier du tracker, lancez-le une fois depuis son nouvel emplacement.
 tavern.check=Ticket de la taverne (bonus d'EXP)
 tavern.checkTip=À activer si vous possédez le Ticket de la taverne de l'extension actuelle. Indiquez ci-dessous votre niveau dans le Parcours de récompenses : le bonus est de 10 %, de 15 % à partir du niveau 20 et de 20 % à partir du niveau 70 (selon le wiki Hearthstone, non mesuré).
 tavern.level=Niveau
@@ -86,7 +98,6 @@ session.ended=Session depuis {0} (terminée)
 
 # Dashboard: tabs
 tab.overview=Vue d'ensemble
-tab.decks=Decks
 tab.lostXp=EXP perdue
 tab.games=Parties
 tab.charts=Graphiques
@@ -116,12 +127,7 @@ lost.outside=Temps hors des parties
 lost.outsideNote={0} en ligne mais hors partie (menus, file d'attente, pauses)
 
 # Dashboard: table columns
-column.deck=Deck
-column.games=Parties
-column.winRate=Taux de victoire
 column.xp=EXP
-column.xpPerHour=EXP par heure
-column.avgGame=Partie moy.
 column.date=Date
 column.start=Début
 column.mode=Mode

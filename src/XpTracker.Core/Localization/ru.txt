@@ -2,9 +2,12 @@
 # Термины клиента Hearthstone ruRU (строки клиента, сборка 37.0): опыт, Лента наград, Пропуск завсегдатая,
 # Уровень, Рейтинг, Обычный, Потасовка в таверне, кнопка «ЗАКОНЧИТЬ». Машинный перевод с правкой.
 
-# Plugin entry in HDT
-plugin.description=Показывает опыт Ленты наград за текущий матч и время опыта, на котором он основан.
-plugin.dashboard=Панель опыта
+# Notification area icon and its menu
+app.dashboard=Панель опыта
+app.exit=Выход
+log.on=Журнал игры (Power.log): включён
+log.restart=Журнал игры включён. Перезапустите Hearthstone один раз, чтобы он начал вести журнал.
+log.failed=Не удалось автоматически включить журнал игры. Добавьте раздел [Power] в {0} вручную (см. руководство по установке).
 
 # Overlay rows
 overlay.xpTime=Время опыта:
@@ -45,12 +48,16 @@ class.ROGUE=Разбойник
 class.SHAMAN=Шаман
 class.WARLOCK=Чернокнижник
 class.WARRIOR=Воин
-deck.none=Колода не записана
 
 # Dashboard: update hint
 update.available=Доступна версия {0}.
 update.availableInstalled=Доступна версия {0} (установлена: {1}).
 update.openPage=Открыть страницу загрузки
+
+# Dashboard: one-time question at the first start
+startMenu.question=Добавить трекер в меню «Пуск», чтобы потом легко его найти?
+startMenu.yes=Добавить
+startMenu.no=Нет, спасибо
 
 # Dashboard: toolbar and options
 period.session=Сеанс
@@ -67,9 +74,14 @@ option.overlayLeft=Слева, над вашим портретом
 option.overlayRight=Справа, над кнопкой настроек
 option.event=Идёт событие (показывать опыт события)
 option.eventTip=Включите на время события Hearthstone: оверлей показывает опыт события, а новые матчи сохраняют его.
+option.eventHint=Сейчас идёт событие Hearthstone? Отметьте флажок выше, чтобы считать опыт события.
 option.damage=Показывать урон в оверлее
 option.damageTip=Показывает строки «Урон всего:» и «Урон герою:»: урон, который ваша сторона нанесла противнику в текущем или последнем матче.
-option.updates=Проверять обновления при запуске HDT
+option.updates=Проверять обновления при запуске трекера
+option.autostart=Запускать вместе с Windows
+option.autostartTip=Запускает трекер в области уведомлений при входе в Windows; панель не открывается.
+option.startMenu=Ярлык в меню «Пуск»
+option.startMenuTip=Добавляет «Hearthstone XP Tracker» в меню «Пуск». Если вы переместите папку трекера, запустите его один раз из нового места.
 tavern.check=Пропуск завсегдатая (бонус к опыту)
 tavern.checkTip=Включите, если у вас есть Пропуск завсегдатая текущего дополнения. Укажите ниже свой уровень на Ленте наград: бонус составляет 10%, с 20-го уровня 15%, с 70-го уровня 20% (по данным вики Hearthstone, не измерено).
 tavern.level=Уровень
@@ -86,7 +98,6 @@ session.ended=Сеанс с {0} (завершён)
 
 # Dashboard: tabs
 tab.overview=Обзор
-tab.decks=Колоды
 tab.lostXp=Потерянный опыт
 tab.games=Матчи
 tab.charts=Графики
@@ -116,12 +127,7 @@ lost.outside=Время вне матчей
 lost.outsideNote={0} в сети, но не в матче (меню, очередь, перерывы)
 
 # Dashboard: table columns
-column.deck=Колода
-column.games=Матчи
-column.winRate=Доля побед
 column.xp=Опыт
-column.xpPerHour=Опыт в час
-column.avgGame=Ср. матч
 column.date=Дата
 column.start=Начало
 column.mode=Режим

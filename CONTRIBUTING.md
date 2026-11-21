@@ -4,7 +4,7 @@ Thank you for helping! You can contribute in several ways:
 
 - **Report a bug** or **suggest a feature**: [open an issue](https://github.com/critterbyte/hearthstone_xp_tracker/issues/new/choose).
 - **Contribute measurements**: the formula comes from measured games. Modes such as Battlegrounds still need data, and so does the Tavern Pass boost. See [Contributing measurements](#contributing-measurements).
-- **Fix or improve a translation** of the plugin or the user guides: see [Translations](#translations).
+- **Fix or improve a translation** of the tracker or the user guides: see [Translations](#translations).
 - **Contribute code or documentation**: see below.
 
 Everyone taking part is expected to follow the [Code of Conduct](CODE_OF_CONDUCT.md). Security problems are reported privately, not as an issue: see [SECURITY.md](SECURITY.md).
@@ -21,7 +21,6 @@ Requirements:
 
 - Windows
 - [.NET SDK 10](https://dotnet.microsoft.com/download) (the version is pinned in `global.json`)
-- Hearthstone Deck Tracker installed. The plugin is compiled against your local copy of HDT.
 
 Build and test:
 
@@ -29,16 +28,9 @@ Build and test:
 .\build.ps1
 ```
 
-The script finds the newest HDT installation under `%LOCALAPPDATA%\HearthstoneDeckTracker`, builds the solution in Release mode and runs the tests. Use `-HdtDir <path>` to use another HDT folder.
+The script builds the solution in Release mode and runs the tests. The tracker is built into `src\XpTracker.App\bin\Release\`; start `HearthstoneXpTracker.exe` there to try it. Exit a running tracker first (right-click the gold "XP" icon → "Exit"), otherwise the build cannot replace the EXE.
 
-The built plugin files are:
-
-- `src\XpTracker.Plugin\bin\Release\HearthstoneXpTracker.dll`
-- `src\XpTracker.Core\bin\Release\net472\XpTracker.Core.dll`
-
-To try them, close HDT, copy both files into the plugin folder (see [INSTALL.md](docs/INSTALL.md)) and start HDT again.
-
-The calculation engine and its tests also build without HDT, for example on Linux or in CI:
+The calculation engine and its tests also build without Windows, for example on Linux or in CI:
 
 ```powershell
 dotnet test tests\XpTracker.Core.Tests
@@ -50,19 +42,20 @@ Before a release, run the manual checks in [docs/TESTING.md](docs/TESTING.md).
 
 | Path | Content |
 |---|---|
-| `src/XpTracker.Core` | Calculation engine: XP time, rates, AFK rule, log reader, game history, dashboard numbers, update check. No HDT dependency. |
-| `src/XpTracker.Plugin` | HDT plugin: overlay, dashboard window, update check request. |
+| `src/XpTracker.Core` | Calculation engine: XP time, rates, AFK rule, log reader, game history, dashboard numbers, update check, `log.config`, Hearthstone folder. No Windows dependency. |
+| `src/XpTracker.App` | Windows app (WPF, .NET Framework 4.7.2): start, notification area icon, overlay window, dashboard window, update check request. |
 | `tests/XpTracker.Core.Tests` | Unit tests for the calculation engine. |
 | `tools/XpTracker.LogCheck` | Replays `Power.log` files and prints the times per game. |
 | `docs/` | Documentation. |
 
 ## Code
 
-- Keep the HDT-specific code in `XpTracker.Plugin` and everything else in `XpTracker.Core`, with tests.
+- Keep the Windows-specific code in `XpTracker.App` and everything else in `XpTracker.Core`, with tests.
 - Warnings are errors, and nullable reference types are on. The build must stay free of warnings.
 - Follow `.editorconfig`.
 - Identifiers, comments, commit messages and documentation are in English.
-- Never add HDT files to the repository or a release. HDT is referenced from the local installation only (`Private=false`).
+- The tracker stays passive: it reads Hearthstone's log files and window position only. It never reads the game's memory, hooks into the game or changes game files. The only file outside its data folder it writes is the `[Power]` section of `log.config`.
+- New libraries need a license that allows shipping them in the ZIP; add their notice to `THIRD-PARTY-NOTICES.txt`.
 
 ## Pull requests
 
@@ -80,7 +73,7 @@ The game does not log reward track XP, so every data point is a game where someo
 1. Note the XP shown on the result screen **right after each game**. Write it down before the next game.
 2. Note the mode, the result, and anything unusual: AFK turns, a concede, a disconnect, a Rewind card.
 3. Get the XP time of the game:
-   - from the plugin's history file (`XpSeconds` column, see [USAGE.md](docs/USAGE.md#game-history-file)), or
+   - from the tracker's history file (`XpSeconds` column, see [USAGE.md](docs/USAGE.md#game-history-file)), or
    - with the LogCheck tool from a copy of `Power.log` (see below).
 4. Report the games with the [XP measurement](https://github.com/critterbyte/hearthstone_xp_tracker/issues/new?template=measurement.md) issue template. Say whether a Tavern Pass or another XP boost was active.
 
@@ -94,7 +87,7 @@ Tips:
 The project follows a strict free-to-play policy and spends no money on the game, so the Tavern Pass boost has not been measured (see [FORMULA.md](docs/FORMULA.md#tavern-pass)). If you own the pass, your games are especially useful:
 
 - Note your rewards track level with each game. The boost changes at level 20 and level 70.
-- Report the XP the game showed, not the XP the plugin showed.
+- Report the XP the game showed, not the XP the tracker showed.
 - Games close to a rounding step help most: they show whether the game rounds before or after adding the boost.
 
 ### LogCheck
@@ -126,18 +119,25 @@ The user guides `INSTALL.md`, `USAGE.md` and `FARMING.md` are translated in `doc
 - Releases are tagged `vX.Y.Z`. The update check only recognizes tags in exactly this form.
 - Until 1.0, every release is published as a pre-release.
 
+Releases are built on GitHub, not on a developer's computer. The ZIP of every release can be traced back to the commit it was built from.
+
 Steps:
 
-1. Set the version in `Directory.Build.props` and move the *Unreleased* entries in `CHANGELOG.md` under the new version with the date. Merge this into `main`.
-2. Run the manual checks in [docs/TESTING.md](docs/TESTING.md).
-3. On an up-to-date `main` without uncommitted changes, run:
+1. Set the version in `Directory.Build.props`, move the *Unreleased* entries in `CHANGELOG.md` under a new heading `## [X.Y.Z] - YYYY-MM-DD` and add its link at the end of the file. Merge this into `main`.
+2. Run the manual checks in [docs/TESTING.md](docs/TESTING.md). The CI job `app` of the pull request offers the ZIP as an artifact; `.\release.ps1` builds the same ZIP locally.
+3. Tag the merged commit on `main` and push the tag:
 
    ```powershell
-   .\release.ps1
+   git switch main
+   git pull
+   git tag vX.Y.Z
+   git push origin vX.Y.Z
    ```
 
-   The script builds and tests, checks that the DLLs carry the version, and creates `artifacts\HearthstoneXpTracker-X.Y.Z.zip` with a `.sha256` checksum file. The ZIP contains only the folder `HearthstoneXpTracker` with the two DLLs, `INSTALL.txt` and `LICENSE.txt`. It stops if any other file would be included, so no HDT files can end up in a release.
-4. Tag the release and publish it on GitHub with the ZIP. Put the changelog entry and the SHA-256 checksum in the release notes. The script prints the commands.
+4. The workflow `release` (`.github/workflows/release.yml`) starts. It stops unless the tag matches the version in `Directory.Build.props`, the commit is on `main` and `CHANGELOG.md` has a section for the version. Then it runs `release.ps1`, which builds, tests, checks that the EXE and `XpTracker.Core.dll` carry the version, and creates the ZIP with only the folder `HearthstoneXpTracker` (the app, its libraries, `INSTALL.txt`, `LICENSE.txt` and `THIRD-PARTY-NOTICES.txt`) and its `.sha256` file. It records the build provenance of the ZIP with GitHub's artifact attestations and creates a **draft** release with the ZIP, the checksum file and the changelog section as notes, followed by the checksum and the commit.
+5. Open the draft on the Releases page, add what users need to know (for example how to update) and publish it. Until 1.0, the draft is marked as a pre-release.
+
+If the workflow fails, delete the tag (`git push --delete origin vX.Y.Z` and `git tag -d vX.Y.Z`), fix the cause in a pull request and tag again.
 
 ## License
 

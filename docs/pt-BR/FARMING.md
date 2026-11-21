@@ -7,7 +7,7 @@ Dicas justas para ganhar mais EXP da Trilha da Recompensa por hora. Elas vêm da
 - **Medido:** descoberto por este projeto.
 - **Segundo [n]:** das fontes no fim desta página.
 
-O painel do plugin mostra para onde vai a sua EXP. A aba "EXP perdida" é um bom ponto de partida (veja [USAGE.md](USAGE.md#tabs)).
+O painel do tracker mostra para onde vai a sua EXP. A aba "EXP perdida" é um bom ponto de partida (veja [USAGE.md](USAGE.md#tabs)).
 
 <a id="play-fair"></a>
 ## Jogue limpo

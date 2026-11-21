@@ -17,10 +17,10 @@ using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 using XpTracker.Core;
 
-namespace XpTracker.Plugin;
+namespace XpTracker.App;
 
 /// <summary>
-/// XP dashboard opened from the HDT plugins menu: overview, decks, lost XP, game list and the XP speed curve for a period.
+/// XP dashboard opened from the notification area icon: overview, lost XP, game list and the XP speed curve for a period.
 /// </summary>
 /// <remarks>
 /// Colors in the style of the Hearthstone client (dark wood, gold, parchment, mana blue); no game artwork or fonts are used.
@@ -47,11 +47,12 @@ internal sealed class DashboardWindow : Window
     private readonly string _historyPath;
     private readonly Func<string?> _logSession;
     private readonly Func<bool> _hearthstoneRunning;
+    private readonly Func<(string Text, bool Problem)>? _gameLogStatus;
     private readonly Dictionary<DashboardPeriod, ToggleButton> _periodButtons = new();
     private readonly TextBlock _sessionInfo = new() { Foreground = Muted, FontSize = 12, Margin = new Thickness(14, 0, 14, 6) };
+    private readonly TextBlock _logStatus = new() { FontSize = 12, TextWrapping = TextWrapping.Wrap, Margin = new Thickness(14, 0, 14, 6) };
     private readonly UniformGrid _overview = new() { Columns = 4, VerticalAlignment = VerticalAlignment.Top };
     private readonly UniformGrid _lost = new() { Columns = 3, VerticalAlignment = VerticalAlignment.Top };
-    private readonly DataGrid _decks = CreateGrid();
     private readonly DataGrid _games = CreateGrid();
     private readonly CartesianChart _xpChart = CreateChart(T("chart.xpAxis"));
     private readonly CartesianChart _rateChart = CreateChart(T("chart.xpPerHour"));
@@ -70,17 +71,29 @@ internal sealed class DashboardWindow : Window
     private int _tavernPassLevel;
     private readonly TextBlock _updateText = new() { Foreground = Parchment, VerticalAlignment = VerticalAlignment.Center, TextWrapping = TextWrapping.Wrap };
     private readonly Border _updateBar;
+    private readonly bool _autostart;
+    private readonly Func<bool, bool>? _setAutostart;
+    private bool _startMenu;
+    private readonly Func<bool, bool>? _setStartMenu;
+    private readonly Action? _startMenuAnswered;
+    private readonly Border? _startMenuBar;
+    private CheckBox? _startMenuCheck;
     private string _updateUrl = UpdateCheck.ReleasesPage;
     private DashboardPeriod _period = DashboardPeriod.Session;
 
     /// <param name="logSession">Session the log reader is reading; it stays the same after Hearthstone was closed.</param>
     /// <param name="hearthstoneRunning">Whether the game client is running, so the online time of its session counts up to now.</param>
+    /// <param name="gameLogStatus">Whether Hearthstone writes its Power.log, shown as a status line; a problem is shown in red.</param>
+    /// <param name="setAutostart">Switches "Start with Windows" on or off; returns false if that failed.</param>
+    /// <param name="setStartMenu">Creates or deletes the Start menu shortcut; returns false if that failed.</param>
+    /// <param name="askStartMenu">Shows the one-time question whether to add the tracker to the Start menu.</param>
+    /// <param name="startMenuAnswered">Called once the question was answered, either way.</param>
     public DashboardWindow(
         GameHistory history,
         string historyPath,
         Func<string?> logSession,
         Func<bool> hearthstoneRunning,
-        Func<IReadOnlyList<DeckInfo>>? hdtDecks = null,
+        Func<(string Text, bool Problem)>? gameLogStatus = null,
         bool checkForUpdates = true,
         Action<bool>? setCheckForUpdates = null,
         bool eventActive = false,
@@ -93,8 +106,21 @@ internal sealed class DashboardWindow : Window
         string language = Localizer.DefaultLanguage,
         Action<string>? setLanguage = null,
         OverlayPosition overlayPosition = OverlayPosition.Right,
-        Action<OverlayPosition>? setOverlayPosition = null)
+        Action<OverlayPosition>? setOverlayPosition = null,
+        bool autostart = false,
+        Func<bool, bool>? setAutostart = null,
+        bool startMenu = false,
+        Func<bool, bool>? setStartMenu = null,
+        bool askStartMenu = false,
+        Action? startMenuAnswered = null)
     {
+        _autostart = autostart;
+        _setAutostart = setAutostart;
+        _startMenu = startMenu;
+        _setStartMenu = setStartMenu;
+        _startMenuAnswered = startMenuAnswered;
+        // Not asked when the shortcut is already there, for example after a language change.
+        _startMenuBar = askStartMenu && !startMenu && setStartMenu is not null ? StartMenuBar() : null;
         _overlayPosition = overlayPosition;
         _setOverlayPosition = setOverlayPosition;
         _language = language;
@@ -108,12 +134,13 @@ internal sealed class DashboardWindow : Window
         _historyPath = historyPath;
         _logSession = logSession;
         _hearthstoneRunning = hearthstoneRunning;
+        _gameLogStatus = gameLogStatus;
         _checkForUpdates = checkForUpdates;
         _setCheckForUpdates = setCheckForUpdates;
         _eventActive = eventActive;
         _setEventActive = setEventActive;
         _updateBar = UpdateBar();
-        UpdateStoredGames(hdtDecks);
+        UpdateStoredGames();
 
         Title = "HS XP Tracker";
         // Wide enough for the toolbar in longer languages such as German; never wider than the screen.
@@ -125,12 +152,10 @@ internal sealed class DashboardWindow : Window
         Resources = Theme();
         WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
-        SetupDeckColumns();
         SetupGameColumns();
 
         var tabs = new TabControl { Background = Back, BorderBrush = Gold, BorderThickness = new Thickness(1), Padding = new Thickness(0), Margin = new Thickness(10, 0, 10, 10) };
         tabs.Items.Add(Tab(T("tab.overview"), Padded(_overview)));
-        tabs.Items.Add(Tab(T("tab.decks"), _decks));
         tabs.Items.Add(Tab(T("tab.lostXp"), Padded(_lost)));
         tabs.Items.Add(Tab(T("tab.games"), _games));
         tabs.Items.Add(Tab(T("tab.charts"), Charts()));
@@ -141,11 +166,19 @@ internal sealed class DashboardWindow : Window
         root.Children.Add(header);
         DockPanel.SetDock(_updateBar, Dock.Top);
         root.Children.Add(_updateBar);
+        if (_startMenuBar is not null)
+        {
+            DockPanel.SetDock(_startMenuBar, Dock.Top);
+            root.Children.Add(_startMenuBar);
+        }
+
         var toolbar = Toolbar();
         DockPanel.SetDock(toolbar, Dock.Top);
         root.Children.Add(toolbar);
         DockPanel.SetDock(_sessionInfo, Dock.Top);
         root.Children.Add(_sessionInfo);
+        DockPanel.SetDock(_logStatus, Dock.Top);
+        root.Children.Add(_logStatus);
         root.Children.Add(tabs);
         Content = root;
 
@@ -193,6 +226,55 @@ internal sealed class DashboardWindow : Window
         };
     }
 
+    // One-time question at the first start: "Add the tracker to the Start menu?" with "Add" and "No, thanks".
+    // The tracker is portable and has no installer, so this is the only way it gets a Start menu entry.
+    private Border StartMenuBar()
+    {
+        var text = new TextBlock { Text = T("startMenu.question"), Foreground = Parchment, VerticalAlignment = VerticalAlignment.Center, TextWrapping = TextWrapping.Wrap };
+        var yes = Action(T("startMenu.yes"), () => AnswerStartMenu(true));
+        var no = Action(T("startMenu.no"), () => AnswerStartMenu(false));
+        yes.Margin = new Thickness(12, 0, 0, 0);
+        no.Margin = new Thickness(6, 0, 0, 0);
+        var buttons = new StackPanel { Orientation = Orientation.Horizontal, VerticalAlignment = VerticalAlignment.Center };
+        buttons.Children.Add(yes);
+        buttons.Children.Add(no);
+
+        var panel = new DockPanel();
+        DockPanel.SetDock(buttons, Dock.Right);
+        panel.Children.Add(buttons);
+        panel.Children.Add(text);
+
+        return new Border
+        {
+            Background = PanelAlt,
+            BorderBrush = Gold,
+            BorderThickness = new Thickness(1),
+            CornerRadius = new CornerRadius(4),
+            Padding = new Thickness(12, 6, 12, 6),
+            Margin = new Thickness(10, 10, 10, 0),
+            Child = panel,
+        };
+    }
+
+    private void AnswerStartMenu(bool add)
+    {
+        if (add && _setStartMenu?.Invoke(true) == true)
+        {
+            _startMenu = true;
+            if (_startMenuCheck is not null)
+            {
+                _startMenuCheck.IsChecked = true;
+            }
+        }
+
+        if (_startMenuBar is not null)
+        {
+            _startMenuBar.Visibility = Visibility.Collapsed;
+        }
+
+        _startMenuAnswered?.Invoke();
+    }
+
     public void Refresh()
     {
         var now = DateTime.Now;
@@ -238,6 +320,17 @@ internal sealed class DashboardWindow : Window
             _sessionInfo.Visibility = Visibility.Collapsed;
         }
 
+        if (_gameLogStatus?.Invoke() is { } status)
+        {
+            _logStatus.Text = status.Text;
+            _logStatus.Foreground = status.Problem ? EventRed : Muted;
+            _logStatus.Visibility = Visibility.Visible;
+        }
+        else
+        {
+            _logStatus.Visibility = Visibility.Collapsed;
+        }
+
         var summary = Dashboard.Summary(games, periodStart, now, runningSession);
         var lost = Dashboard.Lost(games, summary);
 
@@ -260,7 +353,6 @@ internal sealed class DashboardWindow : Window
         _lost.Children.Add(Tile(T("lost.short"), F("lost.xpValue", lost.ShortGamesXp), F("lost.shortNote", lost.ShortGames)));
         _lost.Children.Add(Tile(T("lost.outside"), F("lost.xpValue", lost.OutsideGamesXp), F("lost.outsideNote", TimeFormat.HoursMinutesSeconds(lost.OutsideGamesSeconds))));
 
-        _decks.ItemsSource = Dashboard.Decks(games).Select(d => new DeckRow(d)).ToList();
         _games.ItemsSource = games.Reverse().Select(g => new GameRow(g)).ToList();
 
         var labels = buckets.Select(b => b.Label).ToArray();
@@ -399,9 +491,8 @@ internal sealed class DashboardWindow : Window
     private static Brush Fade(byte r, byte g, byte b, byte topAlpha) =>
         Frozen(new LinearGradientBrush(Color.FromArgb(topAlpha, r, g, b), Color.FromArgb(0x08, r, g, b), 90));
 
-    // Brings stored games up to date: XP is calculated again with the current rates (a rate may have been corrected),
-    // and games stored without a deck (for example imported from logs) get deck and classes from HDT's statistics.
-    private void UpdateStoredGames(Func<IReadOnlyList<DeckInfo>>? hdtDecks)
+    // Brings stored games up to date: XP is calculated again with the current rates (a rate may have been corrected).
+    private void UpdateStoredGames()
     {
         try
         {
@@ -410,11 +501,6 @@ internal sealed class DashboardWindow : Window
             foreach (var game in games)
             {
                 changed |= game.RecalculateXp();
-            }
-
-            if (hdtDecks is not null && games.Any(g => g.Deck.Length == 0) && DeckMatcher.FillMissing(games, hdtDecks()) > 0)
-            {
-                changed = true;
             }
 
             if (changed)
@@ -484,12 +570,27 @@ internal sealed class DashboardWindow : Window
                 Margin = new Thickness(0, 2, 0, 2),
                 ToolTip = T("option.eventTip"),
             };
+            // Off by default, because the app cannot tell when an event runs; new users easily miss the box, so a
+            // short hint stands below it while it is not ticked.
+            var eventHint = new TextBlock
+            {
+                Text = T("option.eventHint"),
+                Foreground = GoldBright,
+                FontSize = 11,
+                TextWrapping = TextWrapping.Wrap,
+                MaxWidth = 320,
+                HorizontalAlignment = HorizontalAlignment.Left,
+                Margin = new Thickness(22, 0, 0, 4),
+                Visibility = _eventActive ? Visibility.Collapsed : Visibility.Visible,
+            };
             eventCheck.Click += (_, _) =>
             {
                 _eventActive = eventCheck.IsChecked == true;
+                eventHint.Visibility = _eventActive ? Visibility.Collapsed : Visibility.Visible;
                 _setEventActive(_eventActive);
             };
             options.Children.Add(eventCheck);
+            options.Children.Add(eventHint);
         }
 
         if (_setShowDamage is not null)
@@ -524,6 +625,57 @@ internal sealed class DashboardWindow : Window
             };
             check.Click += (_, _) => _setCheckForUpdates(check.IsChecked == true);
             options.Children.Add(check);
+        }
+
+        if (_setAutostart is not null)
+        {
+            var autostartCheck = new CheckBox
+            {
+                Content = T("option.autostart"),
+                IsChecked = _autostart,
+                Margin = new Thickness(0, 2, 0, 2),
+                ToolTip = T("option.autostartTip"),
+            };
+            // If Windows refuses the change, the box shows what is really set.
+            autostartCheck.Click += (_, _) =>
+            {
+                var on = autostartCheck.IsChecked == true;
+                if (!_setAutostart(on))
+                {
+                    autostartCheck.IsChecked = !on;
+                }
+            };
+            options.Children.Add(autostartCheck);
+        }
+
+        if (_setStartMenu is not null)
+        {
+            var startMenuCheck = new CheckBox
+            {
+                Content = T("option.startMenu"),
+                IsChecked = _startMenu,
+                Margin = new Thickness(0, 2, 0, 2),
+                ToolTip = T("option.startMenuTip"),
+            };
+            startMenuCheck.Click += (_, _) =>
+            {
+                var on = startMenuCheck.IsChecked == true;
+                if (_setStartMenu(on))
+                {
+                    _startMenu = on;
+                    // Using the box answers the question as well.
+                    if (_startMenuBar is { Visibility: Visibility.Visible })
+                    {
+                        AnswerStartMenu(add: false);
+                    }
+                }
+                else
+                {
+                    startMenuCheck.IsChecked = !on;
+                }
+            };
+            _startMenuCheck = startMenuCheck;
+            options.Children.Add(startMenuCheck);
         }
 
         DockPanel.SetDock(options, Dock.Right);
@@ -796,7 +948,7 @@ internal sealed class DashboardWindow : Window
     }
 
     // Styles for buttons, period buttons, tabs, the check box and selected rows. Own templates, so the look
-    // does not depend on the Windows theme or on the styles HDT loads.
+    // does not depend on the Windows theme.
     private static ResourceDictionary Theme() => (ResourceDictionary)XamlReader.Parse(@"
 <ResourceDictionary xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation'
                     xmlns:x='http://schemas.microsoft.com/winfx/2006/xaml'>
@@ -969,16 +1121,6 @@ internal sealed class DashboardWindow : Window
   </Style>
 </ResourceDictionary>");
 
-    private void SetupDeckColumns()
-    {
-        _decks.Columns.Add(Column(T("column.deck"), nameof(DeckRow.Deck), nameof(DeckRow.Deck), width: 2));
-        _decks.Columns.Add(Column(T("column.games"), nameof(DeckRow.Games), nameof(DeckRow.Games)));
-        _decks.Columns.Add(Column(T("column.winRate"), nameof(DeckRow.WinRate), nameof(DeckRow.WinRateValue)));
-        _decks.Columns.Add(Column(T("column.xp"), nameof(DeckRow.Xp), nameof(DeckRow.Xp)));
-        _decks.Columns.Add(Column(T("column.xpPerHour"), nameof(DeckRow.XpPerHour), nameof(DeckRow.XpPerHourValue)));
-        _decks.Columns.Add(Column(T("column.avgGame"), nameof(DeckRow.AverageGame), nameof(DeckRow.AverageGameSeconds)));
-    }
-
     private void SetupGameColumns()
     {
         _games.Columns.Add(Column(T("column.date"), nameof(GameRow.Date), nameof(GameRow.StartValue)));
@@ -990,7 +1132,6 @@ internal sealed class DashboardWindow : Window
         _games.Columns.Add(Column(T("column.xp"), nameof(GameRow.Xp), nameof(GameRow.XpValue)));
         _games.Columns.Add(Column(T("column.event"), nameof(GameRow.EventXp), nameof(GameRow.EventXpValue)));
         _games.Columns.Add(Column(T("column.afk"), nameof(GameRow.AfkTurns), nameof(GameRow.AfkTurns)));
-        _games.Columns.Add(Column(T("column.deck"), nameof(GameRow.Deck), nameof(GameRow.Deck), width: 2));
         _games.Columns.Add(Column(T("column.opponent"), nameof(GameRow.Opponent), nameof(GameRow.Opponent)));
     }
 
@@ -1084,37 +1225,6 @@ internal sealed class DashboardWindow : Window
         return brush;
     }
 
-    private sealed class DeckRow
-    {
-        public DeckRow(DeckStats d)
-        {
-            Deck = d.Deck;
-            Games = d.Games;
-            WinRateValue = d.WinRate;
-            Xp = d.Xp;
-            XpPerHourValue = d.XpPerHour;
-            AverageGameSeconds = d.AverageGameSeconds;
-        }
-
-        public string Deck { get; }
-
-        public int Games { get; }
-
-        public double WinRateValue { get; }
-
-        public string WinRate => WinRateValue.ToString("0%", Localizer.Culture);
-
-        public int Xp { get; }
-
-        public double XpPerHourValue { get; }
-
-        public string XpPerHour => XpPerHourValue.ToString("0", Localizer.Culture);
-
-        public double AverageGameSeconds { get; }
-
-        public string AverageGame => TimeFormat.MinutesSeconds(AverageGameSeconds);
-    }
-
     private sealed class GameRow
     {
         public GameRow(GameRecord g)
@@ -1130,7 +1240,6 @@ internal sealed class DashboardWindow : Window
             EventXpValue = g.EventXp ?? -1;
             EventXp = g.EventXp?.ToString(CultureInfo.InvariantCulture) ?? "-";
             AfkTurns = g.AfkTurns;
-            Deck = g.Deck;
             Opponent = GameText.Class(g.OpponentClass);
         }
 
@@ -1161,8 +1270,6 @@ internal sealed class DashboardWindow : Window
         public string EventXp { get; }
 
         public int AfkTurns { get; }
-
-        public string Deck { get; }
 
         public string Opponent { get; }
     }

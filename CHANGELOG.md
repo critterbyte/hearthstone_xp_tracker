@@ -7,13 +7,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+The tracker becomes a stand-alone Windows program. Hearthstone Deck Tracker (HDT) stops supporting plugins on 30 November 2026; the tracker keeps the same overlay, dashboard and formula and no longer needs HDT.
+
 ### Added
 
+- `HearthstoneXpTracker.exe`: a program of its own (WPF, .NET Framework 4.7.2, part of Windows 10 and 11). Only one instance runs; starting it again opens the dashboard of the running one.
+- A gold "XP" icon in the notification area: a click opens the dashboard, its menu has "XP dashboard" and "Exit". The EXE and the dashboard window use the same icon.
+- An overlay window of its own: it lies over Hearthstone's game area, follows the game window, lets every click through, never takes the focus and is shown only while Hearthstone is the active window.
+- The tracker switches on Hearthstone's game log itself: it adds the `[Power]` section to `%LOCALAPPDATA%\Blizzard\Hearthstone\log.config` if it is missing, changes nothing else in the file and keeps a copy as `log.config.bak`. If Hearthstone was running, a notice asks to restart it once. A status line in the dashboard shows whether the log is on.
+- The Hearthstone folder is found through the running game, the Battle.net uninstall entry or the default folder.
+- The classes of both heroes are read from the `Power.log`, stored in the same form as HDT stored them.
+- The history and the settings of the HDT plugin are taken over: at every start, the games the tracker does not have yet are added from `%APPDATA%\HearthstoneDeckTracker\XpTracker\hs_games.csv`, and the settings are copied once. The plugin's files are only read.
+- A hint below "Event running (show event XP)" while it is off, because the tracker cannot tell when an event runs.
+- "Start with Windows" in the dashboard: the tracker starts at sign-in with its icon only, without opening the dashboard. It uses an entry for the current user (no administrator rights) that the Task Manager lists under *Startup apps*.
+- "Shortcut in the Start menu" in the dashboard, and a one-time question at the first start whether to add the tracker to the Start menu. If the tracker's folder was moved, the next start points the shortcut and the autostart entry to the new place.
+- `THIRD-PARTY-NOTICES.txt` with the licenses of LiveCharts and Newtonsoft.Json, which the ZIP now contains.
+- A CI job on Windows that builds the app, runs the tests and builds the release ZIP for every pull request.
+- Releases are built on GitHub: pushing a tag `vX.Y.Z` starts the workflow `release`, which checks the version and the changelog, builds the ZIP, records its build provenance and creates a draft release. `gh attestation verify` shows that a ZIP was built from the tagged commit (see `SECURITY.md`).
 - Community files: `CODE_OF_CONDUCT.md` (Contributor Covenant 2.1), `SECURITY.md` (private vulnerability reports through GitHub, no public issues) and a pull request template with the checklist from `CONTRIBUTING.md`. Reports go through GitHub's private reporting, so no e-mail address is published.
 
 ### Changed
 
-- `docs/INSTALL.md` and its translations explain why HDT keeps running the newer version after an older one was installed: HDT loads plugins from a copy in its own program folder and replaces a file there only when the file in `%APPDATA%` is newer (checked in HDT's `PluginManager`). They describe how to go back to an older version.
+- Ranked win rate changed from 0.13054 to 0.130515 XP/s. A 440.53-second win gave 57 XP, but 0.13054 calculated 58. The measured range is now 0.130505 to 0.130525 XP/s (103 wins), and the Ranked loss range 0.09317 to 0.093216 XP/s (111 losses). When the dashboard opens, the XP of games already in the history is calculated again with the current rate.
+- Game history, settings and a small error log are stored in `%APPDATA%\HearthstoneXpTracker`.
+- The update check runs when the tracker starts; the option is called "Check for updates when the tracker starts".
+- The release ZIP contains the app and its libraries and can be extracted into any folder. `release.ps1` and `build.ps1` no longer need an HDT installation.
+- README, install and usage guides in all 14 languages, `CONTRIBUTING.md`, `SECURITY.md`, the test checklist and the issue templates describe the app instead of the plugin. HDT is mentioned only where the switch from the plugin is described.
+
+### Removed
+
+- The HDT plugin. Version 0.1.2 stays available on the Releases page until HDT ends plugin support.
+- The *Decks* tab and the deck column of the game list: deck names came from HDT. The history file keeps its `Deck` column, so older games keep their deck names.
+- The code that matched games with HDT's deck records and the deck statistics behind the former *Decks* tab.
 
 ## [0.1.2] - 2026-11-15
 

@@ -1,18 +1,20 @@
 # Usage
 
-The plugin has three parts:
+The tracker runs in the background, with a gold "XP" icon in the notification area at the bottom right of the taskbar. It has three parts:
 
 - the **overlay** in the game
 - the **dashboard** window
 - the **game history** file
 
-The texts in quotes, such as "XP time:", are the texts the plugin shows.
+The texts in quotes, such as "XP time:", are the texts the tracker shows.
 
 ## Overlay
 
 The overlay is a small box at the bottom right, above the Hearthstone settings button (the gear in the bottom right corner). In the dashboard you can move it to the bottom left, above your portrait ("You" with your rank), instead. Labels are on the left. Values are on the right, in blue bars.
 
-The overlay is shown only in **Ranked, Casual, Tavern Brawl and Arena**. Other modes are not measured yet, so the plugin shows nothing there. A Tavern Brawl against the computer (PvE, for example against the Innkeeper) gives no XP, so the overlay shows "+0" there.
+The overlay is shown only while Hearthstone is the active window. It never takes the focus, and every click goes through it to the game.
+
+The overlay is shown only in **Ranked, Casual, Tavern Brawl and Arena**. Other modes are not measured yet, so the tracker shows nothing there. A Tavern Brawl against the computer (PvE, for example against the Innkeeper) gives no XP, so the overlay shows "+0" there.
 
 ### During a game
 
@@ -52,7 +54,7 @@ The damage is read when the server confirms an action, so it can rise a moment b
 
 While the XP time is below 60 seconds, both XP values show "+0". Games under one minute give no XP. See [FORMULA.md](FORMULA.md) for the rules.
 
-If you start HDT in the middle of a game, the plugin still reads the game from its start.
+If you start the tracker in the middle of a game, it still reads the game from its start.
 
 ### After a game
 
@@ -67,7 +69,7 @@ After the game, the overlay shows a summary until the mulligan of your next game
 
 ### Update hint
 
-When a newer version of the plugin exists, the overlay shows one more row while no game is running:
+When a newer version of the tracker exists, the overlay shows one more row while no game is running:
 
 | Row | Meaning |
 |---|---|
@@ -77,10 +79,13 @@ The dashboard shows a link to the download page. See [INSTALL.md](INSTALL.md#upd
 
 ## Dashboard
 
-The dashboard window is called "HS XP Tracker". Open it in HDT in one of two ways:
+The dashboard window is called "HS XP Tracker". It opens when the tracker starts. To open it again:
 
-- the *Plugins* menu → "XP dashboard"
-- *Settings* (the gear icon on the right of the top bar) *→ Tracker → Plugins* → the plugin's "XP dashboard" button
+- click the gold "XP" icon in the notification area, or
+- right-click the icon and choose "XP dashboard", or
+- start `HearthstoneXpTracker.exe` again.
+
+Closing the dashboard keeps the tracker and the overlay running. To end the tracker, right-click the icon and choose "Exit".
 
 ### Toolbar
 
@@ -94,17 +99,21 @@ The dashboard window is called "HS XP Tracker". Open it in HDT in one of two way
 | "All time" | All games in the history |
 | "Refresh" | Read the history again |
 | "Open data folder" | Open the folder with the history file in Windows Explorer |
-| "Language" | Language of the overlay, the dashboard and the plugin's menu entry. English is the default. The change applies at once; the dashboard opens again in the new language. In other languages the label keeps the English word, for example "Sprache (Language)". |
-| "Overlay position" | Where the overlay sits: "Right, above the settings button" (the default) or "Left, above your portrait", which keeps the HDT deck list on the right free, for example for long singleton decks. The overlay moves at once. |
-| "Event running (show event XP)" | Switch on during a Hearthstone event: the overlay shows the event XP, and new games store it. |
+| "Language" | Language of the overlay, the dashboard and the icon's menu. English is the default. The change applies at once; the dashboard opens again in the new language. In other languages the label keeps the English word, for example "Sprache (Language)". |
+| "Overlay position" | Where the overlay sits: "Right, above the settings button" (the default) or "Left, above your portrait", which keeps the right side free, for example for other overlays. The overlay moves at once. |
+| "Event running (show event XP)" | Switch on during a Hearthstone event: the overlay shows the event XP, and new games store it. The tracker cannot tell when an event runs, so this is off by default; while it is off, a short hint below it reminds you. |
 | "Tavern Pass (XP boost)" | Switch on if you own the Tavern Pass of the current expansion. The boost is calculated, not measured: with the pass, the shown XP can be 1 XP off per game (see [FORMULA.md](FORMULA.md#tavern-pass)). |
 | "Level" with "−", a number and "+" | Your rewards track level. Click "−" or "+", or type the number. The line below shows the boost and the next step, for example "10% XP boost, 2 levels to 15%". The boost is 10%, from level 20 on 15% and from level 70 on 20% (see [FORMULA.md](FORMULA.md#tavern-pass)). Update the level when you pass level 20 or 70. |
 | "Show damage on the overlay" | Show or hide the rows "Total Damage:" and "Hero Damage:". On by default. |
-| "Check for updates when HDT starts" | Turn the update check on or off. See [Privacy](#privacy). |
+| "Check for updates when the tracker starts" | Turn the update check on or off. See [Privacy](#privacy). |
+| "Start with Windows" | Start the tracker when you sign in to Windows. It then starts in the notification area only; click the icon to open the dashboard. Off by default. You can also switch it off in the Task Manager under *Startup apps*. |
+| "Shortcut in the Start menu" | Add "Hearthstone XP Tracker" to the Start menu, or remove it. At the first start, a bar at the top of the dashboard asks once. |
 
 A finished game appears in an open dashboard on its own. You do not need to click "Refresh".
 
 For "Session", a line below the toolbar names the session, for example "Session since Tue 2026-11-10, 19:56 (running)" or "(ended)". A session can run past midnight.
+
+Below it, a status line shows whether Hearthstone writes the game log the tracker reads: "Game log (Power.log): on". If the tracker had to switch the log on while Hearthstone was running, the line asks in red to restart Hearthstone once. If it could not switch the log on, it says so in red and names the file (see [INSTALL.md](INSTALL.md#troubleshooting)).
 
 ### Tabs
 
@@ -124,13 +133,7 @@ For "Session", a line below the toolbar names the session, for example "Session 
 
 Online time is counted per Hearthstone session: from the start of Hearthstone to the end of the last game. While Hearthstone is running, it counts up to now. Only sessions with at least one game in the period count.
 
-Games in modes without measured rates, for example Battlegrounds, are stored without XP. They are listed under "Games" and count in the play time and the online time, but not in the other tiles, the deck table or the charts.
-
-**Decks**
-
-One row per deck: games, win rate, XP, XP per hour and the average game length. The deck with the highest XP per hour is at the top.
-
-Deck names come from HDT's own statistics. A game that HDT did not record shows "No deck recorded".
+Games in modes without measured rates, for example Battlegrounds, are stored without XP. They are listed under "Games" and count in the play time and the online time, but not in the other tiles or the charts.
 
 **Lost XP**
 
@@ -142,7 +145,7 @@ Deck names come from HDT's own statistics. A game that HDT did not record shows 
 
 **Games**
 
-All games of the period, newest first: date, start, mode, result, XP time, total time, XP, event XP, AFK turns, deck and opponent class. Click a column header to sort.
+All games of the period, newest first: date, start, mode, result, XP time, total time, XP, event XP, AFK turns and opponent class. Click a column header to sort.
 
 **Charts**
 
@@ -169,7 +172,7 @@ A game counts in the hour or on the day in which it started.
 Every finished game is added to a CSV file:
 
 ```
-%APPDATA%\HearthstoneDeckTracker\XpTracker\hs_games.csv
+%APPDATA%\HearthstoneXpTracker\hs_games.csv
 ```
 
 The file uses commas between fields and a dot as the decimal sign. Times are local time.
@@ -186,19 +189,20 @@ The file uses commas between fields and a dot as the decimal sign. Times are loc
 | `PlaySeconds` | Time from the first turn to the end, AFK turns included |
 | `WithMulliganSeconds` | Time including the mulligan |
 | `AfkTurns` | Number of own AFK turns |
-| `Xp` | XP calculated by the plugin; empty for modes without measured rates |
-| `Deck` | Deck name from HDT |
+| `Xp` | XP calculated by the tracker; empty for modes without measured rates |
+| `Deck` | Deck name, only for games recorded by the former HDT plugin; empty for newer games |
 | `PlayerClass` | Your class |
 | `OpponentClass` | The opponent's class |
-| `EventXp` | Event XP calculated by the plugin; empty for games outside events. Files from older versions without this column are still read, and the column is added with the next game. |
+| `EventXp` | Event XP calculated by the tracker; empty for games outside events. Files from older versions without this column are still read, and the column is added with the next game. |
 | `XpBonus` | Tavern Pass XP boost in percent that applied when the game was played, for example `15`; `0` without the pass. Older files without this column are read as `0`. |
 
-The `Xp` column is calculated by the plugin from the XP time. The game itself does not log XP. When the dashboard opens, the plugin calculates the XP of all stored games again with the current rates, so a corrected rate also fixes older games. Each game keeps its own `XpBonus`, so changing the pass or the level later does not change older games.
+The `Xp` column is calculated by the tracker from the XP time. The game itself does not log XP. When the dashboard opens, the tracker calculates the XP of all stored games again with the current rates, so a corrected rate also fixes older games. Each game keeps its own `XpBonus`, so changing the pass or the level later does not change older games.
 
-A game read twice from the same log is stored only once. Installing a new plugin version keeps the file.
+A game read twice from the same log is stored only once. Installing a new version keeps the file. At every start, the tracker also adds the games from the history of the former HDT plugin that it does not have yet (see [INSTALL.md](INSTALL.md#coming-from-the-hdt-plugin)).
 
 ## Privacy
 
-- The game history and the settings stay on your computer. The plugin uploads nothing.
-- The only network request is the update check. When HDT starts, the plugin asks GitHub once whether a newer release exists. The request sends only the plugin name and version, for example `HearthstoneXpTracker/0.1.0`. As with any web request, GitHub sees your IP address.
-- To turn the update check off, clear "Check for updates when HDT starts" in the dashboard. The setting is stored in `%APPDATA%\HearthstoneDeckTracker\XpTracker\settings.ini`.
+- The game history and the settings stay on your computer. The tracker uploads nothing.
+- The only network request is the update check. When the tracker starts, it asks GitHub once whether a newer release exists. The request sends only the program name and version, for example `HearthstoneXpTracker/0.2.0`. As with any web request, GitHub sees your IP address.
+- To turn the update check off, clear "Check for updates when the tracker starts" in the dashboard. The setting is stored in `%APPDATA%\HearthstoneXpTracker\settings.ini`.
+- The tracker only reads Hearthstone's log. It does not read the game's memory and does not change game files. It writes only to its own data folder and, once, the `[Power]` section of `log.config` (see [INSTALL.md](INSTALL.md#requirements)).

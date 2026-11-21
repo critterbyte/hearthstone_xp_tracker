@@ -71,6 +71,8 @@ public sealed class GameRecord
             Xp = rate is null ? null : snapshot.ExpectedXp(rate.Value, xpBonus),
             EventXp = eventActive ? XpRates.EventXpFor(game.Mode, snapshot.XpSeconds) : null,
             XpBonus = xpBonus,
+            PlayerClass = game.PlayerClass,
+            OpponentClass = game.OpponentClass,
         };
     }
 

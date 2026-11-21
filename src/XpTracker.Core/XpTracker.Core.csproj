@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <!-- net472 for the HDT plugin, netstandard2.0 for tests and tools on modern .NET -->
+  <!-- net472 for the app, netstandard2.0 for tests and tools on modern .NET -->
   <PropertyGroup>
     <TargetFrameworks>net472;netstandard2.0</TargetFrameworks>
     <RootNamespace>XpTracker.Core</RootNamespace>

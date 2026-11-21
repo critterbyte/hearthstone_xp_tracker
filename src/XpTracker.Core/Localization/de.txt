@@ -2,9 +2,12 @@
 # Begriffe wie im deutschen Hearthstone-Client (Client-Strings, Build 37.0): EP, Belohnungsweg, Gasthauspass, Stufe,
 # Gewertet, Ungewertet, Kartenchaos, Button "Fertig". Anrede: du.
 
-# Plugin entry in HDT
-plugin.description=Zeigt die Belohnungsweg-EP der laufenden Partie und die EP-Zeit, auf der sie beruhen.
-plugin.dashboard=EP-Dashboard
+# Notification area icon and its menu
+app.dashboard=EP-Dashboard
+app.exit=Beenden
+log.on=Spiel-Log (Power.log): an
+log.restart=Spiel-Log eingeschaltet. Bitte Hearthstone einmal neu starten, damit es das Log schreibt.
+log.failed=Das Spiel-Log konnte nicht automatisch eingeschaltet werden. Bitte den Abschnitt [Power] von Hand in {0} eintragen (siehe Installationsanleitung).
 
 # Overlay rows
 overlay.xpTime=EP-Zeit:
@@ -45,12 +48,16 @@ class.ROGUE=Schurke
 class.SHAMAN=Schamane
 class.WARLOCK=Hexenmeister
 class.WARRIOR=Krieger
-deck.none=Kein Deck erfasst
 
 # Dashboard: update hint
 update.available=Version {0} ist verfügbar.
 update.availableInstalled=Version {0} ist verfügbar (installiert: {1}).
 update.openPage=Downloadseite öffnen
+
+# Dashboard: one-time question at the first start
+startMenu.question=Den Tracker zum Startmenü hinzufügen, damit du ihn später wiederfindest?
+startMenu.yes=Hinzufügen
+startMenu.no=Nein, danke
 
 # Dashboard: toolbar and options
 period.session=Sitzung
@@ -67,9 +74,14 @@ option.overlayLeft=Links über deinem Spielerbild
 option.overlayRight=Rechts über dem Einstellungs-Knopf
 option.event=Event läuft (Event-EP anzeigen)
 option.eventTip=Einschalten, solange ein Hearthstone-Event läuft: Das Overlay zeigt die Event-EP, und neue Partien speichern sie.
+option.eventHint=Läuft gerade ein Hearthstone-Event? Dann oben anhaken, um Event-EP zu zählen.
 option.damage=Schaden im Overlay anzeigen
 option.damageTip=Zeigt die Zeilen „Gesamtschaden:“ und „Heldenschaden:“: den Schaden, den deine Seite dem Gegner in der laufenden oder letzten Partie zugefügt hat.
-option.updates=Beim Start von HDT nach Updates suchen
+option.updates=Beim Start des Trackers nach Updates suchen
+option.autostart=Mit Windows starten
+option.autostartTip=Startet den Tracker beim Anmelden an Windows im Infobereich; das Dashboard bleibt geschlossen.
+option.startMenu=Verknüpfung im Startmenü
+option.startMenuTip=Fügt „Hearthstone XP Tracker“ zum Startmenü hinzu. Wenn du den Ordner des Trackers verschiebst, starte ihn einmal am neuen Ort.
 tavern.check=Gasthauspass (EP-Bonus)
 tavern.checkTip=Einschalten, wenn du den Gasthauspass der aktuellen Erweiterung besitzt. Trage darunter deine Stufe im Belohnungsweg ein: Der Bonus beträgt 10 %, ab Stufe 20 15 %, ab Stufe 70 20 % (laut Hearthstone-Wiki, nicht gemessen).
 tavern.level=Stufe
@@ -86,7 +98,6 @@ session.ended=Sitzung seit {0} (beendet)
 
 # Dashboard: tabs
 tab.overview=Übersicht
-tab.decks=Decks
 tab.lostXp=Verlorene EP
 tab.games=Partien
 tab.charts=Diagramme
@@ -116,12 +127,7 @@ lost.outside=Zeit außerhalb von Partien
 lost.outsideNote={0} online, aber in keiner Partie (Menüs, Warteschlange, Pausen)
 
 # Dashboard: table columns
-column.deck=Deck
-column.games=Partien
-column.winRate=Siegquote
 column.xp=EP
-column.xpPerHour=EP pro Stunde
-column.avgGame=Ø Partie
 column.date=Datum
 column.start=Start
 column.mode=Modus

@@ -7,7 +7,7 @@ Consejos limpios para conseguir más EXP de la Senda de recompensas por hora. Se
 - **Medido:** lo descubrió este proyecto.
 - **Según [n]:** de las fuentes al final de esta página.
 
-El panel del plugin muestra a dónde se va tu EXP. La pestaña "EXP perdida" es un buen punto de partida (consulta [USAGE.md](USAGE.md#tabs)).
+El panel del tracker muestra a dónde se va tu EXP. La pestaña "EXP perdida" es un buen punto de partida (consulta [USAGE.md](USAGE.md#tabs)).
 
 <a id="play-fair"></a>
 ## Juega limpio

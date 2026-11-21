@@ -2,7 +2,7 @@
 
 ## Supported versions
 
-Only the newest release gets security fixes. The plugin tells you when a newer version is available; please update before reporting.
+Only the newest release gets security fixes. The tracker tells you when a newer version is available; please update before reporting.
 
 | Version | Supported |
 |---|---|
@@ -17,7 +17,7 @@ Report it privately instead: on the repository's **Security** tab, choose **Repo
 
 Please include:
 
-- the plugin version and your HDT version,
+- the tracker version and your Windows version,
 - what the problem is and what an attacker could do with it,
 - steps to reproduce it.
 
@@ -29,8 +29,18 @@ This is a hobby project maintained by one person, so the answer may take a few d
 
 Examples of what counts as a security problem:
 
-- The plugin reads or sends data it should not, for example anything beyond the plugin name and version in the update check.
+- The tracker reads or sends data it should not, for example anything beyond the program name and version in the update check.
 - The update hint can be made to link to a site outside this repository.
-- A crafted `Power.log`, `hs_games.csv` or `settings.ini` makes the plugin run code or write files outside its data folder.
+- A crafted `Power.log`, `hs_games.csv`, `settings.ini` or `log.config` makes the tracker run code or write files outside its data folder and `log.config`.
 
-Not in scope: bugs in Hearthstone or Hearthstone Deck Tracker themselves (please report those to Blizzard or HearthSim), and wrong XP values (please open a normal issue).
+Not in scope: bugs in Hearthstone itself (please report those to Blizzard), and wrong XP values (please open a normal issue).
+
+## Checking a release
+
+From version 0.2.0 on, every release is built on GitHub by the workflow `release` from a tagged commit on `main`. The release notes name that commit. To check that a downloaded ZIP was built there and not changed since, install the [GitHub CLI](https://cli.github.com/) and run:
+
+```
+gh attestation verify HearthstoneXpTracker-X.Y.Z.zip -R critterbyte/hearthstone_xp_tracker
+```
+
+The SHA-256 checksum in the release notes and in the `.sha256` file only shows that the download is complete and unchanged.

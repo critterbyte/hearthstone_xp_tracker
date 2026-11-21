@@ -2,9 +2,12 @@
 # Terminy z klienta Hearthstone plPL (teksty klienta, build 37.0): PD, Ścieżka nagród, Karnet Karczmarza,
 # Poziom, Ranking, Rozrywka, Karczemna bójka, przycisk "KONIEC TURY". Sprawdzone przez rodzimego użytkownika języka.
 
-# Plugin entry in HDT
-plugin.description=Pokazuje PD ze Ścieżki nagród za bieżącą grę i czas PD, na którym się opierają.
-plugin.dashboard=Panel PD
+# Notification area icon and its menu
+app.dashboard=Panel PD
+app.exit=Zakończ
+log.on=Dziennik gry (Power.log): włączony
+log.restart=Dziennik gry włączony. Uruchom ponownie Hearthstone, aby zaczął zapisywać dziennik.
+log.failed=Nie udało się automatycznie włączyć dziennika gry. Dodaj ręcznie sekcję [Power] do {0} (zobacz instrukcję instalacji).
 
 # Overlay rows
 overlay.xpTime=Czas PD:
@@ -45,12 +48,16 @@ class.ROGUE=Łotr
 class.SHAMAN=Szaman
 class.WARLOCK=Czarnoksiężnik
 class.WARRIOR=Wojownik
-deck.none=Brak zapisanej talii
 
 # Dashboard: update hint
 update.available=Dostępna jest wersja {0}.
 update.availableInstalled=Dostępna jest wersja {0} (zainstalowana: {1}).
 update.openPage=Otwórz stronę pobierania
+
+# Dashboard: one-time question at the first start
+startMenu.question=Dodać tracker do menu Start, aby łatwo go później znaleźć?
+startMenu.yes=Dodaj
+startMenu.no=Nie, dziękuję
 
 # Dashboard: toolbar and options
 period.session=Sesja
@@ -67,9 +74,14 @@ option.overlayLeft=Po lewej, nad twoim portretem
 option.overlayRight=Po prawej, nad przyciskiem ustawień
 option.event=Trwa wydarzenie (pokaż PD wydarzenia)
 option.eventTip=Włącz w trakcie wydarzenia w Hearthstone: nakładka pokazuje PD wydarzenia, a nowe gry je zapisują.
+option.eventHint=Trwa wydarzenie w Hearthstone? Zaznacz pole powyżej, aby liczyć PD wydarzenia.
 option.damage=Pokaż obrażenia na nakładce
 option.damageTip=Pokazuje wiersze „Obrażenia łącznie:” i „Obrażenia bohatera:”: obrażenia zadane przeciwnikowi przez twoją stronę w bieżącej lub ostatniej grze.
-option.updates=Sprawdzaj aktualizacje przy starcie HDT
+option.updates=Sprawdzaj aktualizacje przy starcie trackera
+option.autostart=Uruchamiaj z systemem Windows
+option.autostartTip=Uruchamia tracker w obszarze powiadomień po zalogowaniu do Windows; panel pozostaje zamknięty.
+option.startMenu=Skrót w menu Start
+option.startMenuTip=Dodaje „Hearthstone XP Tracker” do menu Start. Jeśli przeniesiesz folder trackera, uruchom go raz z nowego miejsca.
 tavern.check=Karnet Karczmarza (premia PD)
 tavern.checkTip=Włącz, jeśli masz Karnet Karczmarza bieżącego rozszerzenia. Wpisz poniżej swój poziom na Ścieżce nagród: premia wynosi 10%, od poziomu 20 – 15%, od poziomu 70 – 20% (według wiki Hearthstone, niezmierzone).
 tavern.level=Poziom
@@ -86,7 +98,6 @@ session.ended=Sesja od {0} (zakończona)
 
 # Dashboard: tabs
 tab.overview=Przegląd
-tab.decks=Talie
 tab.lostXp=Utracone PD
 tab.games=Gry
 tab.charts=Wykresy
@@ -116,12 +127,7 @@ lost.outside=Czas poza grami
 lost.outsideNote={0} online, ale poza grą (menu, kolejka, przerwy)
 
 # Dashboard: table columns
-column.deck=Talia
-column.games=Gry
-column.winRate=% zwycięstw
 column.xp=PD
-column.xpPerHour=PD na godzinę
-column.avgGame=Śr. gra
 column.date=Data
 column.start=Początek
 column.mode=Tryb

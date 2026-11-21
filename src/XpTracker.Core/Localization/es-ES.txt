@@ -2,9 +2,12 @@
 # Términos del cliente de Hearthstone esES (cadenas del cliente, build 37.0): PE, Mapa de recompensas,
 # Pase de taberna, Nivel, Con rango, Aficionado, Pelea de taberna, botón "LISTO". Traducción asistida por máquina.
 
-# Plugin entry in HDT
-plugin.description=Muestra los PE del Mapa de recompensas de la partida actual y el tiempo de PE en el que se basan.
-plugin.dashboard=Panel de PE
+# Notification area icon and its menu
+app.dashboard=Panel de PE
+app.exit=Salir
+log.on=Registro de partida (Power.log): activado
+log.restart=Registro de partida activado. Reinicia Hearthstone una vez para que escriba el registro.
+log.failed=No se pudo activar el registro de partida automáticamente. Añade la sección [Power] a {0} manualmente (consulta la guía de instalación).
 
 # Overlay rows
 overlay.xpTime=Tiempo de PE:
@@ -45,12 +48,16 @@ class.ROGUE=Pícaro
 class.SHAMAN=Chamán
 class.WARLOCK=Brujo
 class.WARRIOR=Guerrero
-deck.none=Sin mazo registrado
 
 # Dashboard: update hint
 update.available=La versión {0} está disponible.
 update.availableInstalled=La versión {0} está disponible (instalada: {1}).
 update.openPage=Abrir la página de descarga
+
+# Dashboard: one-time question at the first start
+startMenu.question=¿Añadir el tracker al menú Inicio para encontrarlo más tarde?
+startMenu.yes=Añadir
+startMenu.no=No, gracias
 
 # Dashboard: toolbar and options
 period.session=Sesión
@@ -67,9 +74,14 @@ option.overlayLeft=Izquierda, sobre tu retrato
 option.overlayRight=Derecha, sobre el botón de opciones
 option.event=Evento activo (mostrar PE de evento)
 option.eventTip=Actívalo mientras haya un evento de Hearthstone: el overlay muestra los PE de evento y las partidas nuevas los guardan.
+option.eventHint=¿Hay un evento de Hearthstone activo? Marca la casilla de arriba para contar los PE de evento.
 option.damage=Mostrar el daño en el overlay
 option.damageTip=Muestra las filas "Daño total:" y "Daño al héroe:": el daño que tu bando ha hecho al rival en la partida actual o en la última.
-option.updates=Buscar actualizaciones al iniciar HDT
+option.updates=Buscar actualizaciones al iniciar el tracker
+option.autostart=Iniciar con Windows
+option.autostartTip=Inicia el tracker en el área de notificación al iniciar sesión en Windows; el panel queda cerrado.
+option.startMenu=Acceso directo en el menú Inicio
+option.startMenuTip=Añade "Hearthstone XP Tracker" al menú Inicio. Si mueves la carpeta del tracker, ábrelo una vez desde la nueva ubicación.
 tavern.check=Pase de taberna (bonificación de PE)
 tavern.checkTip=Actívalo si tienes el Pase de taberna de la expansión actual. Escribe debajo tu nivel en el Mapa de recompensas: la bonificación es del 10 %, a partir del nivel 20 del 15 % y a partir del nivel 70 del 20 % (según la wiki de Hearthstone, sin medir).
 tavern.level=Nivel
@@ -86,7 +98,6 @@ session.ended=Sesión desde {0} (terminada)
 
 # Dashboard: tabs
 tab.overview=Resumen
-tab.decks=Mazos
 tab.lostXp=PE perdidos
 tab.games=Partidas
 tab.charts=Gráficos
@@ -116,12 +127,7 @@ lost.outside=Tiempo fuera de partidas
 lost.outsideNote={0} conectado pero sin partida (menús, cola, pausas)
 
 # Dashboard: table columns
-column.deck=Mazo
-column.games=Partidas
-column.winRate=% de victorias
 column.xp=PE
-column.xpPerHour=PE por hora
-column.avgGame=Partida media
 column.date=Fecha
 column.start=Inicio
 column.mode=Modo

@@ -203,6 +203,83 @@ public sealed class GameHistoryTests : IDisposable
         Assert.Null(GameRecord.SessionStart("unknown"));
     }
 
+    [Fact]
+    public void Import_AddsMissingGamesInOrderAndLeavesTheOtherFileAlone()
+    {
+        var other = Path.Combine(_folder, "plugin", "hs_games.csv");
+        var plugin = new GameHistory(other);
+        var oldGame = Sample("09:00:00");
+        oldGame.Deck = "Fast Rogue";
+        plugin.Add(oldGame);
+        plugin.Add(Sample("10:18:45"));
+        var before = System.IO.File.ReadAllText(other);
+
+        var app = new GameHistory(File);
+        app.Add(Sample("10:18:45"));
+        app.Add(Sample("11:00:00"));
+
+        Assert.Equal(1, app.ImportFrom(other));
+
+        var games = new GameHistory(File).Load();
+        Assert.Equal(new[] { "09:00", "10:18", "11:00" }, games.Select(g => g.Start.ToString("HH:mm")));
+        Assert.Equal("Fast Rogue", games[0].Deck);
+        Assert.Equal(before, System.IO.File.ReadAllText(other));
+
+        // Importing again changes nothing.
+        Assert.Equal(0, app.ImportFrom(other));
+        Assert.Equal(3, new GameHistory(File).Load().Count);
+    }
+
+    [Fact]
+    public void Import_CompletesMissingDeckAndClassesButKeepsOwnValues()
+    {
+        var other = Path.Combine(_folder, "plugin", "hs_games.csv");
+        var fromPlugin = Sample("10:18:45");
+        fromPlugin.Deck = "Fast Rogue";
+        fromPlugin.Xp = 99;
+        new GameHistory(other).Add(fromPlugin);
+
+        var own = Sample("10:18:45");
+        own.PlayerClass = string.Empty;
+        own.OpponentClass = string.Empty;
+        var app = new GameHistory(File);
+        app.Add(own);
+
+        Assert.Equal(1, app.ImportFrom(other));
+
+        var game = Assert.Single(new GameHistory(File).Load());
+        Assert.Equal("Fast Rogue", game.Deck);
+        Assert.Equal("ROGUE", game.PlayerClass);
+        Assert.Equal("WARRIOR", game.OpponentClass);
+        Assert.Equal(46, game.Xp);
+    }
+
+    [Fact]
+    public void Import_WithoutOtherFileOrFromItself_DoesNothing()
+    {
+        var app = new GameHistory(File);
+        app.Add(Sample("10:18:45"));
+
+        Assert.Equal(0, app.ImportFrom(Path.Combine(_folder, "missing.csv")));
+        Assert.Equal(0, app.ImportFrom(File));
+        Assert.Single(app.Load());
+    }
+
+    [Fact]
+    public void Import_KeepsUnreadableRowsOfTheOwnFile()
+    {
+        var other = Path.Combine(_folder, "plugin", "hs_games.csv");
+        new GameHistory(other).Add(Sample("09:00:00"));
+        var app = new GameHistory(File);
+        app.Add(Sample("10:18:45"));
+        System.IO.File.AppendAllText(File, DamagedRow + Environment.NewLine);
+
+        Assert.Equal(1, app.ImportFrom(other));
+
+        Assert.Equal(2, app.Load().Count);
+        Assert.Equal(1, app.UnreadableRows);
+    }
+
     public void Dispose()
     {
         if (Directory.Exists(_folder))

@@ -1,0 +1,95 @@
+name: release
+
+# Pushing a tag vX.Y.Z builds the release on GitHub and creates a draft release with the ZIP.
+# Nothing is published automatically: the draft is checked and published by hand.
+on:
+  push:
+    tags: ['v*.*.*']
+
+permissions:
+  contents: write      # create the draft release
+  id-token: write      # sign the build provenance
+  attestations: write  # store the build provenance
+
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # the whole history, to check that the tag is on main
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+
+      - name: Check tag, version and changelog
+        id: check
+        shell: pwsh
+        run: |
+          $tag = '${{ github.ref_name }}'
+          if ($tag -notmatch '^v(\d+)\.(\d+)\.(\d+)$') { throw "Tag '$tag' is not of the form vX.Y.Z." }
+          $version = $tag.Substring(1)
+
+          $props = [xml](Get-Content Directory.Build.props -Raw)
+          $set = @($props.Project.PropertyGroup | ForEach-Object { $_.Version } | Where-Object { $_ })[0]
+          if ($set -ne $version) { throw "Directory.Build.props has version $set, the tag is $tag." }
+
+          git merge-base --is-ancestor HEAD origin/main
+          if ($LASTEXITCODE -ne 0) { throw "The tagged commit is not on main. Release only merged states." }
+
+          # The changelog section of this version becomes the release notes. They are written outside the
+          # repository, because release.ps1 refuses to build with uncommitted files.
+          $lines = @(Get-Content CHANGELOG.md -Encoding utf8)
+          $start = -1
+          $end = $lines.Count
+          for ($i = 0; $i -lt $lines.Count; $i++) {
+            if ($start -lt 0) {
+              if ($lines[$i].StartsWith("## [$version] - ")) { $start = $i }
+            }
+            elseif ($lines[$i].StartsWith('## ')) {
+              $end = $i
+              break
+            }
+          }
+          if ($start -lt 0) { throw "CHANGELOG.md has no section '## [$version] - <date>'." }
+          $section = ($lines[($start + 1)..($end - 1)] -join "`n").Trim()
+          Set-Content -Path (Join-Path $env:RUNNER_TEMP 'notes.md') -Value $section -Encoding utf8
+
+          # Until 1.0, every release is a pre-release.
+          "version=$version" >> $env:GITHUB_OUTPUT
+          "prerelease=$(if ($version.StartsWith('0.')) { 'true' } else { 'false' })" >> $env:GITHUB_OUTPUT
+
+      - name: Build, test and package
+        shell: pwsh
+        run: ./release.ps1
+
+      - name: Record build provenance
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: artifacts/HearthstoneXpTracker-${{ steps.check.outputs.version }}.zip
+
+      - name: Create draft release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $version = '${{ steps.check.outputs.version }}'
+          $zip = "artifacts/HearthstoneXpTracker-$version.zip"
+          $hash = (Get-Content "$zip.sha256").Split(' ')[0]
+          $notesFile = Join-Path $env:RUNNER_TEMP 'notes.md'
+          $notes = (Get-Content $notesFile -Raw -Encoding utf8).Trim()
+          $notes += @"
+
+
+          ### Download and check
+
+          - SHA-256 of ``HearthstoneXpTracker-$version.zip``: ``$hash``
+          - Built on GitHub from commit [``$($env:GITHUB_SHA.Substring(0, 7))``](https://github.com/${{ github.repository }}/commit/$env:GITHUB_SHA) by the [release workflow](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}). To check that the ZIP comes from this build: ``gh attestation verify HearthstoneXpTracker-$version.zip -R ${{ github.repository }}``
+          "@
+          Set-Content -Path $notesFile -Value $notes -Encoding utf8
+
+          $flags = @('--draft', '--verify-tag', '--title', "v$version", '--notes-file', $notesFile)
+          if ('${{ steps.check.outputs.prerelease }}' -eq 'true') { $flags += '--prerelease' }
+          gh release create "v$version" $zip "$zip.sha256" @flags
+          if ($LASTEXITCODE -ne 0) { throw "Could not create the draft release." }

@@ -6,11 +6,11 @@ using System.IO;
 namespace XpTracker.Core;
 
 /// <summary>
-/// User settings of the plugin, stored as "Key=value" lines.
+/// User settings of the app, stored as "Key=value" lines.
 /// </summary>
 public sealed class XpTrackerSettings
 {
-    /// <summary>Ask GitHub for a newer release when HDT starts.</summary>
+    /// <summary>Ask GitHub for a newer release when the app starts.</summary>
     public bool CheckForUpdates { get; set; } = true;
 
     /// <summary>A Hearthstone event is running: show and store event XP. Switched on and off by the user.</summary>
@@ -30,6 +30,9 @@ public sealed class XpTrackerSettings
 
     /// <summary>Rewards track level, entered by the user; sets the size of the Tavern Pass boost.</summary>
     public int TavernPassLevel { get; set; } = TavernPassBonus.MinLevel;
+
+    /// <summary>The user has answered the one-time question about a Start menu shortcut.</summary>
+    public bool StartMenuAsked { get; set; }
 
     /// <summary>The Tavern Pass boost in percent that applies now; 0 without the pass.</summary>
     public int XpBonusPercent => TavernPassBonus.Percent(TavernPass, TavernPassLevel);
@@ -79,6 +82,10 @@ public sealed class XpTrackerSettings
             {
                 settings.TavernPassLevel = TavernPassBonus.ClampLevel(level);
             }
+            else if (key.Equals(nameof(StartMenuAsked), StringComparison.OrdinalIgnoreCase) && bool.TryParse(value, out var asked))
+            {
+                settings.StartMenuAsked = asked;
+            }
         }
 
         return settings;
@@ -110,6 +117,7 @@ public sealed class XpTrackerSettings
         yield return nameof(Language) + "=" + Language;
         yield return nameof(TavernPass) + "=" + (TavernPass ? "true" : "false");
         yield return nameof(TavernPassLevel) + "=" + TavernPassLevel.ToString(CultureInfo.InvariantCulture);
+        yield return nameof(StartMenuAsked) + "=" + (StartMenuAsked ? "true" : "false");
     }
 
     public void Save(string path)
