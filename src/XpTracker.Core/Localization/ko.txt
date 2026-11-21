@@ -48,7 +48,6 @@ class.ROGUE=도적
 class.SHAMAN=주술사
 class.WARLOCK=흑마법사
 class.WARRIOR=전사
-deck.none=기록된 덱 없음
 
 # Dashboard: update hint
 update.available={0} 버전을 사용할 수 있습니다.

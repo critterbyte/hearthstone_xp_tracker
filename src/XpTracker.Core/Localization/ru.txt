@@ -48,7 +48,6 @@ class.ROGUE=Разбойник
 class.SHAMAN=Шаман
 class.WARLOCK=Чернокнижник
 class.WARRIOR=Воин
-deck.none=Колода не записана
 
 # Dashboard: update hint
 update.available=Доступна версия {0}.

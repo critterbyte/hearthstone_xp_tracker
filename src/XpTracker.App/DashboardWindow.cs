@@ -948,7 +948,7 @@ internal sealed class DashboardWindow : Window
     }
 
     // Styles for buttons, period buttons, tabs, the check box and selected rows. Own templates, so the look
-    // does not depend on the Windows theme or on the styles HDT loads.
+    // does not depend on the Windows theme.
     private static ResourceDictionary Theme() => (ResourceDictionary)XamlReader.Parse(@"
 <ResourceDictionary xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation'
                     xmlns:x='http://schemas.microsoft.com/winfx/2006/xaml'>

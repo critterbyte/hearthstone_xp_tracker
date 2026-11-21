@@ -48,7 +48,6 @@ class.ROGUE=Pícaro
 class.SHAMAN=Chamán
 class.WARLOCK=Brujo
 class.WARRIOR=Guerrero
-deck.none=Sin mazo registrado
 
 # Dashboard: update hint
 update.available=La versión {0} está disponible.

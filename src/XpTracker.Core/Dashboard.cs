@@ -76,27 +76,6 @@ public sealed class SummaryStats
     public double XpPerOnlineHour => OnlineSeconds > 0 ? Xp / (OnlineSeconds / 3600) : 0;
 }
 
-public sealed class DeckStats
-{
-    public string Deck { get; set; } = string.Empty;
-
-    public int Games { get; set; }
-
-    public int Wins { get; set; }
-
-    public int Xp { get; set; }
-
-    public double XpSeconds { get; set; }
-
-    public double PlaySeconds { get; set; }
-
-    public double WinRate => Games > 0 ? (double)Wins / Games : 0;
-
-    public double XpPerHour => XpSeconds > 0 ? Xp / (XpSeconds / 3600) : 0;
-
-    public double AverageGameSeconds => Games > 0 ? PlaySeconds / Games : 0;
-}
-
 public sealed class LostXpStats
 {
     public int AfkTurns { get; set; }
@@ -132,9 +111,6 @@ public sealed class DayStats
 /// </summary>
 public static class Dashboard
 {
-    /// <summary>Shown for games without a deck name (HDT did not record the game).</summary>
-    public static string NoDeck => Localizer.Text("deck.none");
-
     public static DateTime PeriodStart(DashboardPeriod period, DateTime now) => period switch
     {
         DashboardPeriod.Today => now.Date,
@@ -269,22 +245,6 @@ public static class Dashboard
             OnlineSeconds = OnlineSeconds(games, periodStart, now, currentSession),
         };
     }
-
-    /// <summary>One row per deck, from the games of modes with measured rates.</summary>
-    public static IReadOnlyList<DeckStats> Decks(IEnumerable<GameRecord> games) =>
-        games.Where(g => XpRates.IsMeasured(g.Mode))
-            .GroupBy(g => g.Deck.Length > 0 ? g.Deck : NoDeck)
-            .Select(group => new DeckStats
-            {
-                Deck = group.Key,
-                Games = group.Count(),
-                Wins = group.Count(g => g.Result == GameResult.Win),
-                Xp = group.Sum(g => g.Xp ?? 0),
-                XpSeconds = group.Sum(g => g.XpSeconds),
-                PlaySeconds = group.Sum(g => g.WithMulliganSeconds),
-            })
-            .OrderByDescending(d => d.XpPerHour)
-            .ToList();
 
     public static LostXpStats Lost(IReadOnlyList<GameRecord> games, SummaryStats summary)
     {

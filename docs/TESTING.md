@@ -38,7 +38,7 @@ The calculation engine is covered by unit tests. The points below need Windows a
 - [ ] It follows the game window when it is moved or resized, in windowed and full screen mode, also with Windows display scaling above 100%.
 - [ ] Clicks on the overlay reach the game (play a card or attack through it); the overlay never takes the focus and is not in the taskbar or Alt+Tab.
 - [ ] It disappears when another window is active (Alt+Tab, the dashboard) and comes back with Hearthstone.
-- [ ] Next to Hearthstone Deck Tracker, both overlays are visible and the XP Tracker stays on top of the game.
+- [ ] Next to other overlay programs, the XP Tracker stays visible on top of the game.
 - [ ] XP time counts up during own and opponent turns.
 - [ ] "Win" and "Loss" XP values grow with the XP time and match `docs/FORMULA.md`.
 - [ ] **AFK turn:** let an own turn run out without playing anything and without clicking "End Turn". When the opponent's turn starts, the XP time jumps back by the length of the AFK turn, shows "(paused)" and stays paused for the whole opponent turn. It runs again with the next own turn.
@@ -83,7 +83,7 @@ The calculation engine is covered by unit tests. The points below need Windows a
 ## Dashboard options
 
 - [ ] "Language": every language switches the overlay, the dashboard (it opens again in the new language) and the icon's menu at once; texts fit, with no missing characters (check at least Русский, 日本語, 简体中文 and ภาษาไทย).
-- [ ] "Overlay position": "Right, above the settings button" (the default) and "Left, above your portrait" move the overlay at once, also during a game. On the left it covers neither the portrait ("You" with the rank) nor HDT's card lists.
+- [ ] "Overlay position": "Right, above the settings button" (the default) and "Left, above your portrait" move the overlay at once, also during a game. On the left it does not cover the portrait ("You" with the rank).
 - [ ] "Event running" and "Show damage on the overlay" show and hide their rows at once.
 - [ ] "Tavern Pass": switched on, the level changes the boost text and the overlay values; switch it off again before the next game (games store the boost they were played with).
 - [ ] "Check for updates when the tracker starts" can be switched off and on; check marks and selected values are mana blue.

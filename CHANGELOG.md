@@ -32,12 +32,13 @@ The tracker becomes a stand-alone Windows program. Hearthstone Deck Tracker (HDT
 - Game history, settings and a small error log are stored in `%APPDATA%\HearthstoneXpTracker`.
 - The update check runs when the tracker starts; the option is called "Check for updates when the tracker starts".
 - The release ZIP contains the app and its libraries and can be extracted into any folder. `release.ps1` and `build.ps1` no longer need an HDT installation.
-- README, install and usage guides in all 14 languages, `CONTRIBUTING.md`, `SECURITY.md`, the test checklist and the issue templates describe the app instead of the plugin.
+- README, install and usage guides in all 14 languages, `CONTRIBUTING.md`, `SECURITY.md`, the test checklist and the issue templates describe the app instead of the plugin. HDT is mentioned only where the switch from the plugin is described.
 
 ### Removed
 
 - The HDT plugin. Version 0.1.2 stays available on the Releases page until HDT ends plugin support.
 - The *Decks* tab and the deck column of the game list: deck names came from HDT. The history file keeps its `Deck` column, so older games keep their deck names.
+- The code that matched games with HDT's deck records and the deck statistics behind the former *Decks* tab.
 
 ## [0.1.2] - 2026-11-15
 

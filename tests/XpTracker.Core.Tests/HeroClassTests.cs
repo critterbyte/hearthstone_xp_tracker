@@ -34,7 +34,7 @@ public class HeroClassTests
     [InlineData("DEMONHUNTER", "DemonHunter", "Demon Hunter")]
     [InlineData("DEATHKNIGHT", "Deathknight", "Death Knight")]
     [InlineData("PRIEST", "Priest", "Priest")]
-    public void ClassNames_AreStoredLikeHdtAndShownLocalized(string logClass, string stored, string shown)
+    public void ClassNames_AreStoredInTheHistoryFormatAndShownLocalized(string logClass, string stored, string shown)
     {
         Localizer.SetLanguage("en");
 

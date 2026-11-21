@@ -8,9 +8,7 @@
 - Windows 10 または 11。トラッカーには .NET Framework 4.7.2 が必要ですが、どちらにも含まれています。
 - Hearthstone
 
-Hearthstone Deck Tracker（HDT）は必要ありません。トラッカーは単独でも、HDT と並べても動作します。
-
-トラッカーは Hearthstone の `Power.log` を読み取ります。Hearthstone は、自身の設定ファイル `%LOCALAPPDATA%\Blizzard\Hearthstone\log.config` でオンになっている場合にだけ、このログを書き出します。トラッカーは最初の起動時にこれをオンにします。`[Power]` セクションを追加するだけで、ファイルのほかの部分は変更しません。変更の前に、元のファイルのコピーを `log.config.bak` として保存します。HDT がインストールされていれば、ログはすでにオンになっています。
+トラッカーは Hearthstone の `Power.log` を読み取ります。Hearthstone は、自身の設定ファイル `%LOCALAPPDATA%\Blizzard\Hearthstone\log.config` でオンになっている場合にだけ、このログを書き出します。トラッカーは最初の起動時にこれをオンにします。`[Power]` セクションを追加するだけで、ファイルのほかの部分は変更しません。変更の前に、元のファイルのコピーを `log.config.bak` として保存します。
 
 <a id="install"></a>
 ## インストール手順
@@ -74,7 +72,7 @@ Hearthstone Deck Tracker（HDT）は必要ありません。トラッカーは�
 
 データを残したくない場合は、このフォルダーも削除してください。
 
-`[Power]` セクションは `log.config` に残ります。HDT などほかのツールもこのセクションを使うためです。このセクションは Hearthstone にログを書き出させるだけです。ファイルを元の状態に戻すには、`log.config` を `log.config.bak` で置き換えてください。
+`[Power]` セクションは `log.config` に残ります。ほかのプログラムもこのセクションを使う場合があるためです。このセクションは Hearthstone にログを書き出させるだけです。ファイルを元の状態に戻すには、`log.config` を `log.config.bak` で置き換えてください。
 
 <a id="troubleshooting"></a>
 ## トラブルシューティング

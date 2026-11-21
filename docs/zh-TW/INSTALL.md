@@ -8,9 +8,7 @@
 - Windows 10 或 11。追蹤器需要 .NET Framework 4.7.2，這兩個版本都已內建。
 - 爐石戰記
 
-不需要 Hearthstone Deck Tracker（HDT）。追蹤器可以單獨執行，也可以和 HDT 一起執行。
-
-追蹤器會讀取爐石戰記的 `Power.log`。只有在爐石戰記自己的設定檔 `%LOCALAPPDATA%\Blizzard\Hearthstone\log.config` 中開啟這份記錄檔時，爐石戰記才會寫入它。追蹤器會在第一次啟動時開啟它：加入 `[Power]` 區段，不會更改檔案中的其他內容。變更之前，它會將舊檔案備份為 `log.config.bak`。如果已安裝 HDT，這份記錄檔已經是開啟的。
+追蹤器會讀取爐石戰記的 `Power.log`。只有在爐石戰記自己的設定檔 `%LOCALAPPDATA%\Blizzard\Hearthstone\log.config` 中開啟這份記錄檔時，爐石戰記才會寫入它。追蹤器會在第一次啟動時開啟它：加入 `[Power]` 區段，不會更改檔案中的其他內容。變更之前，它會將舊檔案備份為 `log.config.bak`。
 
 <a id="install"></a>
 ## 安裝
@@ -74,7 +72,7 @@
 
 如果你不想保留這些資料，也請刪除這個資料夾。
 
-`[Power]` 區段會保留在 `log.config` 中，因為 HDT 等其他工具也會使用它。它只會讓爐石戰記寫入記錄檔。要將檔案還原成先前的樣子，請用 `log.config.bak` 取代 `log.config`。
+`[Power]` 區段會保留在 `log.config` 中，因為其他程式也可能會使用它。它只會讓爐石戰記寫入記錄檔。要將檔案還原成先前的樣子，請用 `log.config.bak` 取代 `log.config`。
 
 <a id="troubleshooting"></a>
 ## 疑難排解

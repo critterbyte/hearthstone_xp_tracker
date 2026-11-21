@@ -23,11 +23,11 @@ public class LogConfigTests
     [Fact]
     public void OtherSections_AreKeptAsTheyAre()
     {
-        var hdt = "[Achievements]\r\nLogLevel=1\r\nFilePrinting=True\r\n[Arena]\r\nLogLevel=1\r\nFilePrinting=True\r\n";
+        var otherTools = "[Achievements]\r\nLogLevel=1\r\nFilePrinting=True\r\n[Arena]\r\nLogLevel=1\r\nFilePrinting=True\r\n";
 
-        var updated = LogConfig.Update(hdt);
+        var updated = LogConfig.Update(otherTools);
 
-        Assert.Equal(hdt + PowerOn, updated);
+        Assert.Equal(otherTools + PowerOn, updated);
     }
 
     [Fact]

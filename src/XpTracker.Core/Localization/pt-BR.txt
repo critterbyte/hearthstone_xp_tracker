@@ -48,7 +48,6 @@ class.ROGUE=Ladino
 class.SHAMAN=Xamã
 class.WARLOCK=Bruxo
 class.WARRIOR=Guerreiro
-deck.none=Nenhum deck registrado
 
 # Dashboard: update hint
 update.available=A versão {0} está disponível.

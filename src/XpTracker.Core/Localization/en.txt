@@ -48,7 +48,6 @@ class.ROGUE=Rogue
 class.SHAMAN=Shaman
 class.WARLOCK=Warlock
 class.WARRIOR=Warrior
-deck.none=No deck recorded
 
 # Dashboard: update hint
 update.available=Version {0} is available.

@@ -48,7 +48,6 @@ class.ROGUE=Łotr
 class.SHAMAN=Szaman
 class.WARLOCK=Czarnoksiężnik
 class.WARRIOR=Wojownik
-deck.none=Brak zapisanej talii
 
 # Dashboard: update hint
 update.available=Dostępna jest wersja {0}.

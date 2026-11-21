@@ -48,7 +48,6 @@ class.ROGUE=Voleur
 class.SHAMAN=Chaman
 class.WARLOCK=Démoniste
 class.WARRIOR=Guerrier
-deck.none=Aucun deck enregistré
 
 # Dashboard: update hint
 update.available=La version {0} est disponible.

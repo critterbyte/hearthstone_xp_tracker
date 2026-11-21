@@ -10,7 +10,7 @@ namespace XpTracker.App;
 /// Transparent window that lies exactly over Hearthstone's game area and carries the <see cref="XpOverlay"/>.
 /// </summary>
 /// <remarks>
-/// Like Hearthstone Deck Tracker's overlay it only looks at the position of the game window: it lets every click
+/// It only looks at the position of the game window: it lets every click
 /// through to the game, never takes the focus, is not in the taskbar or Alt+Tab, and is shown only while Hearthstone
 /// is the active window.
 /// </remarks>

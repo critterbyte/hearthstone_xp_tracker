@@ -8,9 +8,7 @@
 - Windows 10 또는 11. 트래커에는 .NET Framework 4.7.2가 필요하며, 두 버전 모두에 포함되어 있습니다.
 - 하스스톤
 
-Hearthstone Deck Tracker(HDT)는 필요하지 않습니다. 트래커는 단독으로 실행되며, HDT와 함께 실행할 수도 있습니다.
-
-트래커는 하스스톤의 `Power.log`를 읽습니다. 하스스톤은 자체 설정 파일인 `%LOCALAPPDATA%\Blizzard\Hearthstone\log.config`에서 이 로그가 켜져 있을 때만 로그를 기록합니다. 트래커는 처음 시작할 때 이 로그를 켭니다. `[Power]` 섹션을 추가할 뿐, 파일의 다른 부분은 바꾸지 않습니다. 바꾸기 전에 이전 파일의 복사본을 `log.config.bak`으로 저장해 둡니다. HDT가 설치되어 있으면 로그는 이미 켜져 있습니다.
+트래커는 하스스톤의 `Power.log`를 읽습니다. 하스스톤은 자체 설정 파일인 `%LOCALAPPDATA%\Blizzard\Hearthstone\log.config`에서 이 로그가 켜져 있을 때만 로그를 기록합니다. 트래커는 처음 시작할 때 이 로그를 켭니다. `[Power]` 섹션을 추가할 뿐, 파일의 다른 부분은 바꾸지 않습니다. 바꾸기 전에 이전 파일의 복사본을 `log.config.bak`으로 저장해 둡니다.
 
 <a id="install"></a>
 ## 설치하기
@@ -74,7 +72,7 @@ Hearthstone Deck Tracker(HDT)는 필요하지 않습니다. 트래커는 단독�
 
 데이터를 남기고 싶지 않으면 이 폴더도 삭제하세요.
 
-`[Power]` 섹션은 `log.config`에 남습니다. HDT 같은 다른 도구도 이 섹션을 사용하기 때문입니다. 이 섹션은 하스스톤이 로그를 기록하게 할 뿐입니다. 파일을 이전 상태로 되돌리려면 `log.config`를 `log.config.bak`으로 바꾸세요.
+`[Power]` 섹션은 `log.config`에 남습니다. 다른 프로그램도 이 섹션을 사용할 수 있기 때문입니다. 이 섹션은 하스스톤이 로그를 기록하게 할 뿐입니다. 파일을 이전 상태로 되돌리려면 `log.config`를 `log.config.bak`으로 바꾸세요.
 
 <a id="troubleshooting"></a>
 ## 문제 해결

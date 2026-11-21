@@ -221,7 +221,7 @@ public sealed class PowerLogTracker
     }
 
     // A tag line inside a block: the hero of a player, and the class of a hero card. Only the first hero of each
-    // player counts, so a hero card played later or a Rewind does not change the class (like HDT's OriginalClass).
+    // player counts, so a hero card played later or a Rewind does not change the class.
     private void OnBlockTag(string body)
     {
         var game = _game!;
@@ -257,7 +257,7 @@ public sealed class PowerLogTracker
         return int.TryParse(id, out var value) ? value : null;
     }
 
-    // The class of a side's first hero in the form Hearthstone Deck Tracker stores ("Rogue", "DemonHunter",
+    // The class of a side's first hero in the form of the history file, as the former HDT plugin stored it ("Rogue", "DemonHunter",
     // "Deathknight"), so old and new rows of the history file read the same; empty if the log did not say.
     private string ClassOf(Side side)
     {

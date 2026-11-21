@@ -48,7 +48,6 @@ class.ROGUE=ローグ
 class.SHAMAN=シャーマン
 class.WARLOCK=ウォーロック
 class.WARRIOR=ウォリアー
-deck.none=デッキの記録なし
 
 # Dashboard: update hint
 update.available=バージョン {0} が利用できます。

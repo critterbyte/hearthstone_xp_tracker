@@ -48,7 +48,6 @@ class.ROGUE=โร้ก
 class.SHAMAN=ชาแมน
 class.WARLOCK=วอร์ล็อค
 class.WARRIOR=วอริเออร์
-deck.none=ไม่มีบันทึกเด็ค
 
 # Dashboard: update hint
 update.available=มีเวอร์ชัน {0} ให้ใช้งาน

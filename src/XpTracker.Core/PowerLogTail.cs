@@ -13,7 +13,7 @@ namespace XpTracker.Core;
 /// <remarks>
 /// On the first read it seeks back to the start of the current game only, so starting the tracker in the
 /// middle of a game still gives the full game time. Afterwards only new complete lines are read.
-/// The file is opened read-only and shared, like Hearthstone Deck Tracker does.
+/// The file is opened read-only and shared, so the game can keep writing it.
 /// </remarks>
 public sealed class PowerLogTail
 {

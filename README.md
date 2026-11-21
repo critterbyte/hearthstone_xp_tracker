@@ -24,7 +24,7 @@ A small Windows program that shows how much reward track XP your current Hearths
 - **Dashboard:** XP, XP per hour, win rate, lost XP and charts for today, this week, this season or all time.
 - **Tavern Pass:** enter your rewards track level, and the XP include the pass boost of 10%, 15% or 20%. The boost is calculated from public sources, not measured.
 - **Game history:** every game is saved to a local CSV file that you can open in a spreadsheet.
-- **Passive and light:** the tracker only reads Hearthstone's log file. It does not read the game's memory, does not change game files and needs no administrator rights. Hearthstone Deck Tracker is not needed, but both can run side by side.
+- **Passive and light:** the tracker only reads Hearthstone's log file. It does not read the game's memory, does not change game files and needs no administrator rights.
 - **Update hint:** the tracker tells you when a new version is available.
 - **Languages:** overlay and dashboard in all 14 languages of the Hearthstone client, selectable in the dashboard: Deutsch, English (default), Español (AL), Español (EU), Français, Italiano, 日本語, Polski, Português, Русский, ภาษาไทย, 한국어, 繁體中文, 简体中文. Game terms follow each client. German and Polish are checked by a native speaker; the other translations are machine-assisted, and [corrections are welcome](CONTRIBUTING.md#translations).
 
@@ -80,9 +80,9 @@ Games with less than 60 seconds of XP time give no XP. The rates were measured w
 
 ## How it works
 
-The tracker reads Hearthstone's `Power.log` (the same log HDT and other trackers read) on a background thread. It uses the log's timestamps for the mulligan, every turn change, the AFK marker and the end of the game. If the tracker is started in the middle of a game, it reads the current game from its start. It finds the log folder through the running game, the Battle.net uninstall entry or the default installation folder. At its first start it switches the log on in Hearthstone's `log.config` if needed; nothing else in that file is changed.
+The tracker reads Hearthstone's `Power.log` (the same log other trackers read) on a background thread. It uses the log's timestamps for the mulligan, every turn change, the AFK marker and the end of the game. If the tracker is started in the middle of a game, it reads the current game from its start. It finds the log folder through the running game, the Battle.net uninstall entry or the default installation folder. At its first start it switches the log on in Hearthstone's `log.config` if needed; nothing else in that file is changed.
 
-The overlay is a transparent window that lies over Hearthstone's game area, like HDT's overlay. It lets every click through, never takes the focus and is shown only while Hearthstone is the active window.
+The overlay is a transparent window that lies over Hearthstone's game area. It lets every click through, never takes the focus and is shown only while Hearthstone is the active window.
 
 Reading costs about 40 ms once when the tracker starts and well under a millisecond per update afterwards.
 
@@ -100,7 +100,7 @@ The project follows [Semantic Versioning](https://semver.org/). Releases are tag
 
 ## Disclaimer
 
-This is an unofficial third-party program. It is not affiliated with or endorsed by Blizzard Entertainment or HearthSim (the makers of Hearthstone Deck Tracker). Hearthstone is a trademark of Blizzard Entertainment. Hearthstone Deck Tracker is © HearthSim; this repository and its releases contain no HDT files.
+This is an unofficial third-party program. It is not affiliated with or endorsed by Blizzard Entertainment. Hearthstone is a trademark of Blizzard Entertainment.
 
 ## License
 

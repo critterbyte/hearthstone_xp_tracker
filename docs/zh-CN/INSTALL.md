@@ -8,9 +8,7 @@
 - Windows 10 或 11。追踪器需要 .NET Framework 4.7.2，这两个版本都已自带。
 - 炉石传说
 
-不需要 Hearthstone Deck Tracker（HDT）。追踪器可以单独运行，也可以和 HDT 一起运行。
-
-追踪器会读取炉石传说的 `Power.log`。只有在炉石传说自己的设置文件 `%LOCALAPPDATA%\Blizzard\Hearthstone\log.config` 中开启这个日志时，炉石传说才会写入它。追踪器会在首次启动时开启它：添加 `[Power]` 部分，不会更改文件中的其他内容。更改之前，它会把旧文件备份为 `log.config.bak`。如果已安装 HDT，这个日志已经是开启的。
+追踪器会读取炉石传说的 `Power.log`。只有在炉石传说自己的设置文件 `%LOCALAPPDATA%\Blizzard\Hearthstone\log.config` 中开启这个日志时，炉石传说才会写入它。追踪器会在首次启动时开启它：添加 `[Power]` 部分，不会更改文件中的其他内容。更改之前，它会把旧文件备份为 `log.config.bak`。
 
 <a id="install"></a>
 ## 安装
@@ -74,7 +72,7 @@
 
 如果你不想保留这些数据，也请删除这个文件夹。
 
-`[Power]` 部分会保留在 `log.config` 中，因为 HDT 等其他工具也会使用它。它只会让炉石传说写入日志。要将文件恢复成之前的样子，请用 `log.config.bak` 替换 `log.config`。
+`[Power]` 部分会保留在 `log.config` 中，因为其他程序也可能会使用它。它只会让炉石传说写入日志。要将文件恢复成之前的样子，请用 `log.config.bak` 替换 `log.config`。
 
 <a id="troubleshooting"></a>
 ## 故障排除

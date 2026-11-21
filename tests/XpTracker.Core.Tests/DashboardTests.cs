@@ -69,23 +69,6 @@ public class DashboardTests
     }
 
     [Fact]
-    public void Decks_AreGroupedAndSortedByXpPerHour()
-    {
-        var fast = Game("2026-11-08 10:00:00", 360, GameResult.Win, 47);
-        fast.Deck = "Pirate Rogue";
-        var slow = Game("2026-11-08 11:00:00", 360, GameResult.Loss, 34);
-        slow.Deck = "Thief Priest";
-        var unknown = Game("2026-11-08 12:00:00", 360, GameResult.Loss, 34);
-
-        var decks = Dashboard.Decks(new[] { slow, fast, unknown });
-
-        Assert.Equal("Pirate Rogue", decks[0].Deck);
-        Assert.Equal(1, decks[0].WinRate);
-        Assert.Equal(470, decks[0].XpPerHour, 0);
-        Assert.Contains(decks, d => d.Deck == Dashboard.NoDeck);
-    }
-
-    [Fact]
     public void Lost_CountsAfkXpShortGamesAndTimeOutsideGames()
     {
         // Measured: AFK first turn cost 8 XP (54 instead of 46); an early opponent concede at 34.34 s gave 0 instead of 4.
@@ -152,19 +135,14 @@ public class DashboardTests
     }
 
     [Fact]
-    public void DecksAndCharts_LeaveOutGamesOfUnmeasuredModes()
+    public void Charts_LeaveOutGamesOfUnmeasuredModes()
     {
         var ranked = Game("2026-11-08 10:00:00", 360, GameResult.Win, 47);
-        ranked.Deck = "Pirate Rogue";
         var other = OtherGame("2026-11-08 10:10:00", 1200);
-        other.Deck = "Pirate Rogue";
         var games = new[] { ranked, other };
 
-        var deck = Assert.Single(Dashboard.Decks(games));
         var hour = Dashboard.Buckets(games, DashboardPeriod.Today, At("2026-11-08 12:00:00"))[10];
 
-        Assert.Equal(1, deck.Games);
-        Assert.Equal(470, deck.XpPerHour, 0);
         Assert.Equal(1, hour.Games);
         Assert.Equal(360, hour.XpSeconds, 2);
         Assert.Equal(470, hour.XpPerHour!.Value, 0);

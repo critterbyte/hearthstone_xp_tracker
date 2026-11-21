@@ -48,7 +48,6 @@ class.ROGUE=Ladro
 class.SHAMAN=Sciamano
 class.WARLOCK=Stregone
 class.WARRIOR=Guerriero
-deck.none=Nessun mazzo registrato
 
 # Dashboard: update hint
 update.available=È disponibile la versione {0}.

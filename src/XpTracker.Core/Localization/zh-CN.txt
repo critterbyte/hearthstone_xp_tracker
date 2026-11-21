@@ -48,7 +48,6 @@ class.ROGUE=潜行者
 class.SHAMAN=萨满祭司
 class.WARLOCK=术士
 class.WARRIOR=战士
-deck.none=未记录套牌
 
 # Dashboard: update hint
 update.available=版本 {0} 已发布。

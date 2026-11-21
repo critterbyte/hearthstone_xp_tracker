@@ -117,7 +117,7 @@ Install guide in other languages:
   简体中文         $docs/zh-CN/INSTALL.md
 
 License: MIT, see LICENSE.txt. Included libraries: see THIRD-PARTY-NOTICES.txt.
-This is an unofficial program. It is not affiliated with Blizzard Entertainment or HearthSim.
+This is an unofficial program. It is not affiliated with Blizzard Entertainment.
 "@
 [IO.File]::WriteAllText((Join-Path $package 'INSTALL.txt'), $install.Replace("`r`n", "`n").Replace("`n", "`r`n"), (New-Object Text.UTF8Encoding($false)))
 

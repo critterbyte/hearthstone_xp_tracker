@@ -8,9 +8,7 @@
 - Windows 10 u 11. El tracker necesita .NET Framework 4.7.2, que viene incluido en ambos.
 - Hearthstone
 
-No hace falta Hearthstone Deck Tracker (HDT). El tracker funciona por sí solo o junto a HDT.
-
-El tracker lee el `Power.log` de Hearthstone. Hearthstone solo escribe este log si está activado en su propio archivo de ajustes, `%LOCALAPPDATA%\Blizzard\Hearthstone\log.config`. El tracker lo activa la primera vez que se inicia: añade la sección `[Power]` y no cambia nada más del archivo. Antes de ese cambio guarda una copia del archivo antiguo como `log.config.bak`. Si tienes HDT instalado, el log ya está activado.
+El tracker lee el `Power.log` de Hearthstone. Hearthstone solo escribe este log si está activado en su propio archivo de ajustes, `%LOCALAPPDATA%\Blizzard\Hearthstone\log.config`. El tracker lo activa la primera vez que se inicia: añade la sección `[Power]` y no cambia nada más del archivo. Antes de ese cambio guarda una copia del archivo antiguo como `log.config.bak`.
 
 <a id="install"></a>
 ## Instalar
@@ -74,7 +72,7 @@ El tracker guarda tus datos en `%APPDATA%\HearthstoneXpTracker`:
 
 Elimina también esta carpeta si no quieres conservar los datos.
 
-La sección `[Power]` se queda en `log.config`, porque otras herramientas como HDT también la usan. Solo hace que Hearthstone escriba su log. Para dejar el archivo como estaba antes, sustituye `log.config` por `log.config.bak`.
+La sección `[Power]` se queda en `log.config`, porque otros programas también pueden usarla. Solo hace que Hearthstone escriba su log. Para dejar el archivo como estaba antes, sustituye `log.config` por `log.config.bak`.
 
 <a id="troubleshooting"></a>
 ## Solución de problemas

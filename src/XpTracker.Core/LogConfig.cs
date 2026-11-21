@@ -23,7 +23,7 @@ public enum LogConfigResult
 /// logging configuration.
 /// </summary>
 /// <remarks>
-/// Other tools such as Hearthstone Deck Tracker write their sections into the same file, so only the [Power] section
+/// Other tools write their sections into the same file, so only the [Power] section
 /// is touched and only the values the tracker needs are set. Everything else stays as it is, including comments,
 /// order and line endings. Hearthstone reads the file when it starts.
 /// </remarks>
@@ -40,7 +40,7 @@ public static class LogConfig
         ("Verbose", "True"),
     };
 
-    // Written only with a new section, as Hearthstone Deck Tracker does; existing values are kept.
+    // Written only with a new section; existing values are kept.
     private static readonly (string Key, string Value)[] NewSectionOnly =
     {
         ("ConsolePrinting", "False"),

@@ -48,7 +48,6 @@ class.ROGUE=Schurke
 class.SHAMAN=Schamane
 class.WARLOCK=Hexenmeister
 class.WARRIOR=Krieger
-deck.none=Kein Deck erfasst
 
 # Dashboard: update hint
 update.available=Version {0} ist verfügbar.
