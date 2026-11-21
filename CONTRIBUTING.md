@@ -119,18 +119,25 @@ The user guides `INSTALL.md`, `USAGE.md` and `FARMING.md` are translated in `doc
 - Releases are tagged `vX.Y.Z`. The update check only recognizes tags in exactly this form.
 - Until 1.0, every release is published as a pre-release.
 
+Releases are built on GitHub, not on a developer's computer. The ZIP of every release can be traced back to the commit it was built from.
+
 Steps:
 
-1. Set the version in `Directory.Build.props` and move the *Unreleased* entries in `CHANGELOG.md` under the new version with the date. Merge this into `main`.
-2. Run the manual checks in [docs/TESTING.md](docs/TESTING.md).
-3. On an up-to-date `main` without uncommitted changes, run:
+1. Set the version in `Directory.Build.props`, move the *Unreleased* entries in `CHANGELOG.md` under a new heading `## [X.Y.Z] - YYYY-MM-DD` and add its link at the end of the file. Merge this into `main`.
+2. Run the manual checks in [docs/TESTING.md](docs/TESTING.md). The CI job `app` of the pull request offers the ZIP as an artifact; `.\release.ps1` builds the same ZIP locally.
+3. Tag the merged commit on `main` and push the tag:
 
    ```powershell
-   .\release.ps1
+   git switch main
+   git pull
+   git tag vX.Y.Z
+   git push origin vX.Y.Z
    ```
 
-   The script builds and tests, checks that the EXE and `XpTracker.Core.dll` carry the version, and creates `artifacts\HearthstoneXpTracker-X.Y.Z.zip` with a `.sha256` checksum file. The ZIP contains only the folder `HearthstoneXpTracker` with the app, its libraries, `INSTALL.txt`, `LICENSE.txt` and `THIRD-PARTY-NOTICES.txt`. It stops if any other file would be included. The CI job `app` builds the same ZIP for every pull request.
-4. Tag the release and publish it on GitHub with the ZIP. Put the changelog entry and the SHA-256 checksum in the release notes. The script prints the commands.
+4. The workflow `release` (`.github/workflows/release.yml`) starts. It stops unless the tag matches the version in `Directory.Build.props`, the commit is on `main` and `CHANGELOG.md` has a section for the version. Then it runs `release.ps1`, which builds, tests, checks that the EXE and `XpTracker.Core.dll` carry the version, and creates the ZIP with only the folder `HearthstoneXpTracker` (the app, its libraries, `INSTALL.txt`, `LICENSE.txt` and `THIRD-PARTY-NOTICES.txt`) and its `.sha256` file. It records the build provenance of the ZIP with GitHub's artifact attestations and creates a **draft** release with the ZIP, the checksum file and the changelog section as notes, followed by the checksum and the commit.
+5. Open the draft on the Releases page, add what users need to know (for example how to update) and publish it. Until 1.0, the draft is marked as a pre-release.
+
+If the workflow fails, delete the tag (`git push --delete origin vX.Y.Z` and `git tag -d vX.Y.Z`), fix the cause in a pull request and tag again.
 
 ## License
 

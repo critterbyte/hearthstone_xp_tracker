@@ -23,6 +23,7 @@ The tracker becomes a stand-alone Windows program. Hearthstone Deck Tracker (HDT
 - "Shortcut in the Start menu" in the dashboard, and a one-time question at the first start whether to add the tracker to the Start menu. If the tracker's folder was moved, the next start points the shortcut and the autostart entry to the new place.
 - `THIRD-PARTY-NOTICES.txt` with the licenses of LiveCharts and Newtonsoft.Json, which the ZIP now contains.
 - A CI job on Windows that builds the app, runs the tests and builds the release ZIP for every pull request.
+- Releases are built on GitHub: pushing a tag `vX.Y.Z` starts the workflow `release`, which checks the version and the changelog, builds the ZIP, records its build provenance and creates a draft release. `gh attestation verify` shows that a ZIP was built from the tagged commit (see `SECURITY.md`).
 - Community files: `CODE_OF_CONDUCT.md` (Contributor Covenant 2.1), `SECURITY.md` (private vulnerability reports through GitHub, no public issues) and a pull request template with the checklist from `CONTRIBUTING.md`. Reports go through GitHub's private reporting, so no e-mail address is published.
 
 ### Changed

@@ -34,3 +34,13 @@ Examples of what counts as a security problem:
 - A crafted `Power.log`, `hs_games.csv`, `settings.ini` or `log.config` makes the tracker run code or write files outside its data folder and `log.config`.
 
 Not in scope: bugs in Hearthstone itself (please report those to Blizzard), and wrong XP values (please open a normal issue).
+
+## Checking a release
+
+From version 0.2.0 on, every release is built on GitHub by the workflow `release` from a tagged commit on `main`. The release notes name that commit. To check that a downloaded ZIP was built there and not changed since, install the [GitHub CLI](https://cli.github.com/) and run:
+
+```
+gh attestation verify HearthstoneXpTracker-X.Y.Z.zip -R critterbyte/hearthstone_xp_tracker
+```
+
+The SHA-256 checksum in the release notes and in the `.sha256` file only shows that the download is complete and unchanged.
