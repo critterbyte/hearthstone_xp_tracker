@@ -55,7 +55,7 @@ XP = round(xpSeconds × rate)
 
 | Mode | Win | Loss |
 |---|---:|---:|
-| Ranked (Standard and Wild) | 0.13054 XP/s (470 XP/h) | 0.0932 XP/s (336 XP/h) |
+| Ranked (Standard and Wild) | 0.130515 XP/s (470 XP/h) | 0.0932 XP/s (336 XP/h) |
 | Casual, Tavern Brawl and Arena | 0.0932 XP/s (336 XP/h) | 0.0666 XP/s (240 XP/h) |
 
 Games with less than 60 seconds of XP time give no XP. The rates were measured without a Tavern Pass. With the pass, the tracker adds its boost before rounding; this is calculated, not measured, because the project follows a strict free-to-play policy and buys no pass. See [docs/FORMULA.md](docs/FORMULA.md) for all rules, the measurements and the sources.

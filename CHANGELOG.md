@@ -27,6 +27,7 @@ The tracker becomes a stand-alone Windows program. Hearthstone Deck Tracker (HDT
 
 ### Changed
 
+- Ranked win rate changed from 0.13054 to 0.130515 XP/s. A 440.53-second win gave 57 XP, but 0.13054 calculated 58. The measured range is now 0.130505 to 0.130525 XP/s (103 wins), and the Ranked loss range 0.09317 to 0.093216 XP/s (111 losses). When the dashboard opens, the XP of games already in the history is calculated again with the current rate.
 - Game history, settings and a small error log are stored in `%APPDATA%\HearthstoneXpTracker`.
 - The update check runs when the tracker starts; the option is called "Check for updates when the tracker starts".
 - The release ZIP contains the app and its libraries and can be extracted into any folder. `release.ps1` and `build.ps1` no longer need an HDT installation.

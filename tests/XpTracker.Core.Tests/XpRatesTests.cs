@@ -11,8 +11,10 @@ public class XpRatesTests
     [InlineData(417.37, XpRates.RankedWin, 54)]
     [InlineData(431.44, XpRates.RankedWin, 56)]
     [InlineData(425.27, XpRates.RankedWin, 56)] // lower limit of the win rate: 0.1305 gave 55
+    [InlineData(440.53, XpRates.RankedWin, 57)] // upper limit of the win rate: 0.13054 gave 58
     [InlineData(412.58, XpRates.RankedLoss, 38)]
-    [InlineData(498.78, XpRates.RankedLoss, 46)] // upper limit of the loss rate: 0.09323 would give 47
+    [InlineData(498.78, XpRates.RankedLoss, 46)] // 0.09323 would give 47
+    [InlineData(659.76, XpRates.RankedLoss, 61)] // upper limit of the loss rate: 0.093217 would give 62
     [InlineData(359.56, XpRates.RankedLoss, 34)] // lower limit of the loss rate: 0.09312 would give 33
     [InlineData(933.37, XpRates.RankedLoss, 87)]
     [InlineData(1037.00, XpRates.CasualWin, 97)]
