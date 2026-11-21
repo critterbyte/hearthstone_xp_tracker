@@ -55,6 +55,11 @@ update.available=Version {0} ist verfügbar.
 update.availableInstalled=Version {0} ist verfügbar (installiert: {1}).
 update.openPage=Downloadseite öffnen
 
+# Dashboard: one-time question at the first start
+startMenu.question=Den Tracker zum Startmenü hinzufügen, damit du ihn später wiederfindest?
+startMenu.yes=Hinzufügen
+startMenu.no=Nein, danke
+
 # Dashboard: toolbar and options
 period.session=Sitzung
 period.today=Heute
@@ -74,6 +79,10 @@ option.eventHint=Läuft gerade ein Hearthstone-Event? Dann oben anhaken, um Even
 option.damage=Schaden im Overlay anzeigen
 option.damageTip=Zeigt die Zeilen „Gesamtschaden:“ und „Heldenschaden:“: den Schaden, den deine Seite dem Gegner in der laufenden oder letzten Partie zugefügt hat.
 option.updates=Beim Start des Trackers nach Updates suchen
+option.autostart=Mit Windows starten
+option.autostartTip=Startet den Tracker beim Anmelden an Windows im Infobereich; das Dashboard bleibt geschlossen.
+option.startMenu=Verknüpfung im Startmenü
+option.startMenuTip=Fügt „Hearthstone XP Tracker“ zum Startmenü hinzu. Wenn du den Ordner des Trackers verschiebst, starte ihn einmal am neuen Ort.
 tavern.check=Gasthauspass (EP-Bonus)
 tavern.checkTip=Einschalten, wenn du den Gasthauspass der aktuellen Erweiterung besitzt. Trage darunter deine Stufe im Belohnungsweg ein: Der Bonus beträgt 10 %, ab Stufe 20 15 %, ab Stufe 70 20 % (laut Hearthstone-Wiki, nicht gemessen).
 tavern.level=Stufe

@@ -30,7 +30,7 @@ Hearthstone Deck Tracker(HDT)는 필요하지 않습니다. 트래커는 단독�
 
 다음 게임의 첫 턴에 오버레이가 나타납니다. 표시되는 내용은 [USAGE.md](USAGE.md)를 참고하세요.
 
-모든 파일은 한 폴더에 함께 있어야 합니다. 트래커를 더 쉽게 시작하려면 `HearthstoneXpTracker.exe`를 마우스 오른쪽 버튼으로 클릭하고 *시작 화면에 고정*(*Pin to Start*) 또는 *보내기 → 바탕 화면에 바로 가기 만들기*(*Send to → Desktop (create shortcut)*)를 선택하세요.
+모든 파일은 한 폴더에 함께 있어야 합니다. 처음 실행하면 대시보드 위쪽의 막대에서 트래커를 시작 메뉴에 추가할지 한 번 묻습니다. Windows에 로그인할 때 트래커를 자동으로 실행하려면 대시보드에서 "Windows 시작 시 실행"에 체크하세요. 나중에 폴더를 옮겼다면 새 위치에서 트래커를 한 번 실행하세요. 그러면 시작 메뉴 바로 가기와 자동 실행 항목이 새 위치로 바뀝니다.
 
 각 릴리스에는 ZIP의 SHA-256 체크섬이 적혀 있습니다. 내려받은 파일을 확인하려면 PowerShell에서 `Get-FileHash HearthstoneXpTracker-0.2.0.zip`을 실행하고 결과를 비교하세요.
 
@@ -60,8 +60,9 @@ Hearthstone Deck Tracker(HDT)는 필요하지 않습니다. 트래커는 단독�
 <a id="uninstall"></a>
 ## 제거
 
-1. 트래커를 종료합니다. 금색 "XP" 아이콘을 마우스 오른쪽 버튼으로 클릭하고 "종료"를 선택합니다.
-2. 압축 해제한 `HearthstoneXpTracker` 폴더를 삭제합니다.
+1. 대시보드에서 "Windows 시작 시 실행"과 "시작 메뉴 바로 가기"의 체크를 해제합니다.
+2. 트래커를 종료합니다. 금색 "XP" 아이콘을 마우스 오른쪽 버튼으로 클릭하고 "종료"를 선택합니다.
+3. 압축 해제한 `HearthstoneXpTracker` 폴더를 삭제합니다.
 
 트래커는 데이터를 `%APPDATA%\HearthstoneXpTracker`에 저장합니다.
 

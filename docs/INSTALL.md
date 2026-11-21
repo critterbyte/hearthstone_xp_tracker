@@ -26,7 +26,7 @@ If Hearthstone was already running at the first start, restart it once. Hearthst
 
 The overlay appears with the first turn of your next game. See [USAGE.md](USAGE.md) for what it shows.
 
-All files must stay together in one folder. To start the tracker more easily, right-click `HearthstoneXpTracker.exe` and choose *Pin to Start* or *Send to → Desktop (create shortcut)*.
+All files must stay together in one folder. At the first start, a bar at the top of the dashboard asks once whether to add the tracker to the Start menu. To start the tracker automatically when you sign in to Windows, tick "Start with Windows" in the dashboard. If you move the folder later, start the tracker once from the new place; it then updates the Start menu shortcut and the autostart entry.
 
 Each release lists the SHA-256 checksum of the ZIP. To check your download, run `Get-FileHash HearthstoneXpTracker-0.2.0.zip` in PowerShell and compare the result.
 
@@ -53,8 +53,9 @@ To go back to an older version, do the same with its ZIP.
 
 ## Uninstall
 
-1. Exit the tracker: right-click the gold "XP" icon and choose "Exit".
-2. Delete the folder `HearthstoneXpTracker` you extracted.
+1. In the dashboard, clear "Start with Windows" and "Shortcut in the Start menu".
+2. Exit the tracker: right-click the gold "XP" icon and choose "Exit".
+3. Delete the folder `HearthstoneXpTracker` you extracted.
 
 The tracker keeps your data in `%APPDATA%\HearthstoneXpTracker`:
 

@@ -55,6 +55,11 @@ update.available=版本 {0} 已推出。
 update.availableInstalled=版本 {0} 已推出（已安裝：{1}）。
 update.openPage=開啟下載頁面
 
+# Dashboard: one-time question at the first start
+startMenu.question=要將追蹤器新增到 [開始] 功能表，方便日後找到嗎？
+startMenu.yes=新增
+startMenu.no=不用了
+
 # Dashboard: toolbar and options
 period.session=本次工作階段
 period.today=今天
@@ -74,6 +79,10 @@ option.eventHint=爐石戰記正在進行事件嗎？勾選上方的方塊即可
 option.damage=在覆蓋層顯示傷害
 option.damageTip=顯示「總傷害：」與「英雄傷害：」兩行：你這一方在本場或上一場對戰中對對手造成的傷害。
 option.updates=啟動追蹤器時檢查更新
+option.autostart=隨 Windows 啟動
+option.autostartTip=登入 Windows 時在通知區域啟動追蹤器，不開啟儀表板。
+option.startMenu=[開始] 功能表捷徑
+option.startMenuTip=將「Hearthstone XP Tracker」新增到 [開始] 功能表。如果移動了追蹤器的資料夾，請從新位置啟動一次。
 tavern.check=旅店貴賓證（經驗值加成）
 tavern.checkTip=如果你擁有目前資料片的旅店貴賓證，請開啟此項，並在下方輸入你的獎勵軌跡等級：加成為 10%，等級 20 起為 15%，等級 70 起為 20%（依據爐石戰記 Wiki，未經實測）。
 tavern.level=等級

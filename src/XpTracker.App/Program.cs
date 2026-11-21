@@ -1,23 +1,32 @@
 using System;
 using System.Threading;
 using System.Windows;
+using XpTracker.Core;
 
 namespace XpTracker.App;
 
 /// <summary>
 /// Starts the app. Only one instance runs: starting it again opens the dashboard of the running one.
 /// </summary>
+/// <remarks>
+/// Started by Windows at sign-in (argument <c>--autostart</c>), the app shows only its notification area icon.
+/// </remarks>
 internal static class Program
 {
     private const string InstanceName = "HearthstoneXpTracker.SingleInstance";
 
     [STAThread]
-    public static int Main()
+    public static int Main(string[] args)
     {
+        var autostart = WindowsStartup.IsAutostart(args);
         using var mutex = new Mutex(initiallyOwned: true, InstanceName + ".Mutex", out var firstInstance);
         if (!firstInstance)
         {
-            SignalRunningInstance();
+            if (!autostart)
+            {
+                SignalRunningInstance();
+            }
+
             return 0;
         }
 
@@ -36,7 +45,11 @@ internal static class Program
         app.Startup += (_, _) =>
         {
             tracker.Start();
-            tracker.OpenDashboard();
+            if (!autostart)
+            {
+                tracker.OpenDashboard();
+            }
+
             wait = ThreadPool.RegisterWaitForSingleObject(
                 showDashboard,
                 (_, _) => app.Dispatcher.BeginInvoke(new Action(tracker.OpenDashboard)),

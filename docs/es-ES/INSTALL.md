@@ -30,7 +30,7 @@ Si Hearthstone ya estaba abierto la primera vez que iniciaste el tracker, reiní
 
 El overlay aparece con el primer turno de tu próxima partida. Consulta [USAGE.md](USAGE.md) para ver qué muestra.
 
-Todos los archivos deben estar juntos en una misma carpeta. Para iniciar el tracker más fácilmente, haz clic con el botón derecho en `HearthstoneXpTracker.exe` y elige *Anclar a Inicio* (*Pin to Start*) o *Enviar a → Escritorio (crear acceso directo)* (*Send to → Desktop (create shortcut)*).
+Todos los archivos deben quedarse juntos en una carpeta. En el primer inicio, una barra en la parte superior del panel pregunta una vez si quieres añadir el tracker al menú Inicio. Para que el tracker se inicie automáticamente al iniciar sesión en Windows, marca "Iniciar con Windows" en el panel. Si más adelante mueves la carpeta, abre el tracker una vez desde la nueva ubicación; así actualiza el acceso directo del menú Inicio y la entrada de inicio automático.
 
 Cada versión indica la suma de comprobación SHA-256 del ZIP. Para comprobar tu descarga, ejecuta `Get-FileHash HearthstoneXpTracker-0.2.0.zip` en PowerShell y compara el resultado.
 
@@ -60,8 +60,9 @@ Para volver a una versión anterior, haz lo mismo con su ZIP.
 <a id="uninstall"></a>
 ## Desinstalar
 
-1. Cierra el tracker: haz clic con el botón derecho en el icono dorado "XP" y elige "Salir".
-2. Elimina la carpeta `HearthstoneXpTracker` que descomprimiste.
+1. En el panel, desmarca "Iniciar con Windows" y "Acceso directo en el menú Inicio".
+2. Cierra el tracker: haz clic con el botón derecho en el icono dorado "XP" y elige "Salir".
+3. Elimina la carpeta `HearthstoneXpTracker` que descomprimiste.
 
 El tracker guarda tus datos en `%APPDATA%\HearthstoneXpTracker`:
 

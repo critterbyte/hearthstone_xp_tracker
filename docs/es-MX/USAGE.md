@@ -114,6 +114,8 @@ Si cierras el panel, el tracker y el overlay siguen funcionando. Para cerrar el 
 | "Nivel" con "−", un número y "+" | Tu nivel en la Senda de recompensas. Haz clic en "−" o "+", o escribe el número. La línea de abajo muestra la bonificación y el siguiente paso, por ejemplo "10 % de bonificación de EXP, 2 niveles para 15 %". La bonificación es del 10 %, desde el nivel 20 del 15 % y desde el nivel 70 del 20 % (consulta [FORMULA.md](../FORMULA.md#tavern-pass)). Actualiza el nivel cuando pases el nivel 20 o el 70. |
 | "Mostrar el daño en el overlay" | Muestra u oculta las filas "Daño total:" y "Daño al héroe:". Activado de forma predeterminada. |
 | "Buscar actualizaciones al iniciar el tracker" | Activa o desactiva la búsqueda de actualizaciones. Consulta [Privacidad](#privacy). |
+| "Iniciar con Windows" | Inicia el tracker al iniciar sesión en Windows. Entonces solo aparece en el área de notificación; haz clic en el ícono para abrir el panel. Desactivado de forma predeterminada. También puedes desactivarlo en el Administrador de tareas, en *Aplicaciones de arranque* (*Startup apps*). |
+| "Acceso directo en el menú Inicio" | Agrega "Hearthstone XP Tracker" al menú Inicio o lo quita. En el primer inicio, una barra en la parte superior del panel lo pregunta una vez. |
 
 Una partida terminada aparece sola en el panel abierto. No necesitas hacer clic en "Actualizar".
 

@@ -30,7 +30,7 @@
 
 覆蓋層會在你下一場對戰的第一個回合出現。它顯示哪些內容，請見 [USAGE.md](USAGE.md)。
 
-所有檔案都必須放在同一個資料夾中。為了更方便地啟動追蹤器，可以在 `HearthstoneXpTracker.exe` 上按右鍵，選擇 *釘選到開始畫面*（*Pin to Start*）或 *傳送到 → 桌面 (建立捷徑)*（*Send to → Desktop (create shortcut)*）。
+所有檔案都必須放在同一個資料夾中。第一次啟動時，儀表板上方的提示列會詢問一次是否將追蹤器新增到 [開始] 功能表。若要在登入 Windows 時自動啟動追蹤器，請在儀表板中勾選「隨 Windows 啟動」。如果之後移動了資料夾，請從新位置啟動一次追蹤器，它會更新 [開始] 功能表捷徑與自動啟動項目。
 
 每個版本都會列出 ZIP 檔的 SHA-256 檢查碼。要檢查你下載的檔案，請在 PowerShell 中執行 `Get-FileHash HearthstoneXpTracker-0.2.0.zip`，並比對結果。
 
@@ -60,8 +60,9 @@
 <a id="uninstall"></a>
 ## 解除安裝
 
-1. 結束追蹤器：在金色的「XP」圖示上按右鍵，選擇「結束」。
-2. 刪除你解壓縮出來的 `HearthstoneXpTracker` 資料夾。
+1. 在儀表板中取消勾選「隨 Windows 啟動」與「[開始] 功能表捷徑」。
+2. 結束追蹤器：在金色的「XP」圖示上按右鍵，選擇「結束」。
+3. 刪除你解壓縮出來的 `HearthstoneXpTracker` 資料夾。
 
 追蹤器將你的資料儲存在 `%APPDATA%\HearthstoneXpTracker`：
 

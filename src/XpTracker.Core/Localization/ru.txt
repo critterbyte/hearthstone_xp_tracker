@@ -55,6 +55,11 @@ update.available=Доступна версия {0}.
 update.availableInstalled=Доступна версия {0} (установлена: {1}).
 update.openPage=Открыть страницу загрузки
 
+# Dashboard: one-time question at the first start
+startMenu.question=Добавить трекер в меню «Пуск», чтобы потом легко его найти?
+startMenu.yes=Добавить
+startMenu.no=Нет, спасибо
+
 # Dashboard: toolbar and options
 period.session=Сеанс
 period.today=Сегодня
@@ -74,6 +79,10 @@ option.eventHint=Сейчас идёт событие Hearthstone? Отметь�
 option.damage=Показывать урон в оверлее
 option.damageTip=Показывает строки «Урон всего:» и «Урон герою:»: урон, который ваша сторона нанесла противнику в текущем или последнем матче.
 option.updates=Проверять обновления при запуске трекера
+option.autostart=Запускать вместе с Windows
+option.autostartTip=Запускает трекер в области уведомлений при входе в Windows; панель не открывается.
+option.startMenu=Ярлык в меню «Пуск»
+option.startMenuTip=Добавляет «Hearthstone XP Tracker» в меню «Пуск». Если вы переместите папку трекера, запустите его один раз из нового места.
 tavern.check=Пропуск завсегдатая (бонус к опыту)
 tavern.checkTip=Включите, если у вас есть Пропуск завсегдатая текущего дополнения. Укажите ниже свой уровень на Ленте наград: бонус составляет 10%, с 20-го уровня 15%, с 70-го уровня 20% (по данным вики Hearthstone, не измерено).
 tavern.level=Уровень

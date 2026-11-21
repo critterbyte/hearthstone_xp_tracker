@@ -30,7 +30,7 @@
 
 叠加层会在你下一局对局的第一个回合出现。它显示哪些内容，请参阅 [USAGE.md](USAGE.md)。
 
-所有文件都必须放在同一个文件夹中。为了更方便地启动追踪器，可以右键单击 `HearthstoneXpTracker.exe`，选择 *固定到“开始”屏幕*（*Pin to Start*）或 *发送到 → 桌面快捷方式*（*Send to → Desktop (create shortcut)*）。
+所有文件都必须放在同一个文件夹中。首次启动时，面板顶部的提示栏会询问一次是否将追踪器添加到“开始”菜单。若要在登录 Windows 时自动启动追踪器，请在面板中勾选“随 Windows 启动”。如果以后移动了文件夹，请从新位置启动一次追踪器，它会更新“开始”菜单快捷方式和自动启动项。
 
 每个版本都会列出 ZIP 文件的 SHA-256 校验和。要检查你下载的文件，请在 PowerShell 中运行 `Get-FileHash HearthstoneXpTracker-0.2.0.zip`，并比对结果。
 
@@ -60,8 +60,9 @@
 <a id="uninstall"></a>
 ## 卸载
 
-1. 退出追踪器：右键单击金色的“XP”图标，选择“退出”。
-2. 删除你解压出来的 `HearthstoneXpTracker` 文件夹。
+1. 在面板中取消勾选“随 Windows 启动”和“开始菜单快捷方式”。
+2. 退出追踪器：右键单击金色的“XP”图标，选择“退出”。
+3. 删除你解压出来的 `HearthstoneXpTracker` 文件夹。
 
 追踪器将你的数据保存在 `%APPDATA%\HearthstoneXpTracker`：
 

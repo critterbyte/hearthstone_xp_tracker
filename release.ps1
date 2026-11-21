@@ -76,9 +76,11 @@ Install
 3. Start HearthstoneXpTracker.exe in that folder.
    If Windows shows "Windows protected your PC", choose "More info" > "Run anyway".
    The program is not signed yet, so Windows does not know it.
-4. The dashboard opens. Closing it keeps the tracker running: the gold "XP" icon in the
+4. The dashboard opens and asks once whether to add the tracker to the Start menu.
+   Closing it keeps the tracker running: the gold "XP" icon in the
    notification area (bottom right, maybe behind the ^ arrow) opens it again.
    During a game the overlay appears over Hearthstone.
+   To start the tracker with Windows, tick "Start with Windows" in the dashboard.
 If Hearthstone was already running at the first start, restart it once,
 so that it writes the game log the tracker reads.
 
@@ -92,7 +94,8 @@ Exit the tracker (right-click the icon > Exit) and extract the new ZIP into the 
 replacing the old files. Your game history and settings are kept.
 
 Uninstall
-Exit the tracker and delete its folder.
+In the dashboard, clear "Start with Windows" and "Shortcut in the Start menu".
+Then exit the tracker and delete its folder.
 The game history and settings are in %APPDATA%\HearthstoneXpTracker; delete it to remove them too.
 
 Documentation: https://github.com/critterbyte/hearthstone_xp_tracker

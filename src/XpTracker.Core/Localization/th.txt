@@ -55,6 +55,11 @@ update.available=มีเวอร์ชัน {0} ให้ใช้งาน
 update.availableInstalled=มีเวอร์ชัน {0} ให้ใช้งาน (ติดตั้งอยู่: {1})
 update.openPage=เปิดหน้าดาวน์โหลด
 
+# Dashboard: one-time question at the first start
+startMenu.question=เพิ่มตัวติดตามลงในเมนูเริ่มเพื่อให้หาเจอได้ง่ายในภายหลังหรือไม่?
+startMenu.yes=เพิ่ม
+startMenu.no=ไม่ ขอบคุณ
+
 # Dashboard: toolbar and options
 period.session=เซสชัน
 period.today=วันนี้
@@ -74,6 +79,10 @@ option.eventHint=มีกิจกรรม Hearthstone อยู่หรื�
 option.damage=แสดงความเสียหายบนโอเวอร์เลย์
 option.damageTip=แสดงแถว "ความเสียหายรวม:" และ "ความเสียหายต่อฮีโร่:" คือความเสียหายที่ฝั่งของคุณทำต่อคู่แข่งในเกมปัจจุบันหรือเกมล่าสุด
 option.updates=ตรวจหาอัปเดตเมื่อเริ่มตัวติดตาม
+option.autostart=เริ่มพร้อม Windows
+option.autostartTip=เริ่มตัวติดตามในพื้นที่แจ้งเตือนเมื่อคุณลงชื่อเข้าใช้ Windows โดยไม่เปิดแดชบอร์ด
+option.startMenu=ทางลัดในเมนูเริ่ม
+option.startMenuTip=เพิ่ม "Hearthstone XP Tracker" ลงในเมนูเริ่ม หากคุณย้ายโฟลเดอร์ของตัวติดตาม ให้เปิดจากตำแหน่งใหม่หนึ่งครั้ง
 tavern.check=ทาเวิร์นพาส (โบนัส XP)
 tavern.checkTip=เปิดไว้หากคุณมีทาเวิร์นพาสของส่วนเสริมปัจจุบัน ใส่เลเวลแทร็ครางวัลของคุณด้านล่าง: โบนัสคือ 10% ตั้งแต่เลเวล 20 เป็น 15% และตั้งแต่เลเวล 70 เป็น 20% (ตาม Hearthstone Wiki ยังไม่ได้วัด)
 tavern.level=เลเวล

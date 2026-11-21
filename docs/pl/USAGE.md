@@ -114,6 +114,8 @@ Zamknięcie panelu nie zatrzymuje trackera ani nakładki. Aby zakończyć dział
 | „Poziom” z „−”, liczbą i „+” | Twój poziom na Ścieżce nagród. Kliknij „−” lub „+” albo wpisz liczbę. Wiersz poniżej pokazuje premię i następny próg, na przykład „10% premii PD, jeszcze 2 poz. do 15%”. Premia wynosi 10%, od poziomu 20 – 15%, a od poziomu 70 – 20% (zobacz [FORMULA.md](../FORMULA.md#tavern-pass)). Zaktualizuj poziom, gdy przekroczysz poziom 20 lub 70. |
 | „Pokaż obrażenia na nakładce” | Pokazuje lub ukrywa wiersze „Obrażenia łącznie:” i „Obrażenia bohatera:”. Domyślnie włączone. |
 | „Sprawdzaj aktualizacje przy starcie trackera” | Włącza lub wyłącza sprawdzanie aktualizacji. Zobacz [Prywatność](#privacy). |
+| „Uruchamiaj z systemem Windows” | Uruchamia tracker po zalogowaniu do Windows. Pojawia się wtedy tylko w obszarze powiadomień; kliknij ikonę, aby otworzyć panel. Domyślnie wyłączone. Możesz to też wyłączyć w Menedżerze zadań w sekcji *Aplikacje autostartu* (*Startup apps*). |
+| „Skrót w menu Start” | Dodaje „Hearthstone XP Tracker” do menu Start albo go usuwa. Przy pierwszym uruchomieniu pasek u góry panelu raz o to zapyta. |
 
 Zakończona gra sama pojawia się w otwartym panelu. Nie musisz klikać „Odśwież”.
 

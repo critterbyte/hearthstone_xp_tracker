@@ -114,6 +114,8 @@ Wenn du das Dashboard schließt, laufen der Tracker und das Overlay weiter. Um d
 | „Stufe“ mit „−“, einer Zahl und „+“ | Deine Stufe im Belohnungsweg. Klicke auf „−“ oder „+“ oder tippe die Zahl ein. Die Zeile darunter zeigt den Bonus und die nächste Schwelle, zum Beispiel „10 % EP-Bonus, noch 2 Stufen bis 15 %“. Der Bonus beträgt 10 %, ab Stufe 20 15 % und ab Stufe 70 20 % (siehe [FORMULA.md](../FORMULA.md#tavern-pass)). Passe die Stufe an, wenn du Stufe 20 oder 70 erreichst. |
 | „Schaden im Overlay anzeigen“ | Die Zeilen „Gesamtschaden:“ und „Heldenschaden:“ ein- oder ausblenden. Standardmäßig an. |
 | „Beim Start des Trackers nach Updates suchen“ | Die Update-Prüfung ein- oder ausschalten. Siehe [Datenschutz](#privacy). |
+| „Mit Windows starten“ | Den Tracker beim Anmelden an Windows starten. Er startet dann nur im Infobereich; ein Klick auf das Symbol öffnet das Dashboard. Standardmäßig aus. Ausschalten lässt es sich auch im Task-Manager unter *Autostart-Apps* (*Startup apps*). |
+| „Verknüpfung im Startmenü“ | „Hearthstone XP Tracker“ zum Startmenü hinzufügen oder daraus entfernen. Beim ersten Start fragt eine Leiste oben im Dashboard einmal danach. |
 
 Eine beendete Partie erscheint in einem offenen Dashboard von selbst. Du musst nicht auf „Aktualisieren“ klicken.
 

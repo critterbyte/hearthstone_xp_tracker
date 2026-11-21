@@ -114,6 +114,8 @@ Fechar o painel mantém o tracker e o overlay em execução. Para encerrar o tra
 | "Nível" com "−", um número e "+" | O seu nível na Trilha da Recompensa. Clique em "−" ou "+", ou digite o número. A linha abaixo mostra o bônus e o próximo degrau, por exemplo "10% de bônus de EXP, faltam 2 níveis para 15%". O bônus é de 10%, a partir do nível 20 de 15% e a partir do nível 70 de 20% (veja [FORMULA.md](../FORMULA.md#tavern-pass)). Atualize o nível quando passar do nível 20 ou 70. |
 | "Mostrar o dano no overlay" | Mostra ou oculta as linhas "Dano total:" e "Dano ao herói:". Ativado por padrão. |
 | "Procurar atualizações ao iniciar o tracker" | Liga ou desliga a verificação de atualizações. Veja [Privacidade](#privacy). |
+| "Iniciar com o Windows" | Inicia o tracker quando você entra no Windows. Ele aparece então só na área de notificação; clique no ícone para abrir o painel. Desativado por padrão. Também é possível desativá-lo no Gerenciador de Tarefas, em *Aplicativos de inicialização* (*Startup apps*). |
+| "Atalho no menu Iniciar" | Adiciona "Hearthstone XP Tracker" ao menu Iniciar ou o remove. Na primeira inicialização, uma barra no topo do painel pergunta isso uma vez. |
 
 Uma partida concluída aparece sozinha no painel aberto. Você não precisa clicar em "Atualizar".
 

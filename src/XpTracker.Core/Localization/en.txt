@@ -55,6 +55,11 @@ update.available=Version {0} is available.
 update.availableInstalled=Version {0} is available (installed: {1}).
 update.openPage=Open the download page
 
+# Dashboard: one-time question at the first start
+startMenu.question=Add the tracker to the Start menu, so you can find it again later?
+startMenu.yes=Add
+startMenu.no=No, thanks
+
 # Dashboard: toolbar and options
 period.session=Session
 period.today=Today
@@ -75,6 +80,10 @@ option.eventHint=Is a Hearthstone event running? Tick the box above to count eve
 option.damage=Show damage on the overlay
 option.damageTip=Shows the rows "Total Damage:" and "Hero Damage:": the damage your side dealt to the opponent in the current or last game.
 option.updates=Check for updates when the tracker starts
+option.autostart=Start with Windows
+option.autostartTip=Starts the tracker in the notification area when you sign in to Windows; the dashboard stays closed.
+option.startMenu=Shortcut in the Start menu
+option.startMenuTip=Adds "Hearthstone XP Tracker" to the Start menu. If you move the tracker's folder, start it once from the new place.
 tavern.check=Tavern Pass (XP boost)
 tavern.checkTip=Switch on if you own the Tavern Pass of the current expansion. Enter your rewards track level below: the boost is 10%, from level 20 on 15%, from level 70 on 20% (according to the Hearthstone Wiki, not measured yet).
 tavern.level=Level

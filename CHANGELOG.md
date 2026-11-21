@@ -19,6 +19,8 @@ The tracker becomes a stand-alone Windows program. Hearthstone Deck Tracker (HDT
 - The classes of both heroes are read from the `Power.log`, stored in the same form as HDT stored them.
 - The history and the settings of the HDT plugin are taken over: at every start, the games the tracker does not have yet are added from `%APPDATA%\HearthstoneDeckTracker\XpTracker\hs_games.csv`, and the settings are copied once. The plugin's files are only read.
 - A hint below "Event running (show event XP)" while it is off, because the tracker cannot tell when an event runs.
+- "Start with Windows" in the dashboard: the tracker starts at sign-in with its icon only, without opening the dashboard. It uses an entry for the current user (no administrator rights) that the Task Manager lists under *Startup apps*.
+- "Shortcut in the Start menu" in the dashboard, and a one-time question at the first start whether to add the tracker to the Start menu. If the tracker's folder was moved, the next start points the shortcut and the autostart entry to the new place.
 - `THIRD-PARTY-NOTICES.txt` with the licenses of LiveCharts and Newtonsoft.Json, which the ZIP now contains.
 - A CI job on Windows that builds the app, runs the tests and builds the release ZIP for every pull request.
 - Community files: `CODE_OF_CONDUCT.md` (Contributor Covenant 2.1), `SECURITY.md` (private vulnerability reports through GitHub, no public issues) and a pull request template with the checklist from `CONTRIBUTING.md`. Reports go through GitHub's private reporting, so no e-mail address is published.

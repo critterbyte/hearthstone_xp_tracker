@@ -106,6 +106,8 @@ Closing the dashboard keeps the tracker and the overlay running. To end the trac
 | "Level" with "−", a number and "+" | Your rewards track level. Click "−" or "+", or type the number. The line below shows the boost and the next step, for example "10% XP boost, 2 levels to 15%". The boost is 10%, from level 20 on 15% and from level 70 on 20% (see [FORMULA.md](FORMULA.md#tavern-pass)). Update the level when you pass level 20 or 70. |
 | "Show damage on the overlay" | Show or hide the rows "Total Damage:" and "Hero Damage:". On by default. |
 | "Check for updates when the tracker starts" | Turn the update check on or off. See [Privacy](#privacy). |
+| "Start with Windows" | Start the tracker when you sign in to Windows. It then starts in the notification area only; click the icon to open the dashboard. Off by default. You can also switch it off in the Task Manager under *Startup apps*. |
+| "Shortcut in the Start menu" | Add "Hearthstone XP Tracker" to the Start menu, or remove it. At the first start, a bar at the top of the dashboard asks once. |
 
 A finished game appears in an open dashboard on its own. You do not need to click "Refresh".
 

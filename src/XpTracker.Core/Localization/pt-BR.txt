@@ -55,6 +55,11 @@ update.available=A versão {0} está disponível.
 update.availableInstalled=A versão {0} está disponível (instalada: {1}).
 update.openPage=Abrir a página de download
 
+# Dashboard: one-time question at the first start
+startMenu.question=Adicionar o tracker ao menu Iniciar para encontrá-lo depois?
+startMenu.yes=Adicionar
+startMenu.no=Não, obrigado
+
 # Dashboard: toolbar and options
 period.session=Sessão
 period.today=Hoje
@@ -74,6 +79,10 @@ option.eventHint=Há um evento de Hearthstone ativo? Marque a caixa acima para c
 option.damage=Mostrar o dano no overlay
 option.damageTip=Mostra as linhas "Dano total:" e "Dano ao herói:": o dano que o seu lado causou ao oponente na partida atual ou na última.
 option.updates=Procurar atualizações ao iniciar o tracker
+option.autostart=Iniciar com o Windows
+option.autostartTip=Inicia o tracker na área de notificação quando você entra no Windows; o painel fica fechado.
+option.startMenu=Atalho no menu Iniciar
+option.startMenuTip=Adiciona "Hearthstone XP Tracker" ao menu Iniciar. Se você mover a pasta do tracker, abra-o uma vez a partir do novo local.
 tavern.check=Passe da Taverna (bônus de EXP)
 tavern.checkTip=Ative se você tem o Passe da Taverna da expansão atual. Informe abaixo o seu nível na Trilha da Recompensa: o bônus é de 10%, a partir do nível 20 de 15% e a partir do nível 70 de 20% (segundo a wiki do Hearthstone, não medido).
 tavern.level=Nível

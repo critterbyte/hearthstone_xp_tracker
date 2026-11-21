@@ -114,6 +114,8 @@ Fermer le tableau de bord laisse le tracker et l'overlay en marche. Pour arrête
 | « Niveau » avec « − », un nombre et « + » | Votre niveau dans le Parcours de récompenses. Cliquez sur « − » ou « + », ou saisissez le nombre. La ligne en dessous indique le bonus et le palier suivant, par exemple « 10 % de bonus d'EXP, encore 2 niveaux avant 15 % ». Le bonus est de 10 %, de 15 % à partir du niveau 20 et de 20 % à partir du niveau 70 (voir [FORMULA.md](../FORMULA.md#tavern-pass)). Mettez le niveau à jour quand vous passez le niveau 20 ou 70. |
 | « Afficher les dégâts dans l'overlay » | Affiche ou masque les lignes « Dégâts totaux : » et « Dégâts au héros : ». Activé par défaut. |
 | « Rechercher des mises à jour au démarrage du tracker » | Active ou désactive la recherche de mises à jour. Voir [Confidentialité](#privacy). |
+| « Lancer avec Windows » | Lancer le tracker à l'ouverture de session Windows. Il démarre alors uniquement dans la zone de notification ; cliquez sur l'icône pour ouvrir le tableau de bord. Désactivé par défaut. Vous pouvez aussi le désactiver dans le Gestionnaire des tâches, sous *Applications de démarrage* (*Startup apps*). |
+| « Raccourci dans le menu Démarrer » | Ajouter « Hearthstone XP Tracker » au menu Démarrer, ou l'en retirer. Au premier lancement, une barre en haut du tableau de bord le demande une seule fois. |
 
 Une partie terminée apparaît d'elle-même dans un tableau de bord ouvert. Inutile de cliquer sur « Actualiser ».
 

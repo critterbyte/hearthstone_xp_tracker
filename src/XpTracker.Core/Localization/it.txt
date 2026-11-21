@@ -55,6 +55,11 @@ update.available=È disponibile la versione {0}.
 update.availableInstalled=È disponibile la versione {0} (installata: {1}).
 update.openPage=Apri la pagina di download
 
+# Dashboard: one-time question at the first start
+startMenu.question=Aggiungere il tracker al menu Start per ritrovarlo più tardi?
+startMenu.yes=Aggiungi
+startMenu.no=No, grazie
+
 # Dashboard: toolbar and options
 period.session=Sessione
 period.today=Oggi
@@ -74,6 +79,10 @@ option.eventHint=È in corso un evento di Hearthstone? Spunta la casella qui sop
 option.damage=Mostra i danni nell'overlay
 option.damageTip=Mostra le righe "Danni totali:" e "Danni all'eroe:": i danni inflitti dalla tua parte all'avversario nella partita in corso o nell'ultima.
 option.updates=Cerca aggiornamenti all'avvio del tracker
+option.autostart=Avvia con Windows
+option.autostartTip=Avvia il tracker nell'area di notifica quando accedi a Windows; il pannello resta chiuso.
+option.startMenu=Collegamento nel menu Start
+option.startMenuTip=Aggiunge "Hearthstone XP Tracker" al menu Start. Se sposti la cartella del tracker, avvialo una volta dalla nuova posizione.
 tavern.check=Pass Locanda (bonus PE)
 tavern.checkTip=Attivalo se possiedi il Pass Locanda dell'espansione attuale. Inserisci qui sotto il tuo livello nel Percorso Ricompense: il bonus è del 10%, dal livello 20 del 15% e dal livello 70 del 20% (secondo la wiki di Hearthstone, non misurato).
 tavern.level=Livello

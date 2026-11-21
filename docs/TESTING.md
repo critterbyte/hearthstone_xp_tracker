@@ -10,6 +10,14 @@ The calculation engine is covered by unit tests. The points below need Windows a
 - [ ] A left click on the icon opens the dashboard; its menu shows "XP dashboard" (bold) and "Exit"; "Exit" ends the tracker and removes the icon and the overlay.
 - [ ] Closing the dashboard keeps the tracker and the overlay running.
 
+## Start menu and autostart
+
+- [ ] Without `StartMenuAsked` in `settings.ini`, the dashboard shows the bar "Add the tracker to the Start menu …" once. "Add" creates "Hearthstone XP Tracker" in the Start menu with the gold icon and ticks "Shortcut in the Start menu"; "No, thanks" only hides the bar. After either answer, the bar does not come back, also not after a restart or a language change.
+- [ ] Clearing "Shortcut in the Start menu" removes the entry from the Start menu; ticking it adds it again. The shortcut starts the tracker and opens the dashboard.
+- [ ] Ticking "Start with Windows" adds "HearthstoneXpTracker" under *Task Manager → Startup apps*. After signing out and in again, the tracker runs with the icon only; the dashboard stays closed until the icon is clicked. Clearing the box removes the entry.
+- [ ] An entry disabled in the Task Manager shows the box cleared; ticking it again enables the entry.
+- [ ] After moving the folder and starting the tracker once from the new place, the Start menu shortcut and the autostart entry start the moved EXE.
+
 ## Game log
 
 - [ ] Without a `[Power]` section in `%LOCALAPPDATA%\Blizzard\Hearthstone\log.config` (rename the file to test), the first start adds it and keeps the other sections; `log.config.bak` holds the old file.

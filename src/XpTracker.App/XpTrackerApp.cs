@@ -61,6 +61,7 @@ internal sealed class XpTrackerApp
         _settings = XpTrackerSettings.Load(SettingsPath);
         Localizer.SetLanguage(_settings.Language);
         SwitchOnGameLog();
+        StartupIntegration.RepairMovedFolder();
 
         _tail = new PowerLogTail(FindLogsFolder, now: () => DateTime.Now);
         _tail.GameFinished += OnGameFinished;
@@ -99,7 +100,7 @@ internal sealed class XpTrackerApp
 
         if (_dashboard is null)
         {
-            _dashboard = new DashboardWindow(_history, HistoryPath, () => _tail?.CurrentSession, IsHearthstoneRunning, GameLogStatus, _settings.CheckForUpdates, SetCheckForUpdates, _settings.EventActive, SetEventActive, _settings.TavernPass, _settings.TavernPassLevel, SetTavernPass, _settings.ShowDamage, SetShowDamage, _settings.Language, SetLanguage, _settings.OverlayPosition, SetOverlayPosition);
+            _dashboard = new DashboardWindow(_history, HistoryPath, () => _tail?.CurrentSession, IsHearthstoneRunning, GameLogStatus, _settings.CheckForUpdates, SetCheckForUpdates, _settings.EventActive, SetEventActive, _settings.TavernPass, _settings.TavernPassLevel, SetTavernPass, _settings.ShowDamage, SetShowDamage, _settings.Language, SetLanguage, _settings.OverlayPosition, SetOverlayPosition, StartupIntegration.AutostartOn(), StartupIntegration.SetAutostart, StartupIntegration.ShortcutExists(), StartupIntegration.SetShortcut, !_settings.StartMenuAsked, OnStartMenuAnswered);
             _dashboard.ShowUpdate(_update);
             _dashboard.Closed += (_, _) => _dashboard = null;
             _dashboard.Show();
@@ -350,6 +351,13 @@ internal sealed class XpTrackerApp
         _settings.TavernPassLevel = TavernPassBonus.ClampLevel(level);
         SaveSettings();
         _shownKey = string.Empty;
+    }
+
+    // The one-time question in the dashboard "Add the tracker to the Start menu?" was answered, either way.
+    private void OnStartMenuAnswered()
+    {
+        _settings.StartMenuAsked = true;
+        SaveSettings();
     }
 
     private void SetCheckForUpdates(bool check)

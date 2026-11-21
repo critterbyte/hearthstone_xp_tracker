@@ -114,6 +114,8 @@ Chiudere il pannello lascia in esecuzione il tracker e l'overlay. Per chiudere i
 | "Livello" con "−", un numero e "+" | Il tuo livello nel Percorso Ricompense. Fai clic su "−" o "+", oppure scrivi il numero. La riga sotto mostra il bonus e il passo successivo, per esempio "Bonus PE del 10%, ancora 2 livelli per il 15%". Il bonus è del 10%, dal livello 20 del 15% e dal livello 70 del 20% (vedi [FORMULA.md](../FORMULA.md#tavern-pass)). Aggiorna il livello quando superi il livello 20 o 70. |
 | "Mostra i danni nell'overlay" | Mostra o nasconde le righe "Danni totali:" e "Danni all'eroe:". Attivo di default. |
 | "Cerca aggiornamenti all'avvio del tracker" | Attiva o disattiva il controllo degli aggiornamenti. Vedi [Privacy](#privacy). |
+| "Avvia con Windows" | Avvia il tracker quando accedi a Windows. In questo caso si avvia solo nell'area di notifica; fai clic sull'icona per aprire il pannello. Disattivato per impostazione predefinita. Puoi disattivarlo anche in Gestione attività, in *App di avvio* (*Startup apps*). |
+| "Collegamento nel menu Start" | Aggiunge "Hearthstone XP Tracker" al menu Start o lo rimuove. Al primo avvio, una barra in alto nel pannello lo chiede una sola volta. |
 
 Una partita finita compare da sola in un pannello aperto. Non serve fare clic su "Aggiorna".
 

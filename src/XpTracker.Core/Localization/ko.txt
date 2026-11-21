@@ -55,6 +55,11 @@ update.available={0} 버전을 사용할 수 있습니다.
 update.availableInstalled={0} 버전을 사용할 수 있습니다(설치됨: {1}).
 update.openPage=다운로드 페이지 열기
 
+# Dashboard: one-time question at the first start
+startMenu.question=나중에 다시 찾을 수 있도록 트래커를 시작 메뉴에 추가할까요?
+startMenu.yes=추가
+startMenu.no=추가 안 함
+
 # Dashboard: toolbar and options
 period.session=세션
 period.today=오늘
@@ -74,6 +79,10 @@ option.eventHint=하스스톤 이벤트가 진행 중인가요? 위 상자에 �
 option.damage=오버레이에 피해 표시
 option.damageTip="전체 피해:"와 "영웅 피해:" 줄을 표시합니다. 현재 또는 지난 게임에서 내 편이 상대에게 준 피해입니다.
 option.updates=트래커 시작 시 업데이트 확인
+option.autostart=Windows 시작 시 실행
+option.autostartTip=Windows에 로그인하면 트래커를 알림 영역에서 실행합니다. 대시보드는 열리지 않습니다.
+option.startMenu=시작 메뉴 바로 가기
+option.startMenuTip=시작 메뉴에 "Hearthstone XP Tracker"를 추가합니다. 트래커 폴더를 옮겼다면 새 위치에서 한 번 실행하세요.
 tavern.check=선술집 패스(경험치 보너스)
 tavern.checkTip=현재 확장팩의 선술집 패스가 있으면 켜세요. 아래에 보상의 길 레벨을 입력하세요. 보너스는 10%, 20레벨부터 15%, 70레벨부터 20%입니다(하스스톤 위키 기준, 측정하지 않음).
 tavern.level=레벨
