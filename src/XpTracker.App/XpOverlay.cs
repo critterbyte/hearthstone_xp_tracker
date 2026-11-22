@@ -16,8 +16,9 @@ namespace XpTracker.App;
 internal sealed class XpOverlay : Border
 {
     // Positions relative to the overlay size.
-    // Right: above the Hearthstone settings button, measured from the bottom right corner.
-    private const double RightOffset = 0.012;
+    // Right: above the Hearthstone settings button, measured from the bottom right corner,
+    // close to the edge so the box leaves the scroll on the board's right side free.
+    private const double RightOffset = 0.003;
     private const double RightBottomOffset = 0.085;
 
     // Left: above the player's name plate ("You" with the rank), measured from the bottom left corner,
