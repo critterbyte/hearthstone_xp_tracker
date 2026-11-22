@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- The overlay on the right sits closer to the edge of the game area, so it no longer covers the scroll next to the board.
+
 ## [0.2.0] - 2026-11-21
 
 The tracker becomes a stand-alone Windows program. Hearthstone Deck Tracker (HDT) stops supporting plugins on 30 November 2026; the tracker keeps the same overlay, dashboard and formula and no longer needs HDT.
